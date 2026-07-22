@@ -2,6 +2,19 @@
   "name": "@allfitone/tokens",
   "version": "0.1.0",
   "description": "Cross-platform design tokens for the Allfit One ecosystem.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dinnartec/allfitone-design-system.git",
+    "directory": "packages/tokens"
+  },
+  "homepage": "https://github.com/dinnartec/allfitone-design-system#readme",
+  "bugs": {
+    "url": "https://github.com/dinnartec/allfitone-design-system/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "type": "module",
   "sideEffects": [
     "./dist/tokens.css"

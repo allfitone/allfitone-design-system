@@ -2,6 +2,19 @@
   "name": "@allfitone/react",
   "version": "0.1.0",
   "description": "React and Next.js adapters for the Allfit One design system.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dinnartec/allfitone-design-system.git",
+    "directory": "packages/react"
+  },
+  "homepage": "https://github.com/dinnartec/allfitone-design-system#readme",
+  "bugs": {
+    "url": "https://github.com/dinnartec/allfitone-design-system/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "type": "module",
   "sideEffects": [
     "./dist/tokens.css",
@@ -46,9 +59,9 @@
     "prepack": "npm run check"
   },
   "dependencies": {
-    "@allfitone/brand": "*",
-    "@allfitone/icons": "*",
-    "@allfitone/tokens": "*",
+    "@allfitone/brand": "0.1.0",
+    "@allfitone/icons": "0.1.0",
+    "@allfitone/tokens": "0.1.0",
     "@base-ui/react": "^1.6.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

@@ -2,6 +2,19 @@
   "name": "@allfitone/react-native",
   "version": "0.1.0",
   "description": "React Native adapters for the Allfit One design system.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dinnartec/allfitone-design-system.git",
+    "directory": "packages/react-native"
+  },
+  "homepage": "https://github.com/dinnartec/allfitone-design-system#readme",
+  "bugs": {
+    "url": "https://github.com/dinnartec/allfitone-design-system/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "type": "module",
   "sideEffects": false,
   "files": [
@@ -37,9 +50,9 @@
     "prepack": "npm run check"
   },
   "dependencies": {
-    "@allfitone/brand": "*",
-    "@allfitone/icons": "*",
-    "@allfitone/tokens": "*",
+    "@allfitone/brand": "0.1.0",
+    "@allfitone/icons": "0.1.0",
+    "@allfitone/tokens": "0.1.0",
     "lucide-react-native": "^1.25.0"
   },
   "peerDependencies": {

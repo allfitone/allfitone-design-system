@@ -2,6 +2,19 @@
   "name": "@allfitone/brand",
   "version": "0.1.0",
   "description": "Canonical brand assets and renderers for the Allfit One ecosystem.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dinnartec/allfitone-design-system.git",
+    "directory": "packages/brand"
+  },
+  "homepage": "https://github.com/dinnartec/allfitone-design-system#readme",
+  "bugs": {
+    "url": "https://github.com/dinnartec/allfitone-design-system/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "type": "module",
   "sideEffects": false,
   "files": [
