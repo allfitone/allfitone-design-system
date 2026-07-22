@@ -1,0 +1,40 @@
+{
+  "name": "@allfitone/icons",
+  "version": "0.1.0",
+  "description": "Semantic icon foundation for the Allfit One ecosystem.",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check": "npm run build && node scripts/validate.mjs",
+    "prepack": "npm run check"
+  },
+  "dependencies": {
+    "lucide-react": "^1.24.0"
+  },
+  "peerDependencies": {
+    "react": ">=19"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "react": "19.2.4"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "UNLICENSED"
+}

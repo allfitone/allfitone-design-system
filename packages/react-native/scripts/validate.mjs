@@ -1,0 +1,20 @@
+import { access } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const requiredOutputs = ["index.js", "brand.js", "icons.js", "tokens.js"];
+
+await Promise.all(requiredOutputs.map((file) => access(resolve(packageRoot, "dist", file))));
+
+const { getNativeTouchTarget, resolveNativeLetterSpacing } = await import("../dist/tokens.js");
+
+if (getNativeTouchTarget("ios") !== 44 || getNativeTouchTarget("android") !== 48) {
+  throw new Error("React Native touch targets do not match the accessibility contract.");
+}
+
+if (resolveNativeLetterSpacing(20, "utility") !== 3.2) {
+  throw new Error("React Native letter-spacing conversion is invalid.");
+}
+
+console.log(`Validated ${requiredOutputs.length} React Native adapter outputs.`);

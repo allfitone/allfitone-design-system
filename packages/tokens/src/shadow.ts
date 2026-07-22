@@ -15,7 +15,7 @@ export const shadow = {
   md: [layer(0, 18, 55, -18, "#0307133D")],
   lg: [layer(0, 34, 80, -24, "#0000006B")],
   xl: [layer(0, 40, 100, -28, "#00000057")],
-  focus: [layer(0, 0, 0, 3, "#68EEF459")],
+  focus: [layer(0, 0, 0, 2, "#EAFFFF"), layer(0, 0, 0, 4, "#030713")],
   glow: [layer(0, 0, 70, 0, "#55EFFB14")],
   glowStrong: [layer(0, 0, 34, 0, "#55EFFB59")],
 } as const;
@@ -30,4 +30,3 @@ export const semanticShadow = {
   brandGlow: shadow.glow,
   brandGlowStrong: shadow.glowStrong,
 } as const;
-

@@ -1,5 +1,7 @@
 import type { CSSProperties } from "react";
 
+import { BrandLockup, BrandLogo } from "@allfitone/react/brand";
+import { FoundationIcon, iconCatalog, type IconName } from "@allfitone/react/icons";
 import {
   color,
   motion,
@@ -12,9 +14,8 @@ import {
   spacing,
   typography,
   type ShadowLayer,
-} from "@allfitone/tokens";
+} from "@allfitone/react/tokens";
 
-import { BrandLockup, BrandLogo } from "@/components/brand-assets";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const colorGroups = [
@@ -24,7 +25,8 @@ const colorGroups = [
   ["Feedback", color.feedback],
 ] as const;
 
-const navigation = ["Color", "Type", "Space", "Radius", "Shadow", "Motion", "Applied"];
+const navigation = ["Color", "Type", "Icons", "Space", "Radius", "Shadow", "Motion", "Applied"];
+const iconNames = Object.keys(iconCatalog) as IconName[];
 
 const tokenLabel = (value: string) =>
   value.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/^./, (character) => character.toUpperCase());
@@ -43,6 +45,15 @@ function SectionHeader({ index, title, description }: { index: string; title: st
         <p>{description}</p>
       </div>
     </div>
+  );
+}
+
+function AdaptiveBrandLockup() {
+  return (
+    <span className="brand-lockup" aria-hidden="true">
+      <BrandLockup className="brand-lockup__asset brand-lockup__asset--dark" surface="dark" />
+      <BrandLockup className="brand-lockup__asset brand-lockup__asset--light" surface="light" />
+    </span>
   );
 }
 
@@ -82,7 +93,7 @@ export default function Home() {
     <main>
       <header className="topbar page-shell">
         <a className="brand" href="#top" aria-label="Allfit One UI Foundation home">
-          <BrandLockup priority />
+          <AdaptiveBrandLockup />
           <i>UI FOUNDATION</i>
         </a>
         <nav aria-label="Foundation sections">
@@ -100,10 +111,10 @@ export default function Home() {
           </p>
         </div>
         <div className="hero-signature" aria-hidden="true">
-          <BrandLogo />
+          <BrandLogo className="brand-logo" variant="cyan" />
         </div>
         <dl className="hero-metrics">
-          <div><dt>Foundations</dt><dd>06</dd></div>
+          <div><dt>Foundations</dt><dd>07</dd></div>
           <div><dt>Themes</dt><dd>02</dd></div>
           <div><dt>Outputs</dt><dd>03</dd></div>
         </dl>
@@ -156,8 +167,25 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="icons" className="foundation-section page-shell">
+        <SectionHeader index="03" title="Iconography" description="One semantic vocabulary across products. Lucide provides geometry; Allfit One defines meaning, scale, and stroke." />
+        <div className="icon-grid">
+          {iconNames.map((name) => (
+            <article key={name} className="icon-token">
+              <FoundationIcon name={name} size="lg" />
+              <div>
+                <strong>{tokenLabel(name)}</strong>
+                <code>{iconCatalog[name].source}</code>
+              </div>
+              <small>{iconCatalog[name].category}</small>
+            </article>
+          ))}
+        </div>
+        <p className="token-note">Default: 20 px / 1.75 stroke. Semantic names remain stable even if source geometry evolves.</p>
+      </section>
+
       <section id="space" className="foundation-section page-shell">
-        <SectionHeader index="03" title="Spacing" description="A 4 px rhythm with one 2 px optical half-step and a protected 44 px touch target." />
+        <SectionHeader index="04" title="Spacing" description="A 4 px rhythm with one 2 px optical half-step, 44 px Web/iOS targets, and 48 dp Android targets." />
         <div className="space-scale">
           {Object.entries(spacing).map(([name, value]) => (
             <div key={name}>
@@ -175,7 +203,7 @@ export default function Home() {
       </section>
 
       <section id="radius" className="foundation-section page-shell">
-        <SectionHeader index="04" title="Radius" description="Curvature communicates function and hierarchy; it is never default decoration." />
+        <SectionHeader index="05" title="Radius" description="Curvature communicates function and hierarchy; it is never default decoration." />
         <div className="radius-grid">
           {Object.entries(radius).map(([name, value]) => (
             <div key={name} className="radius-token">
@@ -192,7 +220,7 @@ export default function Home() {
       </section>
 
       <section id="shadow" className="foundation-section page-shell">
-        <SectionHeader index="05" title="Shadow" description="Elevation stays quiet. Cyan glow is reserved for one signature moment." />
+        <SectionHeader index="06" title="Shadow" description="Elevation stays quiet. Cyan glow is reserved for one signature moment." />
         <div className="shadow-grid">
           {Object.entries(semanticShadow).map(([name, layers]) => (
             <article key={name} style={{ boxShadow: shadowToCss(layers) }}>
@@ -205,7 +233,7 @@ export default function Home() {
       </section>
 
       <section id="motion" className="foundation-section page-shell">
-        <SectionHeader index="06" title="Motion" description="Motion explains response and continuity. Hover each track to compare duration." />
+        <SectionHeader index="07" title="Motion" description="Motion explains response and continuity. Hover each track to compare duration." />
         <div className="motion-list">
           {Object.entries(motion.duration).filter(([name]) => name !== "instant").map(([name, value]) => (
             <div key={name} className="motion-row">
@@ -222,7 +250,7 @@ export default function Home() {
       </section>
 
       <section id="applied" className="foundation-section page-shell">
-        <SectionHeader index="07" title="Applied sample" description="A visual stress test of the foundations—not a final component API." />
+        <SectionHeader index="08" title="Applied sample" description="A visual stress test of the foundations—not a final component API." />
         <div className="applied-grid">
           <article className="sample-panel sample-panel--wide">
             <div className="sample-panel__header"><div><span>Performance overview</span><strong>Training load</strong></div><span className="status-dot">Live</span></div>
@@ -247,7 +275,7 @@ export default function Home() {
       </section>
 
       <footer className="footer page-shell">
-        <div className="brand"><BrandLockup /></div>
+        <div className="brand"><AdaptiveBrandLockup /></div>
         <p>UI Foundation / Tokens v0.1</p>
         <p>Space + OS / One visual language</p>
       </footer>

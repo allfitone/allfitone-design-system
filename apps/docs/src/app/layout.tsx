@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Barlow_Condensed, Manrope } from "next/font/google";
 
-import "@allfitone/tokens/css";
+import "@allfitone/react/tokens.css";
 import "./globals.css";
 
 const display = Barlow_Condensed({
@@ -33,4 +33,3 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     </html>
   );
 }
-

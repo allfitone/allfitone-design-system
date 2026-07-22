@@ -41,7 +41,7 @@ export const semanticColor = {
     text: {
       primary: color.neutral.chalk,
       secondary: "#EAFFFFB8",
-      muted: "#EAFFFF73",
+      muted: "#EAFFFF7A",
       disabled: "#EAFFFF59",
       inverse: color.ink.void,
       accent: color.brand.primary,
@@ -90,7 +90,7 @@ export const semanticColor = {
     text: {
       primary: color.ink.void,
       secondary: "#071923B8",
-      muted: "#0719238F",
+      muted: "#0719239C",
       disabled: "#07192366",
       inverse: color.neutral.chalk,
       accent: color.brand.turquoiseDeep,
@@ -129,4 +129,3 @@ export const semanticColor = {
     },
   },
 } as const;
-

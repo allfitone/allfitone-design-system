@@ -1,9 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedFrom": [
-    "public/brand/allfit-one-logo-horizontal.svg",
-    "src/components/logo-mark.tsx"
-  ],
+  "sourceOfTruth": "packages/brand/assets",
   "colors": {
     "cyan": "#55EFFB",
     "ink": "#030713",
@@ -11,47 +8,46 @@
   },
   "assets": [
     {
-      "path": "public/brand/reusable/logo/allfit-one-logo-cyan.svg",
+      "path": "assets/logo/allfit-one-logo-cyan.svg",
       "type": "logo",
       "background": "transparent",
       "lettering": null
     },
     {
-      "path": "public/brand/reusable/logo/allfit-one-logo-ink.svg",
+      "path": "assets/logo/allfit-one-logo-ink.svg",
       "type": "logo",
       "background": "transparent",
       "lettering": null
     },
     {
-      "path": "public/brand/reusable/logo/allfit-one-logo-chalk.svg",
+      "path": "assets/logo/allfit-one-logo-chalk.svg",
       "type": "logo",
       "background": "transparent",
       "lettering": null
     },
     {
-      "path": "public/brand/reusable/wordmark/allfit-one-wordmark-on-light.svg",
+      "path": "assets/wordmark/allfit-one-wordmark-on-light.svg",
       "type": "wordmark",
       "background": "transparent",
       "lettering": "outlined"
     },
     {
-      "path": "public/brand/reusable/wordmark/allfit-one-wordmark-on-dark.svg",
+      "path": "assets/wordmark/allfit-one-wordmark-on-dark.svg",
       "type": "wordmark",
       "background": "transparent",
       "lettering": "outlined"
     },
     {
-      "path": "public/brand/reusable/lockup/allfit-one-lockup-on-light.svg",
+      "path": "assets/lockup/allfit-one-lockup-on-light.svg",
       "type": "lockup",
       "background": "transparent",
       "lettering": "outlined"
     },
     {
-      "path": "public/brand/reusable/lockup/allfit-one-lockup-on-dark.svg",
+      "path": "assets/lockup/allfit-one-lockup-on-dark.svg",
       "type": "lockup",
       "background": "transparent",
       "lettering": "outlined"
     }
   ]
 }
-

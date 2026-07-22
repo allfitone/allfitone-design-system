@@ -1,6 +1,6 @@
 # Foundations
 
-These rules keep Allfit Space and Allfit OS recognizably related without forcing both products into identical layouts.
+These rules keep Allfit Space and Allfit OS recognizably related without forcing both products into identical layouts. Every foundation and component must also follow [ACCESSIBILITY.md](ACCESSIBILITY.md).
 
 ## Color
 
@@ -44,7 +44,9 @@ The system uses a 4 px grid with a 2 px half-step for optical correction only.
 
 - normal component spacing: `spacing[2]` through `spacing[6]`;
 - layout spacing: `spacing[8]` and above;
-- minimum interactive target: `semanticSpacing.touchTarget` (`44px`);
+- minimum Web target: `semanticSpacing.touchTargetWeb` (`44px`);
+- minimum iOS target: `semanticSpacing.touchTargetIos` (`44pt`);
+- minimum Android target: `semanticSpacing.touchTargetAndroid` (`48dp`);
 - avoid arbitrary values when an existing token is within 2 px of the intended result.
 
 ## Radius
@@ -86,4 +88,6 @@ Use the semantic motion roles in products. Use springs for spatial movement on R
 - CSS variables are a generated web adapter, not a second source of truth.
 - JSON is a generated tooling artifact for documentation and future Figma synchronization.
 - Platform component packages may alias semantic tokens, but must not redefine primitive values.
-
+- React and Next.js applications consume explicit `@allfitone/react/*` subpaths.
+- React Native applications consume explicit `@allfitone/react-native/*` subpaths.
+- Product applications should not import the foundational `brand`, `icons`, or `tokens` packages directly.

@@ -1,0 +1,53 @@
+{
+  "name": "@allfitone/react",
+  "version": "0.1.0",
+  "description": "React and Next.js adapters for the Allfit One design system.",
+  "type": "module",
+  "sideEffects": [
+    "./dist/tokens.css"
+  ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./brand": {
+      "types": "./dist/brand.d.ts",
+      "import": "./dist/brand.js"
+    },
+    "./icons": {
+      "types": "./dist/icons.d.ts",
+      "import": "./dist/icons.js"
+    },
+    "./tokens": {
+      "types": "./dist/tokens.d.ts",
+      "import": "./dist/tokens.js"
+    },
+    "./tokens.css": "./dist/tokens.css"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/build.mjs",
+    "check": "npm run build && node scripts/validate.mjs",
+    "prepack": "npm run check"
+  },
+  "dependencies": {
+    "@allfitone/brand": "*",
+    "@allfitone/icons": "*",
+    "@allfitone/tokens": "*"
+  },
+  "peerDependencies": {
+    "react": ">=19"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "react": "19.2.4"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "UNLICENSED"
+}

@@ -4,7 +4,7 @@ The shared visual foundation for Allfit One, Allfit Space, Allfit OS, and the pu
 
 ## Current scope
 
-This first foundation release contains the shared design tokens and a visual explorer:
+This first foundation release contains shared foundations, canonical brand assets, and a visual explorer:
 
 - color primitives and dark/light semantic themes;
 - typography foundations for Barlow Condensed and Manrope;
@@ -12,14 +12,20 @@ This first foundation release contains the shared design tokens and a visual exp
 - radius, elevation, and brand glow tokens;
 - duration, easing, and spring motion tokens;
 - generated TypeScript, CSS, and JSON outputs;
+- canonical logo, wordmark, and lockup renderers;
+- a semantic Lucide icon vocabulary for product interfaces;
 - a responsive dark/light reference page for reviewing every foundation in context.
 
-The package intentionally does not contain React or React Native components yet. Components should be added only after the foundations are exercised in both products.
+Platform adapters are separated so Web and native applications share decisions without sharing incompatible rendering code. Product UI components should be added after the foundations are exercised in both products.
 
 ## Packages
 
 | Package | Purpose |
 | --- | --- |
+| `@allfitone/react` | React and Next.js brand, icon, token, and CSS adapters |
+| `@allfitone/react-native` | React Native brand, icon, token, and platform helpers |
+| `@allfitone/brand` | Canonical logo, wordmark, lockups, SVG assets, and React renderers |
+| `@allfitone/icons` | Semantic icon catalog, sizing rules, and React adapter |
 | `@allfitone/tokens` | Platform-neutral source tokens and generated web/tooling outputs |
 
 ## Apps
@@ -28,7 +34,7 @@ The package intentionally does not contain React or React Native components yet.
 | --- | --- |
 | `@allfitone/docs` | Visual foundation explorer for reviewing tokens in context |
 
-Usage rules and the rationale behind each scale live in [Foundations](docs/foundations.md).
+Usage rules and the rationale behind each scale live in [Foundations](docs/FOUNDATIONS.md). Accessibility requirements live in [Accessibility](docs/ACCESSIBILITY.md). Platform packaging and public imports live in [Platform packages](docs/PLATFORM-PACKAGES.md). Brand ownership and adoption rules live in [Brand and iconography](docs/BRAND-AND-ICONOGRAPHY.md).
 
 ## Commands
 
@@ -41,6 +47,6 @@ npm run check
 
 ## Source-of-truth rule
 
-Edit files under `packages/tokens/src`. Do not hand-edit anything under `packages/tokens/dist`; those files are generated.
+Edit token definitions under `packages/tokens/src`, brand sources under `packages/brand`, and icon semantics under `packages/icons/src`. Do not hand-edit generated `dist` files or consumer asset copies.
 
 The existing landing palette is preserved exactly. New success and warning colors are functional UI colors, not additional brand accents.

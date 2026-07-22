@@ -1,0 +1,28 @@
+# Brand and iconography
+
+## Ownership
+
+`@allfitone/brand` is the source of truth for the Allfit One logo, wordmark, and lockups. Canonical SVG exports live in `packages/brand/assets`; React renderers are generated from the same geometry in `packages/brand/src/react.tsx`.
+
+`@allfitone/icons` owns the semantic icon vocabulary. Lucide owns the base geometry, while Allfit One owns which glyph represents each meaning, along with size and stroke rules.
+
+## Consumption
+
+Web React projects should render brand assets from `@allfitone/react/brand` and interface icons from `@allfitone/react/icons`. Physical SVG files remain available through the underlying brand package for metadata, favicons, and export pipelines.
+
+React Native projects should consume `@allfitone/react-native/brand`, `@allfitone/react-native/icons`, and `@allfitone/react-native/tokens`. The adapter renders canonical geometry through `react-native-svg` and preserves the same semantic Lucide names used on Web.
+
+## Distribution rule
+
+Consumer repositories must install released package versions. They must not depend on sibling checkout paths such as `../allfitone-design-system`, because that breaks isolated CI and deployment environments.
+
+Installed package files and synchronized public assets are generated consumer copies, not additional sources of truth. Never edit them directly.
+
+## Adoption status
+
+- Design-system explorer: consumes the public `@allfitone/react` adapter.
+- Landing: continues using its existing verified exports until the packages are released to the selected registry.
+- Allfit OS: no frontend application scaffold exists yet.
+- Allfit Space: no React Native application scaffold exists yet.
+
+Once distribution is configured, migrate the landing to `@allfitone/react` and initialize future Space work with `@allfitone/react-native`.

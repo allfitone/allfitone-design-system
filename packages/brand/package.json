@@ -1,0 +1,47 @@
+{
+  "name": "@allfitone/brand",
+  "version": "0.1.0",
+  "description": "Canonical brand assets and renderers for the Allfit One ecosystem.",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "assets",
+    "dist",
+    "scripts/sync-assets.mjs",
+    "README.md"
+  ],
+  "bin": {
+    "allfitone-brand-assets": "./scripts/sync-assets.mjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js"
+    },
+    "./geometry": {
+      "types": "./dist/geometry.d.ts",
+      "import": "./dist/geometry.js"
+    },
+    "./assets/*": "./assets/*"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check": "npm run build && node scripts/validate.mjs",
+    "prepack": "npm run check"
+  },
+  "peerDependencies": {
+    "react": ">=19"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "react": "19.2.4"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "UNLICENSED"
+}

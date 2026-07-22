@@ -548,6 +548,58 @@ code {
   line-height: 1;
 }
 
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 1px;
+  border: 1px solid var(--afo-color-border-subtle);
+  background: var(--afo-color-border-subtle);
+}
+
+.icon-token {
+  display: grid;
+  min-height: 11rem;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 1fr auto;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--afo-color-background-surface);
+  transition: background-color var(--afo-motion-feedback-duration) var(--afo-motion-feedback-easing);
+}
+
+.icon-token:hover {
+  background: var(--afo-color-background-surface-raised);
+}
+
+.icon-token > svg {
+  align-self: start;
+  color: var(--afo-color-action-primary);
+}
+
+.icon-token > div {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: end;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.icon-token strong {
+  font-size: 0.72rem;
+}
+
+.icon-token code,
+.icon-token small {
+  color: var(--afo-color-text-muted);
+  font-size: 0.52rem;
+}
+
+.icon-token small {
+  align-self: start;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
 .space-scale {
   border-top: 1px solid var(--afo-color-border-subtle);
 }
@@ -838,7 +890,7 @@ code {
 .sample-field select {
   min-height: var(--afo-space-touch-target);
   padding-inline: 0.85rem;
-  border: 1px solid var(--afo-color-border-default);
+  border: 1px solid var(--afo-color-border-strong);
   border-radius: var(--afo-radius-control);
   outline: none;
   background: var(--afo-color-background-canvas);
@@ -881,7 +933,7 @@ code {
 }
 
 .sample-button--secondary {
-  border-color: var(--afo-color-border-default);
+  border-color: var(--afo-color-border-strong);
   background: var(--afo-color-action-secondary);
   color: var(--afo-color-action-on-secondary);
 }
@@ -899,7 +951,7 @@ code {
   align-items: center;
   gap: 0.5rem;
   padding-inline: 0.75rem;
-  border: 1px solid currentColor;
+  border: 1px solid var(--status-color);
   border-radius: var(--afo-radius-pill);
   font-size: 0.58rem;
   font-weight: var(--afo-font-weight-bold);
@@ -909,14 +961,14 @@ code {
   width: 0.4rem;
   height: 0.4rem;
   border-radius: 50%;
-  background: currentColor;
+  background: var(--status-color);
   content: "";
 }
 
-.status-list [data-status="success"] { color: var(--afo-color-status-success); }
-.status-list [data-status="warning"] { color: var(--afo-color-status-warning); }
-.status-list [data-status="danger"] { color: var(--afo-color-status-danger); }
-.status-list [data-status="info"] { color: var(--afo-color-status-info); }
+.status-list [data-status="success"] { --status-color: var(--afo-color-status-success); }
+.status-list [data-status="warning"] { --status-color: var(--afo-color-status-warning); }
+.status-list [data-status="danger"] { --status-color: var(--afo-color-status-danger); }
+.status-list [data-status="info"] { --status-color: var(--afo-color-status-info); }
 
 .footer {
   display: grid;

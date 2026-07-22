@@ -1,0 +1,60 @@
+{
+  "name": "@allfitone/react-native",
+  "version": "0.1.0",
+  "description": "React Native adapters for the Allfit One design system.",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "react-native": "./dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "react-native": "./dist/index.js",
+      "import": "./dist/index.js"
+    },
+    "./brand": {
+      "types": "./dist/brand.d.ts",
+      "react-native": "./dist/brand.js",
+      "import": "./dist/brand.js"
+    },
+    "./icons": {
+      "types": "./dist/icons.d.ts",
+      "react-native": "./dist/icons.js",
+      "import": "./dist/icons.js"
+    },
+    "./tokens": {
+      "types": "./dist/tokens.d.ts",
+      "react-native": "./dist/tokens.js",
+      "import": "./dist/tokens.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check": "npm run build && node scripts/validate.mjs",
+    "prepack": "npm run check"
+  },
+  "dependencies": {
+    "@allfitone/brand": "*",
+    "@allfitone/icons": "*",
+    "@allfitone/tokens": "*",
+    "lucide-react-native": "^1.25.0"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-native": ">=0.86",
+    "react-native-svg": ">=15.15.5"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "react": "19.2.4",
+    "react-native": "0.86.0",
+    "react-native-svg": "15.15.5"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "UNLICENSED"
+}

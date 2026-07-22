@@ -32,5 +32,4 @@ All files have transparent backgrounds. The wordmark lettering is converted to v
 - Prefer the lockup for primary brand identification.
 - Provide “Allfit One” as accessible text when the asset is decorative or its internal title is not exposed by the host platform.
 
-The pre-existing files in `public/brand/` remain available for social avatars, Open Graph, WhatsApp, and backwards compatibility.
-
+These files are the source of truth. Consumer copies are generated artifacts and must not be edited by hand.

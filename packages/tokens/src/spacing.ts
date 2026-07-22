@@ -25,5 +25,7 @@ export const semanticSpacing = {
   panelInset: spacing[6],
   sectionGap: spacing[16],
   touchTarget: spacing[11],
+  touchTargetWeb: spacing[11],
+  touchTargetIos: spacing[11],
+  touchTargetAndroid: spacing[12],
 } as const;
-
