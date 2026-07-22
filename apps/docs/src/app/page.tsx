@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import Link from "next/link";
 
 import { BrandLockup, BrandLogo } from "@allfitone/react/brand";
 import { FoundationIcon, iconCatalog, type IconName } from "@allfitone/react/icons";
@@ -98,6 +99,7 @@ export default function Home() {
         </a>
         <nav aria-label="Foundation sections">
           {navigation.map((item) => <a key={item} href={`#${item.toLowerCase()}`}>{item}</a>)}
+          <Link href="/components">Components</Link>
         </nav>
         <ThemeToggle />
       </header>

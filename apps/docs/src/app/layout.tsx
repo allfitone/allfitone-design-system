@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { Barlow_Condensed, Manrope } from "next/font/google";
+import { Toaster } from "@allfitone/react/components/sonner";
+import { TooltipProvider } from "@allfitone/react/components/tooltip";
 
 import "@allfitone/react/tokens.css";
+import "@allfitone/react/styles.css";
 import "./globals.css";
+import "./components.css";
 
 const display = Barlow_Condensed({
   subsets: ["latin"],
@@ -29,7 +33,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       className={`${display.variable} ${body.variable}`}
       suppressHydrationWarning
     >
-      <body>{children}</body>
+      <body>
+        <TooltipProvider>
+          {children}
+          <Toaster position="bottom-right" closeButton />
+        </TooltipProvider>
+      </body>
     </html>
   );
 }

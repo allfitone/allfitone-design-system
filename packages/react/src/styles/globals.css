@@ -1,0 +1,117 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@source "../components";
+
+@custom-variant dark (&:is([data-afo-theme="dark"] *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-overlay: var(--overlay);
+  --font-sans: var(--afo-font-family-body);
+  --font-display: var(--afo-font-family-display);
+  --radius-sm: var(--afo-radius-sm);
+  --radius-md: var(--afo-radius-md);
+  --radius-lg: var(--afo-radius-control);
+  --radius-xl: var(--afo-radius-card);
+  --radius-2xl: var(--afo-radius-overlay);
+}
+
+:root,
+[data-afo-theme="dark"],
+[data-afo-theme="light"] {
+  --radius: var(--afo-radius-control);
+  --background: var(--afo-color-background-canvas);
+  --foreground: var(--afo-color-text-primary);
+  --card: var(--afo-color-background-surface);
+  --card-foreground: var(--afo-color-text-primary);
+  --popover: var(--afo-color-background-surface);
+  --popover-foreground: var(--afo-color-text-primary);
+  --primary: var(--afo-color-action-primary);
+  --primary-foreground: var(--afo-color-action-on-primary);
+  --secondary: var(--afo-color-action-secondary);
+  --secondary-foreground: var(--afo-color-action-on-secondary);
+  --muted: var(--afo-color-background-surface-muted);
+  --muted-foreground: var(--afo-color-text-muted);
+  --accent: var(--afo-color-background-surface-subtle);
+  --accent-foreground: var(--afo-color-text-primary);
+  --destructive: var(--afo-color-status-danger);
+  --destructive-foreground: var(--afo-color-status-on-status);
+  --success: var(--afo-color-status-success);
+  --success-foreground: var(--afo-color-status-on-status);
+  --warning: var(--afo-color-status-warning);
+  --warning-foreground: var(--afo-color-status-on-status);
+  --border: var(--afo-color-border-default);
+  --input: var(--afo-color-border-strong);
+  --ring: var(--afo-color-focus-ring);
+  --overlay: color-mix(in srgb, var(--afo-color-ink-void) 72%, transparent);
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+
+  :where([data-slot]):focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--afo-color-neutral-chalk),
+      0 0 0 4px var(--afo-color-ink-void);
+  }
+}
+
+@layer components {
+  .cn-toast {
+    min-height: var(--afo-space-touch-target-web);
+    border-color: var(--afo-color-border-default) !important;
+    box-shadow: var(--afo-shadow-floating) !important;
+    font-family: var(--afo-font-family-body) !important;
+  }
+
+  .cn-toast [data-button],
+  .cn-toast [data-cancel],
+  .cn-toast [data-close-button] {
+    min-width: var(--afo-space-touch-target-web);
+    min-height: var(--afo-space-touch-target-web);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where([data-slot]) {
+    animation-duration: var(--afo-motion-reduced-duration) !important;
+    transition-duration: var(--afo-motion-reduced-duration) !important;
+  }
+}
+
+@media (forced-colors: active) {
+  :where([data-slot]):focus-visible {
+    outline: 2px solid CanvasText;
+    outline-offset: 2px;
+    box-shadow: none;
+  }
+}

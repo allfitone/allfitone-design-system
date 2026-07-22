@@ -9,7 +9,7 @@ Allfit One separates shared design decisions from platform rendering. The React 
 | Foundation | `@allfitone/tokens` | Platform-neutral values, CSS generation, and JSON output |
 | Foundation | `@allfitone/brand` | Canonical SVG assets, geometry, colors, and low-level renderers |
 | Foundation | `@allfitone/icons` | Semantic icon names, source glyphs, sizes, and stroke rules |
-| Platform | `@allfitone/react` | React/Next.js brand, icons, typed tokens, and generated CSS |
+| Platform | `@allfitone/react` | React/Next.js brand, icons, typed tokens, generated CSS, and Base UI components |
 | Platform | `@allfitone/react-native` | Native SVG brand, native Lucide icons, typed tokens, and platform helpers |
 
 Product applications depend on one platform package. Tooling and the platform packages may depend on foundation packages directly.
@@ -21,15 +21,18 @@ import { BrandLockup } from "@allfitone/react/brand";
 import { FoundationIcon } from "@allfitone/react/icons";
 import { semanticColor } from "@allfitone/react/tokens";
 import "@allfitone/react/tokens.css";
+import "@allfitone/react/styles.css";
+import { Button } from "@allfitone/react/components/button";
 ```
 
 Rules:
 
 - Use explicit subpaths; the root export contains metadata only.
-- Import token CSS once at the application root.
+- Import token CSS and component CSS once at the application root, in that order.
+- Import each component from its explicit `/components/{name}` subpath; do not add an all-components barrel.
 - Components render standard accessible SVG and remain compatible with React Server Components unless a consumer adds client behavior.
 - SVG geometry is static module data; it is not recreated during rendering.
-- The package must remain side-effect free except for the explicit CSS entry point.
+- The package must remain side-effect free except for `tokens.css` and `styles.css`.
 
 ## React Native
 
@@ -63,6 +66,8 @@ Rules:
 | Typed tokens | `/tokens` | `/tokens` |
 | Theme values | `/tokens` | `/tokens` |
 | CSS variables | `/tokens.css` | Not applicable |
+| Web component styles | `/styles.css` | Not applicable |
+| Web components | `/components/{name}` | Not applicable |
 | Native touch-target helper | Not applicable | `/tokens` |
 | Native letter-spacing helper | Not applicable | `/tokens` |
 

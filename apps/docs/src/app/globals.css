@@ -140,7 +140,7 @@ html[data-afo-theme="light"] .brand-lockup__asset--light {
 
 .theme-toggle__option {
   min-width: 3.6rem;
-  min-height: 2.25rem;
+  min-height: var(--afo-space-touch-target);
   border: 0;
   border-radius: var(--afo-radius-pill);
   background: transparent;
@@ -1043,7 +1043,7 @@ code {
 
   .theme-toggle__option {
     min-width: 2.8rem;
-    min-height: 2rem;
+    min-height: var(--afo-space-touch-target);
     font-size: 0.48rem;
   }
 
