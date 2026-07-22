@@ -1,0 +1,18 @@
+{
+  "name": "allfitone-design-system",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "npm@11.11.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run build --workspace @allfitone/tokens && npm run dev --workspace @allfitone/docs",
+    "build": "npm run build --workspace @allfitone/tokens && npm run build --workspace @allfitone/docs",
+    "check": "npm run check --workspace @allfitone/tokens && npm run check --workspace @allfitone/docs"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}

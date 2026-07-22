@@ -1,0 +1,29 @@
+{
+  "name": "@allfitone/tokens",
+  "version": "0.1.0",
+  "description": "Cross-platform design tokens for the Allfit One ecosystem.",
+  "type": "module",
+  "sideEffects": [
+    "./dist/tokens.css"
+  ],
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./css": "./dist/tokens.css",
+    "./tokens.json": "./dist/tokens.json"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/build.mjs",
+    "check": "npm run build && node scripts/validate.mjs",
+    "prepack": "npm run check"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "UNLICENSED"
+}
