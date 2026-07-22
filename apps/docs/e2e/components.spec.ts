@@ -128,6 +128,19 @@ test("uses the canonical Select in the applied foundation sample", async ({ page
   await expect(trigger).toContainText("Recovery");
 });
 
+test("keeps the hero signature visible in both themes", async ({ page }) => {
+  await page.goto("/");
+  const darkMark = page.locator(".hero-signature__asset--dark");
+  const lightMark = page.locator(".hero-signature__asset--light");
+
+  await expect(darkMark).toBeVisible();
+  await expect(lightMark).toBeHidden();
+  await page.getByRole("button", { name: "light", exact: true }).click();
+  await expect(darkMark).toBeHidden();
+  await expect(lightMark).toBeVisible();
+  expect(Number(await lightMark.evaluate((element) => getComputedStyle(element).opacity))).toBeGreaterThanOrEqual(0.08);
+});
+
 test("honors reduced motion and forced color focus", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   const spinner = page.getByRole("status", { name: "Loading" }).first();

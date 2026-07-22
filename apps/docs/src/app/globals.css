@@ -237,6 +237,20 @@ html[data-afo-theme="light"] .brand-lockup__asset--light {
   filter: drop-shadow(0 0 70px color-mix(in srgb, var(--afo-color-brand-primary) 18%, transparent));
 }
 
+.hero-signature__asset--light {
+  display: none;
+}
+
+html[data-afo-theme="light"] .hero-signature__asset--dark {
+  display: none;
+}
+
+html[data-afo-theme="light"] .hero-signature__asset--light {
+  display: block;
+  opacity: 0.08;
+  filter: none;
+}
+
 .hero-pipeline {
   grid-column: 1 / -1;
   display: grid;

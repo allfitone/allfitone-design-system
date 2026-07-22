@@ -133,7 +133,8 @@ export default function Home() {
           </p>
         </div>
         <div className="hero-signature" aria-hidden="true">
-          <BrandLogo className="brand-logo" variant="cyan" />
+          <BrandLogo className="brand-logo hero-signature__asset hero-signature__asset--dark" variant="cyan" />
+          <BrandLogo className="brand-logo hero-signature__asset hero-signature__asset--light" variant="ink" />
         </div>
         <ol className="hero-pipeline" aria-label="Design system flow">
           <li><span>SRC</span><div><strong>Primitive</strong><small>Stable source values</small></div></li>
