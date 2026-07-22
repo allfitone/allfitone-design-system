@@ -24,6 +24,7 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-danger-text: var(--afo-color-text-danger);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
@@ -86,6 +87,29 @@
 }
 
 @layer components {
+  [data-slot="button"][data-variant="default"] {
+    position: relative;
+    overflow: hidden;
+  }
+
+  [data-slot="button"][data-variant="default"]::after {
+    position: absolute;
+    top: calc(var(--afo-space-1) * -1);
+    right: var(--afo-space-2);
+    width: var(--afo-space-0-5);
+    height: var(--afo-space-5);
+    background: currentColor;
+    content: "";
+    opacity: 0.28;
+    pointer-events: none;
+    transform: skewY(-24deg);
+  }
+
+  [data-slot="card"][data-state="active"] {
+    border-color: var(--afo-color-border-accent);
+    box-shadow: inset var(--afo-space-1) 0 0 var(--afo-color-action-primary), var(--afo-shadow-card);
+  }
+
   .cn-toast {
     min-height: var(--afo-space-touch-target-web);
     border-color: var(--afo-color-border-default) !important;

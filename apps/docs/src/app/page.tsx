@@ -2,6 +2,17 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 
 import { BrandLockup, BrandLogo } from "@allfitone/react/brand";
+import { Button } from "@allfitone/react/components/button";
+import { Field, FieldGroup, FieldLabel } from "@allfitone/react/components/field";
+import { Input } from "@allfitone/react/components/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@allfitone/react/components/select";
 import { FoundationIcon, iconCatalog, type IconName } from "@allfitone/react/icons";
 import {
   color,
@@ -18,6 +29,7 @@ import {
 } from "@allfitone/react/tokens";
 
 import { ThemeToggle } from "@/components/theme-toggle";
+import { FoundationIndex } from "@/components/foundation-index";
 
 const colorGroups = [
   ["Brand", color.brand],
@@ -28,6 +40,11 @@ const colorGroups = [
 
 const navigation = ["Color", "Type", "Icons", "Space", "Radius", "Shadow", "Motion", "Applied"];
 const iconNames = Object.keys(iconCatalog) as IconName[];
+const trainingGoals = [
+  { label: "Performance", value: "performance" },
+  { label: "General fitness", value: "general-fitness" },
+  { label: "Recovery", value: "recovery" },
+];
 
 const tokenLabel = (value: string) =>
   value.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/^./, (character) => character.toUpperCase());
@@ -37,10 +54,10 @@ const shadowToCss = (layers: readonly ShadowLayer[]) =>
     ? "none"
     : layers.map(({ x, y, blur, spread, color: layerColor }) => `${x}px ${y}px ${blur}px ${spread}px ${layerColor}`).join(", ");
 
-function SectionHeader({ index, title, description }: { index: string; title: string; description: string }) {
+function SectionHeader({ code, title, description }: { code: string; title: string; description: string }) {
   return (
     <div className="section-heading">
-      <p className="section-index">{index}</p>
+      <p className="section-index">{code}</p>
       <div>
         <h2>{title}</h2>
         <p>{description}</p>
@@ -101,7 +118,10 @@ export default function Home() {
           {navigation.map((item) => <a key={item} href={`#${item.toLowerCase()}`}>{item}</a>)}
           <Link href="/components">Components</Link>
         </nav>
-        <ThemeToggle />
+        <div className="catalog-toolbar">
+          <FoundationIndex />
+          <ThemeToggle />
+        </div>
       </header>
 
       <section id="top" className="hero page-shell">
@@ -115,15 +135,15 @@ export default function Home() {
         <div className="hero-signature" aria-hidden="true">
           <BrandLogo className="brand-logo" variant="cyan" />
         </div>
-        <dl className="hero-metrics">
-          <div><dt>Foundations</dt><dd>07</dd></div>
-          <div><dt>Themes</dt><dd>02</dd></div>
-          <div><dt>Outputs</dt><dd>03</dd></div>
-        </dl>
+        <ol className="hero-pipeline" aria-label="Design system flow">
+          <li><span>SRC</span><div><strong>Primitive</strong><small>Stable source values</small></div></li>
+          <li><span>SEM</span><div><strong>Semantic</strong><small>Theme and product roles</small></div></li>
+          <li><span>OUT</span><div><strong>Platform</strong><small>React and React Native</small></div></li>
+        </ol>
       </section>
 
       <section id="color" className="foundation-section page-shell">
-        <SectionHeader index="01" title="Color" description="Brand primitives stay exact. Semantic color carries meaning across themes." />
+        <SectionHeader code="COL" title="Color" description="Brand primitives stay exact. Semantic color carries meaning across themes." />
         <div className="color-groups">
           {colorGroups.map(([groupName, values]) => (
             <article key={groupName} className="token-group">
@@ -146,7 +166,7 @@ export default function Home() {
       </section>
 
       <section id="type" className="foundation-section page-shell">
-        <SectionHeader index="02" title="Typography" description="Barlow Condensed creates athletic character. Manrope carries interface clarity." />
+        <SectionHeader code="TYP" title="Typography" description="Barlow Condensed creates athletic character. Manrope carries interface clarity." />
         <div className="type-specimens">
           <article className="display-specimen">
             <div className="specimen-meta"><span>Display / Bold</span><code>Barlow Condensed 700</code></div>
@@ -170,7 +190,7 @@ export default function Home() {
       </section>
 
       <section id="icons" className="foundation-section page-shell">
-        <SectionHeader index="03" title="Iconography" description="One semantic vocabulary across products. Lucide provides geometry; Allfit One defines meaning, scale, and stroke." />
+        <SectionHeader code="ICO" title="Iconography" description="One semantic vocabulary across products. Lucide provides geometry; Allfit One defines meaning, scale, and stroke." />
         <div className="icon-grid">
           {iconNames.map((name) => (
             <article key={name} className="icon-token">
@@ -187,7 +207,7 @@ export default function Home() {
       </section>
 
       <section id="space" className="foundation-section page-shell">
-        <SectionHeader index="04" title="Spacing" description="A 4 px rhythm with one 2 px optical half-step, 44 px Web/iOS targets, and 48 dp Android targets." />
+        <SectionHeader code="SPC" title="Spacing" description="A 4 px rhythm with one 2 px optical half-step, 44 px Web/iOS targets, and 48 dp Android targets." />
         <div className="space-scale">
           {Object.entries(spacing).map(([name, value]) => (
             <div key={name}>
@@ -205,7 +225,7 @@ export default function Home() {
       </section>
 
       <section id="radius" className="foundation-section page-shell">
-        <SectionHeader index="05" title="Radius" description="Curvature communicates function and hierarchy; it is never default decoration." />
+        <SectionHeader code="RAD" title="Radius" description="Curvature communicates function and hierarchy; it is never default decoration." />
         <div className="radius-grid">
           {Object.entries(radius).map(([name, value]) => (
             <div key={name} className="radius-token">
@@ -222,7 +242,7 @@ export default function Home() {
       </section>
 
       <section id="shadow" className="foundation-section page-shell">
-        <SectionHeader index="06" title="Shadow" description="Elevation stays quiet. Cyan glow is reserved for one signature moment." />
+        <SectionHeader code="SHD" title="Shadow" description="Elevation stays quiet. Cyan glow is reserved for one signature moment." />
         <div className="shadow-grid">
           {Object.entries(semanticShadow).map(([name, layers]) => (
             <article key={name} style={{ boxShadow: shadowToCss(layers) }}>
@@ -235,7 +255,7 @@ export default function Home() {
       </section>
 
       <section id="motion" className="foundation-section page-shell">
-        <SectionHeader index="07" title="Motion" description="Motion explains response and continuity. Hover each track to compare duration." />
+        <SectionHeader code="MOT" title="Motion" description="Motion explains response and continuity. Hover each track to compare duration." />
         <div className="motion-list">
           {Object.entries(motion.duration).filter(([name]) => name !== "instant").map(([name, value]) => (
             <div key={name} className="motion-row">
@@ -252,7 +272,7 @@ export default function Home() {
       </section>
 
       <section id="applied" className="foundation-section page-shell">
-        <SectionHeader index="08" title="Applied sample" description="A visual stress test of the foundations—not a final component API." />
+        <SectionHeader code="APL" title="Applied sample" description="A visual stress test of the foundations—not a final component API." />
         <div className="applied-grid">
           <article className="sample-panel sample-panel--wide">
             <div className="sample-panel__header"><div><span>Performance overview</span><strong>Training load</strong></div><span className="status-dot">Live</span></div>
@@ -265,9 +285,31 @@ export default function Home() {
           </article>
           <article className="sample-panel">
             <div className="sample-panel__header"><div><span>Controls</span><strong>Foundation states</strong></div></div>
-            <label className="sample-field"><span>Program name</span><input defaultValue="Hybrid strength" /></label>
-            <label className="sample-field"><span>Training goal</span><select defaultValue="performance"><option value="performance">Performance</option></select></label>
-            <div className="sample-actions"><button type="button" className="sample-button sample-button--primary">Save changes</button><button type="button" className="sample-button sample-button--secondary">Cancel</button></div>
+            <FieldGroup className="sample-form">
+              <Field>
+                <FieldLabel htmlFor="program-name">Program name</FieldLabel>
+                <Input id="program-name" defaultValue="Hybrid strength" />
+              </Field>
+              <Field>
+                <FieldLabel>Training goal</FieldLabel>
+                <Select items={trainingGoals} defaultValue="performance">
+                  <SelectTrigger className="w-full" aria-label="Training goal">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {trainingGoals.map((goal) => (
+                        <SelectItem key={goal.value} value={goal.value}>{goal.label}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
+            </FieldGroup>
+            <div className="sample-actions">
+              <Button type="button">Save changes</Button>
+              <Button type="button" variant="outline">Cancel</Button>
+            </div>
           </article>
           <article className="sample-panel">
             <div className="sample-panel__header"><div><span>Status</span><strong>System feedback</strong></div></div>

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { BrandLockup } from "@allfitone/react/brand";
 
 import { ComponentCatalog } from "@/components/component-catalog";
+import { CatalogIndex } from "@/components/catalog-index";
+import { MovementSequence } from "@/components/movement-sequence";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 export const metadata: Metadata = {
@@ -30,22 +32,21 @@ export default function ComponentsPage() {
           <a href="#overlays">Overlays</a>
           <a href="#feedback">Feedback</a>
         </nav>
-        <ThemeToggle />
+        <div className="catalog-toolbar">
+          <CatalogIndex />
+          <ThemeToggle />
+        </div>
       </header>
 
       <section className="catalog-hero page-shell">
-        <div>
+        <div className="catalog-hero__copy">
           <p className="eyebrow">React / Base UI / Accessible by default</p>
           <h1>Controls built<br />for <em>movement.</em></h1>
           <p className="catalog-hero__description">
             Production primitives for Allfit OS. Every state, target and focus path is part of the contract.
           </p>
         </div>
-        <dl className="catalog-status" aria-label="Component library status">
-          <div><dt>Components</dt><dd>21</dd></div>
-          <div><dt>Target</dt><dd>44 PX</dd></div>
-          <div><dt>Baseline</dt><dd>WCAG AA</dd></div>
-        </dl>
+        <MovementSequence />
       </section>
 
       <ComponentCatalog />

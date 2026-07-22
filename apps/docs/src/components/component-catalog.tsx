@@ -30,10 +30,11 @@ type ComponentSectionProps = {
   title: string;
   description: string;
   importPath: string;
+  contract?: string[];
   children: ReactNode;
 };
 
-function ComponentSection({ id, title, description, importPath, children }: ComponentSectionProps) {
+function ComponentSection({ id, title, description, importPath, contract = ["Dark / light", "Long content"], children }: ComponentSectionProps) {
   return (
     <article className="component-entry" id={id}>
       <header className="component-entry__header">
@@ -45,14 +46,20 @@ function ComponentSection({ id, title, description, importPath, children }: Comp
         <a href={`#${id}`} aria-label={`Link to ${title}`}>#</a>
       </header>
       <div className="component-demo">{children}</div>
+      <footer className="component-entry__contract">
+        <span>Contract</span>
+        <ul aria-label={`${title} contract`}>
+          {contract.map((item) => <li key={item}>{item}</li>)}
+        </ul>
+      </footer>
     </article>
   );
 }
 
-function CategoryHeader({ id, index, title, description }: { id: string; index: string; title: string; description: string }) {
+function CategoryHeader({ id, code, title, description }: { id: string; code: string; title: string; description: string }) {
   return (
     <header className="catalog-category__header" id={id}>
-      <span>{index}</span>
+      <span>{code}</span>
       <div><h2 id={`${id}-heading`}>{title}</h2><p>{description}</p></div>
     </header>
   );
@@ -64,9 +71,9 @@ export function ComponentCatalog() {
   return (
     <div className="catalog-content page-shell">
       <section className="catalog-category" aria-labelledby="actions-heading">
-        <CategoryHeader id="actions" index="01" title="Actions" description="Clear hierarchy, persistent focus and movement-sized targets." />
+        <CategoryHeader id="actions" code="ACT" title="Actions" description="Clear hierarchy, persistent focus and movement-sized targets." />
         <div className="component-grid">
-          <ComponentSection id="button" title="Button" description="Six semantic variants and six target-safe sizes." importPath="@allfitone/react/components/button">
+          <ComponentSection id="button" title="Button" description="Six semantic variants and six target-safe sizes." importPath="@allfitone/react/components/button" contract={["Hover / focus / active", "Disabled", "Loading", "Long content"]}>
             <div className="demo-row">
               <Button>Start session</Button><Button variant="secondary">Review</Button><Button variant="outline">Export</Button>
               <Button variant="ghost">Dismiss</Button><Button variant="destructive">Delete</Button>
@@ -76,9 +83,14 @@ export function ComponentCatalog() {
               <Button size="sm">Small</Button><Button size="default">Default</Button><Button size="lg">Large action with long text</Button>
               <Button disabled><Spinner data-icon="inline-start" />Syncing</Button>
             </div>
+            <div className="demo-row state-preview" aria-label="Button interaction states">
+              <Button className="catalog-state-hover">Hover</Button>
+              <Button className="catalog-state-focus" variant="outline">Focus</Button>
+              <Button className="catalog-state-active">Active</Button>
+            </div>
           </ComponentSection>
 
-          <ComponentSection id="icon-button" title="IconButton" description="Icon-only actions require an accessible name at compile time." importPath="@allfitone/react/components/icon-button">
+          <ComponentSection id="icon-button" title="IconButton" description="Icon-only actions require an accessible name at compile time." importPath="@allfitone/react/components/icon-button" contract={["Required aria-label", "44 px target", "Disabled"]}>
             <div className="demo-row">
               <IconButton aria-label="Add movement"><FoundationIcon name="add" decorative /></IconButton>
               <IconButton aria-label="Search members" variant="outline"><FoundationIcon name="search" decorative /></IconButton>
@@ -89,21 +101,21 @@ export function ComponentCatalog() {
       </section>
 
       <section className="catalog-category" aria-labelledby="forms-heading">
-        <CategoryHeader id="forms" index="02" title="Forms" description="Persistent labels, explicit errors and resilient text entry." />
+        <CategoryHeader id="forms" code="FRM" title="Forms" description="Persistent labels, explicit errors and resilient text entry." />
         <div className="component-grid">
-          <ComponentSection id="label" title="Label" description="Visible naming remains separate from placeholder content." importPath="@allfitone/react/components/label">
+          <ComponentSection id="label" title="Label" description="Visible naming remains separate from placeholder content." importPath="@allfitone/react/components/label" contract={["Persistent name", "Native association", "Disabled context"]}>
             <div className="demo-stack"><Label htmlFor="standalone-label">Member search</Label><Input id="standalone-label" placeholder="Name or email" /></div>
           </ComponentSection>
 
-          <ComponentSection id="input" title="Input" description="Eleven-rem target height with theme-aware boundaries." importPath="@allfitone/react/components/input">
+          <ComponentSection id="input" title="Input" description="A 44 px target with theme-aware boundaries." importPath="@allfitone/react/components/input" contract={["Hover / focus", "Disabled", "Invalid", "Placeholder is not a label"]}>
             <div className="demo-stack"><Input aria-label="Default input" placeholder="Default" /><Input aria-label="Disabled input" placeholder="Disabled" disabled /></div>
           </ComponentSection>
 
-          <ComponentSection id="textarea" title="Textarea" description="Content grows without clipping essential instructions." importPath="@allfitone/react/components/textarea">
+          <ComponentSection id="textarea" title="Textarea" description="Content grows without clipping essential instructions." importPath="@allfitone/react/components/textarea" contract={["Focus", "Disabled", "Invalid", "Long content"]}>
             <Textarea aria-label="Coach notes" placeholder="Add a note for the next session…" />
           </ComponentSection>
 
-          <ComponentSection id="field" title="Field" description="Label, help and error text form one accessible relationship." importPath="@allfitone/react/components/field">
+          <ComponentSection id="field" title="Field" description="Label, help and error text form one accessible relationship." importPath="@allfitone/react/components/field" contract={["Description relationship", "Textual error", "aria-invalid", "Error announcement"]}>
             <FieldGroup>
               <Field><FieldLabel htmlFor="member-email">Email</FieldLabel><Input id="member-email" type="email" aria-describedby="member-email-help" /><FieldDescription id="member-email-help">Used for access and training updates.</FieldDescription></Field>
               <Field data-invalid><FieldLabel htmlFor="member-code">Member code</FieldLabel><Input id="member-code" aria-invalid aria-errormessage="member-code-error" defaultValue="AF-" /><FieldError id="member-code-error">Enter the complete six-character member code.</FieldError></Field>
@@ -113,55 +125,55 @@ export function ComponentCatalog() {
       </section>
 
       <section className="catalog-category" aria-labelledby="selection-heading">
-        <CategoryHeader id="selection" index="03" title="Selection" description="State is visible through shape, position and semantics—not color alone." />
+        <CategoryHeader id="selection" code="SEL" title="Selection" description="State is visible through shape, position and semantics—not color alone." />
         <div className="component-grid">
-          <ComponentSection id="checkbox" title="Checkbox" description="Checked and indeterminate states retain a 44 px target." importPath="@allfitone/react/components/checkbox">
+          <ComponentSection id="checkbox" title="Checkbox" description="Checked and indeterminate states retain a 44 px target." importPath="@allfitone/react/components/checkbox" contract={["Checked", "Indeterminate", "Disabled", "44 px target"]}>
             <Field orientation="horizontal"><Checkbox id="consent" defaultChecked /><FieldLabel htmlFor="consent">Share training history with this coach</FieldLabel></Field>
           </ComponentSection>
 
-          <ComponentSection id="radio-group" title="RadioGroup" description="Arrow-key selection follows the established composite pattern." importPath="@allfitone/react/components/radio-group">
+          <ComponentSection id="radio-group" title="RadioGroup" description="Arrow-key selection follows the established composite pattern." importPath="@allfitone/react/components/radio-group" contract={["Arrow navigation", "Selected", "Disabled", "Group label"]}>
             <FieldSet><FieldLegend variant="label">Training focus</FieldLegend><RadioGroup defaultValue="strength" aria-label="Training focus">{programs.map((program) => <Field key={program} orientation="horizontal"><RadioGroupItem id={`program-${program}`} value={program.toLowerCase()} /><FieldLabel htmlFor={`program-${program}`}>{program}</FieldLabel></Field>)}</RadioGroup></FieldSet>
           </ComponentSection>
 
-          <ComponentSection id="switch" title="Switch" description="Track and thumb expose state through position as well as color." importPath="@allfitone/react/components/switch">
+          <ComponentSection id="switch" title="Switch" description="Track and thumb expose state through position as well as color." importPath="@allfitone/react/components/switch" contract={["On / off", "Disabled", "Visible label", "44 px target"]}>
             <Field orientation="horizontal"><Switch id="progress-sharing" defaultChecked /><FieldLabel htmlFor="progress-sharing">Live progress sharing</FieldLabel></Field>
           </ComponentSection>
 
-          <ComponentSection id="select" title="Select" description="Grouped options support keyboard traversal and explicit labels." importPath="@allfitone/react/components/select">
+          <ComponentSection id="select" title="Select" description="Grouped options support keyboard traversal and explicit labels." importPath="@allfitone/react/components/select" contract={["Open / closed", "Arrow navigation", "Grouped options", "Invalid"]}>
             <Field><FieldLabel htmlFor="program-select">Program</FieldLabel><Select defaultValue="strength"><SelectTrigger id="program-select"><SelectValue placeholder="Choose a program" /></SelectTrigger><SelectContent><SelectGroup><SelectLabel>Program</SelectLabel>{programs.map((program) => <SelectItem key={program} value={program.toLowerCase()}>{program}</SelectItem>)}</SelectGroup></SelectContent></Select></Field>
           </ComponentSection>
 
-          <ComponentSection id="tabs" title="Tabs" description="The selected state combines exposed state, weight and underline." importPath="@allfitone/react/components/tabs">
+          <ComponentSection id="tabs" title="Tabs" description="The selected state combines exposed state, weight and trajectory." importPath="@allfitone/react/components/tabs" contract={["Arrow navigation", "Selected trajectory", "Disabled", "Long labels"]}>
             <Tabs defaultValue="overview"><TabsList variant="line"><TabsTrigger value="overview">Overview</TabsTrigger><TabsTrigger value="history">History</TabsTrigger><TabsTrigger value="permissions">Permissions</TabsTrigger></TabsList><TabsContent value="overview">Current training summary and active plan.</TabsContent><TabsContent value="history">Completed sessions remain attached to the person.</TabsContent><TabsContent value="permissions">The person controls organizational access.</TabsContent></Tabs>
           </ComponentSection>
         </div>
       </section>
 
       <section className="catalog-category" aria-labelledby="data-heading">
-        <CategoryHeader id="data-display" index="04" title="Data display" description="Compact information that stays readable under pressure." />
+        <CategoryHeader id="data-display" code="DAT" title="Data display" description="Compact information that stays readable under pressure." />
         <div className="component-grid">
-          <ComponentSection id="badge" title="Badge" description="Short status labels always state their meaning in words." importPath="@allfitone/react/components/badge"><div className="demo-row"><Badge>Active</Badge><Badge variant="secondary">Draft</Badge><Badge variant="outline">Offline</Badge><Badge variant="destructive">Access blocked</Badge></div></ComponentSection>
-          <ComponentSection id="card" title="Card" description="Structured composition keeps title, action, content and footer predictable." importPath="@allfitone/react/components/card"><Card><CardHeader><CardTitle>Strength cycle</CardTitle><CardDescription>4-week program · week 2</CardDescription><CardAction><Badge>Active</Badge></CardAction></CardHeader><CardContent><strong className="metric-value">18,420 kg</strong><p className="metric-caption">Volume completed this week</p></CardContent><CardFooter><Button size="sm" variant="ghost">Open program</Button></CardFooter></Card></ComponentSection>
-          <ComponentSection id="skeleton" title="Skeleton" description="Decorative loading placeholders respect reduced motion." importPath="@allfitone/react/components/skeleton"><div className="skeleton-stack"><Skeleton className="skeleton-avatar" /><div><Skeleton className="skeleton-line skeleton-line--strong" /><Skeleton className="skeleton-line" /></div></div></ComponentSection>
-          <ComponentSection id="empty" title="Empty" description="Empty states explain what happened and provide the next action." importPath="@allfitone/react/components/empty"><Empty className="catalog-empty"><EmptyHeader><EmptyMedia variant="icon"><FoundationIcon name="activity" decorative /></EmptyMedia><EmptyTitle>No sessions yet</EmptyTitle><EmptyDescription>Record the first session to start building this member&apos;s history.</EmptyDescription></EmptyHeader><EmptyContent><Button size="sm"><FoundationIcon name="add" data-icon="inline-start" decorative />Record session</Button></EmptyContent></Empty></ComponentSection>
+          <ComponentSection id="badge" title="Badge" description="Short status labels always state their meaning in words." importPath="@allfitone/react/components/badge" contract={["Text plus color", "Long status", "Interactive target"]}><div className="demo-row"><Badge>Active</Badge><Badge variant="secondary">Draft</Badge><Badge variant="outline">Offline</Badge><Badge variant="destructive">Access blocked</Badge></div></ComponentSection>
+          <ComponentSection id="card" title="Card" description="Structured composition keeps title, action, content and footer predictable." importPath="@allfitone/react/components/card" contract={["Default / active", "Action slot", "Long content", "Responsive"]}><Card data-state="active"><CardHeader><CardTitle>Strength cycle</CardTitle><CardDescription>4-week program · week 2</CardDescription><CardAction><Badge>Active</Badge></CardAction></CardHeader><CardContent><strong className="metric-value">18,420 kg</strong><p className="metric-caption">Volume completed this week</p></CardContent><CardFooter><Button size="sm" variant="ghost">Open program</Button></CardFooter></Card></ComponentSection>
+          <ComponentSection id="skeleton" title="Skeleton" description="Decorative loading placeholders respect reduced motion." importPath="@allfitone/react/components/skeleton" contract={["Decorative only", "Reduced motion", "Content-shaped"]}><div className="skeleton-stack"><Skeleton className="skeleton-avatar" /><div><Skeleton className="skeleton-line skeleton-line--strong" /><Skeleton className="skeleton-line" /></div></div></ComponentSection>
+          <ComponentSection id="empty" title="Empty" description="Empty states explain what happened and provide the next action." importPath="@allfitone/react/components/empty" contract={["Clear reason", "Next action", "Long content"]}><Empty className="catalog-empty"><EmptyHeader><EmptyMedia variant="icon"><FoundationIcon name="activity" decorative /></EmptyMedia><EmptyTitle>No sessions yet</EmptyTitle><EmptyDescription>Record the first session to start building this member&apos;s history.</EmptyDescription></EmptyHeader><EmptyContent><Button size="sm"><FoundationIcon name="add" data-icon="inline-start" decorative />Record session</Button></EmptyContent></Empty></ComponentSection>
         </div>
       </section>
 
       <section className="catalog-category" aria-labelledby="overlays-heading">
-        <CategoryHeader id="overlays" index="05" title="Overlays" description="Focus enters with intent, stays contained and returns to the trigger." />
+        <CategoryHeader id="overlays" code="OVR" title="Overlays" description="Focus enters with intent, stays contained and returns to the trigger." />
         <div className="component-grid">
-          <ComponentSection id="dialog" title="Dialog" description="A focused task with discoverable title and dismissal." importPath="@allfitone/react/components/dialog"><Dialog><DialogTrigger render={<Button variant="outline" />}>Edit member</DialogTrigger><DialogContent><DialogHeader><DialogTitle>Edit member</DialogTitle><DialogDescription>Update the display name without changing training history.</DialogDescription></DialogHeader><Field><FieldLabel htmlFor="dialog-name">Display name</FieldLabel><Input id="dialog-name" defaultValue="Alex Morgan" /></Field><DialogFooter showCloseButton><Button>Save changes</Button></DialogFooter></DialogContent></Dialog></ComponentSection>
-          <ComponentSection id="alert-dialog" title="AlertDialog" description="Destructive decisions name the consequence before confirmation." importPath="@allfitone/react/components/alert-dialog"><AlertDialog><AlertDialogTrigger render={<Button variant="destructive" />}>Remove access</AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Remove organization access?</AlertDialogTitle><AlertDialogDescription>The person keeps their history, but this organization will no longer see it.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Keep access</AlertDialogCancel><AlertDialogAction variant="destructive">Remove access</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></ComponentSection>
-          <ComponentSection id="sheet" title="Sheet" description="Secondary workflows stay connected to the workspace context." importPath="@allfitone/react/components/sheet"><Sheet><SheetTrigger render={<Button variant="outline" />}>Open filters</SheetTrigger><SheetContent><SheetHeader><SheetTitle>Activity filters</SheetTitle><SheetDescription>Narrow the workspace without leaving the current view.</SheetDescription></SheetHeader><div className="sheet-body"><Field><FieldLabel htmlFor="sheet-search">Member</FieldLabel><Input id="sheet-search" placeholder="Search members" /></Field></div><SheetFooter><Button>Apply filters</Button></SheetFooter></SheetContent></Sheet></ComponentSection>
-          <ComponentSection id="tooltip" title="Tooltip" description="Supplementary text appears on pointer and keyboard focus." importPath="@allfitone/react/components/tooltip"><Tooltip><TooltipTrigger render={<IconButton aria-label="About activity score" variant="outline" />}><FoundationIcon name="info" decorative /></TooltipTrigger><TooltipContent>Calculated from consistency and training load.</TooltipContent></Tooltip></ComponentSection>
+          <ComponentSection id="dialog" title="Dialog" description="A focused task with discoverable title and dismissal." importPath="@allfitone/react/components/dialog" contract={["Focus trap", "Escape", "Inert background", "Focus return"]}><Dialog><DialogTrigger render={<Button variant="outline" />}>Edit member</DialogTrigger><DialogContent><DialogHeader><DialogTitle>Edit member</DialogTitle><DialogDescription>Update the display name without changing training history.</DialogDescription></DialogHeader><Field><FieldLabel htmlFor="dialog-name">Display name</FieldLabel><Input id="dialog-name" defaultValue="Alex Morgan" /></Field><DialogFooter showCloseButton><Button>Save changes</Button></DialogFooter></DialogContent></Dialog></ComponentSection>
+          <ComponentSection id="alert-dialog" title="AlertDialog" description="Destructive decisions name the consequence before confirmation." importPath="@allfitone/react/components/alert-dialog" contract={["Consequence named", "Cancel path", "Focus trap", "Focus return"]}><AlertDialog><AlertDialogTrigger render={<Button variant="destructive" />}>Remove access</AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Remove organization access?</AlertDialogTitle><AlertDialogDescription>The person keeps their history, but this organization will no longer see it.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Keep access</AlertDialogCancel><AlertDialogAction variant="destructive">Remove access</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></ComponentSection>
+          <ComponentSection id="sheet" title="Sheet" description="Secondary workflows stay connected to the workspace context." importPath="@allfitone/react/components/sheet" contract={["Escape", "Inert background", "Focus return", "Responsive edge"]}><Sheet><SheetTrigger render={<Button variant="outline" />}>Open filters</SheetTrigger><SheetContent><SheetHeader><SheetTitle>Activity filters</SheetTitle><SheetDescription>Narrow the workspace without leaving the current view.</SheetDescription></SheetHeader><div className="sheet-body"><Field><FieldLabel htmlFor="sheet-search">Member</FieldLabel><Input id="sheet-search" placeholder="Search members" /></Field></div><SheetFooter><Button>Apply filters</Button></SheetFooter></SheetContent></Sheet></ComponentSection>
+          <ComponentSection id="tooltip" title="Tooltip" description="Supplementary text appears on pointer and keyboard focus." importPath="@allfitone/react/components/tooltip" contract={["Pointer / keyboard", "Supplementary only", "Escape dismisses"]}><Tooltip><TooltipTrigger render={<IconButton aria-label="About activity score" variant="outline" />}><FoundationIcon name="info" decorative /></TooltipTrigger><TooltipContent>Calculated from consistency and training load.</TooltipContent></Tooltip></ComponentSection>
         </div>
       </section>
 
       <section className="catalog-category" aria-labelledby="feedback-heading">
-        <CategoryHeader id="feedback" index="06" title="Feedback" description="Progress and outcomes are announced without stealing focus." />
+        <CategoryHeader id="feedback" code="FDB" title="Feedback" description="Progress and outcomes are announced without stealing focus." />
         <div className="component-grid">
-          <ComponentSection id="spinner" title="Spinner" description="A named status indicator composes inside actions and surfaces." importPath="@allfitone/react/components/spinner"><div className="demo-row"><Spinner /><Button disabled><Spinner data-icon="inline-start" label="Saving" />Saving</Button></div></ComponentSection>
-          <ComponentSection id="toast" title="Sonner / Toast" description="Polite, textual feedback follows the active ALLFIT ONE theme." importPath="@allfitone/react/components/sonner"><div className="demo-row"><Button onClick={() => toast.success("Session saved", { description: "The member history is up to date." })}>Show success</Button><Button variant="outline" onClick={() => toast.error("Sync failed", { description: "Check the connection and try again." })}>Show error</Button></div></ComponentSection>
+          <ComponentSection id="spinner" title="Spinner" description="A named status indicator composes inside actions and surfaces." importPath="@allfitone/react/components/spinner" contract={["Named status", "Reduced motion", "Composed loading"]}><div className="demo-row"><Spinner /><Button disabled><Spinner data-icon="inline-start" label="Saving" />Saving</Button></div></ComponentSection>
+          <ComponentSection id="toast" title="Sonner / Toast" description="Polite, textual feedback follows the active ALLFIT ONE theme." importPath="@allfitone/react/components/sonner" contract={["Live region", "No focus steal", "Text plus color", "Dismissible"]}><div className="demo-row"><Button onClick={() => toast.success("Session saved", { description: "The member history is up to date." })}>Show success</Button><Button variant="outline" onClick={() => toast.error("Sync failed", { description: "Check the connection and try again." })}>Show error</Button></div></ComponentSection>
         </div>
       </section>
     </div>

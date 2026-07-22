@@ -56,6 +56,16 @@ test("operates composite selection controls from the keyboard", async ({ page })
   await expect(select).not.toHaveText("");
 });
 
+test("demonstrates the interaction sequence from the keyboard", async ({ page }) => {
+  const idle = page.getByRole("tab", { name: /Idle/ });
+  const focus = page.getByRole("tab", { name: /Focus/ });
+  await idle.focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(focus).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page.getByText("Keyboard focus is visible")).toBeVisible();
+});
+
 test("announces toast feedback without stealing focus", async ({ page }) => {
   const trigger = page.getByRole("button", { name: "Show success" });
   await trigger.focus();
@@ -92,6 +102,30 @@ test("does not overflow at 320 px or with long text", async ({ page }) => {
   }));
   expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport);
   await expect(page.getByRole("button", { name: "Large action with long text" })).toBeVisible();
+});
+
+test("provides searchable mobile indexes for components and foundations", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto("/components");
+  await page.getByRole("button", { name: "Open component index" }).click();
+  await page.getByRole("searchbox", { name: "Find a component" }).fill("Dialog");
+  await page.getByRole("link", { name: "Dialog", exact: true }).click();
+  await expect(page).toHaveURL(/#dialog$/);
+  await expect(page.getByRole("heading", { name: "Component index" })).toBeHidden();
+
+  await page.goto("/");
+  await page.getByRole("button", { name: "Open foundation index" }).click();
+  await page.getByRole("link", { name: /Typography/ }).click();
+  await expect(page).toHaveURL(/#type$/);
+});
+
+test("uses the canonical Select in the applied foundation sample", async ({ page }) => {
+  await page.goto("/");
+  const trigger = page.locator('[data-slot="select-trigger"][aria-label="Training goal"]');
+  await trigger.scrollIntoViewIfNeeded();
+  await trigger.click();
+  await page.getByRole("option", { name: "Recovery" }).click();
+  await expect(trigger).toContainText("Recovery");
 });
 
 test("honors reduced motion and forced color focus", async ({ page }) => {

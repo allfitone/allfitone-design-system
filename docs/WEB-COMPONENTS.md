@@ -13,6 +13,17 @@
 
 Product identity does not come from the preset. Component colors, typography, spacing, radii, shadows, focus, motion, and target sizes resolve through ALLFIT ONE tokens.
 
+## Visual signature
+
+The Trajectory Rail is the component system's signature gesture. It derives from the diagonal energy of the ALLFIT ONE symbol and marks primary actions, selected trajectories, and active surfaces. Use it only when the interface needs to communicate direction or current state; it is not a decorative border treatment.
+
+- Primary Button places a restrained diagonal rail inside the trailing edge.
+- Selected line Tabs use a diagonal trajectory instead of a generic underline.
+- Card supports `data-state="active"` for an accented leading rail and boundary.
+- Product layouts may carry the gesture into progress and navigation, but should not repeat it on every surface.
+
+Barlow Condensed belongs to brand theses, category headings, and metrics. Functional titles inside Card, Dialog, AlertDialog, Sheet, and Empty use Manrope so dense application UI preserves a clear reading hierarchy.
+
 ## Public imports
 
 Import the two CSS entry points once at the application root:
@@ -60,7 +71,9 @@ Every interactive target is at least `44 x 44 CSS px`. Focus uses the two-ring A
 
 ## Explorer and validation
 
-The Explorer keeps foundations at `/` and renders the interactive component catalog at `/components`. The catalog must consume only published `@allfitone/react` subpaths.
+The Explorer keeps foundations at `/` and renders the interactive component catalog at `/components`. The catalog must consume only published `@allfitone/react` subpaths. Both views provide a mobile index when the desktop navigation is unavailable.
+
+Component entries document their behavioral contract next to the interactive example. Category labels use functional namespaces such as `ACT`, `FRM`, and `OVR`; they are not numbered because the catalog is not a sequential process. The component hero demonstrates the real idle, focus, active, and complete interaction sequence instead of using decorative status metrics.
 
 `npm run check` runs TypeScript, lint, package builds, unit tests, axe assertions, token validation, and output-contract validation. `npm run check:e2e` builds the workspace and runs Playwright for keyboard behavior, overlay focus, theme switching, WCAG scans, target sizes, 320 px reflow, and desktop/mobile visual regression.
 

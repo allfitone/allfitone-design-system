@@ -25,7 +25,8 @@ export const color = {
     success: "#3DDC97",
     warning: "#F2B84B",
     danger: "#E54444",
-    info: "#55EFFB",
+    dangerStrong: "#C72C35",
+    info: "#5794FF",
   },
 } as const satisfies Record<string, Record<string, HexColor>>;
 
@@ -45,6 +46,7 @@ export const semanticColor = {
       disabled: "#EAFFFF59",
       inverse: color.ink.void,
       accent: color.brand.primary,
+      danger: color.feedback.danger,
     },
     icon: {
       primary: color.neutral.chalk,
@@ -94,6 +96,7 @@ export const semanticColor = {
       disabled: "#07192366",
       inverse: color.neutral.chalk,
       accent: color.brand.turquoiseDeep,
+      danger: color.feedback.dangerStrong,
     },
     icon: {
       primary: color.ink.void,

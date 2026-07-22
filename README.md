@@ -15,6 +15,7 @@ This foundation release contains shared foundations, canonical brand assets, acc
 - canonical logo, wordmark, and lockup renderers;
 - a semantic Lucide icon vocabulary for product interfaces;
 - a Base UI and shadcn-compatible React component layer;
+- a Trajectory Rail signature for primary, selected, and active component states;
 - responsive dark/light reference pages for reviewing foundations and components in context.
 
 Platform adapters are separated so Web and native applications share decisions without sharing incompatible rendering code. React components live only in `@allfitone/react`; product repositories consume public package subpaths rather than copying component source.
