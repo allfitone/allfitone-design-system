@@ -76,9 +76,15 @@ test("operates workspace navigation and returns focus from mobile overlays", asy
   const drawerTrigger = page.getByRole("button", { name: "Open mobile navigation" });
   await drawerTrigger.focus();
   await page.keyboard.press("Enter");
-  await expect(page.getByRole("dialog", { name: "Workspace" })).toBeVisible();
+  const drawer = page.getByRole("dialog", { name: "Workspace" });
+  await expect(drawer).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(drawerTrigger).toBeFocused();
+
+  await drawerTrigger.click();
+  await drawer.getByRole("link", { name: "Overview" }).click();
+  await expect(drawer).toBeHidden();
+  await expect(page).toHaveURL(/#navigation$/);
 });
 
 test("demonstrates the interaction sequence from the keyboard", async ({ page }) => {

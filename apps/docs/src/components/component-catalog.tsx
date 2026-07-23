@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties, ReactNode } from "react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@allfitone/react/components/alert-dialog";
 import { Badge } from "@allfitone/react/components/badge";
@@ -9,7 +9,7 @@ import { Button, buttonVariants } from "@allfitone/react/components/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@allfitone/react/components/card";
 import { Checkbox } from "@allfitone/react/components/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@allfitone/react/components/dialog";
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@allfitone/react/components/drawer";
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@allfitone/react/components/drawer";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@allfitone/react/components/dropdown-menu";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@allfitone/react/components/empty";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "@allfitone/react/components/field";
@@ -75,6 +75,8 @@ function CategoryHeader({ id, code, title, description }: { id: string; code: st
 const programs = ["Strength", "Conditioning", "Mobility"];
 
 export function ComponentCatalog() {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   return (
     <div className="catalog-content page-shell">
       <section className="catalog-category" aria-labelledby="actions-heading">
@@ -168,15 +170,15 @@ export function ComponentCatalog() {
           </ComponentSection>
 
           <ComponentSection id="drawer" title="Drawer" description="Mobile navigation enters from the physical edge and preserves the workspace beneath it." importPath="@allfitone/react/components/drawer" contract={["Required title", "Swipe / Escape", "Focus return", "Mobile navigation"]}>
-            <Drawer swipeDirection="right">
+            <Drawer open={drawerOpen} onOpenChange={setDrawerOpen} swipeDirection="right">
               <DrawerTrigger render={<Button variant="outline" />}><FoundationIcon name="menu" data-icon="inline-start" decorative />Open mobile navigation</DrawerTrigger>
               <DrawerContent>
                 <DrawerHeader><DrawerTitle>Workspace</DrawerTitle><DrawerDescription>Move through Allfit Performance.</DrawerDescription></DrawerHeader>
                 <nav className="drawer-navigation" aria-label="Mobile workspace">
-                  <DrawerClose nativeButton={false} render={<a href="#navigation" />}><FoundationIcon name="overview" decorative />Overview</DrawerClose>
-                  <DrawerClose nativeButton={false} render={<a href="#navigation" />}><FoundationIcon name="people" decorative />People</DrawerClose>
-                  <DrawerClose nativeButton={false} render={<a href="#navigation" />}><FoundationIcon name="training" decorative />Training</DrawerClose>
-                  <DrawerClose nativeButton={false} render={<a href="#navigation" />}><FoundationIcon name="operation" decorative />Operation</DrawerClose>
+                  <a href="#navigation" onClick={() => setDrawerOpen(false)}><FoundationIcon name="overview" decorative />Overview</a>
+                  <a href="#navigation" onClick={() => setDrawerOpen(false)}><FoundationIcon name="people" decorative />People</a>
+                  <a href="#navigation" onClick={() => setDrawerOpen(false)}><FoundationIcon name="training" decorative />Training</a>
+                  <a href="#navigation" onClick={() => setDrawerOpen(false)}><FoundationIcon name="operation" decorative />Operation</a>
                 </nav>
               </DrawerContent>
             </Drawer>

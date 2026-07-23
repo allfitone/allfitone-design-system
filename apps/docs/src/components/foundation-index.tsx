@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
+
 import { IconButton } from "@allfitone/react/components/icon-button";
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@allfitone/react/components/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@allfitone/react/components/sheet";
 import { FoundationIcon } from "@allfitone/react/icons";
 
 const foundations = [
@@ -16,8 +18,10 @@ const foundations = [
 ] as const;
 
 export function FoundationIndex() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger render={<IconButton className="foundation-index__trigger" aria-label="Open foundation index" variant="outline" />}>
         <FoundationIcon name="menu" decorative />
       </SheetTrigger>
@@ -28,13 +32,13 @@ export function FoundationIndex() {
         </SheetHeader>
         <nav className="catalog-index__nav foundation-index__nav" aria-label="Mobile foundation index">
           {foundations.map((foundation) => (
-            <SheetClose key={foundation.id} nativeButton={false} render={<a className="catalog-index__category" href={`#${foundation.id}`} />}>
+            <a key={foundation.id} className="catalog-index__category" href={`#${foundation.id}`} onClick={() => setOpen(false)}>
               <span>{foundation.code}</span>{foundation.label}
-            </SheetClose>
+            </a>
           ))}
-          <SheetClose nativeButton={false} render={<a className="catalog-index__category" href="/components" />}>
+          <a className="catalog-index__category" href="/components" onClick={() => setOpen(false)}>
             <span>CMP</span>Components
-          </SheetClose>
+          </a>
         </nav>
       </SheetContent>
     </Sheet>

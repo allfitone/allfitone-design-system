@@ -5,7 +5,7 @@ import { useState } from "react";
 import { IconButton } from "@allfitone/react/components/icon-button";
 import { Input } from "@allfitone/react/components/input";
 import { Label } from "@allfitone/react/components/label";
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@allfitone/react/components/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@allfitone/react/components/sheet";
 import { FoundationIcon } from "@allfitone/react/icons";
 
 const catalog = [
@@ -21,6 +21,7 @@ const catalog = [
 const toId = (name: string) => name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
 
 export function CatalogIndex() {
+  const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const normalized = query.trim().toLowerCase();
   const visible = catalog
@@ -31,7 +32,7 @@ export function CatalogIndex() {
     .filter((category) => category.items.length > 0);
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger render={<IconButton className="catalog-index__trigger" aria-label="Open component index" variant="outline" />}>
         <FoundationIcon name="menu" decorative />
       </SheetTrigger>
@@ -47,14 +48,14 @@ export function CatalogIndex() {
         <nav className="catalog-index__nav" aria-label="Mobile component index">
           {visible.map((category) => (
             <section key={category.id}>
-              <SheetClose nativeButton={false} render={<a className="catalog-index__category" href={`#${category.id}`} />}>
+              <a className="catalog-index__category" href={`#${category.id}`} onClick={() => setOpen(false)}>
                 <span>{category.code}</span>{category.label}
-              </SheetClose>
+              </a>
               <div>
                 {category.items.map((item) => (
-                  <SheetClose key={item} nativeButton={false} render={<a href={`#${toId(item)}`} />}>
+                  <a key={item} href={`#${toId(item)}`} onClick={() => setOpen(false)}>
                     {item === "Toast" ? "Sonner / Toast" : item}
-                  </SheetClose>
+                  </a>
                 ))}
               </div>
             </section>
