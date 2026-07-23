@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "start": "next start",
-    "build": "next build",
+    "build": "npm run build:dependencies && npm run build:next",
+    "build:dependencies": "npm run build --workspace @allfitone/brand && npm run build --workspace @allfitone/icons && npm run build --workspace @allfitone/tokens && npm run build --workspace @allfitone/react",
+    "build:next": "next build",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "check": "npm run lint && npm run typecheck",
