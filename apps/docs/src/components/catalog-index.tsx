@@ -10,6 +10,7 @@ import { FoundationIcon } from "@allfitone/react/icons";
 
 const catalog = [
   { code: "ACT", label: "Actions", id: "actions", items: ["Button", "IconButton"] },
+  { code: "NAV", label: "Navigation", id: "navigation", items: ["Breadcrumb", "NavigationMenu", "DropdownMenu", "Pagination", "Drawer", "WorkspaceShell"] },
   { code: "FRM", label: "Forms", id: "forms", items: ["Label", "Input", "Textarea", "Field"] },
   { code: "SEL", label: "Selection", id: "selection", items: ["Checkbox", "RadioGroup", "Switch", "Select", "Tabs"] },
   { code: "DAT", label: "Data display", id: "data-display", items: ["Badge", "Card", "Skeleton", "Empty"] },
@@ -46,12 +47,12 @@ export function CatalogIndex() {
         <nav className="catalog-index__nav" aria-label="Mobile component index">
           {visible.map((category) => (
             <section key={category.id}>
-              <SheetClose render={<a className="catalog-index__category" href={`#${category.id}`} />}>
+              <SheetClose nativeButton={false} render={<a className="catalog-index__category" href={`#${category.id}`} />}>
                 <span>{category.code}</span>{category.label}
               </SheetClose>
               <div>
                 {category.items.map((item) => (
-                  <SheetClose key={item} render={<a href={`#${toId(item)}`} />}>
+                  <SheetClose key={item} nativeButton={false} render={<a href={`#${toId(item)}`} />}>
                     {item === "Toast" ? "Sonner / Toast" : item}
                   </SheetClose>
                 ))}

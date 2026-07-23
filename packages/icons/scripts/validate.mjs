@@ -4,8 +4,8 @@ const names = Object.keys(iconCatalog);
 const categories = new Set(["navigation", "action", "status", "object"]);
 const sizes = Object.values(iconSize);
 
-if (names.length !== 24) {
-  throw new Error(`Expected 24 foundation icons, received ${names.length}.`);
+if (names.length !== 32) {
+  throw new Error(`Expected 32 foundation icons, received ${names.length}.`);
 }
 
 for (const [name, definition] of Object.entries(iconCatalog)) {

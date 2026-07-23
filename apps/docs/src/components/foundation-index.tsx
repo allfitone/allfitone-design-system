@@ -28,11 +28,11 @@ export function FoundationIndex() {
         </SheetHeader>
         <nav className="catalog-index__nav foundation-index__nav" aria-label="Mobile foundation index">
           {foundations.map((foundation) => (
-            <SheetClose key={foundation.id} render={<a className="catalog-index__category" href={`#${foundation.id}`} />}>
+            <SheetClose key={foundation.id} nativeButton={false} render={<a className="catalog-index__category" href={`#${foundation.id}`} />}>
               <span>{foundation.code}</span>{foundation.label}
             </SheetClose>
           ))}
-          <SheetClose render={<a className="catalog-index__category" href="/components" />}>
+          <SheetClose nativeButton={false} render={<a className="catalog-index__category" href="/components" />}>
             <span>CMP</span>Components
           </SheetClose>
         </nav>

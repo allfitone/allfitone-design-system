@@ -22,6 +22,14 @@ The Trajectory Rail is the component system's signature gesture. It derives from
 - Card supports `data-state="active"` for an accented leading rail and boundary.
 - Product layouts may carry the gesture into progress and navigation, but should not repeat it on every surface.
 
+Visual hierarchy is intentionally quieter than the brand palette. Cyan is reserved for primary action, current selection, focus, and short semantic accents. Resting controls use neutral semantic boundaries; persistent cyan borders across every surface are not part of the system.
+
+- Controls use a slightly recessed surface and become clearer on hover or focus.
+- Floating surfaces use the canonical raised shadow and a single semantic boundary.
+- Primary actions carry the asymmetric top-right cut and Trajectory Rail; secondary, outline, and ghost actions do not imitate it.
+- Status badges use a tinted background plus explicit text. The public status variants are `success`, `warning`, `info`, and `destructive`.
+- Component demos must show depth, disabled behavior, invalid treatment, and long content in both themes rather than relying on isolated color swatches.
+
 Barlow Condensed belongs to brand theses, category headings, and metrics. Functional titles inside Card, Dialog, AlertDialog, Sheet, and Empty use Manrope so dense application UI preserves a clear reading hierarchy.
 
 ## Public imports
@@ -48,6 +56,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | Category | Components |
 | --- | --- |
 | Actions | Button, IconButton |
+| Navigation | Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell |
 | Forms | Field, Label, Input, Textarea |
 | Selection | Checkbox, RadioGroup, Switch, Select, Tabs |
 | Data display | Badge, Card, Skeleton, Empty |
@@ -59,6 +68,9 @@ The package root remains metadata-only. There is no component barrel because exp
 ## Composition rules
 
 - Links that look like buttons apply `buttonVariants` to an anchor or framework `Link`. They do not render through Base UI Button.
+- Workspace navigation composes `Sidebar` and `WorkspaceShell`; product applications provide destinations and routing state rather than restyling the active trajectory.
+- Breadcrumb and Pagination use real anchors or framework links. The current resource or page is always exposed semantically and never indicated by color alone.
+- Drawer requires a visible or screen-reader title and serves mobile navigation or bounded secondary tasks; it does not replace Dialog for focused confirmations.
 - Loading actions compose `Spinner` and `disabled`; no component adds an `isLoading` prop.
 - `IconButton` requires `aria-label` in TypeScript.
 - Controlled components support `value`, `defaultValue`, and `onValueChange` through their Base UI root API.

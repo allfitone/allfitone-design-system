@@ -26,6 +26,7 @@ export default function ComponentsPage() {
         </Link>
         <nav aria-label="Component categories">
           <a href="#actions">Actions</a>
+          <a href="#navigation">Navigation</a>
           <a href="#forms">Forms</a>
           <a href="#selection">Selection</a>
           <a href="#data-display">Data</a>

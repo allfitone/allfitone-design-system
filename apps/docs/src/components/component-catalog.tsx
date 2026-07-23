@@ -1,21 +1,27 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@allfitone/react/components/alert-dialog";
 import { Badge } from "@allfitone/react/components/badge";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@allfitone/react/components/breadcrumb";
 import { Button, buttonVariants } from "@allfitone/react/components/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@allfitone/react/components/card";
 import { Checkbox } from "@allfitone/react/components/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@allfitone/react/components/dialog";
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@allfitone/react/components/drawer";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@allfitone/react/components/dropdown-menu";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@allfitone/react/components/empty";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "@allfitone/react/components/field";
 import { IconButton } from "@allfitone/react/components/icon-button";
 import { Input } from "@allfitone/react/components/input";
 import { Label } from "@allfitone/react/components/label";
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@allfitone/react/components/navigation-menu";
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@allfitone/react/components/pagination";
 import { RadioGroup, RadioGroupItem } from "@allfitone/react/components/radio-group";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@allfitone/react/components/select";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@allfitone/react/components/sheet";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem } from "@allfitone/react/components/sidebar";
 import { Skeleton } from "@allfitone/react/components/skeleton";
 import { toast } from "@allfitone/react/components/sonner";
 import { Spinner } from "@allfitone/react/components/spinner";
@@ -23,6 +29,7 @@ import { Switch } from "@allfitone/react/components/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@allfitone/react/components/tabs";
 import { Textarea } from "@allfitone/react/components/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@allfitone/react/components/tooltip";
+import { WorkspaceActions, WorkspaceContent, WorkspaceEyebrow, WorkspaceHeader, WorkspaceHeading, WorkspaceMain, WorkspaceShell, WorkspaceTitle } from "@allfitone/react/components/workspace-shell";
 import { FoundationIcon } from "@allfitone/react/icons";
 
 type ComponentSectionProps = {
@@ -73,7 +80,7 @@ export function ComponentCatalog() {
       <section className="catalog-category" aria-labelledby="actions-heading">
         <CategoryHeader id="actions" code="ACT" title="Actions" description="Clear hierarchy, persistent focus and movement-sized targets." />
         <div className="component-grid">
-          <ComponentSection id="button" title="Button" description="Six semantic variants and six target-safe sizes." importPath="@allfitone/react/components/button" contract={["Hover / focus / active", "Disabled", "Loading", "Long content"]}>
+          <ComponentSection id="button" title="Button" description="Semantic hierarchy and movement-safe sizes for product actions." importPath="@allfitone/react/components/button" contract={["Hover / focus / active", "Disabled", "Loading", "Long content"]}>
             <div className="demo-row">
               <Button>Start session</Button><Button variant="secondary">Review</Button><Button variant="outline">Export</Button>
               <Button variant="ghost">Dismiss</Button><Button variant="destructive">Delete</Button>
@@ -96,6 +103,115 @@ export function ComponentCatalog() {
               <IconButton aria-label="Search members" variant="outline"><FoundationIcon name="search" decorative /></IconButton>
               <IconButton aria-label="Open settings" variant="ghost"><FoundationIcon name="settings" decorative /></IconButton>
             </div>
+          </ComponentSection>
+        </div>
+      </section>
+
+      <section className="catalog-category" aria-labelledby="navigation-heading">
+        <CategoryHeader id="navigation" code="NAV" title="Navigation" description="Current location stays explicit across dense workspaces, nested resources and mobile transitions." />
+        <div className="component-grid">
+          <ComponentSection id="breadcrumb" title="Breadcrumb" description="Resource hierarchy stays readable without competing with the page title." importPath="@allfitone/react/components/breadcrumb" contract={["Current page", "Collapsed path", "Router composition", "44 px links"]}>
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem><BreadcrumbLink href="#navigation">People</BreadcrumbLink></BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem><BreadcrumbLink href="#navigation">Camila Torres</BreadcrumbLink></BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem><BreadcrumbPage>Training</BreadcrumbPage></BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </ComponentSection>
+
+          <ComponentSection id="navigation-menu" title="NavigationMenu" description="Top-level product areas expose related destinations without hiding the active context." importPath="@allfitone/react/components/navigation-menu" contract={["Arrow keys", "Escape", "Active trajectory", "Long labels"]}>
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem><NavigationMenuLink href="#navigation" active>Overview</NavigationMenuLink></NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Training</NavigationMenuTrigger>
+                  <NavigationMenuContent className="navigation-menu-demo">
+                    <NavigationMenuLink href="#navigation"><FoundationIcon name="training" decorative /><span><strong>Programs</strong><small>Plan and publish training.</small></span></NavigationMenuLink>
+                    <NavigationMenuLink href="#navigation"><FoundationIcon name="calendar" decorative /><span><strong>Sessions</strong><small>Review what needs attention.</small></span></NavigationMenuLink>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem><NavigationMenuLink href="#navigation">Operation</NavigationMenuLink></NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+          </ComponentSection>
+
+          <ComponentSection id="dropdown-menu" title="DropdownMenu" description="Compact contextual actions keep organization and account controls close to their trigger." importPath="@allfitone/react/components/dropdown-menu" contract={["Arrow keys", "Typeahead", "Grouped items", "Destructive text"]}>
+            <DropdownMenu>
+              <DropdownMenuTrigger render={<Button variant="outline" />}><FoundationIcon name="organization" data-icon="inline-start" decorative />Allfit Performance<FoundationIcon name="expand" data-icon="inline-end" decorative /></DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>Organization</DropdownMenuLabel>
+                  <DropdownMenuItem><FoundationIcon name="overview" decorative />Overview</DropdownMenuItem>
+                  <DropdownMenuItem><FoundationIcon name="people" decorative />Team</DropdownMenuItem>
+                  <DropdownMenuItem><FoundationIcon name="settings" decorative />Settings</DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem variant="destructive">Leave organization</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </ComponentSection>
+
+          <ComponentSection id="pagination" title="Pagination" description="Large operational lists expose position, direction and the active page." importPath="@allfitone/react/components/pagination" contract={["Current page", "Previous / next", "Accessible labels", "Mobile collapse"]}>
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem><PaginationPrevious href="#pagination" /></PaginationItem>
+                <PaginationItem><PaginationLink href="#pagination">1</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationLink href="#pagination" isActive>2</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationEllipsis /></PaginationItem>
+                <PaginationItem><PaginationLink href="#pagination">8</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationNext href="#pagination" /></PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </ComponentSection>
+
+          <ComponentSection id="drawer" title="Drawer" description="Mobile navigation enters from the physical edge and preserves the workspace beneath it." importPath="@allfitone/react/components/drawer" contract={["Required title", "Swipe / Escape", "Focus return", "Mobile navigation"]}>
+            <Drawer swipeDirection="right">
+              <DrawerTrigger render={<Button variant="outline" />}><FoundationIcon name="menu" data-icon="inline-start" decorative />Open mobile navigation</DrawerTrigger>
+              <DrawerContent>
+                <DrawerHeader><DrawerTitle>Workspace</DrawerTitle><DrawerDescription>Move through Allfit Performance.</DrawerDescription></DrawerHeader>
+                <nav className="drawer-navigation" aria-label="Mobile workspace">
+                  <DrawerClose nativeButton={false} render={<a href="#navigation" />}><FoundationIcon name="overview" decorative />Overview</DrawerClose>
+                  <DrawerClose nativeButton={false} render={<a href="#navigation" />}><FoundationIcon name="people" decorative />People</DrawerClose>
+                  <DrawerClose nativeButton={false} render={<a href="#navigation" />}><FoundationIcon name="training" decorative />Training</DrawerClose>
+                  <DrawerClose nativeButton={false} render={<a href="#navigation" />}><FoundationIcon name="operation" decorative />Operation</DrawerClose>
+                </nav>
+              </DrawerContent>
+            </Drawer>
+          </ComponentSection>
+
+          <ComponentSection id="workspace-shell" title="Sidebar + WorkspaceShell" description="The application frame keeps organization, product area and current task in one disciplined hierarchy." importPath="@allfitone/react/components/workspace-shell" contract={["Desktop sidebar", "Mobile sheet", "Collapsed state", "Landmark order"]}>
+            <WorkspaceShell className="workspace-preview" style={{ "--sidebar-width": "15rem" } as CSSProperties}>
+              <Sidebar collapsible="none">
+                <SidebarHeader>
+                  <div className="workspace-preview__organization"><FoundationIcon name="organization" decorative /><span><strong>Allfit Performance</strong><small>Bogotá · Main workspace</small></span></div>
+                </SidebarHeader>
+                <SidebarContent>
+                  <SidebarGroup>
+                    <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                      <SidebarMenu>
+                        <SidebarMenuItem><SidebarMenuButton isActive><FoundationIcon name="overview" decorative /><span>Overview</span><SidebarMenuBadge>3</SidebarMenuBadge></SidebarMenuButton></SidebarMenuItem>
+                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="people" decorative /><span>People</span></SidebarMenuButton></SidebarMenuItem>
+                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="training" decorative /><span>Training</span></SidebarMenuButton></SidebarMenuItem>
+                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="operation" decorative /><span>Operation</span></SidebarMenuButton></SidebarMenuItem>
+                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="business" decorative /><span>Business</span></SidebarMenuButton></SidebarMenuItem>
+                      </SidebarMenu>
+                    </SidebarGroupContent>
+                  </SidebarGroup>
+                </SidebarContent>
+                <SidebarFooter><SidebarMenu><SidebarMenuItem><SidebarMenuButton><FoundationIcon name="settings" decorative /><span>Settings</span></SidebarMenuButton></SidebarMenuItem></SidebarMenu></SidebarFooter>
+              </Sidebar>
+              <WorkspaceMain as="div">
+                <WorkspaceHeader>
+                  <WorkspaceHeading><WorkspaceEyebrow>Today · 8 sessions</WorkspaceEyebrow><WorkspaceTitle as="h3">Overview</WorkspaceTitle></WorkspaceHeading>
+                  <WorkspaceActions><Button size="sm">Invite person</Button></WorkspaceActions>
+                </WorkspaceHeader>
+                <WorkspaceContent><div className="workspace-preview__metric"><span>Needs attention</span><strong>03</strong><p>Two reviews and one relationship setup.</p></div></WorkspaceContent>
+              </WorkspaceMain>
+            </WorkspaceShell>
           </ComponentSection>
         </div>
       </section>
@@ -152,7 +268,7 @@ export function ComponentCatalog() {
       <section className="catalog-category" aria-labelledby="data-heading">
         <CategoryHeader id="data-display" code="DAT" title="Data display" description="Compact information that stays readable under pressure." />
         <div className="component-grid">
-          <ComponentSection id="badge" title="Badge" description="Short status labels always state their meaning in words." importPath="@allfitone/react/components/badge" contract={["Text plus color", "Long status", "Interactive target"]}><div className="demo-row"><Badge>Active</Badge><Badge variant="secondary">Draft</Badge><Badge variant="outline">Offline</Badge><Badge variant="destructive">Access blocked</Badge></div></ComponentSection>
+          <ComponentSection id="badge" title="Badge" description="Short status labels always state their meaning in words." importPath="@allfitone/react/components/badge" contract={["Text plus color", "Long status", "Interactive target"]}><div className="demo-row"><Badge>Active</Badge><Badge variant="success">Synced</Badge><Badge variant="warning">Review needed</Badge><Badge variant="info">New activity</Badge><Badge variant="destructive">Access blocked</Badge></div></ComponentSection>
           <ComponentSection id="card" title="Card" description="Structured composition keeps title, action, content and footer predictable." importPath="@allfitone/react/components/card" contract={["Default / active", "Action slot", "Long content", "Responsive"]}><Card data-state="active"><CardHeader><CardTitle>Strength cycle</CardTitle><CardDescription>4-week program · week 2</CardDescription><CardAction><Badge>Active</Badge></CardAction></CardHeader><CardContent><strong className="metric-value">18,420 kg</strong><p className="metric-caption">Volume completed this week</p></CardContent><CardFooter><Button size="sm" variant="ghost">Open program</Button></CardFooter></Card></ComponentSection>
           <ComponentSection id="skeleton" title="Skeleton" description="Decorative loading placeholders respect reduced motion." importPath="@allfitone/react/components/skeleton" contract={["Decorative only", "Reduced motion", "Content-shaped"]}><div className="skeleton-stack"><Skeleton className="skeleton-avatar" /><div><Skeleton className="skeleton-line skeleton-line--strong" /><Skeleton className="skeleton-line" /></div></div></ComponentSection>
           <ComponentSection id="empty" title="Empty" description="Empty states explain what happened and provide the next action." importPath="@allfitone/react/components/empty" contract={["Clear reason", "Next action", "Long content"]}><Empty className="catalog-empty"><EmptyHeader><EmptyMedia variant="icon"><FoundationIcon name="activity" decorative /></EmptyMedia><EmptyTitle>No sessions yet</EmptyTitle><EmptyDescription>Record the first session to start building this member&apos;s history.</EmptyDescription></EmptyHeader><EmptyContent><Button size="sm"><FoundationIcon name="add" data-icon="inline-start" decorative />Record session</Button></EmptyContent></Empty></ComponentSection>

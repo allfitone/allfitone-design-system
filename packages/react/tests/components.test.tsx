@@ -4,10 +4,12 @@ import { axe } from "jest-axe";
 import { describe, expect, it, vi } from "vitest";
 
 import { Button } from "../src/components/button.js";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../src/components/breadcrumb.js";
 import { Checkbox } from "../src/components/checkbox.js";
 import { Field, FieldDescription, FieldError, FieldLabel } from "../src/components/field.js";
 import { IconButton } from "../src/components/icon-button.js";
 import { Input } from "../src/components/input.js";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "../src/components/pagination.js";
 import { RadioGroup, RadioGroupItem } from "../src/components/radio-group.js";
 import { Spinner } from "../src/components/spinner.js";
 import { Switch } from "../src/components/switch.js";
@@ -95,6 +97,30 @@ describe("ALLFIT ONE React components", () => {
 
     expect(screen.getByRole("button", { name: /saving/i })).toBeDisabled();
     expect(screen.getByRole("status", { name: "Saving" })).toBeInTheDocument();
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("exposes current resource and page state in navigation", async () => {
+    const { container } = render(
+      <div>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem><BreadcrumbLink href="/people">People</BreadcrumbLink></BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem><BreadcrumbPage>Training</BreadcrumbPage></BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem><PaginationLink href="?page=1">1</PaginationLink></PaginationItem>
+            <PaginationItem><PaginationLink href="?page=2" isActive>2</PaginationLink></PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>,
+    );
+
+    expect(screen.getByText("Training")).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: "2" })).toHaveAttribute("aria-current", "page");
     expect(await axe(container)).toHaveNoViolations();
   });
 });

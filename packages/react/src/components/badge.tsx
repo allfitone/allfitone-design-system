@@ -5,20 +5,23 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../lib/utils.js"
 
 const badgeVariants = cva(
-  "group/badge inline-flex h-6 w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full border border-transparent px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap transition-colors [a]:min-h-11 [a]:px-3 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 aria-invalid:border-destructive [&>svg]:pointer-events-none [&>svg]:size-3!",
+  "group/badge inline-flex h-6 w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full border px-2.5 py-0.5 text-[0.7rem] font-bold tracking-[-0.01em] whitespace-nowrap transition-colors [a]:min-h-11 [a]:px-3 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 aria-invalid:border-destructive [&>svg]:pointer-events-none [&>svg]:size-3!",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
+        default: "border-primary/45 bg-primary/15 text-foreground [a]:hover:bg-primary/22",
         secondary:
-          "bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80",
+          "border-border bg-muted text-foreground [a]:hover:border-input [a]:hover:bg-accent",
         destructive:
-          "bg-destructive text-destructive-foreground [a]:hover:opacity-90",
+          "border-destructive/45 bg-destructive/15 text-foreground [a]:hover:bg-destructive/22",
         outline:
-          "border-border text-foreground [a]:hover:bg-muted [a]:hover:text-muted-foreground",
+          "border-input bg-transparent text-foreground [a]:hover:bg-muted",
         ghost:
-          "hover:bg-muted hover:text-muted-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+          "border-transparent hover:bg-muted hover:text-foreground",
+        link: "border-transparent text-primary underline-offset-4 hover:underline",
+        success: "border-success/45 bg-success/15 text-foreground [a]:hover:bg-success/22",
+        warning: "border-warning/45 bg-warning/15 text-foreground [a]:hover:bg-warning/22",
+        info: "border-info/45 bg-info/15 text-foreground [a]:hover:bg-info/22",
       },
     },
     defaultVariants: {

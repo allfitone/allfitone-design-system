@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/components");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Controls built");
+  await expect(page.getByRole("heading", { level: 1, name: "Controls built for movement." })).toBeVisible();
 });
 
 test("supports both themes without serious accessibility violations", async ({ page }) => {
@@ -56,6 +56,31 @@ test("operates composite selection controls from the keyboard", async ({ page })
   await expect(select).not.toHaveText("");
 });
 
+test("operates workspace navigation and returns focus from mobile overlays", async ({ page }) => {
+  const navigationMenu = page.locator("#navigation-menu");
+  const trainingTrigger = navigationMenu.getByRole("button", { name: "Training", exact: true });
+  await trainingTrigger.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("link", { name: /Programs/ })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(trainingTrigger).toBeFocused();
+
+  const organizationTrigger = page.locator("#dropdown-menu").getByRole("button", { name: /Allfit Performance/ });
+  await organizationTrigger.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("menuitem", { name: "Overview" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(organizationTrigger).toBeFocused();
+
+  await page.setViewportSize({ width: 320, height: 800 });
+  const drawerTrigger = page.getByRole("button", { name: "Open mobile navigation" });
+  await drawerTrigger.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("dialog", { name: "Workspace" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(drawerTrigger).toBeFocused();
+});
+
 test("demonstrates the interaction sequence from the keyboard", async ({ page }) => {
   const idle = page.getByRole("tab", { name: /Idle/ });
   const focus = page.getByRole("tab", { name: /Focus/ });
@@ -81,6 +106,8 @@ test("keeps touch targets and focus treatment at the minimum contract", async ({
     page.getByRole("button", { name: "Add movement" }),
     page.getByRole("checkbox", { name: "Share training history with this coach" }),
     page.getByRole("switch", { name: "Live progress sharing" }),
+    page.locator("#navigation-menu").getByRole("button", { name: "Training", exact: true }),
+    page.locator("#workspace-shell").getByRole("button", { name: /Overview/ }),
   ]) {
     const box = await locator.boundingBox();
     expect(box?.width).toBeGreaterThanOrEqual(44);
