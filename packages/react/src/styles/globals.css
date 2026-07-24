@@ -134,18 +134,10 @@
     transform: translateY(1px);
   }
 
-  /* Prueba: CTA plano (cyan sólido + texto ink), sin degradado.
-     El carácter lo ponen la forma pill, el peso 800 y el glow al hover.
-     Para volver al degradado: background: var(--afo-gradient-accent). */
   [data-slot="button"][data-variant="default"] {
     border-color: transparent;
-    background: var(--afo-color-action-primary);
+    background: var(--afo-gradient-accent);
     color: var(--afo-color-accent-on-accent);
-  }
-
-  [data-slot="button"][data-variant="default"]:not(:disabled):hover {
-    background: var(--afo-color-action-primary-hover);
-    box-shadow: var(--afo-shadow-brand-glow-strong);
   }
 
   /* Reference: los estados activos (.set-row.cur, .nav-it.on) llevan

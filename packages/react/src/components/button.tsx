@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../lib/utils.js"
 
 const buttonVariants = cva(
-  "group/button inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-[var(--afo-radius-action)] border border-transparent bg-clip-padding text-sm font-extrabold whitespace-nowrap shadow-[var(--afo-control-shadow)] outline-none select-none transition-[color,background-color,border-color,box-shadow,transform] duration-[var(--afo-motion-feedback-duration)] ease-[var(--afo-motion-feedback-easing)] hover:-translate-y-px hover:shadow-[var(--afo-control-shadow-hover)] active:translate-y-px active:shadow-[var(--afo-control-shadow)] disabled:pointer-events-none disabled:translate-y-0 disabled:opacity-45 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button inline-flex shrink-0 items-center justify-center rounded-[var(--afo-radius-action)] border border-transparent bg-clip-padding text-[0.78125rem] font-extrabold pointer-coarse:min-h-11 pointer-coarse:min-w-11 whitespace-nowrap shadow-[var(--afo-control-shadow)] outline-none select-none transition-[color,background-color,border-color,box-shadow,transform] duration-[var(--afo-motion-feedback-duration)] ease-[var(--afo-motion-feedback-easing)] hover:-translate-y-px hover:shadow-[var(--afo-control-shadow-hover)] active:translate-y-px active:shadow-[var(--afo-control-shadow)] disabled:pointer-events-none disabled:translate-y-0 disabled:opacity-45 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
@@ -21,16 +21,16 @@ const buttonVariants = cva(
       },
       size: {
         default:
-          "h-11 gap-2 px-4 has-data-[icon=inline-end]:pr-3.5 has-data-[icon=inline-start]:pl-3.5",
-        xs: "h-11 gap-1.5 px-3 text-xs [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-11 gap-1.5 px-3.5 text-[0.8rem] [&_svg:not([class*='size-'])]:size-3.5",
-        lg: "h-12 gap-2 px-5 text-base",
-        icon: "size-11",
+          "gap-2 px-[18px] py-[9px] has-data-[icon=inline-end]:pr-3.5 has-data-[icon=inline-start]:pl-3.5",
+        xs: "gap-1.5 px-3 py-1 text-[0.6875rem] [&_svg:not([class*='size-'])]:size-3",
+        sm: "gap-1.5 px-3.5 py-1.5 text-xs [&_svg:not([class*='size-'])]:size-3.5",
+        lg: "gap-2 px-6 py-3 text-sm",
+        icon: "size-9",
         "icon-xs":
-          "size-11 [&_svg:not([class*='size-'])]:size-3",
+          "size-8 [&_svg:not([class*='size-'])]:size-3",
         "icon-sm":
-          "size-11 [&_svg:not([class*='size-'])]:size-3.5",
-        "icon-lg": "size-12 [&_svg:not([class*='size-'])]:size-5",
+          "size-8 [&_svg:not([class*='size-'])]:size-3.5",
+        "icon-lg": "size-10 [&_svg:not([class*='size-'])]:size-5",
       },
     },
     defaultVariants: {
