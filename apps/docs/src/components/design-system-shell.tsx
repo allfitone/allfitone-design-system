@@ -1,9 +1,10 @@
 "use client";
 
-import type { CSSProperties, ReactNode } from "react";
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
 
 import { BrandLockup } from "@allfitone/react/brand";
+import { buttonVariants } from "@allfitone/react/components/button";
 import {
   Collapsible,
   CollapsibleContent,
@@ -258,12 +259,52 @@ function DesignSystemMobileHeader({ label, homeHref }: { label: string; homeHref
   );
 }
 
+function BackToTop({ href }: { href: string }) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    let wasVisible = false;
+    const updateVisibility = () => {
+      const nextVisible = window.scrollY > 480;
+
+      if (nextVisible !== wasVisible) {
+        wasVisible = nextVisible;
+        setIsVisible(nextVisible);
+      }
+    };
+
+    updateVisibility();
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    return () => window.removeEventListener("scroll", updateVisibility);
+  }, []);
+
+  return (
+    <a
+      className={buttonVariants({
+        variant: "secondary",
+        size: "sm",
+        className: "back-to-top",
+      })}
+      data-slot="back-to-top"
+      data-visible={isVisible}
+      href={href}
+      aria-label="Back to top"
+      aria-hidden={!isVisible}
+      tabIndex={isVisible ? undefined : -1}
+    >
+      <span>Top</span>
+      <FoundationIcon name="collapse" decorative />
+    </a>
+  );
+}
+
 export function DesignSystemLayout({
   current,
   id,
   className,
   label,
   homeHref,
+  topHref,
   skipHref,
   skipLabel,
   children,
@@ -273,6 +314,7 @@ export function DesignSystemLayout({
   className: string;
   label: string;
   homeHref: string;
+  topHref: string;
   skipHref: string;
   skipLabel: string;
   children: ReactNode;
@@ -287,17 +329,17 @@ export function DesignSystemLayout({
       <SidebarInset as="main" id={id} className={className}>
         <DesignSystemMobileHeader label={label} homeHref={homeHref} />
         {children}
+        <BackToTop href={topHref} />
       </SidebarInset>
     </SidebarProvider>
   );
 }
 
-export function DesignSystemFooter({ label, topHref }: { label: string; topHref: string }) {
+export function DesignSystemFooter({ label }: { label: string }) {
   return (
     <footer className="guide-footer">
       <div className="brand"><AdaptiveBrandLockup /></div>
       <p>{label} / v{designSystemVersion}</p>
-      <a href={topHref}>Back to top ↑</a>
     </footer>
   );
 }

@@ -155,6 +155,7 @@ export default function Home() {
       className="design-system-workspace foundation-guide"
       label="UI Foundation"
       homeHref="#top"
+      topHref="#top"
       skipHref="#guide-content"
       skipLabel="Skip to foundation content"
     >
@@ -657,7 +658,7 @@ export default function Home() {
         </div>
       </section>
 
-        <DesignSystemFooter label="UI Foundation / Tokens" topHref="#top" />
+        <DesignSystemFooter label="UI Foundation / Tokens" />
       </div>
     </DesignSystemLayout>
   );

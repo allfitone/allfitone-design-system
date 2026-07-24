@@ -223,6 +223,26 @@ test("provides responsive navigation for components and foundations", async ({ p
   await expect(page).toHaveURL(/#type$/);
 });
 
+test("keeps the back-to-top action floating outside both footers", async ({ page }) => {
+  for (const [route, target] of [["/components", "#overview"], ["/ui-foundation", "#top"]] as const) {
+    await page.goto(route);
+    const action = page.locator('[data-slot="back-to-top"]');
+
+    await expect(action).toHaveAttribute("href", target);
+    await expect(action).toHaveAttribute("data-visible", "false");
+    await expect(page.locator(".guide-footer").getByRole("link", { name: "Back to top" })).toHaveCount(0);
+
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await expect(action).toHaveAttribute("data-visible", "true");
+    await expect(action).toHaveAccessibleName("Back to top");
+    expect(await action.evaluate((element) => getComputedStyle(element).position)).toBe("fixed");
+
+    const box = await action.boundingBox();
+    expect(box?.width).toBeGreaterThanOrEqual(44);
+    expect(box?.height).toBeGreaterThanOrEqual(44);
+  }
+});
+
 test("composes foundation samples from canonical public components", async ({ page }) => {
   await page.goto("/");
 
