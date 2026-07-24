@@ -23,6 +23,59 @@ test("supports both themes without serious accessibility violations", async ({ p
   }
 });
 
+test("keeps foundations accessible in both themes", async ({ page }) => {
+  await page.goto("/ui-foundation");
+  await expect(page.getByRole("heading", { level: 1, name: "UI Foundation" })).toBeVisible();
+  await page.emulateMedia({ reducedMotion: "reduce" });
+
+  for (const theme of ["dark", "light"] as const) {
+    await page.getByRole("button", { name: theme, exact: true }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-afo-theme", theme);
+
+    const results = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+      .analyze();
+    const blocking = results.violations.filter((violation) =>
+      violation.impact === "serious" || violation.impact === "critical",
+    );
+    expect(blocking).toEqual([]);
+  }
+});
+
+test("keeps visible Explorer text at the 12 px minimum", async ({ page }) => {
+  for (const route of ["/components", "/ui-foundation"]) {
+    await page.goto(route);
+    const undersized = await page.locator("body *").evaluateAll((elements) =>
+      elements.flatMap((element) => {
+        const styles = getComputedStyle(element);
+        const bounds = element.getBoundingClientRect();
+        const hasDirectText = [...element.childNodes].some(
+          (node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+        );
+
+        if (
+          !hasDirectText ||
+          styles.display === "none" ||
+          styles.visibility === "hidden" ||
+          bounds.width === 0 ||
+          bounds.height === 0 ||
+          Number.parseFloat(styles.fontSize) >= 12
+        ) {
+          return [];
+        }
+
+        return [{
+          element: element.tagName.toLowerCase(),
+          text: element.textContent?.trim().replace(/\s+/g, " ").slice(0, 80),
+          fontSize: styles.fontSize,
+        }];
+      }),
+    );
+
+    expect(undersized, `${route} undersized text`).toEqual([]);
+  }
+});
+
 test("contains dialog focus and returns it to the trigger", async ({ page }) => {
   const trigger = page.getByRole("button", { name: "Edit member" });
   await trigger.focus();
@@ -137,6 +190,12 @@ test("does not overflow at 320 px or with long text", async ({ page }) => {
   }));
   expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport);
   await expect(page.getByRole("button", { name: "Large action with long text" })).toBeVisible();
+
+  for (const name of ["Go to previous page", "Go to next page"]) {
+    const box = await page.getByRole("link", { name }).boundingBox();
+    expect(box?.width, `${name} width`).toBeGreaterThanOrEqual(44);
+    expect(box?.height, `${name} height`).toBeGreaterThanOrEqual(44);
+  }
 });
 
 test("provides responsive navigation for components and foundations", async ({ page }) => {
@@ -193,6 +252,18 @@ test("matches the approved catalog composition", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 800 });
   await page.getByRole("button", { name: "light", exact: true }).click();
   await expect(page).toHaveScreenshot("components-light-mobile.png", { fullPage: true });
+});
+
+test("matches the approved foundation composition", async ({ page }) => {
+  test.skip(process.platform !== "win32", "Visual baselines are canonical on Windows.");
+  await page.goto("/ui-foundation");
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.getByRole("button", { name: "dark", exact: true }).click();
+  await expect(page).toHaveScreenshot("foundation-dark-desktop.png", { fullPage: true });
+
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.getByRole("button", { name: "light", exact: true }).click();
+  await expect(page).toHaveScreenshot("foundation-light-mobile.png", { fullPage: true });
 });
 
 test("matches key overlay states in both themes", async ({ page }) => {

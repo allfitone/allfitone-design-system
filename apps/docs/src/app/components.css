@@ -33,7 +33,7 @@
 .catalog-category__header > span {
   margin: 0;
   color: var(--afo-color-text-accent);
-  font-size: 0.58rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-extrabold);
   letter-spacing: var(--afo-letter-spacing-eyebrow);
   line-height: 1.5;
@@ -84,7 +84,7 @@
 .movement-sequence__contract dt,
 .component-entry__contract > span {
   color: var(--afo-color-text-muted);
-  font-size: 0.55rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-extrabold);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -106,7 +106,7 @@
   gap: 0.25rem;
   border-right: 1px solid var(--afo-color-border-subtle);
   border-radius: 0;
-  font-size: 0.66rem;
+  font-size: var(--afo-font-size-xs);
 }
 
 .movement-sequence__track [data-slot="tabs-trigger"]:last-child {
@@ -115,7 +115,7 @@
 
 .movement-sequence__track [data-slot="tabs-trigger"] > span {
   color: var(--afo-color-text-muted);
-  font-size: 0.5rem;
+  font-size: var(--afo-font-size-xs);
   letter-spacing: 0.14em;
 }
 
@@ -416,7 +416,7 @@
   position: relative;
   padding-left: 0.65rem;
   color: var(--afo-color-text-secondary);
-  font-size: 0.65rem;
+  font-size: var(--afo-font-size-xs);
 }
 
 .component-entry__contract li::before {
@@ -460,7 +460,7 @@
 
 .navigation-menu-demo small {
   color: var(--afo-color-text-muted);
-  font-size: 0.68rem;
+  font-size: var(--afo-font-size-xs);
   line-height: 1.45;
 }
 
@@ -591,7 +591,7 @@
 
 .workspace-preview__metric span {
   color: var(--afo-color-text-muted);
-  font-size: 0.58rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-extrabold);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -628,7 +628,7 @@
 .metric-caption {
   margin: 0.75rem 0 0;
   color: var(--afo-color-text-muted);
-  font-size: 0.72rem;
+  font-size: var(--afo-font-size-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -653,7 +653,7 @@
 .signature-tick-demo__caption {
   margin: 0;
   color: var(--afo-color-text-muted);
-  font-size: 0.72rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-extrabold);
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -721,7 +721,7 @@
   padding-block: 2rem;
   border-top: 1px solid var(--afo-color-border-subtle);
   color: var(--afo-color-text-muted);
-  font-size: 0.55rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-bold);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -862,7 +862,7 @@
 
   .movement-sequence__track [data-slot="tabs-trigger"] {
     padding-inline: 0.3rem;
-    font-size: 0.58rem;
+    font-size: var(--afo-font-size-xs);
   }
 
   .component-entry__header {

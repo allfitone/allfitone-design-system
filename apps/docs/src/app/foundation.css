@@ -78,7 +78,7 @@
 
 .design-system-sidebar__brand > span:last-child {
   color: var(--afo-color-text-muted);
-  font-size: 0.48rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-bold);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -111,7 +111,7 @@
 .design-system-sidebar__edition-copy strong {
   overflow: hidden;
   color: var(--afo-color-text-primary);
-  font-size: 0.72rem;
+  font-size: var(--afo-font-size-xs);
   line-height: 1.1;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -120,7 +120,7 @@
 .design-system-sidebar__edition-copy small {
   overflow: hidden;
   color: var(--afo-color-text-muted);
-  font-size: 0.48rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-bold);
   letter-spacing: 0.06em;
   line-height: 1.2;
@@ -167,7 +167,7 @@
   width: 2rem;
   flex: 0 0 auto;
   color: var(--afo-color-text-muted);
-  font-size: 0.44rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-extrabold);
   letter-spacing: 0.1em;
 }
@@ -191,7 +191,7 @@
 
 .design-system-sidebar__footer > span {
   color: var(--afo-color-text-muted);
-  font-size: 0.48rem;
+  font-size: var(--afo-font-size-xs);
   letter-spacing: 0.08em;
   text-align: center;
   text-transform: uppercase;
@@ -260,7 +260,7 @@
   padding: 0 1rem;
   border: 1px solid var(--afo-color-border-strong);
   border-radius: var(--afo-radius-control);
-  font-size: 0.68rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-bold);
 }
 
@@ -291,7 +291,7 @@
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--afo-color-border-subtle);
   color: var(--afo-color-status-success);
-  font-size: 0.58rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-bold);
 }
 
@@ -324,7 +324,7 @@
 .guide-overview__reference dt,
 .guide-overview__reference dd {
   margin: 0;
-  font-size: 0.62rem;
+  font-size: var(--afo-font-size-xs);
 }
 
 .guide-overview__reference dt {
@@ -371,13 +371,13 @@
   background: var(--afo-color-background-canvas);
   color: var(--afo-color-text-accent);
   content: "›";
-  font-size: 0.65rem;
+  font-size: var(--afo-font-size-xs);
   transform: translateY(-50%);
 }
 
 .guide-flow span {
   color: var(--afo-color-text-accent);
-  font-size: 0.48rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-extrabold);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -389,7 +389,7 @@
 
 .guide-flow small {
   color: var(--afo-color-text-muted);
-  font-size: 0.58rem;
+  font-size: var(--afo-font-size-xs);
 }
 
 .foundation-guide .foundation-section {
@@ -442,7 +442,7 @@
   justify-content: center;
   border: 1px solid var(--afo-color-border-accent);
   border-radius: var(--afo-radius-pill);
-  font-size: 0.48rem;
+  font-size: var(--afo-font-size-xs);
 }
 
 .brand-assets-section {
@@ -489,14 +489,14 @@
   max-width: 38rem;
   margin: 0.65rem 0 0;
   color: var(--afo-color-text-muted);
-  font-size: 0.65rem;
+  font-size: var(--afo-font-size-xs);
   line-height: 1.55;
 }
 
 .brand-product__code {
   padding-bottom: 0.18rem;
   color: var(--afo-color-text-accent);
-  font-size: 0.48rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-extrabold);
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -543,7 +543,7 @@
 
 .brand-asset-card__index {
   color: var(--afo-color-text-muted);
-  font-size: 0.48rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-bold);
   letter-spacing: 0.11em;
   text-transform: uppercase;
@@ -557,7 +557,7 @@
   border: 1px solid color-mix(in srgb, var(--afo-color-status-success) 35%, transparent);
   border-radius: var(--afo-radius-pill);
   color: var(--afo-color-status-success);
-  font-size: 0.44rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-extrabold);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -607,7 +607,7 @@
   right: 0.75rem;
   bottom: 0.65rem;
   color: #84949a;
-  font-size: 0.43rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-bold);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -660,7 +660,7 @@
 
 .brand-asset-preview__scale small {
   color: var(--afo-color-text-muted);
-  font-size: 0.45rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-bold);
 }
 
@@ -699,7 +699,7 @@
 
 .brand-asset-specs dt {
   color: var(--afo-color-text-muted);
-  font-size: 0.45rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-bold);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -707,7 +707,7 @@
 
 .brand-asset-specs dd {
   color: var(--afo-color-text-secondary);
-  font-size: 0.6rem;
+  font-size: var(--afo-font-size-xs);
   line-height: 1.35;
 }
 
@@ -808,12 +808,12 @@
 }
 
 .brand-usage-rules strong {
-  font-size: 0.65rem;
+  font-size: var(--afo-font-size-xs);
 }
 
 .brand-usage-rules small {
   color: var(--afo-color-text-muted);
-  font-size: 0.52rem;
+  font-size: var(--afo-font-size-xs);
   line-height: 1.45;
 }
 
@@ -902,7 +902,7 @@
 .guide-footer a {
   margin: 0;
   color: var(--afo-color-text-muted);
-  font-size: 0.5rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-bold);
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -994,7 +994,7 @@
   justify-content: center;
   border: 1px solid var(--afo-color-border-accent);
   border-radius: var(--afo-radius-pill);
-  font-size: 0.46rem;
+  font-size: var(--afo-font-size-xs);
 }
 
 .component-guide .movement-sequence {
@@ -1039,7 +1039,7 @@
   padding: 0;
   border: 1px solid var(--afo-color-border-accent);
   border-radius: var(--afo-radius-pill);
-  font-size: 0.46rem;
+  font-size: var(--afo-font-size-xs);
 }
 
 .component-guide .catalog-category__header > span::before {

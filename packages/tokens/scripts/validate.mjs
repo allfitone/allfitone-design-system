@@ -1,4 +1,6 @@
-import { color, motion, radius, semanticColor, semanticSpacing, spacing } from "../dist/index.js";
+import { readFile } from "node:fs/promises";
+
+import { color, motion, radius, semanticColor, semanticSpacing, spacing, tokenBundle } from "../dist/index.js";
 
 const fail = (message) => {
   throw new Error(message);
@@ -7,6 +9,14 @@ const fail = (message) => {
 const assert = (condition, message) => {
   if (!condition) fail(message);
 };
+
+const packageMetadata = JSON.parse(
+  await readFile(new URL("../package.json", import.meta.url), "utf8"),
+);
+assert(
+  tokenBundle.meta.version === packageMetadata.version,
+  `Runtime token version ${tokenBundle.meta.version} must match package version ${packageMetadata.version}.`,
+);
 
 const rgba = (hex) => {
   const normalized = hex.slice(1);

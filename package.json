@@ -15,7 +15,8 @@
     "check:pack": "node scripts/check-packages.mjs",
     "check:release": "npm run check && npm run check:e2e && npm run check:pack",
     "changeset": "changeset",
-    "version-packages": "changeset version && npm install --package-lock-only",
+    "sync:versions": "node scripts/sync-package-versions.mjs",
+    "version-packages": "changeset version && npm run sync:versions && npm install --package-lock-only",
     "release": "changeset publish"
   },
   "devDependencies": {

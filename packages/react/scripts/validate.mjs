@@ -87,6 +87,13 @@ for (const { component, source } of sourceFiles) {
 }
 
 const packageJson = JSON.parse(await readFile(resolve(packageRoot, "package.json"), "utf8"));
+const { allfitoneReact } = await import(pathToFileURL(resolve(packageRoot, "dist/index.js")).href);
+if (allfitoneReact.packageVersion !== packageJson.version) {
+  throw new Error(
+    `Runtime React version ${allfitoneReact.packageVersion} must match package version ${packageJson.version}.`,
+  );
+}
+
 const expectedSideEffects = ["./dist/tokens.css", "./dist/styles.css"];
 if (JSON.stringify(packageJson.sideEffects) !== JSON.stringify(expectedSideEffects)) {
   throw new Error("Only tokens.css and styles.css may be marked as side effects.");

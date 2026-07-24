@@ -49,7 +49,7 @@ Create a protected GitHub environment named `npm` and require approval before de
 1. Run `npm run changeset` in any pull request that modifies a public contract.
 2. Merge the change into `main` after CI passes.
 3. Review and merge the automated `chore: version packages` pull request.
-4. Manually dispatch **Publish to npm** from GitHub Actions.
+4. After the full **CI** workflow succeeds for the merged `main` commit, manually dispatch **Publish to npm** from that exact `main` ref. The publish job rejects other branches and waits for the matching CI run, including canonical Windows visual regression.
 5. Confirm the published versions and install them in a smoke consumer before updating product applications.
 
 ## Promoting the pilot
