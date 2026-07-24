@@ -5,7 +5,7 @@ import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import { FoundationIcon } from "../icons.js"
+import { FoundationIcon, type IconName } from "../icons.js"
 import { useIsMobile } from "../hooks/use-mobile.js"
 import { cn } from "../lib/utils.js"
 import { Button } from "./button.js"
@@ -253,10 +253,13 @@ function Sidebar({
 
 function SidebarTrigger({
   className,
+  icon = "panel",
   onClick,
   ...props
-}: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar()
+}: React.ComponentProps<typeof Button> & {
+  icon?: IconName
+}) {
+  const { isMobile, openMobile, state, toggleSidebar } = useSidebar()
 
   return (
     <Button
@@ -265,13 +268,14 @@ function SidebarTrigger({
       variant="ghost"
       size="icon-sm"
       className={cn(className)}
+      aria-expanded={isMobile ? openMobile : state === "expanded"}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
       }}
       {...props}
     >
-      <FoundationIcon name="panel" decorative />
+      <FoundationIcon name={icon} decorative />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )

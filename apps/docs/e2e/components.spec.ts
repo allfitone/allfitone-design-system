@@ -201,7 +201,19 @@ test("does not overflow at 320 px or with long text", async ({ page }) => {
 test("provides responsive navigation for components and foundations", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 800 });
   await page.goto("/components");
-  await page.getByRole("button", { name: "Open design system navigation" }).click();
+  const mobileHeader = page.locator(".design-system-mobile-header");
+  const menuTrigger = mobileHeader.locator('[data-sidebar="trigger"]');
+  const brand = mobileHeader.getByRole("link", { name: /Allfit One Components home/ });
+  await expect(menuTrigger).toHaveAccessibleName("Open design system navigation");
+  await expect(menuTrigger.locator("svg")).toHaveClass(/lucide-menu/);
+  await expect(mobileHeader.locator(".theme-toggle")).toHaveCount(0);
+
+  const menuBox = await menuTrigger.boundingBox();
+  const brandBox = await brand.boundingBox();
+  expect(menuBox?.x).toBeLessThan(brandBox?.x ?? 0);
+
+  await menuTrigger.click();
+  await expect(menuTrigger).toHaveAttribute("aria-expanded", "true");
   await page.getByRole("link", { name: /Overlays/ }).click();
   await expect(page).toHaveURL(/#overlays$/);
 
@@ -281,8 +293,8 @@ test("matches key overlay states in both themes", async ({ page }) => {
   await expect(page).toHaveScreenshot("dialog-dark-desktop.png", { fullPage: false });
   await page.keyboard.press("Escape");
 
-  await page.setViewportSize({ width: 320, height: 800 });
   await page.getByRole("button", { name: "light", exact: true }).click();
+  await page.setViewportSize({ width: 320, height: 800 });
   await page.getByRole("button", { name: "Open filters" }).click();
   await expect(page).toHaveScreenshot("sheet-light-mobile.png", { fullPage: false });
 });

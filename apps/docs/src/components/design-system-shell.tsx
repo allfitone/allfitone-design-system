@@ -243,13 +243,16 @@ function DesignSystemSidebar({ current }: { current: GuideSection }) {
 function DesignSystemMobileHeader({ label, homeHref }: { label: string; homeHref: string }) {
   return (
     <header className="design-system-mobile-header">
-      <Link className="brand" href={homeHref} aria-label={`Allfit One ${label} home`}>
-        <AdaptiveBrandLockup />
-        <i>{label}</i>
-      </Link>
-      <div className="catalog-toolbar">
-        <ThemeToggle />
-        <SidebarTrigger aria-label="Open design system navigation" />
+      <div className="design-system-mobile-header__navigation">
+        <SidebarTrigger
+          className="design-system-mobile-header__trigger"
+          icon="menu"
+          aria-label="Open design system navigation"
+        />
+        <Link className="brand" href={homeHref} aria-label={`Allfit One ${label} home`}>
+          <AdaptiveBrandLockup />
+          <i>{label}</i>
+        </Link>
       </div>
     </header>
   );

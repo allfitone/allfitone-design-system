@@ -7,13 +7,6 @@
   grid-template-columns: minmax(11rem, 1fr) auto minmax(11rem, 1fr);
 }
 
-.catalog-toolbar {
-  display: flex;
-  align-items: center;
-  justify-self: end;
-  gap: 0.5rem;
-}
-
 .component-overview {
   position: relative;
   display: grid;
@@ -1229,10 +1222,6 @@
 
   .catalog-topbar .theme-toggle__option {
     min-width: 2.55rem;
-  }
-
-  .catalog-toolbar {
-    gap: 0.25rem;
   }
 
   .component-manifest__header {

@@ -206,6 +206,32 @@
   display: none;
 }
 
+.design-system-mobile-header__navigation {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.design-system-mobile-header__trigger {
+  border-color: var(--afo-color-border-accent);
+  border-radius: var(--afo-radius-control);
+  background: color-mix(in srgb, var(--afo-color-background-surface) 72%, transparent);
+  color: var(--afo-color-text-accent);
+}
+
+.design-system-mobile-header__trigger:hover,
+.design-system-mobile-header__trigger[aria-expanded="true"] {
+  border-color: var(--afo-color-border-accent);
+  background: color-mix(in srgb, var(--afo-color-action-primary) 14%, transparent);
+  color: var(--afo-color-text-accent);
+}
+
+.design-system-mobile-header__trigger svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
 .design-system-content {
   width: min(100%, 82rem);
   margin-inline: auto;
@@ -1099,7 +1125,7 @@
     display: flex;
     min-height: 4.5rem;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 1rem;
     padding: 0.75rem 1rem;
     border-bottom: 1px solid var(--afo-color-border-subtle);
@@ -1132,8 +1158,8 @@
     display: none;
   }
 
-  .design-system-mobile-header .catalog-toolbar {
-    gap: 0.35rem;
+  .design-system-mobile-header__navigation {
+    gap: 0.55rem;
   }
 
   .foundation-guide .guide-overview {
