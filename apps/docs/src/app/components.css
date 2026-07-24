@@ -141,7 +141,7 @@
 .component-manifest__list a {
   display: grid;
   min-height: var(--afo-space-touch-target);
-  grid-template-columns: 1.25rem 2.5rem minmax(0, 1fr) 2rem 1.25rem;
+  grid-template-columns: 1.25rem 2.5rem minmax(0, 1fr) 1.25rem;
   align-items: center;
   gap: 0.65rem;
   padding: 0.55rem 1rem;
@@ -181,8 +181,7 @@
   white-space: nowrap;
 }
 
-.component-manifest__code,
-.component-manifest__count {
+.component-manifest__code {
   font-family: var(--font-display), var(--afo-font-family-display);
   font-weight: var(--afo-font-weight-bold);
   letter-spacing: 0.08em;
@@ -191,12 +190,6 @@
 .component-manifest__code {
   color: var(--afo-color-text-muted);
   font-size: var(--afo-font-size-xs);
-}
-
-.component-manifest__count {
-  color: var(--afo-color-text-primary);
-  font-size: 1rem;
-  text-align: right;
 }
 
 .component-manifest__contract {
@@ -1075,7 +1068,7 @@
   }
 
   .component-manifest__list a {
-    grid-template-columns: 1.1rem 2.2rem minmax(0, 1fr) 1.5rem 1.1rem;
+    grid-template-columns: 1.1rem 2.2rem minmax(0, 1fr) 1.1rem;
     gap: 0.5rem;
     padding-inline: 0.75rem;
   }
@@ -1230,7 +1223,7 @@
   }
 
   .component-manifest__list a {
-    grid-template-columns: 1rem 2rem minmax(0, 1fr) 1.2rem;
+    grid-template-columns: 1rem 2rem minmax(0, 1fr);
   }
 
   .component-manifest__list a > svg:last-child {

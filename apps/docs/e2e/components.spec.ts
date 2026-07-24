@@ -76,6 +76,10 @@ test("keeps visible Explorer text at the 12 px minimum", async ({ page }) => {
   }
 });
 
+test("keeps the component manifest free of category counts", async ({ page }) => {
+  await expect(page.locator(".component-manifest__count")).toHaveCount(0);
+});
+
 test("contains dialog focus and returns it to the trigger", async ({ page }) => {
   const trigger = page.getByRole("button", { name: "Edit member" });
   await trigger.focus();
@@ -223,6 +227,10 @@ test("provides responsive navigation for components and foundations", async ({ p
   await expect(page).toHaveURL(/#type$/);
 });
 
+test("keeps the design system sidebar free of decorative separators", async ({ page }) => {
+  await expect(page.locator('[data-sidebar="sidebar"] [data-slot="sidebar-separator"]')).toHaveCount(0);
+});
+
 test("keeps the back-to-top action floating outside both footers", async ({ page }) => {
   for (const [route, target] of [["/components", "#overview"], ["/ui-foundation", "#top"]] as const) {
     await page.goto(route);
@@ -241,6 +249,20 @@ test("keeps the back-to-top action floating outside both footers", async ({ page
     expect(box?.width).toBeGreaterThanOrEqual(44);
     expect(box?.height).toBeGreaterThanOrEqual(44);
   }
+});
+
+test("keeps typography descenders clear of scale dividers", async ({ page }) => {
+  await page.goto("/ui-foundation");
+  const clearances = await page.locator(".type-scale > div").evaluateAll((rows) =>
+    rows.map((row) => {
+      const sample = row.querySelector("span");
+      if (!sample) return 0;
+
+      return row.getBoundingClientRect().bottom - sample.getBoundingClientRect().bottom;
+    }),
+  );
+
+  expect(Math.min(...clearances)).toBeGreaterThanOrEqual(8);
 });
 
 test("composes foundation samples from canonical public components", async ({ page }) => {

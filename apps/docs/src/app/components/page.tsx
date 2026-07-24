@@ -19,18 +19,17 @@ export const metadata: Metadata = {
 };
 
 const componentCategories = [
-  { code: "ACT", label: "Actions", count: 2, hash: "actions", icon: "add" },
-  { code: "NAV", label: "Navigation", count: 6, hash: "navigation", icon: "menu" },
-  { code: "FRM", label: "Forms", count: 4, hash: "forms", icon: "edit" },
-  { code: "SEL", label: "Selection", count: 5, hash: "selection", icon: "check" },
-  { code: "DAT", label: "Data display", count: 4, hash: "data-display", icon: "business" },
-  { code: "SIG", label: "Signature", count: 5, hash: "signature", icon: "activity" },
-  { code: "OVR", label: "Overlays", count: 4, hash: "overlays", icon: "panel" },
-  { code: "FDB", label: "Feedback", count: 2, hash: "feedback", icon: "info" },
+  { code: "ACT", label: "Actions", hash: "actions", icon: "add" },
+  { code: "NAV", label: "Navigation", hash: "navigation", icon: "menu" },
+  { code: "FRM", label: "Forms", hash: "forms", icon: "edit" },
+  { code: "SEL", label: "Selection", hash: "selection", icon: "check" },
+  { code: "DAT", label: "Data display", hash: "data-display", icon: "business" },
+  { code: "SIG", label: "Signature", hash: "signature", icon: "activity" },
+  { code: "OVR", label: "Overlays", hash: "overlays", icon: "panel" },
+  { code: "FDB", label: "Feedback", hash: "feedback", icon: "info" },
 ] as const satisfies ReadonlyArray<{
   code: string;
   label: string;
-  count: number;
   hash: string;
   icon: IconName;
 }>;
@@ -79,7 +78,6 @@ export default function ComponentsPage() {
                   <FoundationIcon name={category.icon} decorative />
                   <span className="component-manifest__code">{category.code}</span>
                   <strong>{category.label}</strong>
-                  <span className="component-manifest__count">{String(category.count).padStart(2, "0")}</span>
                   <FoundationIcon name="forward" decorative />
                 </a>
               ))}

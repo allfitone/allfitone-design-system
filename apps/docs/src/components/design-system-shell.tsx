@@ -26,7 +26,6 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarProvider,
-  SidebarSeparator,
   SidebarTrigger,
   useSidebar,
 } from "@allfitone/react/components/sidebar";
@@ -158,8 +157,6 @@ function DesignSystemSidebar({ current }: { current: GuideSection }) {
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarSeparator />
-
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Reference</SidebarGroupLabel>
@@ -230,8 +227,6 @@ function DesignSystemSidebar({ current }: { current: GuideSection }) {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-
-      <SidebarSeparator />
 
       <SidebarFooter className="design-system-sidebar__footer">
         <ThemeToggle />

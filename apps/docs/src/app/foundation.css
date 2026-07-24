@@ -1026,7 +1026,11 @@
 }
 
 .foundation-guide .type-scale div {
-  min-height: 5.5rem;
+  min-height: 7rem;
+}
+
+.foundation-guide .type-scale span {
+  line-height: 1.15;
 }
 
 .foundation-guide .icon-token {
