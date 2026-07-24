@@ -5,8 +5,8 @@ import { fileURLToPath } from "node:url";
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = JSON.parse(await readFile(resolve(packageRoot, "assets/manifest.json"), "utf8"));
 
-if (manifest.assets.length !== 7) {
-  throw new Error(`Expected 7 canonical brand assets, received ${manifest.assets.length}.`);
+if (manifest.assets.length !== 8) {
+  throw new Error(`Expected 8 canonical brand assets, received ${manifest.assets.length}.`);
 }
 
 await Promise.all(manifest.assets.map(async ({ path }) => {

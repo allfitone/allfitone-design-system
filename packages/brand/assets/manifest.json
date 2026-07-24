@@ -26,6 +26,12 @@
       "lettering": null
     },
     {
+      "path": "assets/logo/allfit-one-logo-carrier.svg",
+      "type": "logo-carrier",
+      "background": "transparent",
+      "lettering": null
+    },
+    {
       "path": "assets/wordmark/allfit-one-wordmark-on-light.svg",
       "type": "wordmark",
       "background": "transparent",

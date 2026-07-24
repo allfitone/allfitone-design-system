@@ -7,6 +7,7 @@ import "@allfitone/react/tokens.css";
 import "@allfitone/react/styles.css";
 import "./globals.css";
 import "./components.css";
+import "./foundation.css";
 
 const display = Barlow_Condensed({
   subsets: ["latin"],
@@ -21,8 +22,8 @@ const body = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "UI Foundation | Allfit One Design System",
-  description: "Visual reference for the Allfit One cross-platform design tokens.",
+  title: "Allfit One Design System",
+  description: "Foundation and component reference for the Allfit One product ecosystem.",
   robots: { index: false, follow: false },
 };
 

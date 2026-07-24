@@ -34,6 +34,25 @@ export function BrandLogo({ variant = "cyan", title, ...props }: BrandLogoProps)
   );
 }
 
+export function BrandLogoCarrier({ title, ...props }: BrandSvgProps) {
+  return (
+    <svg
+      {...props}
+      viewBox={brandDimensions.logoCarrier.viewBox}
+      role={title ? "img" : "presentation"}
+      aria-label={title}
+      aria-hidden={title ? undefined : true}
+      focusable="false"
+    >
+      <Accessibility title={title} />
+      <g transform="translate(32 36)">
+        <path fill={brandColors.cyan} d="M65 0h330l-65 408H0L65 0Z" />
+        <path fill={brandColors.ink} d={brandGeometry.logoPath} transform="translate(142 22) scale(.318)" />
+      </g>
+    </svg>
+  );
+}
+
 export function BrandWordmark({ surface = "dark", title, ...props }: SurfaceBrandProps) {
   const neutral = surface === "dark" ? brandColors.chalk : brandColors.ink;
 
