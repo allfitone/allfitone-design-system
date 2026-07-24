@@ -300,9 +300,11 @@
   right: clamp(1rem, 2.4vw, 1.75rem);
   bottom: 0.5rem;
   color: transparent;
-  content: counter(component-entry, decimal-leading-zero);
+  /* Numeración compuesta categoría.componente (ej. 06.05) para no
+     confundirse con los numerales de categoría (01–08). */
+  content: counter(catalog-section, decimal-leading-zero) "." counter(component-entry, decimal-leading-zero);
   font-family: var(--font-display), var(--afo-font-family-display);
-  font-size: 3.5rem;
+  font-size: 2.6rem;
   font-weight: var(--afo-font-weight-bold);
   line-height: 1;
   pointer-events: none;
