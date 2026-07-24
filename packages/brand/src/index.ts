@@ -1,3 +1,5 @@
+export const designSystemVersion = "0.1.0" as const;
+
 export const brandColors = {
   cyan: "#55EFFB",
   ink: "#030713",

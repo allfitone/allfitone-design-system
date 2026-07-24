@@ -249,8 +249,8 @@ test("matches the approved catalog composition", async ({ page }) => {
   await page.getByRole("button", { name: "dark", exact: true }).click();
   await expect(page).toHaveScreenshot("components-dark-desktop.png", { fullPage: true });
 
-  await page.setViewportSize({ width: 320, height: 800 });
   await page.getByRole("button", { name: "light", exact: true }).click();
+  await page.setViewportSize({ width: 320, height: 800 });
   await expect(page).toHaveScreenshot("components-light-mobile.png", { fullPage: true });
 });
 
@@ -261,8 +261,8 @@ test("matches the approved foundation composition", async ({ page }) => {
   await page.getByRole("button", { name: "dark", exact: true }).click();
   await expect(page).toHaveScreenshot("foundation-dark-desktop.png", { fullPage: true });
 
-  await page.setViewportSize({ width: 320, height: 800 });
   await page.getByRole("button", { name: "light", exact: true }).click();
+  await page.setViewportSize({ width: 320, height: 800 });
   await expect(page).toHaveScreenshot("foundation-light-mobile.png", { fullPage: true });
 });
 

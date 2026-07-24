@@ -87,7 +87,14 @@ for (const { component, source } of sourceFiles) {
 }
 
 const packageJson = JSON.parse(await readFile(resolve(packageRoot, "package.json"), "utf8"));
-const { allfitoneReact } = await import(pathToFileURL(resolve(packageRoot, "dist/index.js")).href);
+const { allfitoneReact, designSystemVersion } = await import(
+  pathToFileURL(resolve(packageRoot, "dist/index.js")).href
+);
+if (designSystemVersion !== packageJson.version) {
+  throw new Error(
+    `Global React version ${designSystemVersion} must match package version ${packageJson.version}.`,
+  );
+}
 if (allfitoneReact.packageVersion !== packageJson.version) {
   throw new Error(
     `Runtime React version ${allfitoneReact.packageVersion} must match package version ${packageJson.version}.`,

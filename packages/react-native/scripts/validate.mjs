@@ -10,7 +10,14 @@ await Promise.all(requiredOutputs.map((file) => access(resolve(packageRoot, "dis
 const packageMetadata = JSON.parse(
   await readFile(resolve(packageRoot, "package.json"), "utf8"),
 );
-const { allfitoneReactNative } = await import("../dist/index.js");
+const { allfitoneReactNative, designSystemVersion } = await import(
+  "../dist/index.js"
+);
+if (designSystemVersion !== packageMetadata.version) {
+  throw new Error(
+    `Global React Native version ${designSystemVersion} must match package version ${packageMetadata.version}.`,
+  );
+}
 if (allfitoneReactNative.packageVersion !== packageMetadata.version) {
   throw new Error(
     `Runtime React Native version ${allfitoneReactNative.packageVersion} must match package version ${packageMetadata.version}.`,

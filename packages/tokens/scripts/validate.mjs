@@ -1,6 +1,15 @@
 import { readFile } from "node:fs/promises";
 
-import { color, motion, radius, semanticColor, semanticSpacing, spacing, tokenBundle } from "../dist/index.js";
+import {
+  color,
+  designSystemVersion,
+  motion,
+  radius,
+  semanticColor,
+  semanticSpacing,
+  spacing,
+  tokenBundle,
+} from "../dist/index.js";
 
 const fail = (message) => {
   throw new Error(message);
@@ -16,6 +25,27 @@ const packageMetadata = JSON.parse(
 assert(
   tokenBundle.meta.version === packageMetadata.version,
   `Runtime token version ${tokenBundle.meta.version} must match package version ${packageMetadata.version}.`,
+);
+assert(
+  designSystemVersion === packageMetadata.version,
+  `Global token version ${designSystemVersion} must match package version ${packageMetadata.version}.`,
+);
+const generatedCss = await readFile(
+  new URL("../dist/tokens.css", import.meta.url),
+  "utf8",
+);
+assert(
+  generatedCss.includes(
+    `--afo-design-system-version: "${packageMetadata.version}";`,
+  ),
+  "Generated token CSS must expose the global design system version.",
+);
+const generatedTokens = JSON.parse(
+  await readFile(new URL("../dist/tokens.json", import.meta.url), "utf8"),
+);
+assert(
+  generatedTokens.meta.version === packageMetadata.version,
+  "Generated tokens.json must expose the global design system version.",
 );
 
 const rgba = (hex) => {

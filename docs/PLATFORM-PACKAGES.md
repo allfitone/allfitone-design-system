@@ -75,10 +75,13 @@ New semantic components should use matching export names and prop meaning across
 
 ## Version and release contract
 
-- All packages begin at `0.1.0` while the public API is being established.
+- The first public release is `0.1.0`.
+- Every public package exports `designSystemVersion`; it must match the package manifest.
+- `@allfitone/tokens` additionally exposes the version in `tokenBundle.meta.version`, generated `tokens.json`, and `--afo-design-system-version`.
+- The root workspace and Docs use the same version so the Explorer always displays the exact npm release.
 - Release foundation packages before platform packages.
 - Platform packages declare foundation packages as runtime dependencies and React/platform runtimes as peer dependencies where appropriate.
-- Keep all workspace package versions aligned until independent versioning is justified.
+- Keep all workspace package versions and internal `@allfitone/*` dependencies aligned.
 - A platform package release must pass TypeScript, its output validator, package dry-run inspection, and at least one consumer build.
 
 Recommended publish order:

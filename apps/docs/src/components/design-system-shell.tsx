@@ -30,6 +30,7 @@ import {
   useSidebar,
 } from "@allfitone/react/components/sidebar";
 import { FoundationIcon, type IconName } from "@allfitone/react/icons";
+import { designSystemVersion } from "@allfitone/react/tokens";
 
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -89,12 +90,12 @@ const guideMeta = {
   foundations: {
     eyebrow: "UI Foundation",
     title: "Core reference",
-    meta: "Web + native · v0.1",
+    meta: `Web + native · v${designSystemVersion}`,
   },
   components: {
     eyebrow: "Component library",
     title: "React reference",
-    meta: "Accessible · v0.1",
+    meta: `Accessible · v${designSystemVersion}`,
   },
 } as const;
 
@@ -292,7 +293,7 @@ export function DesignSystemFooter({ label, topHref }: { label: string; topHref:
   return (
     <footer className="guide-footer">
       <div className="brand"><AdaptiveBrandLockup /></div>
-      <p>{label} / v0.1</p>
+      <p>{label} / v{designSystemVersion}</p>
       <a href={topHref}>Back to top ↑</a>
     </footer>
   );

@@ -7,6 +7,7 @@ import { semanticShadow, shadow } from "./shadow.js";
 import { semanticSpacing, spacing } from "./spacing.js";
 import { typography, typographyRole } from "./typography.js";
 import type { CubicBezier, GlassMaterial, Gradient, ShadowLayer } from "./types.js";
+import { designSystemVersion } from "./version.js";
 
 type TokenTree = Readonly<Record<string, unknown>>;
 
@@ -53,6 +54,7 @@ const typographyRoleEntries = Object.entries(typographyRole).flatMap(([role, val
 
 export function createCssVariables() {
   const primitiveEntries: Array<[string, string | number]> = [
+    ["design-system-version", `"${designSystemVersion}"`],
     ...colorEntries(color, "color"),
     ...Object.entries(spacing).map(([name, value]) => [`space-${kebab(name)}`, `${value}px`] as [string, string]),
     ...Object.entries(radius).map(([name, value]) => [`radius-${kebab(name)}`, `${value}px`] as [string, string]),

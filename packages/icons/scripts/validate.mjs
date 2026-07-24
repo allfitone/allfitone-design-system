@@ -1,4 +1,20 @@
-import { iconCatalog, iconSize } from "../dist/index.js";
+import { readFile } from "node:fs/promises";
+
+import {
+  designSystemVersion,
+  iconCatalog,
+  iconSize,
+} from "../dist/index.js";
+
+const packageMetadata = JSON.parse(
+  await readFile(new URL("../package.json", import.meta.url), "utf8"),
+);
+
+if (designSystemVersion !== packageMetadata.version) {
+  throw new Error(
+    `Runtime icon version ${designSystemVersion} must match package version ${packageMetadata.version}.`,
+  );
+}
 
 const names = Object.keys(iconCatalog);
 const categories = new Set(["navigation", "action", "status", "object"]);

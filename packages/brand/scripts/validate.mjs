@@ -4,6 +4,16 @@ import { fileURLToPath } from "node:url";
 
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = JSON.parse(await readFile(resolve(packageRoot, "assets/manifest.json"), "utf8"));
+const packageMetadata = JSON.parse(
+  await readFile(resolve(packageRoot, "package.json"), "utf8"),
+);
+const { designSystemVersion } = await import("../dist/index.js");
+
+if (designSystemVersion !== packageMetadata.version) {
+  throw new Error(
+    `Runtime brand version ${designSystemVersion} must match package version ${packageMetadata.version}.`,
+  );
+}
 
 if (manifest.assets.length !== 8) {
   throw new Error(`Expected 8 canonical brand assets, received ${manifest.assets.length}.`);
