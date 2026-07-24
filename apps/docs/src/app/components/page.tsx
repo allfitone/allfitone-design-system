@@ -22,6 +22,9 @@ export default function ComponentsPage() {
             <BrandLockup className="brand-lockup__asset brand-lockup__asset--dark" surface="dark" />
             <BrandLockup className="brand-lockup__asset brand-lockup__asset--light" surface="light" />
           </span>
+          <svg className="brand-pulse" width="26" height="12" viewBox="0 0 34 14" aria-hidden="true">
+            <path d="M1 8h6l3-6 4 10 3-7 2 3h14" />
+          </svg>
           <i>COMPONENTS</i>
         </Link>
         <nav aria-label="Component categories">

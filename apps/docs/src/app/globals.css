@@ -2,6 +2,13 @@
   box-sizing: border-box;
 }
 
+/* Wire the next/font-loaded families into the token font stacks so every
+   consumer of the display/body tokens renders the self-hosted fonts. */
+:root {
+  --afo-font-family-display: var(--font-display), "Barlow Condensed", "Arial Narrow", sans-serif;
+  --afo-font-family-body: var(--font-body), "Manrope", system-ui, -apple-system, sans-serif;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 7rem;
@@ -85,6 +92,20 @@ button {
   display: inline-grid;
   flex: 0 0 auto;
   place-items: center;
+}
+
+.brand-pulse {
+  flex: 0 0 auto;
+  margin-left: 0.15rem;
+  color: var(--afo-color-text-accent);
+}
+
+.brand-pulse path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
 }
 
 .brand-lockup__asset {

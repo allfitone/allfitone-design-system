@@ -11,7 +11,8 @@ import "./components.css";
 const display = Barlow_Condensed({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["500", "600", "700", "800"],
+  weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 const body = Manrope({

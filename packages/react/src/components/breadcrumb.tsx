@@ -69,7 +69,7 @@ function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
       role="link"
       aria-disabled="true"
       aria-current="page"
-      className={cn("inline-flex min-h-11 items-center rounded-md bg-[var(--afo-accent-soft)] px-2 font-bold text-foreground", className)}
+      className={cn("inline-flex min-h-11 items-center rounded-full border-0 bg-[var(--afo-color-accent-tonal)] px-3 font-bold text-[var(--afo-color-text-accent)]", className)}
       {...props}
     />
   )

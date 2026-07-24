@@ -56,7 +56,7 @@ function NavigationMenuItem({
 }
 
 const navigationMenuTriggerStyle = cva(
-  "group/navigation-menu-trigger inline-flex min-h-11 w-max appearance-none items-center justify-center rounded-lg border-0 bg-transparent px-3 text-sm font-semibold transition-[color,background-color,border-color] outline-none hover:bg-muted focus:bg-muted disabled:pointer-events-none disabled:opacity-50 data-popup-open:bg-muted data-open:bg-muted"
+  "group/navigation-menu-trigger inline-flex min-h-11 w-max appearance-none items-center justify-center rounded-full border-0 bg-transparent px-3 text-sm font-semibold text-muted-foreground transition-[color,background-color] outline-none hover:text-foreground focus-visible:text-foreground disabled:pointer-events-none disabled:opacity-50 data-popup-open:bg-[var(--afo-color-accent-tonal)] data-popup-open:text-[var(--afo-color-text-accent)] data-open:bg-[var(--afo-color-accent-tonal)] data-open:text-[var(--afo-color-text-accent)]"
 )
 
 function NavigationMenuTrigger({
@@ -129,7 +129,7 @@ function NavigationMenuLink({
     <NavigationMenuPrimitive.Link
       data-slot="navigation-menu-link"
       className={cn(
-        "flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors outline-none hover:bg-muted focus:bg-muted in-data-[slot=navigation-menu-content]:rounded-md data-active:bg-[var(--afo-color-accent-tonal)] data-active:font-semibold data-active:text-[var(--afo-color-text-accent)]",
+        "flex min-h-11 items-center gap-2 rounded-full px-3 py-2 text-sm text-muted-foreground transition-colors outline-none hover:text-foreground focus-visible:text-foreground in-data-[slot=navigation-menu-content]:rounded-md in-data-[slot=navigation-menu-content]:text-foreground in-data-[slot=navigation-menu-content]:hover:bg-muted in-data-[slot=navigation-menu-content]:focus:bg-muted data-active:bg-[var(--afo-color-accent-tonal)] data-active:font-semibold data-active:text-[var(--afo-color-text-accent)]",
         className
       )}
       {...props}

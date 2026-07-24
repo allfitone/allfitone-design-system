@@ -112,6 +112,9 @@ export default function Home() {
       <header className="topbar page-shell">
         <a className="brand" href="#top" aria-label="Allfit One UI Foundation home">
           <AdaptiveBrandLockup />
+          <svg className="brand-pulse" width="26" height="12" viewBox="0 0 34 14" aria-hidden="true">
+            <path d="M1 8h6l3-6 4 10 3-7 2 3h14" />
+          </svg>
           <i>UI FOUNDATION</i>
         </a>
         <nav aria-label="Foundation sections">

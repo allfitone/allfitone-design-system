@@ -188,6 +188,11 @@
   display: grid;
   gap: clamp(5rem, 9vw, 8rem);
   padding-bottom: 6rem;
+  counter-reset: catalog-section;
+}
+
+.catalog-category {
+  counter-increment: catalog-section;
 }
 
 .catalog-category {
@@ -196,14 +201,33 @@
 }
 
 .catalog-category__header {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(3rem, 0.18fr) minmax(0, 0.82fr);
   gap: 1rem;
   padding: 0 0 2.25rem;
 }
 
+/* Ghost index numeral — outlined, sits behind the category code column. */
+.catalog-category__header::before {
+  position: absolute;
+  z-index: 0;
+  top: -0.75rem;
+  left: 0;
+  color: transparent;
+  content: counter(catalog-section, decimal-leading-zero);
+  font-family: var(--font-display), var(--afo-font-family-display);
+  font-size: clamp(4.5rem, 8vw, 7rem);
+  font-weight: var(--afo-font-weight-bold);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  -webkit-text-stroke: 1.2px var(--afo-color-border-subtle);
+}
+
 .catalog-category__header > span {
   position: relative;
+  z-index: 1;
   padding-top: 0.55rem;
   padding-left: 0.85rem;
 }
@@ -241,6 +265,11 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: start;
   gap: 1rem;
+  counter-reset: component-entry;
+}
+
+.component-entry {
+  counter-increment: component-entry;
 }
 
 .component-entry {
@@ -254,21 +283,46 @@
 }
 
 .component-entry__header {
+  position: relative;
   display: grid;
   min-height: 8.5rem;
   grid-template-columns: minmax(0, 1fr) var(--afo-space-touch-target);
   gap: 1rem;
   padding: clamp(1rem, 2.4vw, 1.75rem);
   border-bottom: 1px solid var(--afo-color-border-subtle);
-  background: color-mix(in srgb, var(--afo-color-background-surface) 92%, var(--afo-color-background-surface-muted));
+  background: var(--afo-color-background-surface);
+}
+
+/* Ghost index numeral per component entry, behind the header content. */
+.component-entry__header::before {
+  position: absolute;
+  z-index: 0;
+  right: clamp(1rem, 2.4vw, 1.75rem);
+  bottom: 0.5rem;
+  color: transparent;
+  content: counter(component-entry, decimal-leading-zero);
+  font-family: var(--font-display), var(--afo-font-family-display);
+  font-size: 3.5rem;
+  font-weight: var(--afo-font-weight-bold);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  -webkit-text-stroke: 1.2px var(--afo-color-border-subtle);
+}
+
+.component-entry__header > * {
+  position: relative;
+  z-index: 1;
 }
 
 .component-entry__header h3 {
   margin: 0.7rem 0 0;
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-family: var(--font-display), var(--afo-font-family-display);
+  font-size: clamp(1.55rem, 2.6vw, 1.95rem);
   font-weight: var(--afo-font-weight-bold);
-  letter-spacing: -0.03em;
-  line-height: 1.2;
+  letter-spacing: 0.01em;
+  line-height: 0.95;
+  text-transform: uppercase;
 }
 
 .component-entry__header p:not(.component-entry__eyebrow) {
@@ -308,7 +362,7 @@
   min-height: 11.5rem;
   align-content: center;
   padding: clamp(1rem, 3vw, 2rem);
-  background: color-mix(in srgb, var(--afo-color-background-canvas) 78%, var(--afo-color-background-surface));
+  background: var(--afo-color-background-canvas);
 }
 
 .component-demo > * {
@@ -347,7 +401,7 @@
   gap: 1rem;
   padding: 0.75rem clamp(1rem, 3vw, 2rem);
   border-top: 1px solid var(--afo-color-border-subtle);
-  background: color-mix(in srgb, var(--afo-color-background-surface-subtle) 78%, var(--afo-color-background-surface));
+  background: var(--afo-color-background-surface-subtle);
 }
 
 .component-entry__contract ul {
