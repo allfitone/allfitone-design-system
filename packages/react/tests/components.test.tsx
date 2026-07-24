@@ -6,6 +6,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import { Button } from "../src/components/button.js";
 import { AccentBlock, AccentBlockLabel, AccentBlockTitle } from "../src/components/accent-block.js";
+import { Badge } from "../src/components/badge.js";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../src/components/breadcrumb.js";
 import { Checkbox } from "../src/components/checkbox.js";
 import { Field, FieldDescription, FieldError, FieldLabel } from "../src/components/field.js";
@@ -163,6 +164,14 @@ describe("ALLFIT ONE React components", () => {
     expect(container.querySelector('[data-slot="accent-block"]')).toBeInTheDocument();
     expect(container.querySelector('[data-slot="stat-strip"]')).toBeInTheDocument();
     expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("renders section codes through the shared badge variant", () => {
+    render(<Badge variant="code">ACT</Badge>);
+
+    const badge = screen.getByText("ACT");
+    expect(badge).toHaveAttribute("data-slot", "badge");
+    expect(badge.className).toContain("tracking-[var(--afo-letter-spacing-eyebrow)]");
   });
 
   it("renders sidebar skeleton widths deterministically for hydration", () => {

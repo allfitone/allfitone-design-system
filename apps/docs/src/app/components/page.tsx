@@ -98,7 +98,7 @@ export default function ComponentsPage() {
               <p>Behavior before polish</p>
             </div>
             <div>
-              <p className="section-index">A11Y</p>
+              <Badge variant="code">A11Y</Badge>
               <h2 id="contract-preview-title">Interaction contract</h2>
               <p>Every component exposes its state, preserves keyboard intent, and names the outcome before it enters product composition.</p>
             </div>

@@ -20,6 +20,7 @@ import {
 } from "@allfitone/react/components/card";
 import { Field, FieldGroup, FieldLabel } from "@allfitone/react/components/field";
 import { Input } from "@allfitone/react/components/input";
+import { PulseMark } from "@allfitone/react/components/pulse-mark";
 import {
   Select,
   SelectContent,
@@ -35,6 +36,7 @@ import {
 import { FoundationIcon, iconCatalog, type IconName } from "@allfitone/react/icons";
 import {
   color,
+  designSystemVersion,
   motion,
   radius,
   semanticColor,
@@ -75,6 +77,17 @@ const trainingGoals = [
   { label: "General fitness", value: "general-fitness" },
   { label: "Recovery", value: "recovery" },
 ];
+const foundationAreas = [
+  { code: "BRD", label: "Brand assets", hash: "brand-assets" },
+  { code: "COL", label: "Color", hash: "color" },
+  { code: "TYP", label: "Typography", hash: "type" },
+  { code: "ICO", label: "Iconography", hash: "icons" },
+  { code: "SPC", label: "Spacing", hash: "space" },
+  { code: "RAD", label: "Radius", hash: "radius" },
+  { code: "SHD", label: "Shadow", hash: "shadow" },
+  { code: "MOT", label: "Motion", hash: "motion" },
+  { code: "APL", label: "Applied sample", hash: "applied" },
+] as const;
 
 const tokenLabel = (value: string) =>
   value.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/^./, (character) => character.toUpperCase());
@@ -88,7 +101,7 @@ function SectionHeader({ code, title, description }: { code: string; title: stri
   return (
     <div className="section-heading">
       <div className="section-heading__title">
-        <p className="section-index">{code}</p>
+        <Badge variant="code" className="section-heading__code">{code}</Badge>
         <h2>{title}</h2>
       </div>
       <p className="section-heading__description">{description}</p>
@@ -146,37 +159,76 @@ export default function Home() {
       skipLabel="Skip to foundation content"
     >
       <div id="guide-content" className="design-system-content">
-          <section id="overview" className="guide-overview">
-            <div className="guide-overview__copy">
-              <p className="eyebrow">Allfit One / Design system</p>
-              <h1>UI Foundation</h1>
-              <p>
-                The shared visual language behind Allfit Space and Allfit OS. Use this guide to choose the right token, understand its role, and see how foundations behave across products and themes.
-              </p>
-              <div className="guide-overview__links">
-                <a href="#brand-assets">Browse foundations</a>
-                <Link href="/components">Open components <span aria-hidden="true">↗</span></Link>
-              </div>
+        <section id="overview" className="guide-overview">
+          <div className="guide-overview__copy">
+            <div className="foundation-overview__eyebrow">
+              <PulseMark />
+              <span>Allfit One / System calibration</span>
             </div>
+            <h1>UI Foundation</h1>
+            <p className="foundation-overview__thesis">Define once. Resolve everywhere.</p>
+            <p>
+              Trace every visual decision from primitive value to semantic role and production output across Allfit Space and Allfit OS.
+            </p>
+            <div className="guide-overview__links">
+              <a href="#foundation-index">Open the index</a>
+              <Link href="/components">Inspect components <FoundationIcon name="external" decorative /></Link>
+            </div>
+          </div>
 
-            <aside className="guide-overview__reference" aria-label="Foundation reference">
-              <div className="guide-overview__status"><span />Reference is current</div>
-              <dl>
-                <div><dt>Scope</dt><dd>Web + native</dd></div>
-                <div><dt>Themes</dt><dd>Dark / light</dd></div>
-                <div><dt>Base unit</dt><dd>4 px</dd></div>
-                <div><dt>Packages</dt><dd>6 workspaces</dd></div>
-              </dl>
-            </aside>
-          </section>
+          <aside className="foundation-resolver" aria-label="Token resolution example">
+            <header className="foundation-resolver__header">
+              <div>
+                <span className="foundation-resolver__status" aria-hidden="true" />
+                <span>Token resolver</span>
+              </div>
+              <Badge variant="outline">v{designSystemVersion}</Badge>
+            </header>
+            <ol className="foundation-resolver__chain">
+              <li>
+                <span>Source</span>
+                <code>brand.primary</code>
+                <strong>#55EFFB</strong>
+              </li>
+              <li>
+                <span>Meaning</span>
+                <code>action.primary</code>
+                <strong>Semantic role</strong>
+              </li>
+              <li>
+                <span>Output</span>
+                <code>--afo-color-action-primary</code>
+                <strong>Platform adapter</strong>
+              </li>
+            </ol>
+            <dl className="foundation-resolver__contract">
+              <div><dt>Base</dt><dd>4 px</dd></div>
+              <div><dt>Targets</dt><dd>44 / 48</dd></div>
+              <div><dt>Themes</dt><dd>Dark / light</dd></div>
+            </dl>
+          </aside>
+        </section>
 
-          <ol className="guide-flow" aria-label="Token architecture">
-            <li><span>Source</span><strong>Primitive values</strong><small>Stable, named scales</small></li>
-            <li><span>Meaning</span><strong>Semantic roles</strong><small>Product and theme aware</small></li>
-            <li><span>Output</span><strong>Platform adapters</strong><small>React and React Native</small></li>
-          </ol>
+        <nav id="foundation-index" className="foundation-index" aria-label="Foundation areas">
+          <header>
+            <div>
+              <PulseMark />
+              <span>Foundation index</span>
+            </div>
+            <span>{foundationAreas.length} calibration areas</span>
+          </header>
+          <div className="foundation-index__grid">
+            {foundationAreas.map((area) => (
+              <a key={area.code} href={`#${area.hash}`}>
+                <span>{area.code}</span>
+                <strong>{area.label}</strong>
+                <FoundationIcon name="forward" decorative />
+              </a>
+            ))}
+          </div>
+        </nav>
 
-      <section id="brand-assets" className="foundation-section brand-assets-section">
+        <section id="brand-assets" className="foundation-section brand-assets-section">
         <SectionHeader
           code="BRD"
           title="Brand assets"

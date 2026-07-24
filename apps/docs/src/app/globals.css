@@ -207,15 +207,6 @@ html[data-afo-theme="light"] .brand-lockup__asset--light {
 }
 
 .eyebrow,
-.section-index {
-  margin: 0;
-  color: var(--afo-color-text-accent);
-  font-size: var(--afo-font-size-xs);
-  font-weight: var(--afo-font-weight-extrabold);
-  letter-spacing: var(--afo-letter-spacing-eyebrow);
-  text-transform: uppercase;
-}
-
 .hero h1 {
   max-width: 8ch;
   margin: 1.5rem 0 0;

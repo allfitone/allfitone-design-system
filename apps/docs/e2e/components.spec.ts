@@ -218,7 +218,7 @@ test("composes foundation samples from canonical public components", async ({ pa
   await expect(page.locator(".theme-preview [data-slot=button]")).toHaveCount(2);
   await expect(page.locator("#applied .sample-panel[data-slot=card]")).toHaveCount(3);
   await expect(page.locator("#applied [data-slot=stat-strip]")).toBeVisible();
-  await expect(page.locator("#applied [data-slot=badge]")).toHaveCount(5);
+  await expect(page.locator("#applied .applied-grid [data-slot=badge]")).toHaveCount(5);
 
   const trigger = page.locator('[data-slot="select-trigger"][aria-label="Training goal"]');
   await trigger.scrollIntoViewIfNeeded();
