@@ -23,6 +23,8 @@ const badgeVariants = cva(
         success: "bg-success/12 text-success [a]:hover:bg-success/20",
         warning: "bg-warning/12 text-warning [a]:hover:bg-warning/20",
         info: "bg-info/12 text-info [a]:hover:bg-info/20",
+        sport:
+          "bg-[color-mix(in_srgb,var(--afo-color-status-sport)_12%,transparent)] text-[var(--afo-color-status-sport)]",
       },
     },
     defaultVariants: {

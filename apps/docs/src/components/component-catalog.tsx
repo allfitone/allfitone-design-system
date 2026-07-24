@@ -318,6 +318,33 @@ export function ComponentCatalog() {
               <span className="signature-wordmark__text">Allfit <em>One</em></span>
             </div>
           </ComponentSection>
+
+          <ComponentSection id="class-cards" title="Class cards" description="Patrón de reservas del producto: clase destacada, inscrita y no disponible — AccentBlock, Card, Badge y Button compuestos." importPath="@allfitone/react (composición)" contract={["Destacada única", "Estados de reserva", "CTA invertido", "Dark / light"]}>
+            <div className="class-cards-demo">
+              <AccentBlock>
+                <div className="class-cards-demo__top"><AccentBlockTitle>Functional 45'</AccentBlockTitle><Badge>HIIT</Badge></div>
+                <AccentBlockMeta>Vie 24 jul · 7:00 – 7:45 · Clase en vivo</AccentBlockMeta>
+                <AccentBlockMeta><strong>14/16</strong> reservas · quedan 2 cupos</AccentBlockMeta>
+                <Button className="class-cards-demo__cta">Reservar clase</Button>
+              </AccentBlock>
+              <Card size="sm">
+                <CardContent>
+                  <div className="class-cards-demo__top"><span className="class-cards-demo__name">Movilidad</span><Badge variant="info">Inscrito</Badge></div>
+                  <p className="class-cards-demo__meta">Sáb 25 jul · 7:00 – 7:50 · Clase en vivo</p>
+                  <p className="class-cards-demo__meta"><strong>12/16</strong> reservas</p>
+                  <Button className="class-cards-demo__cta class-cards-demo__cta--tonal">Cancelar reserva</Button>
+                </CardContent>
+              </Card>
+              <Card size="sm">
+                <CardContent>
+                  <div className="class-cards-demo__top"><span className="class-cards-demo__name">Yoga Flow</span><Badge variant="sport">Yoga</Badge></div>
+                  <p className="class-cards-demo__meta">Dom 26 jul · 9:00 – 10:00 · Contenido digital</p>
+                  <p className="class-cards-demo__meta">Cupos abiertos</p>
+                  <Button variant="secondary" disabled className="class-cards-demo__cta">No disponible</Button>
+                </CardContent>
+              </Card>
+            </div>
+          </ComponentSection>
         </div>
       </section>
 

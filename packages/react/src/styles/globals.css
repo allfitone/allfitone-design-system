@@ -149,6 +149,13 @@
     box-shadow: none;
   }
 
+  /* Badges dentro del AccentBlock: tinta translúcida + texto on-accent
+     (reference: badge HIIT sobre la card destacada). */
+  [data-slot="accent-block"] [data-slot="badge"] {
+    background: color-mix(in srgb, var(--afo-color-ink-on-signal) 18%, transparent);
+    color: var(--afo-color-accent-on-accent);
+  }
+
   /* Reference: los estados activos (.set-row.cur, .nav-it.on) llevan
      barra de 3px + lavado tonal — ambos, no solo la barra. */
   [data-slot="card"][data-state="active"] {

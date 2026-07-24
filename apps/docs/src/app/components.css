@@ -950,3 +950,65 @@
     justify-self: end;
   }
 }
+
+/* Class cards — patrón de reservas del reference (destacada / inscrita / no disponible). */
+.class-cards-demo {
+  display: grid;
+  width: min(24rem, 100%);
+  gap: 0.75rem;
+}
+
+.class-cards-demo__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.class-cards-demo__name {
+  font-family: var(--font-display), var(--afo-font-family-display);
+  font-size: 1.2rem;
+  font-weight: var(--afo-font-weight-semibold);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.class-cards-demo__meta {
+  margin: 0.45rem 0 0;
+  color: var(--afo-color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.class-cards-demo__meta strong {
+  color: var(--afo-color-text-secondary);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--afo-font-weight-extrabold);
+}
+
+.class-cards-demo [data-slot="accent-block"] .class-cards-demo__meta {
+  color: var(--afo-color-accent-on-accent-muted);
+}
+
+.class-cards-demo [data-slot="accent-block"] .class-cards-demo__meta strong {
+  color: var(--afo-color-accent-on-accent);
+}
+
+.class-cards-demo__cta {
+  width: 100%;
+  margin-top: 0.8rem;
+}
+
+.class-cards-demo__cta--tonal {
+  background: var(--afo-color-accent-tonal) !important;
+  border-color: transparent !important;
+  color: var(--afo-color-text-accent) !important;
+  box-shadow: none !important;
+}
+
+.class-cards-demo [data-slot="accent-block-meta"] strong {
+  color: var(--afo-color-accent-on-accent);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--afo-font-weight-extrabold);
+}
