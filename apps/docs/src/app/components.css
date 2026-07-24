@@ -40,7 +40,7 @@
   color: var(--afo-color-text-accent);
   font-size: 0.58rem;
   font-weight: var(--afo-font-weight-extrabold);
-  letter-spacing: 0.16em;
+  letter-spacing: var(--afo-letter-spacing-eyebrow);
   line-height: 1.5;
   text-transform: uppercase;
 }
@@ -515,15 +515,16 @@
   font-size: 0.8125rem;
 }
 
+/* Reference .os-logo: 20px / 700 / uppercase / .03em, gap 7px, pulse 22×12. */
 .workspace-preview__brand {
   display: flex;
   min-height: 4.25rem;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.4375rem;
   padding: 0.6rem 0.9rem;
   border-bottom: 1px solid var(--afo-color-border-subtle);
   font-family: var(--font-display), var(--afo-font-family-display);
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: var(--afo-font-weight-bold);
   letter-spacing: 0.03em;
   line-height: 1;
@@ -531,7 +532,7 @@
 }
 
 .workspace-preview__brand svg {
-  width: 26px;
+  width: 22px;
   height: 12px;
   flex-shrink: 0;
   fill: none;

@@ -118,10 +118,8 @@
 }
 
 @layer components {
-  :where([data-slot="button"], [data-slot="icon-button"]) {
-    letter-spacing: -0.0125em;
-  }
-
+  /* Ink & Signal: los pills del reference no llevan tracking propio
+     (font:inherit) — sin letter-spacing negativo v1. */
   :where([data-slot="button"], [data-slot="icon-button"]):not(:disabled) {
     box-shadow: var(--afo-control-shadow);
   }
@@ -142,7 +140,10 @@
     color: var(--afo-color-accent-on-accent);
   }
 
+  /* Reference: los estados activos (.set-row.cur, .nav-it.on) llevan
+     barra de 3px + lavado tonal — ambos, no solo la barra. */
   [data-slot="card"][data-state="active"] {
+    background-image: linear-gradient(var(--afo-color-accent-tonal), var(--afo-color-accent-tonal));
     box-shadow: inset 3px 0 0 var(--afo-color-action-primary), var(--afo-shadow-card);
   }
 

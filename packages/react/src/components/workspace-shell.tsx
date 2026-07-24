@@ -85,7 +85,8 @@ function WorkspaceTitle({
     <Component
       data-slot="workspace-title"
       className={cn(
-        "m-0 truncate font-display text-2xl font-semibold tracking-[-0.035em] uppercase",
+        // Reference .os-top h3: 24px / 600 / uppercase / +0.02em / lh 1.
+        "m-0 truncate font-display text-2xl leading-none font-semibold tracking-[0.02em] uppercase",
         className
       )}
       {...props}

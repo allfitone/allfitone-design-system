@@ -15,7 +15,7 @@ function Tabs({
       data-slot="tabs"
       data-orientation={orientation}
       className={cn(
-        "group/tabs flex gap-2 data-horizontal:flex-col",
+        "group/tabs flex gap-3.5 data-horizontal:flex-col",
         className
       )}
       {...props}
@@ -28,8 +28,9 @@ const tabsListVariants = cva(
   {
     variants: {
       variant: {
-        default: "gap-5",
-        line: "gap-5",
+        // Reference .tabs: gap 18px between triggers.
+        default: "gap-[1.125rem]",
+        line: "gap-[1.125rem]",
       },
     },
     defaultVariants: {
@@ -58,7 +59,8 @@ function TabsTrigger({ className, ...props }: TabsPrimitive.Tab.Props) {
     <TabsPrimitive.Tab
       data-slot="tabs-trigger"
       className={cn(
-        "relative inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 border-0 bg-transparent px-1.5 py-2 text-sm font-bold whitespace-nowrap text-muted-foreground transition-[color] group-data-vertical/tabs:w-full group-data-vertical/tabs:justify-start hover:text-foreground disabled:pointer-events-none disabled:opacity-50 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        // Reference .tabs span: 12px / 700 / padding 8px 1px / tx3.
+        "relative inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 border-0 bg-transparent px-px py-2 text-xs font-bold whitespace-nowrap text-muted-foreground transition-[color] group-data-vertical/tabs:w-full group-data-vertical/tabs:justify-start hover:text-foreground disabled:pointer-events-none disabled:opacity-50 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         "data-active:text-foreground",
         "after:absolute after:rounded-full after:bg-primary after:opacity-0 after:transition-opacity group-data-horizontal/tabs:after:inset-x-0 group-data-horizontal/tabs:after:-bottom-px group-data-horizontal/tabs:after:h-0.5 group-data-vertical/tabs:after:inset-y-2 group-data-vertical/tabs:after:-right-px group-data-vertical/tabs:after:w-0.5 data-active:after:opacity-100",
         className
