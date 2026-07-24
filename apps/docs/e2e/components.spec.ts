@@ -211,8 +211,15 @@ test("provides responsive navigation for components and foundations", async ({ p
   await expect(page).toHaveURL(/#type$/);
 });
 
-test("uses the canonical Select in the applied foundation sample", async ({ page }) => {
+test("composes foundation samples from canonical public components", async ({ page }) => {
   await page.goto("/");
+
+  await expect(page.locator(".theme-preview[data-slot=card]")).toHaveCount(2);
+  await expect(page.locator(".theme-preview [data-slot=button]")).toHaveCount(2);
+  await expect(page.locator("#applied .sample-panel[data-slot=card]")).toHaveCount(3);
+  await expect(page.locator("#applied [data-slot=stat-strip]")).toBeVisible();
+  await expect(page.locator("#applied [data-slot=badge]")).toHaveCount(5);
+
   const trigger = page.locator('[data-slot="select-trigger"][aria-label="Training goal"]');
   await trigger.scrollIntoViewIfNeeded();
   await trigger.click();

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
+import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
 import { Button } from "../src/components/button.js";
@@ -15,6 +16,7 @@ import { RadioGroup, RadioGroupItem } from "../src/components/radio-group.js";
 import { Spinner } from "../src/components/spinner.js";
 import { StatStrip, StatStripItem } from "../src/components/stat-strip.js";
 import { Switch } from "../src/components/switch.js";
+import { SidebarMenuSkeleton } from "../src/components/sidebar.js";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../src/components/tabs.js";
 import { TickRing } from "../src/components/tick-ring.js";
 import { PulseMark } from "../src/components/pulse-mark.js";
@@ -161,5 +163,24 @@ describe("ALLFIT ONE React components", () => {
     expect(container.querySelector('[data-slot="accent-block"]')).toBeInTheDocument();
     expect(container.querySelector('[data-slot="stat-strip"]')).toBeInTheDocument();
     expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("renders sidebar skeleton widths deterministically for hydration", () => {
+    const random = vi.spyOn(Math, "random");
+    const renderSkeletons = () =>
+      renderToString(
+        <div>
+          <SidebarMenuSkeleton showIcon />
+          <SidebarMenuSkeleton />
+        </div>,
+      );
+
+    const firstRender = renderSkeletons();
+    const secondRender = renderSkeletons();
+
+    expect(firstRender).toBe(secondRender);
+    expect(firstRender.match(/--skeleton-width:/g)).toHaveLength(2);
+    expect(random).not.toHaveBeenCalled();
+    random.mockRestore();
   });
 });

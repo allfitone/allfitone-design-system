@@ -8,7 +8,16 @@ import {
   BrandLogoCarrier,
   BrandWordmark,
 } from "@allfitone/react/brand";
+import { Badge } from "@allfitone/react/components/badge";
 import { Button } from "@allfitone/react/components/button";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@allfitone/react/components/card";
 import { Field, FieldGroup, FieldLabel } from "@allfitone/react/components/field";
 import { Input } from "@allfitone/react/components/input";
 import {
@@ -19,6 +28,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@allfitone/react/components/select";
+import {
+  StatStrip,
+  StatStripItem,
+} from "@allfitone/react/components/stat-strip";
 import { FoundationIcon, iconCatalog, type IconName } from "@allfitone/react/icons";
 import {
   color,
@@ -118,12 +131,19 @@ function ThemePreview({ theme }: { theme: keyof typeof semanticColor }) {
   const tokens = semanticColor[theme];
 
   return (
-    <article className="theme-preview" data-afo-theme={theme}>
-      <div className="theme-preview__header">
-        <span>{theme} theme</span>
-        <span className="theme-preview__status">Live</span>
-      </div>
-      <div className="theme-preview__body">
+    <Card
+      className="theme-preview"
+      data-afo-theme={theme}
+      role="article"
+      aria-label={`${theme} theme preview`}
+    >
+      <CardHeader className="theme-preview__header">
+        <CardTitle>{theme} theme</CardTitle>
+        <CardAction>
+          <Badge variant="success" className="theme-preview__status">Live</Badge>
+        </CardAction>
+      </CardHeader>
+      <CardContent className="theme-preview__body">
         <div className="theme-preview__metric">
           <span>Weekly volume</span>
           <strong>42.8K</strong>
@@ -134,14 +154,14 @@ function ThemePreview({ theme }: { theme: keyof typeof semanticColor }) {
             <span key={index} style={{ height: `${height}%` }} />
           ))}
         </div>
-        <button type="button" className="sample-button sample-button--primary">Review activity</button>
-      </div>
-      <footer>
+        <Button type="button" className="theme-preview__action">Review activity</Button>
+      </CardContent>
+      <CardFooter className="theme-preview__footer">
         <code>{tokens.background.canvas}</code>
         <code>{tokens.text.primary}</code>
         <code>{tokens.action.primary}</code>
-      </footer>
-    </article>
+      </CardFooter>
+    </Card>
   );
 }
 
@@ -541,49 +561,78 @@ export default function Home() {
       </section>
 
       <section id="applied" className="foundation-section">
-        <SectionHeader code="APL" title="Applied sample" description="A visual stress test of the foundations—not a final component API." />
+        <SectionHeader code="APL" title="Applied sample" description="A composition of public components under production-like content and layout pressure." />
         <div className="applied-grid">
-          <article className="sample-panel sample-panel--wide">
-            <div className="sample-panel__header"><div><span>Performance overview</span><strong>Training load</strong></div><span className="status-dot">Live</span></div>
-            <div className="sample-stats">
-              <div><span>Volume</span><strong>42,840 kg</strong><small>+8.4%</small></div>
-              <div><span>Sessions</span><strong>18</strong><small>+3</small></div>
-              <div><span>Consistency</span><strong>92%</strong><small>On track</small></div>
-            </div>
-            <div className="sample-graph" aria-hidden="true"><span /><span /><span /><span /><span /><span /><span /><span /></div>
-          </article>
-          <article className="sample-panel">
-            <div className="sample-panel__header"><div><span>Controls</span><strong>Foundation states</strong></div></div>
-            <FieldGroup className="sample-form">
-              <Field>
-                <FieldLabel htmlFor="program-name">Program name</FieldLabel>
-                <Input id="program-name" defaultValue="Hybrid strength" />
-              </Field>
-              <Field>
-                <FieldLabel>Training goal</FieldLabel>
-                <Select items={trainingGoals} defaultValue="performance">
-                  <SelectTrigger className="w-full" aria-label="Training goal">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {trainingGoals.map((goal) => (
-                        <SelectItem key={goal.value} value={goal.value}>{goal.label}</SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </Field>
-            </FieldGroup>
-            <div className="sample-actions">
-              <Button type="button">Save changes</Button>
-              <Button type="button" variant="outline">Cancel</Button>
-            </div>
-          </article>
-          <article className="sample-panel">
-            <div className="sample-panel__header"><div><span>Status</span><strong>System feedback</strong></div></div>
-            <div className="status-list"><span data-status="success">Synced</span><span data-status="warning">Review needed</span><span data-status="danger">Payment failed</span><span data-status="info">New activity</span></div>
-          </article>
+          <Card className="sample-panel sample-panel--wide" role="article" aria-labelledby="training-load-title">
+            <CardHeader className="sample-panel__header">
+              <div>
+                <span>Performance overview</span>
+                <CardTitle id="training-load-title">Training load</CardTitle>
+              </div>
+              <CardAction>
+                <Badge variant="success" className="status-dot">Live</Badge>
+              </CardAction>
+            </CardHeader>
+            <CardContent className="sample-panel__content">
+              <StatStrip className="sample-stats">
+                <StatStripItem value="42,840 kg" label="Volume" />
+                <StatStripItem value="18" label="Sessions" />
+                <StatStripItem value="92%" label="Consistency" />
+              </StatStrip>
+              <div className="sample-graph" aria-hidden="true"><span /><span /><span /><span /><span /><span /><span /><span /></div>
+            </CardContent>
+          </Card>
+          <Card className="sample-panel" role="article" aria-labelledby="foundation-states-title">
+            <CardHeader className="sample-panel__header">
+              <div>
+                <span>Controls</span>
+                <CardTitle id="foundation-states-title">Foundation states</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="sample-panel__content">
+              <FieldGroup className="sample-form">
+                <Field>
+                  <FieldLabel htmlFor="program-name">Program name</FieldLabel>
+                  <Input id="program-name" defaultValue="Hybrid strength" />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="training-goal">Training goal</FieldLabel>
+                  <Select items={trainingGoals} defaultValue="performance">
+                    <SelectTrigger id="training-goal" className="w-full" aria-label="Training goal">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {trainingGoals.map((goal) => (
+                          <SelectItem key={goal.value} value={goal.value}>{goal.label}</SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </Field>
+              </FieldGroup>
+              <div className="sample-actions">
+                <Button type="button">Save changes</Button>
+                <Button type="button" variant="outline">Cancel</Button>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="sample-panel" role="article" aria-labelledby="system-feedback-title">
+            <CardHeader className="sample-panel__header">
+              <div>
+                <span>Status</span>
+                <CardTitle id="system-feedback-title">System feedback</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="sample-panel__content">
+              <div className="status-list">
+                <Badge variant="success">Synced</Badge>
+                <Badge variant="warning">Review needed</Badge>
+                <Badge variant="destructive">Payment failed</Badge>
+                <Badge variant="info">New activity</Badge>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
