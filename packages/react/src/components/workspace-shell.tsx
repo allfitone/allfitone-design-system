@@ -39,7 +39,7 @@ function WorkspaceHeader({
     <header
       data-slot="workspace-header"
       className={cn(
-        "sticky top-0 flex min-h-16 items-center gap-3 border-b border-border bg-background/95 px-4 backdrop-blur-sm md:px-6",
+        "sticky top-0 z-10 flex min-h-16 items-center gap-3 border-b border-[var(--afo-material-glass-border)] bg-[var(--afo-material-glass-fill)] px-4 backdrop-blur-[var(--afo-material-glass-blur)] backdrop-saturate-[var(--afo-material-glass-saturate)] md:px-6",
         className
       )}
       {...props}

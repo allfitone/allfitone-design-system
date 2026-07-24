@@ -57,11 +57,12 @@ button {
   align-items: center;
   min-height: 4.5rem;
   padding: 0.75rem 1.25rem;
-  border: 1px solid var(--afo-color-border-subtle);
+  border: 1px solid var(--afo-material-glass-border);
   border-radius: var(--afo-radius-panel);
-  background: color-mix(in srgb, var(--afo-color-background-canvas) 86%, transparent);
+  background: var(--afo-material-glass-fill);
   box-shadow: var(--afo-shadow-floating);
-  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(var(--afo-material-glass-blur)) saturate(var(--afo-material-glass-saturate));
+  backdrop-filter: blur(var(--afo-material-glass-blur)) saturate(var(--afo-material-glass-saturate));
 }
 
 .brand {
@@ -133,7 +134,6 @@ html[data-afo-theme="light"] .brand-lockup__asset--light {
   width: max-content;
   justify-self: end;
   padding: 0.2rem;
-  border: 1px solid var(--afo-color-border-subtle);
   border-radius: var(--afo-radius-pill);
   background: var(--afo-color-background-surface-subtle);
 }
@@ -152,8 +152,8 @@ html[data-afo-theme="light"] .brand-lockup__asset--light {
 }
 
 .theme-toggle__option[aria-pressed="true"] {
-  background: var(--afo-color-action-primary);
-  color: var(--afo-color-action-on-primary);
+  background: var(--afo-gradient-accent);
+  color: var(--afo-color-accent-on-accent);
 }
 
 .hero {
@@ -391,9 +391,9 @@ code {
 
 .theme-preview {
   overflow: hidden;
-  border: 1px solid var(--afo-color-border-subtle);
   border-radius: var(--afo-radius-panel);
   background: var(--afo-color-background-canvas);
+  box-shadow: var(--afo-shadow-card);
   color: var(--afo-color-text-primary);
 }
 
@@ -464,9 +464,9 @@ code {
   align-items: end;
   gap: 0.4rem;
   padding: 1rem;
-  border: 1px solid var(--afo-color-border-subtle);
   border-radius: var(--afo-radius-card);
   background: var(--afo-color-background-surface);
+  box-shadow: var(--afo-shadow-card);
 }
 
 .theme-preview__chart span {
@@ -497,8 +497,9 @@ code {
 .body-specimen {
   min-height: 34rem;
   padding: clamp(1.5rem, 4vw, 3rem);
-  border: 1px solid var(--afo-color-border-subtle);
+  border-radius: var(--afo-radius-panel);
   background: var(--afo-color-background-surface);
+  box-shadow: var(--afo-shadow-card);
 }
 
 .specimen-meta {
@@ -730,7 +731,6 @@ code {
   flex-direction: column;
   justify-content: space-between;
   padding: 1.25rem;
-  border: 1px solid var(--afo-color-border-subtle);
   border-radius: var(--afo-radius-card);
   background: var(--afo-color-background-surface);
   font-size: 0.68rem;
@@ -798,7 +798,6 @@ code {
 .sample-panel {
   min-width: 0;
   padding: 1.5rem;
-  border: 1px solid var(--afo-color-border-subtle);
   border-radius: var(--afo-radius-panel);
   background: var(--afo-color-background-surface);
   box-shadow: var(--afo-shadow-card);
@@ -848,8 +847,8 @@ code {
   flex-direction: column;
   gap: 0.5rem;
   padding: 1rem;
-  border: 1px solid var(--afo-color-border-subtle);
   border-radius: var(--afo-radius-card);
+  background: var(--afo-color-background-surface-subtle);
 }
 
 .sample-stats span,
@@ -877,9 +876,8 @@ code {
   gap: clamp(0.4rem, 1vw, 1rem);
   margin-top: 1rem;
   padding: 2rem 1.5rem 1rem;
-  border: 1px solid var(--afo-color-border-subtle);
   border-radius: var(--afo-radius-card);
-  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--afo-color-action-primary) 4%, transparent));
+  background: var(--afo-color-background-surface-subtle);
 }
 
 .sample-graph span {
@@ -949,10 +947,9 @@ code {
   align-items: center;
   gap: 0.5rem;
   padding-inline: 0.75rem;
-  border: 1px solid var(--status-color);
   border-radius: var(--afo-radius-pill);
-  background: color-mix(in srgb, var(--status-color) 14%, var(--afo-color-background-surface));
-  color: var(--afo-color-text-primary);
+  background: color-mix(in srgb, var(--status-color) 12%, transparent);
+  color: var(--status-color);
   font-size: 0.58rem;
   font-weight: var(--afo-font-weight-bold);
 }

@@ -5,23 +5,23 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../lib/utils.js"
 
 const badgeVariants = cva(
-  "group/badge inline-flex h-6 w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full border px-2.5 py-0.5 text-[0.7rem] font-bold tracking-[-0.01em] whitespace-nowrap transition-colors [a]:min-h-11 [a]:px-3 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 aria-invalid:border-destructive [&>svg]:pointer-events-none [&>svg]:size-3!",
+  "group/badge inline-flex h-6 w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full border border-transparent px-2.5 py-0.5 text-[0.65rem] font-extrabold tracking-[0.08em] uppercase whitespace-nowrap transition-colors [a]:min-h-11 [a]:px-3 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 aria-invalid:border-destructive [&>svg]:pointer-events-none [&>svg]:size-3!",
   {
     variants: {
       variant: {
-        default: "border-primary/45 bg-primary/15 text-foreground [a]:hover:bg-primary/22",
+        default: "bg-[var(--afo-color-accent-tonal)] text-[var(--afo-color-text-accent)] [a]:hover:bg-primary/20",
         secondary:
-          "border-border bg-muted text-foreground [a]:hover:border-input [a]:hover:bg-accent",
+          "bg-muted text-muted-foreground [a]:hover:bg-accent [a]:hover:text-foreground",
         destructive:
-          "border-destructive/45 bg-destructive/15 text-foreground [a]:hover:bg-destructive/22",
+          "bg-destructive/12 text-danger-text [a]:hover:bg-destructive/20",
         outline:
-          "border-input bg-transparent text-foreground [a]:hover:bg-muted",
+          "bg-transparent text-muted-foreground [a]:hover:bg-muted",
         ghost:
-          "border-transparent hover:bg-muted hover:text-foreground",
-        link: "border-transparent text-primary underline-offset-4 hover:underline",
-        success: "border-success/45 bg-success/15 text-foreground [a]:hover:bg-success/22",
-        warning: "border-warning/45 bg-warning/15 text-foreground [a]:hover:bg-warning/22",
-        info: "border-info/45 bg-info/15 text-foreground [a]:hover:bg-info/22",
+          "hover:bg-muted hover:text-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+        success: "bg-success/12 text-success [a]:hover:bg-success/20",
+        warning: "bg-warning/12 text-warning [a]:hover:bg-warning/20",
+        info: "bg-info/12 text-info [a]:hover:bg-info/20",
       },
     },
     defaultVariants: {
