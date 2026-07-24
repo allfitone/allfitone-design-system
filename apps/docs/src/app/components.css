@@ -492,16 +492,27 @@
 }
 
 .workspace-preview {
+  /* Ink & Signal: el shell es UNA sola superficie — sidebar y contenido
+     comparten tono, separados solo por hairlines (ver os-shell del reference). */
+  --sidebar: var(--afo-color-background-surface);
+  --sidebar-width: 13.5rem;
   height: 31rem;
   min-height: 0;
   overflow: hidden;
   border-radius: var(--afo-radius-panel);
-  background: var(--afo-color-background-canvas);
+  background: var(--afo-color-background-surface);
   box-shadow: var(--afo-shadow-card);
+  font-size: 0.8125rem;
 }
 
 .workspace-preview [data-slot="sidebar"] {
   border-right: 1px solid var(--afo-color-border-subtle);
+}
+
+.workspace-preview [data-slot="sidebar-menu-button"] {
+  min-height: 2.5rem;
+  border-radius: 0.625rem;
+  font-size: 0.8125rem;
 }
 
 .workspace-preview__organization {
@@ -540,7 +551,7 @@
   overflow: hidden;
   padding: 1.5rem;
   border-radius: var(--afo-radius-card);
-  background: var(--afo-color-background-surface);
+  background: var(--afo-color-background-surface-subtle);
   box-shadow: var(--afo-shadow-card);
 }
 
