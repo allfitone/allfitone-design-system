@@ -604,6 +604,51 @@
   text-transform: uppercase;
 }
 
+.signature-accent-demo {
+  width: min(100%, 24rem);
+}
+
+.signature-accent-demo__action {
+  width: 100%;
+  margin-top: 0.9rem;
+}
+
+.signature-tick-demo__value {
+  font-family: var(--font-display), var(--afo-font-family-display);
+  font-size: 0.9rem;
+  font-weight: var(--afo-font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.signature-tick-demo__caption {
+  margin: 0;
+  color: var(--afo-color-text-muted);
+  font-size: 0.72rem;
+  font-weight: var(--afo-font-weight-extrabold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.signature-wordmark {
+  gap: 0.55rem;
+}
+
+.signature-wordmark__text {
+  font-family: var(--font-display), var(--afo-font-family-display);
+  font-size: 1.3rem;
+  font-weight: var(--afo-font-weight-bold);
+  letter-spacing: 0.03em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.signature-wordmark__text em {
+  color: var(--afo-color-text-accent);
+  font-style: italic;
+  font-weight: var(--afo-font-weight-semibold);
+}
+
 .skeleton-stack {
   display: grid;
   grid-template-columns: 3.5rem minmax(0, 1fr);

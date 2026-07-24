@@ -2,6 +2,7 @@
 
 import { useState, type CSSProperties, type ReactNode } from "react";
 
+import { AccentBlock, AccentBlockLabel, AccentBlockMeta, AccentBlockTitle } from "@allfitone/react/components/accent-block";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@allfitone/react/components/alert-dialog";
 import { Badge } from "@allfitone/react/components/badge";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@allfitone/react/components/breadcrumb";
@@ -18,6 +19,7 @@ import { Input } from "@allfitone/react/components/input";
 import { Label } from "@allfitone/react/components/label";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@allfitone/react/components/navigation-menu";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@allfitone/react/components/pagination";
+import { PulseMark } from "@allfitone/react/components/pulse-mark";
 import { RadioGroup, RadioGroupItem } from "@allfitone/react/components/radio-group";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@allfitone/react/components/select";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@allfitone/react/components/sheet";
@@ -25,9 +27,11 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupConte
 import { Skeleton } from "@allfitone/react/components/skeleton";
 import { toast } from "@allfitone/react/components/sonner";
 import { Spinner } from "@allfitone/react/components/spinner";
+import { StatStrip, StatStripItem } from "@allfitone/react/components/stat-strip";
 import { Switch } from "@allfitone/react/components/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@allfitone/react/components/tabs";
 import { Textarea } from "@allfitone/react/components/textarea";
+import { TickRing } from "@allfitone/react/components/tick-ring";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@allfitone/react/components/tooltip";
 import { WorkspaceActions, WorkspaceContent, WorkspaceEyebrow, WorkspaceHeader, WorkspaceHeading, WorkspaceMain, WorkspaceShell, WorkspaceTitle } from "@allfitone/react/components/workspace-shell";
 import { FoundationIcon } from "@allfitone/react/icons";
@@ -276,6 +280,44 @@ export function ComponentCatalog() {
           <ComponentSection id="card" title="Card" description="Structured composition keeps title, action, content and footer predictable." importPath="@allfitone/react/components/card" contract={["Default / active", "Action slot", "Long content", "Responsive"]}><Card data-state="active"><CardHeader><CardTitle>Strength cycle</CardTitle><CardDescription>4-week program · week 2</CardDescription><CardAction><Badge>Active</Badge></CardAction></CardHeader><CardContent><strong className="metric-value">18,420 kg</strong><p className="metric-caption">Volume completed this week</p></CardContent><CardFooter><Button size="sm" variant="ghost">Open program</Button></CardFooter></Card></ComponentSection>
           <ComponentSection id="skeleton" title="Skeleton" description="Decorative loading placeholders respect reduced motion." importPath="@allfitone/react/components/skeleton" contract={["Decorative only", "Reduced motion", "Content-shaped"]}><div className="skeleton-stack"><Skeleton className="skeleton-avatar" /><div><Skeleton className="skeleton-line skeleton-line--strong" /><Skeleton className="skeleton-line" /></div></div></ComponentSection>
           <ComponentSection id="empty" title="Empty" description="Empty states explain what happened and provide the next action." importPath="@allfitone/react/components/empty" contract={["Clear reason", "Next action", "Long content"]}><Empty className="catalog-empty"><EmptyHeader><EmptyMedia variant="icon"><FoundationIcon name="activity" decorative /></EmptyMedia><EmptyTitle>No sessions yet</EmptyTitle><EmptyDescription>Record the first session to start building this member&apos;s history.</EmptyDescription></EmptyHeader><EmptyContent><Button size="sm"><FoundationIcon name="add" data-icon="inline-start" decorative />Record session</Button></EmptyContent></Empty></ComponentSection>
+        </div>
+      </section>
+
+      <section className="catalog-category" aria-labelledby="signature-heading">
+        <CategoryHeader id="signature" code="SIG" title="Signature" description="Ink & Signal brand elements: one signal per screen, athletic numerals and the pulse motif." />
+        <div className="component-grid">
+          <ComponentSection id="accent-block" title="AccentBlock" description="The single accent surface per screen carries the next action on the signal gradient." importPath="@allfitone/react/components/accent-block" contract={["One per screen", "Theme-invariant gradient", "On-accent ink text", "Dot texture"]}>
+            <AccentBlock className="signature-accent-demo">
+              <AccentBlockLabel>Entrenamiento programado</AccentBlockLabel>
+              <AccentBlockTitle>Fuerza — Tren superior</AccentBlockTitle>
+              <AccentBlockMeta>18:00 · Factory Fitness Chapinero</AccentBlockMeta>
+              <Button className="signature-accent-demo__action">Empezar entrenamiento</Button>
+            </AccentBlock>
+          </ComponentSection>
+
+          <ComponentSection id="stat-strip" title="StatStrip" description="Big session metrics divided by hairlines, set in condensed tabular numerals." importPath="@allfitone/react/components/stat-strip" contract={["Tabular numerals", "Hairline dividers", "Equal-width items", "Long values"]}>
+            <StatStrip>
+              <StatStripItem value="4.320" label="Volumen" />
+              <StatStripItem value="22" label="Series" />
+              <StatStripItem value="186" label="Rep." />
+            </StatStrip>
+          </ComponentSection>
+
+          <ComponentSection id="tick-ring" title="TickRing" description="Bezel-style progress built from tick dashes with a single signal arc." importPath="@allfitone/react/components/tick-ring" contract={["role=meter", "0–100 clamp", "Center label slot", "Reference geometry"]}>
+            <div className="demo-row">
+              <TickRing value={86} size={64} aria-label="Adherencia semanal">
+                <span className="signature-tick-demo__value">86%</span>
+              </TickRing>
+              <p className="signature-tick-demo__caption">Adherencia semanal</p>
+            </div>
+          </ComponentSection>
+
+          <ComponentSection id="pulse-mark" title="PulseMark" description="The EKG brand motif composes next to wordmarks and eyebrows." importPath="@allfitone/react/components/pulse-mark" contract={["aria-hidden by default", "Optional label", "currentColor stroke"]}>
+            <div className="demo-row signature-wordmark">
+              <PulseMark width={34} label="Pulso AllfitOne" />
+              <span className="signature-wordmark__text">Allfit <em>One</em></span>
+            </div>
+          </ComponentSection>
         </div>
       </section>
 

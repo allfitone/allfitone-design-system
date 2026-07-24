@@ -33,6 +33,7 @@ export default function ComponentsPage() {
           <a href="#forms">Forms</a>
           <a href="#selection">Selection</a>
           <a href="#data-display">Data</a>
+          <a href="#signature">Signature</a>
           <a href="#overlays">Overlays</a>
           <a href="#feedback">Feedback</a>
         </nav>

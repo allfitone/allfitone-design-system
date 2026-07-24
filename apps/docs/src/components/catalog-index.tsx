@@ -14,6 +14,7 @@ const catalog = [
   { code: "FRM", label: "Forms", id: "forms", items: ["Label", "Input", "Textarea", "Field"] },
   { code: "SEL", label: "Selection", id: "selection", items: ["Checkbox", "RadioGroup", "Switch", "Select", "Tabs"] },
   { code: "DAT", label: "Data display", id: "data-display", items: ["Badge", "Card", "Skeleton", "Empty"] },
+  { code: "SIG", label: "Signature", id: "signature", items: ["AccentBlock", "StatStrip", "TickRing", "PulseMark"] },
   { code: "OVR", label: "Overlays", id: "overlays", items: ["Dialog", "AlertDialog", "Sheet", "Tooltip"] },
   { code: "FDB", label: "Feedback", id: "feedback", items: ["Spinner", "Toast"] },
 ] as const;
