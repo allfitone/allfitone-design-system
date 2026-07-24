@@ -17,10 +17,10 @@ export default function ComponentsPage() {
   return (
     <DesignSystemLayout
       current="components"
-      id="catalog-top"
+      id="overview"
       className="design-system-workspace component-guide"
       label="Components"
-      homeHref="#catalog-top"
+      homeHref="#overview"
       skipHref="#catalog-content"
       skipLabel="Skip to component catalog"
     >
@@ -62,7 +62,7 @@ export default function ComponentsPage() {
 
           <ComponentCatalog />
 
-        <DesignSystemFooter label="React components" topHref="#catalog-top" />
+        <DesignSystemFooter label="React components" topHref="#overview" />
       </div>
     </DesignSystemLayout>
   );

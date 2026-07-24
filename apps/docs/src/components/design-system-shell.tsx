@@ -73,7 +73,7 @@ const chapters: readonly Chapter[] = [
     href: "/components",
     icon: "operation",
     sections: [
-      { code: "OVR", label: "Overview", hash: "catalog-top" },
+      { code: "OVR", label: "Overview", hash: "overview" },
       { code: "ACT", label: "Actions", hash: "actions" },
       { code: "NAV", label: "Navigation", hash: "navigation" },
       { code: "FRM", label: "Forms", hash: "forms" },
@@ -120,7 +120,7 @@ function DesignSystemSidebar({ current }: { current: GuideSection }) {
       setOpenMobile(false);
     }
   };
-  const overviewHref = current === "foundations" ? "#overview" : "#catalog-top";
+  const overviewHref = "#overview";
 
   return (
     <Sidebar className="design-system-sidebar" aria-label="Design system navigation">
