@@ -31,10 +31,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html
       lang="en"
       data-afo-theme="dark"
+      data-scroll-behavior="smooth"
       className={`${display.variable} ${body.variable}`}
       suppressHydrationWarning
     >
-      <body>
+      {/* suppressHydrationWarning: extensiones de navegador inyectan
+          atributos en <body> (bis_register, __processed_*) antes de
+          hidratar — falso positivo, no es código nuestro. */}
+      <body suppressHydrationWarning>
         <TooltipProvider>
           {children}
           <Toaster position="bottom-right" closeButton />
