@@ -51,6 +51,11 @@ import {
   DesignSystemFooter,
   DesignSystemLayout,
 } from "@/components/design-system-shell";
+import {
+  AllfitOsLockup,
+  AllfitOsMark,
+  AllfitOsWordmark,
+} from "@/components/allfit-os-brand";
 
 export const metadata: Metadata = {
   title: "UI Foundation | Allfit One Design System",
@@ -88,42 +93,6 @@ function SectionHeader({ code, title, description }: { code: string; title: stri
       </div>
       <p className="section-heading__description">{description}</p>
     </div>
-  );
-}
-
-function AllfitOsMark({ title }: { title?: string }) {
-  return (
-    <svg
-      className="allfit-os-mark"
-      viewBox="0 0 34 14"
-      role={title ? "img" : "presentation"}
-      aria-label={title}
-      aria-hidden={title ? undefined : true}
-      focusable="false"
-    >
-      {title ? <title>{title}</title> : null}
-      <path d="M1 8h6l3-6 4 10 3-7 2 3h14" />
-    </svg>
-  );
-}
-
-function AllfitOsWordmark({ surface }: { surface: "dark" | "light" }) {
-  return (
-    <span className="allfit-os-wordmark" data-surface={surface} role="img" aria-label="Allfit OS">
-      <span className="allfit-os-signature__allfit" aria-hidden="true">
-        <BrandWordmark surface={surface} />
-      </span>
-      <span className="allfit-os-signature__suffix" aria-hidden="true">OS</span>
-    </span>
-  );
-}
-
-function AllfitOsLockup({ surface }: { surface: "dark" | "light" }) {
-  return (
-    <span className="allfit-os-lockup" data-surface={surface} role="img" aria-label="Allfit OS">
-      <AllfitOsMark />
-      <span aria-hidden="true"><AllfitOsWordmark surface={surface} /></span>
-    </span>
   );
 }
 

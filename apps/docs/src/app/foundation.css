@@ -712,46 +712,11 @@
 }
 
 .allfit-os-wordmark {
-  display: inline-flex;
-  align-items: flex-end;
-  gap: 0.42rem;
-  color: #eaffff;
-  white-space: nowrap;
-}
-
-.allfit-os-wordmark[data-surface="light"],
-.allfit-os-lockup[data-surface="light"] {
-  color: #030713;
-}
-
-.allfit-os-signature__allfit {
-  position: relative;
   display: block;
-  width: 5.18rem;
-  height: 1.58rem;
+  width: 7.2rem;
+  height: auto;
   flex: 0 0 auto;
-  overflow: hidden;
-}
-
-.allfit-os-signature__allfit > svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: auto;
-  max-width: none;
-  height: 1.58rem;
-}
-
-.allfit-os-signature__suffix {
-  display: block;
-  padding-bottom: 0.06rem;
-  font-family: var(--font-display), var(--afo-font-family-display);
-  font-size: 2.18rem;
-  font-weight: var(--afo-font-weight-bold);
-  letter-spacing: 0;
-  line-height: 0.69;
-  text-transform: uppercase;
-  color: #55effb;
+  overflow: visible;
 }
 
 .allfit-os-mark {
@@ -765,6 +730,10 @@
   stroke-width: 2.2;
 }
 
+.allfit-os-mark path {
+  stroke-width: 2.2;
+}
+
 .brand-asset-card--os-mark .brand-asset-preview__surface > .allfit-os-mark {
   width: 3.25rem;
 }
@@ -773,17 +742,12 @@
   display: inline-flex;
   align-items: center;
   gap: 0.8rem;
-  color: #eaffff;
   white-space: nowrap;
 }
 
 .allfit-os-lockup > .allfit-os-mark {
   width: 2.25rem;
   flex: 0 0 auto;
-}
-
-.allfit-os-lockup .allfit-os-wordmark {
-  color: inherit;
 }
 
 .brand-usage-rules {
@@ -917,150 +881,6 @@
   color: var(--afo-color-text-accent);
 }
 
-.component-overview {
-  display: grid;
-  min-height: 32rem;
-  grid-template-columns: minmax(0, 1fr) minmax(17rem, 0.36fr);
-  align-items: end;
-  gap: clamp(3rem, 7vw, 7rem);
-  padding: clamp(5rem, 9vw, 8rem) clamp(2rem, 5vw, 5rem) 4rem;
-}
-
-.component-overview__copy {
-  max-width: 47rem;
-}
-
-.component-overview h1 {
-  margin: 1.2rem 0 1.5rem;
-  font-family: var(--font-display), var(--afo-font-family-display);
-  font-size: clamp(4.2rem, 8vw, 7rem);
-  font-weight: var(--afo-font-weight-semibold);
-  letter-spacing: -0.045em;
-  line-height: 0.82;
-  text-transform: uppercase;
-}
-
-.component-overview__copy > p:last-of-type {
-  max-width: 44rem;
-  margin: 0;
-  color: var(--afo-color-text-secondary);
-  font-size: clamp(0.9rem, 1.25vw, 1.05rem);
-  line-height: 1.75;
-}
-
-.component-guide__contract {
-  padding: clamp(3.5rem, 6vw, 5rem) clamp(2rem, 5vw, 5rem);
-  border-top: 1px solid var(--afo-color-border-subtle);
-  border-bottom: 1px solid var(--afo-color-border-subtle);
-}
-
-.component-guide__contract-heading {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.7fr);
-  align-items: end;
-  gap: 3rem;
-  margin-bottom: 2rem;
-}
-
-.component-guide__contract-heading > div {
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
-}
-
-.component-guide__contract-heading h2 {
-  margin: 0;
-  font-family: var(--font-display), var(--afo-font-family-display);
-  font-size: clamp(2.5rem, 4.5vw, 4rem);
-  font-weight: var(--afo-font-weight-semibold);
-  letter-spacing: -0.035em;
-  line-height: 0.9;
-  text-transform: uppercase;
-}
-
-.component-guide__contract-heading > p {
-  max-width: 30rem;
-  margin: 0;
-  color: var(--afo-color-text-secondary);
-  font-size: 0.78rem;
-  line-height: 1.7;
-}
-
-.component-guide__contract .section-index {
-  display: inline-flex;
-  min-width: 2.8rem;
-  min-height: 1.45rem;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--afo-color-border-accent);
-  border-radius: var(--afo-radius-pill);
-  font-size: var(--afo-font-size-xs);
-}
-
-.component-guide .movement-sequence {
-  width: 100%;
-}
-
-.component-guide .catalog-content {
-  width: 100%;
-  max-width: none;
-  gap: clamp(4rem, 7vw, 6rem);
-  margin: 0;
-  padding: clamp(4rem, 7vw, 6rem) clamp(2rem, 5vw, 5rem) 6rem;
-}
-
-.component-guide .catalog-category {
-  scroll-margin-top: 1rem;
-}
-
-.component-guide .catalog-category:target,
-.component-guide .catalog-category:has(.catalog-category__header:target) {
-  box-shadow: -0.2rem 0 var(--afo-color-border-accent);
-}
-
-.component-guide .catalog-category__header {
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: start;
-  gap: 1.25rem;
-  padding-bottom: 2rem;
-}
-
-.component-guide .catalog-category__header::before {
-  content: none;
-}
-
-.component-guide .catalog-category__header > span {
-  display: inline-flex;
-  min-width: 2.6rem;
-  width: max-content;
-  min-height: 1.45rem;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: 1px solid var(--afo-color-border-accent);
-  border-radius: var(--afo-radius-pill);
-  font-size: var(--afo-font-size-xs);
-}
-
-.component-guide .catalog-category__header > span::before {
-  content: none;
-}
-
-.component-guide .catalog-category__header h2 {
-  font-size: clamp(2.8rem, 5vw, 4.5rem);
-  letter-spacing: -0.035em;
-}
-
-.component-guide .catalog-category__header p {
-  max-width: 40rem;
-  margin-top: 0.75rem;
-  font-size: 0.8rem;
-}
-
-.component-guide .component-entry__header h3 {
-  letter-spacing: 0;
-}
-
 @media (max-width: 1180px) {
   .guide-overview {
     grid-template-columns: 1fr;
@@ -1102,21 +922,6 @@
     border-bottom: 1px solid var(--afo-color-border-subtle);
   }
 
-  .component-overview {
-    grid-template-columns: 1fr;
-    align-items: start;
-    gap: 3rem;
-  }
-
-  .component-overview .guide-overview__reference {
-    max-width: 34rem;
-  }
-
-  .component-guide__contract-heading {
-    grid-template-columns: 1fr;
-    align-items: start;
-    gap: 1.25rem;
-  }
 }
 
 @media (max-width: 767px) {
@@ -1149,9 +954,6 @@
     scroll-margin-top: 4.5rem;
   }
 
-  .component-guide .catalog-category {
-    scroll-margin-top: 5.5rem;
-  }
 }
 
 @media (max-width: 760px) {
@@ -1168,13 +970,7 @@
     padding: 4.5rem 1.25rem 3rem;
   }
 
-  .component-overview {
-    min-height: auto;
-    padding: 4.5rem 1.25rem 3rem;
-  }
-
-  .guide-overview h1,
-  .component-overview h1 {
+  .guide-overview h1 {
     font-size: clamp(3.8rem, 18vw, 5.5rem);
   }
 
@@ -1273,23 +1069,6 @@
 
   .brand-usage-rules p:last-child {
     border-bottom: 0;
-  }
-
-  .component-guide__contract {
-    padding: 3.75rem 1.25rem;
-  }
-
-  .component-guide__contract-heading > div {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .component-guide .catalog-content {
-    padding: 3.75rem 1.25rem 5rem;
-  }
-
-  .component-guide .catalog-category__header {
-    grid-template-columns: 1fr;
   }
 
   .guide-footer {
