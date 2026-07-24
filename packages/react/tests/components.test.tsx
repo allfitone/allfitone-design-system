@@ -4,6 +4,7 @@ import { axe } from "jest-axe";
 import { describe, expect, it, vi } from "vitest";
 
 import { Button } from "../src/components/button.js";
+import { AccentBlock, AccentBlockLabel, AccentBlockTitle } from "../src/components/accent-block.js";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../src/components/breadcrumb.js";
 import { Checkbox } from "../src/components/checkbox.js";
 import { Field, FieldDescription, FieldError, FieldLabel } from "../src/components/field.js";
@@ -12,8 +13,11 @@ import { Input } from "../src/components/input.js";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "../src/components/pagination.js";
 import { RadioGroup, RadioGroupItem } from "../src/components/radio-group.js";
 import { Spinner } from "../src/components/spinner.js";
+import { StatStrip, StatStripItem } from "../src/components/stat-strip.js";
 import { Switch } from "../src/components/switch.js";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../src/components/tabs.js";
+import { TickRing } from "../src/components/tick-ring.js";
+import { PulseMark } from "../src/components/pulse-mark.js";
 
 describe("ALLFIT ONE React components", () => {
   it("forwards native button behavior and renders named icon actions", async () => {
@@ -121,6 +125,41 @@ describe("ALLFIT ONE React components", () => {
 
     expect(screen.getByText("Training")).toHaveAttribute("aria-current", "page");
     expect(screen.getByRole("link", { name: "2" })).toHaveAttribute("aria-current", "page");
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("names and clamps athletic meter values", async () => {
+    const { container } = render(
+      <TickRing aria-label="Weekly adherence" value={140}>
+        100%
+      </TickRing>,
+    );
+
+    const meter = screen.getByRole("meter", { name: "Weekly adherence" });
+    expect(meter).toHaveAttribute("aria-valuenow", "100");
+    expect(meter).toHaveAttribute("aria-valuetext", "100%");
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("keeps signature primitives semantic and composable", async () => {
+    const { container } = render(
+      <div>
+        <AccentBlock>
+          <AccentBlockLabel>Next session</AccentBlockLabel>
+          <AccentBlockTitle>Strength</AccentBlockTitle>
+        </AccentBlock>
+        <StatStrip>
+          <StatStripItem value="22" label="Sets" />
+        </StatStrip>
+        <PulseMark label="Allfit pulse" />
+        <PulseMark data-testid="decorative-pulse" />
+      </div>,
+    );
+
+    expect(screen.getByRole("img", { name: "Allfit pulse" })).toBeInTheDocument();
+    expect(screen.getByTestId("decorative-pulse")).toHaveAttribute("aria-hidden", "true");
+    expect(container.querySelector('[data-slot="accent-block"]')).toBeInTheDocument();
+    expect(container.querySelector('[data-slot="stat-strip"]')).toBeInTheDocument();
     expect(await axe(container)).toHaveNoViolations();
   });
 });

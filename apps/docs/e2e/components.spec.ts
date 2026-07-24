@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/components");
-  await expect(page.getByRole("heading", { level: 1, name: "Controls built for movement." })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Components" })).toBeVisible();
 });
 
 test("supports both themes without serious accessibility violations", async ({ page }) => {
@@ -107,17 +107,19 @@ test("announces toast feedback without stealing focus", async ({ page }) => {
 });
 
 test("keeps touch targets and focus treatment at the minimum contract", async ({ page }) => {
-  for (const locator of [
-    page.getByRole("button", { name: "Start session" }),
-    page.getByRole("button", { name: "Add movement" }),
-    page.getByRole("checkbox", { name: "Share training history with this coach" }),
-    page.getByRole("switch", { name: "Live progress sharing" }),
-    page.locator("#navigation-menu").getByRole("button", { name: "Training", exact: true }),
-    page.locator("#workspace-shell").getByRole("button", { name: /Overview/ }),
-  ]) {
+  const targets = {
+    "primary button": page.getByRole("button", { name: "Start session" }),
+    "icon button": page.getByRole("button", { name: "Add movement" }),
+    checkbox: page.getByRole("checkbox", { name: "Share training history with this coach" }),
+    switch: page.getByRole("switch", { name: "Live progress sharing" }),
+    "navigation trigger": page.locator("#navigation-menu").getByRole("button", { name: "Training", exact: true }),
+    "workspace action": page.locator("#workspace-shell").getByRole("button", { name: /Panel/ }),
+  };
+
+  for (const [name, locator] of Object.entries(targets)) {
     const box = await locator.boundingBox();
-    expect(box?.width).toBeGreaterThanOrEqual(44);
-    expect(box?.height).toBeGreaterThanOrEqual(44);
+    expect(box?.width, `${name} width`).toBeGreaterThanOrEqual(44);
+    expect(box?.height, `${name} height`).toBeGreaterThanOrEqual(44);
   }
 
   const action = page.getByRole("button", { name: "Start session" });
@@ -137,17 +139,15 @@ test("does not overflow at 320 px or with long text", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Large action with long text" })).toBeVisible();
 });
 
-test("provides searchable mobile indexes for components and foundations", async ({ page }) => {
+test("provides responsive navigation for components and foundations", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 800 });
   await page.goto("/components");
-  await page.getByRole("button", { name: "Open component index" }).click();
-  await page.getByRole("searchbox", { name: "Find a component" }).fill("Dialog");
-  await page.getByRole("link", { name: "Dialog", exact: true }).click();
-  await expect(page).toHaveURL(/#dialog$/);
-  await expect(page.getByRole("heading", { name: "Component index" })).toBeHidden();
+  await page.getByRole("button", { name: "Open design system navigation" }).click();
+  await page.getByRole("link", { name: /Overlays/ }).click();
+  await expect(page).toHaveURL(/#overlays$/);
 
-  await page.goto("/");
-  await page.getByRole("button", { name: "Open foundation index" }).click();
+  await page.goto("/ui-foundation");
+  await page.getByRole("button", { name: "Open design system navigation" }).click();
   await page.getByRole("link", { name: /Typography/ }).click();
   await expect(page).toHaveURL(/#type$/);
 });
@@ -161,17 +161,16 @@ test("uses the canonical Select in the applied foundation sample", async ({ page
   await expect(trigger).toContainText("Recovery");
 });
 
-test("keeps the hero signature visible in both themes", async ({ page }) => {
-  await page.goto("/");
-  const darkMark = page.locator(".hero-signature__asset--dark");
-  const lightMark = page.locator(".hero-signature__asset--light");
+test("keeps the Ink & Signal signature stable in both themes", async ({ page }) => {
+  const accent = page.locator('[data-slot="accent-block"]').first();
+  const pulse = page.locator('[data-slot="pulse-mark"]').first();
 
-  await expect(darkMark).toBeVisible();
-  await expect(lightMark).toBeHidden();
+  await expect(accent).toBeVisible();
+  await expect(pulse).toBeVisible();
+  const darkSignal = await accent.evaluate((element) => getComputedStyle(element).backgroundImage);
   await page.getByRole("button", { name: "light", exact: true }).click();
-  await expect(darkMark).toBeHidden();
-  await expect(lightMark).toBeVisible();
-  expect(Number(await lightMark.evaluate((element) => getComputedStyle(element).opacity))).toBeGreaterThanOrEqual(0.08);
+  const lightSignal = await accent.evaluate((element) => getComputedStyle(element).backgroundImage);
+  expect(lightSignal).toBe(darkSignal);
 });
 
 test("honors reduced motion and forced color focus", async ({ page }) => {
@@ -186,6 +185,7 @@ test("honors reduced motion and forced color focus", async ({ page }) => {
 });
 
 test("matches the approved catalog composition", async ({ page }) => {
+  test.skip(process.platform !== "win32", "Visual baselines are canonical on Windows.");
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("button", { name: "dark", exact: true }).click();
   await expect(page).toHaveScreenshot("components-dark-desktop.png", { fullPage: true });
@@ -196,6 +196,7 @@ test("matches the approved catalog composition", async ({ page }) => {
 });
 
 test("matches key overlay states in both themes", async ({ page }) => {
+  test.skip(process.platform !== "win32", "Visual baselines are canonical on Windows.");
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.getByRole("button", { name: "dark", exact: true }).click();
   await page.getByRole("button", { name: "Edit member" }).click();

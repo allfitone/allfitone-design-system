@@ -2,7 +2,9 @@ import * as React from "react"
 
 import { cn } from "../lib/utils.js"
 
-type TickRingProps = Omit<React.ComponentProps<"div">, "role"> & {
+type TickRingProps = Omit<React.ComponentProps<"div">, "role" | "aria-label"> & {
+  /** Accessible name for the meter value. */
+  "aria-label": string
   /** Progress from 0 to 100. */
   value: number
   /** Rendered size of the ring in pixels. */

@@ -36,7 +36,11 @@ const requiredOutputs = [
 await Promise.all(requiredOutputs.map((file) => access(resolve(packageRoot, "dist", file))));
 
 const css = await readFile(resolve(packageRoot, "dist/tokens.css"), "utf8");
-if (!css.includes("--afo-color-brand-primary") || !css.includes("--afo-space-touch-target-web")) {
+if (
+  !css.includes("--afo-color-brand-primary") ||
+  !css.includes("--afo-space-touch-target-web") ||
+  !css.includes("--afo-typography-data-font-family")
+) {
   throw new Error("React token CSS is missing required generated variables.");
 }
 

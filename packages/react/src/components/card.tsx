@@ -39,7 +39,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="card-title"
       className={cn(
         // Reference .panel h4: 12px / 800 / uppercase / .08em micro-caps.
-        "text-xs leading-snug font-extrabold tracking-[0.08em] uppercase",
+        "text-xs leading-snug font-extrabold tracking-[var(--afo-letter-spacing-micro)] uppercase",
         className
       )}
       {...props}

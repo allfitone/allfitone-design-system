@@ -41,6 +41,8 @@ export const typography = {
     display: -0.055,
     tight: -0.025,
     normal: 0,
+    brand: 0.02,
+    micro: 0.08,
     utility: 0.16,
     eyebrow: 0.2,
   },

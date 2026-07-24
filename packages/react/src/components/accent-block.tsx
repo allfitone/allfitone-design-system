@@ -27,7 +27,7 @@ function AccentBlockLabel({ className, ...props }: React.ComponentProps<"div">) 
     <div
       data-slot="accent-block-label"
       className={cn(
-        "text-[0.625rem] font-extrabold tracking-[0.16em] uppercase text-[var(--afo-color-accent-on-accent-muted)]",
+        "text-xs font-extrabold tracking-[var(--afo-letter-spacing-utility)] uppercase text-[var(--afo-color-accent-on-accent-muted)]",
         className
       )}
       {...props}

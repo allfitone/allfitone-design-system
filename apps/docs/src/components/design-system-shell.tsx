@@ -167,12 +167,11 @@ function DesignSystemSidebar({ current }: { current: GuideSection }) {
                 const isCurrent = chapter.id === current;
 
                 return (
-                  <Collapsible
-                    key={chapter.id}
-                    className="design-system-sidebar__collapsible"
-                    defaultOpen={isCurrent}
-                  >
-                    <SidebarMenuItem>
+                  <SidebarMenuItem key={chapter.id}>
+                    <Collapsible
+                      className="design-system-sidebar__collapsible"
+                      defaultOpen={isCurrent}
+                    >
                       <CollapsibleTrigger
                         render={
                           <SidebarMenuButton
@@ -206,8 +205,8 @@ function DesignSystemSidebar({ current }: { current: GuideSection }) {
                           ))}
                         </SidebarMenuSub>
                       </CollapsibleContent>
-                    </SidebarMenuItem>
-                  </Collapsible>
+                    </Collapsible>
+                  </SidebarMenuItem>
                 );
               })}
             </SidebarMenu>

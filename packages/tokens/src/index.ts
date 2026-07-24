@@ -21,7 +21,8 @@ import { typography, typographyRole } from "./typography.js";
 export const tokenBundle = {
   meta: {
     name: "Allfit One Design Tokens",
-    version: "0.2.0",
+    version: "0.1.0",
+    designVersion: "2.0.0",
     theme: "ink-and-signal",
     defaultTheme: "dark",
     units: {

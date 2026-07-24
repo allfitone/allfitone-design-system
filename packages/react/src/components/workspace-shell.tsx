@@ -68,7 +68,7 @@ function WorkspaceEyebrow({
     <p
       data-slot="workspace-eyebrow"
       className={cn(
-        "m-0 text-[0.6rem] font-extrabold tracking-[0.16em] text-muted-foreground uppercase",
+        "m-0 text-xs font-extrabold tracking-[var(--afo-letter-spacing-utility)] text-muted-foreground uppercase",
         className
       )}
       {...props}
@@ -86,7 +86,7 @@ function WorkspaceTitle({
       data-slot="workspace-title"
       className={cn(
         // Reference .os-top h3: 24px / 600 / uppercase / +0.02em / lh 1.
-        "m-0 truncate font-display text-2xl leading-none font-semibold tracking-[0.02em] uppercase",
+        "m-0 truncate font-display text-2xl leading-none font-semibold tracking-[var(--afo-letter-spacing-brand)] uppercase",
         className
       )}
       {...props}

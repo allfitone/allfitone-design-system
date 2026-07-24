@@ -45,6 +45,26 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --font-sans: var(--afo-font-family-body);
   --font-display: var(--afo-font-family-display);
+  --spacing: var(--afo-space-1);
+  --text-xs: var(--afo-font-size-xs);
+  --text-xs--line-height: var(--afo-line-height-compact);
+  --text-sm: var(--afo-font-size-sm);
+  --text-sm--line-height: var(--afo-line-height-body);
+  --text-base: var(--afo-font-size-md);
+  --text-base--line-height: var(--afo-line-height-body);
+  --text-lg: var(--afo-font-size-lg);
+  --text-lg--line-height: var(--afo-line-height-compact);
+  --text-xl: var(--afo-font-size-xl);
+  --text-xl--line-height: var(--afo-line-height-compact);
+  --text-2xl: var(--afo-font-size-2xl);
+  --text-2xl--line-height: var(--afo-line-height-tight);
+  --text-3xl: var(--afo-font-size-3xl);
+  --text-4xl: var(--afo-font-size-4xl);
+  --text-5xl: var(--afo-font-size-5xl);
+  --text-6xl: var(--afo-font-size-6xl);
+  --text-7xl: var(--afo-font-size-7xl);
+  --text-8xl: var(--afo-font-size-8xl);
+  --text-9xl: var(--afo-font-size-9xl);
   --radius-sm: var(--afo-radius-sm);
   --radius-md: var(--afo-radius-md);
   --radius-lg: var(--afo-radius-control);
@@ -98,9 +118,9 @@
   --afo-warning-soft: color-mix(in srgb, var(--warning) 15%, transparent);
   --afo-info-soft: color-mix(in srgb, var(--info) 13%, transparent);
   /* Ink & Signal: sin gloss/bisel interior — sombras planas y suaves. */
-  --afo-control-shadow: 0 1px 2px color-mix(in srgb, var(--afo-color-ink-void) 18%, transparent);
-  --afo-control-shadow-hover: 0 8px 24px -10px color-mix(in srgb, var(--afo-color-brand-primary) 45%, transparent);
-  --afo-surface-shadow: 0 16px 42px -26px color-mix(in srgb, var(--afo-color-ink-void) 62%, transparent);
+  --afo-control-shadow: var(--afo-shadow-control);
+  --afo-control-shadow-hover: var(--afo-shadow-brand-glow-strong);
+  --afo-surface-shadow: var(--afo-shadow-card);
 }
 
 @layer base {

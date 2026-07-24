@@ -31,7 +31,7 @@ function StatStripItem({
     <div
       data-slot="stat-strip-item"
       className={cn(
-        "min-w-0 flex-1 border-l border-border px-1.5 py-[11px] text-center first:border-l-0",
+        "min-w-0 flex-1 border-l border-border px-2 py-3 text-center first:border-l-0",
         className
       )}
       {...props}
@@ -46,7 +46,7 @@ function StatStripItem({
           </div>
           <div
             data-slot="stat-strip-label"
-            className="mt-1 text-[0.6rem] font-extrabold tracking-[0.12em] uppercase text-muted-foreground"
+            className="mt-1 text-xs font-extrabold tracking-[var(--afo-letter-spacing-utility)] uppercase text-muted-foreground"
           >
             {label}
           </div>

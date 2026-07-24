@@ -15,19 +15,20 @@ Product identity does not come from the preset. Component colors, typography, sp
 
 ## Visual signature
 
-The Trajectory Rail is the component system's signature gesture. It derives from the diagonal energy of the ALLFIT ONE symbol and marks primary actions, selected trajectories, and active surfaces. Use it only when the interface needs to communicate direction or current state; it is not a decorative border treatment.
+Ink & Signal v2 uses calm blue-gray ink surfaces so one cyan signal can identify the most important action or state. The signal is intentionally scarce: a screen may contain one primary gradient action or one `AccentBlock`, not a field of competing accents.
 
-- Primary Button places a restrained diagonal rail inside the trailing edge.
-- Selected line Tabs use a diagonal trajectory instead of a generic underline.
-- Card supports `data-state="active"` for an accented leading rail and boundary.
-- Product layouts may carry the gesture into progress and navigation, but should not repeat it on every surface.
+- Primary Button is a pill filled by the canonical signal gradient.
+- `AccentBlock` owns the single featured surface for a session, class, timer, or next action.
+- Active navigation and Card states use a restrained three-pixel rail plus a tonal wash.
+- `PulseMark`, `TickRing`, condensed tabular numerals, and subtle dot texture carry the athletic signature without turning every container into decoration.
+- Glass material is reserved for floating chrome and overlays; content cards remain solid.
 
 Visual hierarchy is intentionally quieter than the brand palette. Cyan is reserved for primary action, current selection, focus, and short semantic accents. Resting controls use neutral semantic boundaries; persistent cyan borders across every surface are not part of the system.
 
 - Controls use a slightly recessed surface and become clearer on hover or focus.
 - Floating surfaces use the canonical raised shadow and a single semantic boundary.
-- Primary actions carry the asymmetric top-right cut and Trajectory Rail; secondary, outline, and ghost actions do not imitate it.
-- Status badges use a tinted background plus explicit text. The public status variants are `success`, `warning`, `info`, and `destructive`.
+- Primary actions carry the signal gradient; secondary, outline, and ghost actions remain neutral.
+- Status badges use a tinted background plus explicit text. The public status variants are `success`, `warning`, `info`, `sport`, and `destructive`.
 - Component demos must show depth, disabled behavior, invalid treatment, and long content in both themes rather than relying on isolated color swatches.
 
 Barlow Condensed belongs to brand theses, category headings, and metrics. Functional titles inside Card, Dialog, AlertDialog, Sheet, and Empty use Manrope so dense application UI preserves a clear reading hierarchy.
@@ -60,19 +61,22 @@ The package root remains metadata-only. There is no component barrel because exp
 | Forms | Field, Label, Input, Textarea |
 | Selection | Checkbox, RadioGroup, Switch, Select, Tabs |
 | Data display | Badge, Card, Skeleton, Empty |
+| Signature | AccentBlock, StatStrip, TickRing, PulseMark |
 | Overlays | Dialog, AlertDialog, Sheet, Tooltip |
 | Feedback | Sonner/Toast, Spinner |
+| Composition | Collapsible, Separator |
 
-`Separator` is a public compositional dependency used by `Field`.
+`Collapsible` and `Separator` are public compositional dependencies used by navigation and forms.
 
 ## Composition rules
 
 - Links that look like buttons apply `buttonVariants` to an anchor or framework `Link`. They do not render through Base UI Button.
-- Workspace navigation composes `Sidebar` and `WorkspaceShell`; product applications provide destinations and routing state rather than restyling the active trajectory.
+- Workspace navigation composes `Sidebar` and `WorkspaceShell`; product applications provide destinations and routing state rather than restyling the active signal treatment.
 - Breadcrumb and Pagination use real anchors or framework links. The current resource or page is always exposed semantically and never indicated by color alone.
 - Drawer requires a visible or screen-reader title and serves mobile navigation or bounded secondary tasks; it does not replace Dialog for focused confirmations.
 - Loading actions compose `Spinner` and `disabled`; no component adds an `isLoading` prop.
 - `IconButton` requires `aria-label` in TypeScript.
+- `TickRing` requires `aria-label` in TypeScript because its `meter` value must always have a name.
 - Controlled components support `value`, `defaultValue`, and `onValueChange` through their Base UI root API.
 - Overlays support `open`, `defaultOpen`, and `onOpenChange`, require a title, contain modal focus, support Escape, make the background inert, and return focus to the trigger.
 - Field errors use text, `data-invalid`, `aria-invalid`, and an explicit description/error relationship.
@@ -83,9 +87,9 @@ Every interactive target is at least `44 x 44 CSS px`. Focus uses the two-ring A
 
 ## Explorer and validation
 
-The Explorer keeps foundations at `/` and renders the interactive component catalog at `/components`. The catalog must consume only published `@allfitone/react` subpaths. Both views provide a mobile index when the desktop navigation is unavailable.
+The Explorer redirects `/` to foundations at `/ui-foundation` and renders the interactive component catalog at `/components`. The catalog consumes only published `@allfitone/react` subpaths. Both views share the responsive design-system sidebar, exposed on mobile through the “Open design system navigation” control.
 
-Component entries document their behavioral contract next to the interactive example. Category labels use functional namespaces such as `ACT`, `FRM`, and `OVR`; they are not numbered because the catalog is not a sequential process. The component hero demonstrates the real idle, focus, active, and complete interaction sequence instead of using decorative status metrics.
+Component entries document their behavioral contract next to the interactive example. Category labels use functional namespaces such as `ACT`, `FRM`, and `OVR`; the faint index numerals are reference coordinates, not a prescribed sequence. The component hero demonstrates the real idle, focus, active, and complete interaction sequence instead of using decorative status metrics.
 
 `npm run check` runs TypeScript, lint, package builds, unit tests, axe assertions, token validation, and output-contract validation. `npm run check:e2e` builds the workspace and runs Playwright for keyboard behavior, overlay focus, theme switching, WCAG scans, target sizes, 320 px reflow, and desktop/mobile visual regression.
 

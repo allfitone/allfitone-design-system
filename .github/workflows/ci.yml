@@ -51,3 +51,28 @@ jobs:
 
       - name: Inspect publishable tarballs
         run: npm run check:pack
+
+  visual-regression:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install chromium
+
+      - name: Build Explorer
+        run: npm run build
+
+      - name: Validate canonical Windows visuals
+        run: npm run test:e2e --workspace @allfitone/docs -- --grep "matches"

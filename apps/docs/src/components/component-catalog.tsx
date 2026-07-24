@@ -23,7 +23,7 @@ import { PulseMark } from "@allfitone/react/components/pulse-mark";
 import { RadioGroup, RadioGroupItem } from "@allfitone/react/components/radio-group";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@allfitone/react/components/select";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@allfitone/react/components/sheet";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem } from "@allfitone/react/components/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem } from "@allfitone/react/components/sidebar";
 import { Skeleton } from "@allfitone/react/components/skeleton";
 import { toast } from "@allfitone/react/components/sonner";
 import { Spinner } from "@allfitone/react/components/spinner";
@@ -189,7 +189,7 @@ export function ComponentCatalog() {
           </ComponentSection>
 
           <ComponentSection id="workspace-shell" title="Sidebar + WorkspaceShell" description="The application frame keeps organization, product area and current task in one disciplined hierarchy." importPath="@allfitone/react/components/workspace-shell" contract={["Desktop sidebar", "Mobile sheet", "Collapsed state", "Landmark order"]}>
-            <WorkspaceShell className="workspace-preview" style={{ "--sidebar-width": "15rem" } as CSSProperties}>
+            <WorkspaceShell className="workspace-preview" lang="es" style={{ "--sidebar-width": "15rem" } as CSSProperties}>
               <Sidebar collapsible="none">
                 <SidebarHeader>
                   <div className="workspace-preview__brand">
@@ -320,9 +320,9 @@ export function ComponentCatalog() {
           </ComponentSection>
 
           <ComponentSection id="class-cards" title="Class cards" description="Patrón de reservas del producto: clase destacada, inscrita y no disponible — AccentBlock, Card, Badge y Button compuestos." importPath="@allfitone/react (composición)" contract={["Destacada única", "Estados de reserva", "CTA invertido", "Dark / light"]}>
-            <div className="class-cards-demo">
+            <div className="class-cards-demo" lang="es">
               <AccentBlock>
-                <div className="class-cards-demo__top"><AccentBlockTitle>Functional 45'</AccentBlockTitle><Badge>HIIT</Badge></div>
+                <div className="class-cards-demo__top"><AccentBlockTitle>Functional 45′</AccentBlockTitle><Badge>HIIT</Badge></div>
                 <AccentBlockMeta>Vie 24 jul · 7:00 – 7:45 · Clase en vivo</AccentBlockMeta>
                 <AccentBlockMeta><strong>14/16</strong> reservas · quedan 2 cupos</AccentBlockMeta>
                 <Button className="class-cards-demo__cta">Reservar clase</Button>

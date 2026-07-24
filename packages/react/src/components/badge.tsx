@@ -5,8 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../lib/utils.js"
 
 const badgeVariants = cva(
-  // Reference .badge: 9.5px / 800 / uppercase / .08em / 3.5px 9px / pill.
-  "group/badge inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full border border-transparent px-[9px] py-[3.5px] text-[0.59375rem] leading-[1.5] font-extrabold tracking-[0.08em] uppercase whitespace-nowrap transition-colors [a]:min-h-11 [a]:px-3 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 aria-invalid:border-destructive [&>svg]:pointer-events-none [&>svg]:size-3!",
+  "group/badge inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full border border-transparent px-2.5 py-1 text-xs leading-[var(--afo-line-height-compact)] font-extrabold tracking-[var(--afo-letter-spacing-micro)] uppercase whitespace-nowrap transition-colors [a]:min-h-11 [a]:px-3 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 aria-invalid:border-destructive [&>svg]:pointer-events-none [&>svg]:size-3!",
   {
     variants: {
       variant: {
@@ -14,17 +13,17 @@ const badgeVariants = cva(
         secondary:
           "bg-muted text-muted-foreground [a]:hover:bg-accent [a]:hover:text-foreground",
         destructive:
-          "bg-destructive/12 text-danger-text [a]:hover:bg-destructive/20",
+          "bg-destructive/12 text-foreground [a]:hover:bg-destructive/20",
         outline:
           "bg-transparent text-muted-foreground [a]:hover:bg-muted",
         ghost:
           "hover:bg-muted hover:text-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        success: "bg-success/12 text-success [a]:hover:bg-success/20",
-        warning: "bg-warning/12 text-warning [a]:hover:bg-warning/20",
-        info: "bg-info/12 text-info [a]:hover:bg-info/20",
+        success: "bg-success/12 text-foreground [a]:hover:bg-success/20",
+        warning: "bg-warning/12 text-foreground [a]:hover:bg-warning/20",
+        info: "bg-info/12 text-foreground [a]:hover:bg-info/20",
         sport:
-          "bg-[color-mix(in_srgb,var(--afo-color-status-sport)_12%,transparent)] text-[var(--afo-color-status-sport)]",
+          "bg-[color-mix(in_srgb,var(--afo-color-status-sport)_12%,transparent)] text-foreground",
       },
     },
     defaultVariants: {
