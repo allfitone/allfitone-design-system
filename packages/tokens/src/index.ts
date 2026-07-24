@@ -1,13 +1,17 @@
 export { color, semanticColor } from "./color.js";
 export { createCssVariables } from "./css.js";
+export { gradient, semanticGradient } from "./gradient.js";
+export { material } from "./material.js";
 export { motion, semanticMotion } from "./motion.js";
 export { radius, semanticRadius } from "./radius.js";
 export { semanticShadow, shadow } from "./shadow.js";
 export { semanticSpacing, spacing } from "./spacing.js";
 export { typography, typographyRole } from "./typography.js";
-export type { CubicBezier, HexColor, ShadowLayer, SpringConfig } from "./types.js";
+export type { CubicBezier, GlassMaterial, Gradient, GradientStop, HexColor, ShadowLayer, SpringConfig } from "./types.js";
 
 import { color, semanticColor } from "./color.js";
+import { gradient, semanticGradient } from "./gradient.js";
+import { material } from "./material.js";
 import { motion, semanticMotion } from "./motion.js";
 import { radius, semanticRadius } from "./radius.js";
 import { semanticShadow, shadow } from "./shadow.js";
@@ -17,7 +21,8 @@ import { typography, typographyRole } from "./typography.js";
 export const tokenBundle = {
   meta: {
     name: "Allfit One Design Tokens",
-    version: "0.1.0",
+    version: "0.2.0",
+    theme: "ink-and-signal",
     defaultTheme: "dark",
     units: {
       dimension: "px",
@@ -28,6 +33,7 @@ export const tokenBundle = {
   },
   primitive: {
     color,
+    gradient,
     typography,
     spacing,
     radius,
@@ -36,6 +42,8 @@ export const tokenBundle = {
   },
   semantic: {
     color: semanticColor,
+    gradient: semanticGradient,
+    material,
     typography: typographyRole,
     spacing: semanticSpacing,
     radius: semanticRadius,
@@ -43,4 +51,3 @@ export const tokenBundle = {
     motion: semanticMotion,
   },
 } as const;
-

@@ -77,5 +77,15 @@ export const typographyRole = {
     lineHeight: "compact",
     letterSpacing: "eyebrow",
   },
+  /**
+   * Ink & Signal v2: large data numerals (metrics, timers, KPIs) render in
+   * the condensed display face with tabular figures for athletic character.
+   */
+  data: {
+    family: "display",
+    weight: "semibold",
+    lineHeight: "tight",
+    letterSpacing: "normal",
+  },
 } as const;
 

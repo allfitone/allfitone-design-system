@@ -8,21 +8,25 @@ const layer = (x: number, y: number, blur: number, spread: number, color: Shadow
   color,
 });
 
+/**
+ * Ink & Signal v2 — elevation is tone + one soft, large shadow.
+ * Cards carry no borders; separation comes from surface tone and `card`.
+ */
 export const shadow = {
   none: [] as readonly ShadowLayer[],
   xs: [layer(0, 1, 2, 0, "#0307131F")],
-  sm: [layer(0, 6, 18, -6, "#03071329")],
-  md: [layer(0, 18, 55, -18, "#0307133D")],
+  sm: [layer(0, 12, 32, -12, "#03071340")],
+  md: [layer(0, 20, 50, -20, "#03071399")],
   lg: [layer(0, 34, 80, -24, "#0000006B")],
   xl: [layer(0, 40, 100, -28, "#00000057")],
-  focus: [layer(0, 0, 0, 2, "#EAFFFF"), layer(0, 0, 0, 4, "#030713")],
+  focus: [layer(0, 0, 0, 2, "#F2FBFC"), layer(0, 0, 0, 4, "#05090F")],
   glow: [layer(0, 0, 70, 0, "#55EFFB14")],
-  glowStrong: [layer(0, 0, 34, 0, "#55EFFB59")],
+  glowStrong: [layer(0, 0, 42, -6, "#55EFFB80")],
 } as const;
 
 export const semanticShadow = {
   control: shadow.xs,
-  card: shadow.sm,
+  card: shadow.md,
   floating: shadow.md,
   overlay: shadow.lg,
   workspace: shadow.xl,

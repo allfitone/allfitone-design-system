@@ -16,8 +16,10 @@ export const radius = {
 export const semanticRadius = {
   control: radius.control,
   controlSmall: radius.md,
-  card: radius.lg,
-  panel: radius.xl,
+  /** Ink & Signal v2: buttons and standalone actions are pills. */
+  action: radius.full,
+  card: radius.xl,
+  panel: radius["2xl"],
   overlay: radius["2xl"],
   device: radius["5xl"],
   pill: radius.full,
