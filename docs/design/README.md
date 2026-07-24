@@ -1,6 +1,6 @@
 # Ink & Signal — dirección de arte v2
 
-Abre [`ink-and-signal.html`](./ink-and-signal.html) en un navegador (doble clic, no necesita servidor: las fuentes van embebidas).
+El showcase vive en la docs app y se sirve como ruta estática: con `npm run dev` corriendo, ábrelo en **`http://localhost:3000/design/ink-and-signal.html`** (también queda publicado en el deploy de Vercel bajo `/design/ink-and-signal.html`, y hay un link "Ink & Signal" en el topbar de la docs). El archivo fuente está en `apps/docs/public/design/ink-and-signal.html` — es autocontenido (fuentes embebidas), también se puede abrir con doble clic.
 
 Es el concepto aprobado de la v2 del design system aplicado a **12 pantallas reales del producto** — 6 de Allfit OS (panel del profesional, web) y 6 de Allfit Space (app nativa React Native) — replicando el inventario funcional de factory-fitness (mismas columnas, estados y textos), en modo dark y light.
 

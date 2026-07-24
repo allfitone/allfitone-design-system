@@ -120,6 +120,7 @@ export default function Home() {
         <nav aria-label="Foundation sections">
           {navigation.map((item) => <a key={item} href={`#${item.toLowerCase()}`}>{item}</a>)}
           <Link href="/components">Components</Link>
+          <a href="/design/ink-and-signal.html">Ink &amp; Signal</a>
         </nav>
         <div className="catalog-toolbar">
           <FoundationIndex />
