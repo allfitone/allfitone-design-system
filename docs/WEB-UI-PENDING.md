@@ -67,7 +67,7 @@ These are composed patterns, not new low-level primitives. They should be promot
 
 ## Navigation follow-up
 
-The component layer is complete, but product integration must still validate:
+The reusable navigation component layer is complete, but product integration must still validate:
 
 - Next.js `Link` composition for Breadcrumb, Pagination, NavigationMenu, and Sidebar destinations;
 - active-route and nested-route rules based on the real OS route tree;
@@ -87,7 +87,7 @@ These behaviors belong in Allfit OS first. Only generic routing adapters proven 
 - Complete the required VoiceOver and Safari review before the first public package release.
 - Run a consumer smoke test from Allfit OS using only public `@allfitone/react` subpaths.
 - Validate real navigation labels, dense tables, translated content, zoom at 200%, and 320 px layouts with production-like data.
-- Add a Changeset when this navigation release is prepared for publication.
+- Keep the existing bootstrap Changeset for the unreleased `0.1.0` package set. After that release, every public navigation contract change requires its own Changeset.
 
 ## Definition of done for every new component
 

@@ -64,7 +64,7 @@ Token consumers can also inspect `tokenBundle.meta.version`, `@allfitone/tokens/
 
 ## Promoting the pilot
 
-Landing consumes the bootstrap release through the `next` tag. After its production build and responsive QA pass, promote the exact version without rebuilding it:
+Publish the bootstrap release under the `next` tag first. After Landing installs that exact version and its production build and responsive QA pass, promote the already-published artifacts without rebuilding them:
 
 ```bash
 npm dist-tag add @allfitone/tokens@0.1.0 latest

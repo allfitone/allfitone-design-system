@@ -19,7 +19,7 @@ Omit `title` only when the asset is decorative and the surrounding control alrea
 
 ## Other platforms
 
-The package root exports colors, dimensions, asset paths, and platform-neutral types. Canonical SVG files ship under `@allfitone/brand/assets/*`; React Native projects can consume them through the project's approved SVG transformer or build a native adapter from the exported geometry.
+The package root exports colors, dimensions, asset paths, and platform-neutral types. Canonical SVG files ship under `@allfitone/brand/assets/*`. React Native applications should use the existing `@allfitone/react-native/brand` adapter, which renders the canonical geometry through `react-native-svg`; product applications must not build a competing brand renderer.
 
 Never redraw, stretch, recolor, or rearrange these assets in a consuming product.
 

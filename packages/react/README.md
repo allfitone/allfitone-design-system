@@ -29,6 +29,18 @@ The package root contains platform metadata only. This prevents accidental broad
 
 The component API follows shadcn composition on Base UI while its visual variants, tokens, target sizes, focus treatment, and accessibility defaults belong to ALLFIT ONE. Import CSS once at the application root, place `tokens.css` before `styles.css`, and change themes with `data-afo-theme="dark|light"` on the document element.
 
-Available public component subpaths are `alert-dialog`, `badge`, `button`, `card`, `checkbox`, `dialog`, `empty`, `field`, `icon-button`, `input`, `label`, `radio-group`, `select`, `sheet`, `skeleton`, `sonner`, `spinner`, `switch`, `tabs`, `textarea`, and `tooltip`. `separator` is also public because it is a compositional dependency of `Field`.
+Available public component subpaths are:
+
+- actions: `button` and `icon-button`;
+- navigation: `breadcrumb`, `navigation-menu`, `dropdown-menu`, `pagination`, `drawer`, `sidebar`, and `workspace-shell`;
+- forms: `field`, `label`, `input`, and `textarea`;
+- selection: `checkbox`, `radio-group`, `switch`, `select`, and `tabs`;
+- data display: `badge`, `card`, `skeleton`, and `empty`;
+- signature: `accent-block`, `stat-strip`, `tick-ring`, and `pulse-mark`;
+- overlays: `dialog`, `alert-dialog`, `sheet`, and `tooltip`;
+- feedback: `sonner` and `spinner`;
+- composition: `collapsible` and `separator`.
+
+There is no all-components barrel. Import each component from its explicit `@allfitone/react/components/{name}` subpath.
 
 Loading actions compose a named `Spinner` inside a disabled `Button`; components do not expose an `isLoading` prop. Icon-only actions use `IconButton`, whose TypeScript contract requires `aria-label`.

@@ -87,9 +87,9 @@ Every interactive target is at least `44 x 44 CSS px`. Focus uses the two-ring A
 
 ## Explorer and validation
 
-The Explorer redirects `/` to foundations at `/ui-foundation` and renders the interactive component catalog at `/components`. The catalog consumes only published `@allfitone/react` subpaths. Both views share the responsive design-system sidebar, exposed on mobile through the “Open design system navigation” control.
+The Explorer redirects `/` to foundations at `/ui-foundation` and renders the interactive component catalog at `/components`. The catalog consumes only public `@allfitone/react` package subpaths through the local workspace, so the same imports remain valid after npm publication. Both views share the responsive design-system sidebar, exposed on mobile through the Allfit One logo control named “Open design system navigation”.
 
-Component entries document their behavioral contract next to the interactive example. Category labels use functional namespaces such as `ACT`, `FRM`, and `OVR`; the faint index numerals are reference coordinates, not a prescribed sequence. The component hero demonstrates the real idle, focus, active, and complete interaction sequence instead of using decorative status metrics.
+Component entries document their behavioral contract next to the interactive example. Category labels use the shared code Badge and functional namespaces such as `ACT`, `FRM`, and `OVR`; category headers show the number of documented entries without decorative sequence numerals. The component hero demonstrates the real idle, focus, active, and complete interaction sequence instead of using decorative status metrics.
 
 `npm run check` runs TypeScript, lint, package builds, unit tests, axe assertions, token validation, and output-contract validation. `npm run check:e2e` builds the workspace and runs Playwright for keyboard behavior, overlay focus, theme switching, WCAG scans, target sizes, 320 px reflow, and desktop/mobile visual regression.
 

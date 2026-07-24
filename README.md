@@ -36,7 +36,7 @@ Public npm releases use the `@allfitone` organization, Changesets, and an approv
 
 | App | Purpose |
 | --- | --- |
-| `@allfitone/docs` | Visual explorer for foundations at `/` and components at `/components` |
+| `@allfitone/docs` | Private Next.js visual explorer; `/` redirects to foundations at `/ui-foundation`, with the component catalog at `/components` |
 
 Usage rules and the rationale behind each scale live in [Foundations](docs/FOUNDATIONS.md). Accessibility requirements live in [Accessibility](docs/ACCESSIBILITY.md). Web component contracts live in [Web components](docs/WEB-COMPONENTS.md), with remaining component and product-pattern work tracked in [Web UI pending work](docs/WEB-UI-PENDING.md). Platform packaging and public imports live in [Platform packages](docs/PLATFORM-PACKAGES.md). Brand ownership and adoption rules live in [Brand and iconography](docs/BRAND-AND-ICONOGRAPHY.md).
 

@@ -18,11 +18,10 @@ Consumer repositories must install released package versions. They must not depe
 
 Installed package files and synchronized public assets are generated consumer copies, not additional sources of truth. Never edit them directly.
 
-## Adoption status
+## Repository-local adoption status
 
-- Design-system explorer: consumes the public `@allfitone/react` adapter.
-- Landing: continues using its existing verified exports until the packages are released to the selected registry.
-- Allfit OS: no frontend application scaffold exists yet.
-- Allfit Space: no React Native application scaffold exists yet.
+- The Design System Explorer consumes `@allfitone/react` through the workspace using the same public subpaths that npm consumers will install.
+- The five public packages are prepared for the bootstrap `0.1.0` release; until that release exists in npm, external products cannot install them from the registry.
+- The Explorer documents a provisional Allfit OS mark, wordmark, and lockup for review. They are not canonical exports from `@allfitone/brand` yet.
 
-Once distribution is configured, migrate the landing to `@allfitone/react` and initialize future Space work with `@allfitone/react-native`.
+Adoption inside Landing, Allfit OS, and Allfit Space must be tracked and verified in each product repository. This repository defines the consumer contract but must not claim that an external application has migrated without evidence from that application's current source.

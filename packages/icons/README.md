@@ -19,4 +19,4 @@ import { FoundationIcon } from "@allfitone/icons/react";
 - Use `sm` with the compact stroke only in dense metadata.
 - Do not use brand marks as interface icons.
 
-React Native should consume the platform-neutral catalog from the package root and map the same Lucide source names through `lucide-react-native` when the Space application is scaffolded.
+React Native applications should consume `@allfitone/react-native/icons`. That adapter already maps this package's semantic catalog through `lucide-react-native`, so product applications must not create a second glyph mapping.
