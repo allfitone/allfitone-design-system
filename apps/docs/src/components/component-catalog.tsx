@@ -179,7 +179,7 @@ export function ComponentCatalog() {
               <DrawerContent>
                 <DrawerHeader><DrawerTitle>Workspace</DrawerTitle><DrawerDescription>Move through Allfit Performance.</DrawerDescription></DrawerHeader>
                 <nav className="drawer-navigation" aria-label="Mobile workspace">
-                  <a href="#navigation" onClick={() => setDrawerOpen(false)}><FoundationIcon name="overview" decorative />Overview</a>
+                  <a href="#navigation" aria-current="page" onClick={() => setDrawerOpen(false)}><FoundationIcon name="overview" decorative />Overview</a>
                   <a href="#navigation" onClick={() => setDrawerOpen(false)}><FoundationIcon name="people" decorative />People</a>
                   <a href="#navigation" onClick={() => setDrawerOpen(false)}><FoundationIcon name="training" decorative />Training</a>
                   <a href="#navigation" onClick={() => setDrawerOpen(false)}><FoundationIcon name="operation" decorative />Operation</a>

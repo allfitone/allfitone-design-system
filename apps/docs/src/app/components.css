@@ -470,25 +470,56 @@
 .drawer-navigation {
   display: grid;
   min-width: min(22rem, 86vw);
-  padding: 1rem;
+  gap: 0.25rem;
+  padding: 0.75rem;
 }
 
+/* Filas como el patrón .sml-card del reference: tile tonal para el icono,
+   fila redondeada, chevron — sin hairlines de lado a lado. */
 .drawer-navigation a {
   display: flex;
   min-height: var(--afo-space-touch-target-web);
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.7rem 0.85rem;
-  border-bottom: 1px solid var(--afo-color-border-subtle);
+  gap: 0.65rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 0.75rem;
   color: var(--afo-color-text-secondary);
   font-size: 0.86rem;
   font-weight: var(--afo-font-weight-semibold);
+}
+
+.drawer-navigation a > svg {
+  box-sizing: content-box;
+  width: 0.875rem;
+  height: 0.875rem;
+  padding: 0.4rem;
+  border-radius: 0.5625rem;
+  background: var(--afo-color-accent-tonal);
+  color: var(--afo-color-text-accent);
+}
+
+.drawer-navigation a::after {
+  margin-left: auto;
+  color: var(--afo-color-text-muted);
+  content: "\203A";
+  font-size: 1.05rem;
+  line-height: 1;
 }
 
 .drawer-navigation a:hover,
 .drawer-navigation a:focus-visible {
   background: var(--afo-color-background-surface-muted);
   color: var(--afo-color-text-primary);
+}
+
+.drawer-navigation a[aria-current="page"] {
+  background: var(--afo-color-accent-tonal);
+  color: var(--afo-color-text-accent);
+  font-weight: var(--afo-font-weight-extrabold);
+}
+
+.drawer-navigation a[aria-current="page"]::after {
+  color: var(--afo-color-text-accent);
 }
 
 .workspace-preview {
