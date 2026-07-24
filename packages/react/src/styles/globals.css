@@ -140,6 +140,15 @@
     color: var(--afo-color-accent-on-accent);
   }
 
+  /* Dentro de un AccentBlock el CTA invierte a ink-on-signal (.pill-ink
+     del reference): cyan sobre cyan se camufla. Debe vivir en esta capa
+     para ganarle a la regla del degradado de arriba. */
+  [data-slot="accent-block"] [data-slot="button"] {
+    background: var(--afo-color-ink-on-signal);
+    color: var(--afo-color-brand-light);
+    box-shadow: none;
+  }
+
   /* Reference: los estados activos (.set-row.cur, .nav-it.on) llevan
      barra de 3px + lavado tonal — ambos, no solo la barra. */
   [data-slot="card"][data-state="active"] {
