@@ -188,23 +188,25 @@ export function ComponentCatalog() {
             <WorkspaceShell className="workspace-preview" style={{ "--sidebar-width": "15rem" } as CSSProperties}>
               <Sidebar collapsible="none">
                 <SidebarHeader>
-                  <div className="workspace-preview__organization"><FoundationIcon name="organization" decorative /><span><strong>Allfit Performance</strong><small>Bogotá · Main workspace</small></span></div>
+                  <div className="workspace-preview__brand">
+                    <svg viewBox="0 0 34 14" aria-hidden="true"><path d="M1 8h6l3-6 4 10 3-7 2 3h14" /></svg>
+                    <span>Allfit <em>OS</em></span>
+                  </div>
                 </SidebarHeader>
                 <SidebarContent>
                   <SidebarGroup>
-                    <SidebarGroupLabel>Workspace</SidebarGroupLabel>
                     <SidebarGroupContent>
                       <SidebarMenu>
-                        <SidebarMenuItem><SidebarMenuButton isActive><FoundationIcon name="overview" decorative /><span>Overview</span><SidebarMenuBadge>3</SidebarMenuBadge></SidebarMenuButton></SidebarMenuItem>
-                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="people" decorative /><span>People</span></SidebarMenuButton></SidebarMenuItem>
-                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="training" decorative /><span>Training</span></SidebarMenuButton></SidebarMenuItem>
-                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="operation" decorative /><span>Operation</span></SidebarMenuButton></SidebarMenuItem>
-                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="business" decorative /><span>Business</span></SidebarMenuButton></SidebarMenuItem>
+                        <SidebarMenuItem><SidebarMenuButton isActive><FoundationIcon name="overview" decorative /><span>Panel</span><SidebarMenuBadge>3</SidebarMenuBadge></SidebarMenuButton></SidebarMenuItem>
+                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="people" decorative /><span>Clientes</span></SidebarMenuButton></SidebarMenuItem>
+                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="operation" decorative /><span>Agenda</span></SidebarMenuButton></SidebarMenuItem>
+                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="training" decorative /><span>Rutinas</span></SidebarMenuButton></SidebarMenuItem>
+                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="business" decorative /><span>Monetización</span></SidebarMenuButton></SidebarMenuItem>
                       </SidebarMenu>
                     </SidebarGroupContent>
                   </SidebarGroup>
                 </SidebarContent>
-                <SidebarFooter><SidebarMenu><SidebarMenuItem><SidebarMenuButton><FoundationIcon name="settings" decorative /><span>Settings</span></SidebarMenuButton></SidebarMenuItem></SidebarMenu></SidebarFooter>
+                <SidebarFooter><SidebarMenu><SidebarMenuItem><SidebarMenuButton><FoundationIcon name="settings" decorative /><span>Configuración</span></SidebarMenuButton></SidebarMenuItem></SidebarMenu></SidebarFooter>
               </Sidebar>
               <WorkspaceMain as="div">
                 <WorkspaceHeader>
