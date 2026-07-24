@@ -191,11 +191,14 @@
     animation: afo-skeleton 1.65s ease-in-out infinite;
   }
 
-  [data-slot="sidebar-menu-button"][data-active]::before {
+  /* Barra del item activo: vive en el item (no en el botón, que recorta
+     con overflow-hidden) y se asienta en el canal junto a la pill,
+     como el reference Ink & Signal. */
+  [data-slot="sidebar-menu-item"]:has(> [data-slot="sidebar-menu-button"][data-active])::before {
     position: absolute;
-    top: 20%;
-    bottom: 20%;
-    left: 0;
+    top: 26%;
+    bottom: 26%;
+    left: -0.5rem;
     width: 3px;
     border-radius: var(--afo-radius-pill);
     background: var(--afo-color-action-primary);
