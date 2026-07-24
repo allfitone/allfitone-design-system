@@ -4,7 +4,7 @@ This directory contains the canonical reusable SVG exports derived from the curr
 
 ## Asset families
 
-- `logo/`: the custom forward-leaning “1” mark.
+- `logo/`: the custom forward-leaning “1” mark, free or inside its cyan carrier.
 - `wordmark/`: the outlined `ALLFIT ONE` wordmark, without the logo.
 - `lockup/`: the logo carrier and outlined wordmark together.
 
@@ -13,6 +13,7 @@ This directory contains the canonical reusable SVG exports derived from the curr
 - Use `on-light` when the surrounding surface is light.
 - Use `on-dark` when the surrounding surface is dark.
 - Use the cyan logo by default. The ink and chalk logos are monochrome alternatives for constrained contexts.
+- Use the carrier variant when the mark needs a compact, self-contained brand tile.
 
 All files have transparent backgrounds. The wordmark lettering is converted to vector outlines, so these SVGs do not depend on an installed or embedded font and can be reused across Next.js, React Native, design tools, and export pipelines.
 
@@ -28,6 +29,7 @@ All files have transparent backgrounds. The wordmark lettering is converted to v
 - Do not stretch, skew, redraw, recolor, or rearrange the assets.
 - Keep the cyan emphasis on `ONE` in the primary wordmark and lockup.
 - Prefer the standalone logo for compact square or vertical placements.
+- Prefer the logo carrier for app entry points, avatars, and placements that need a stronger silhouette.
 - Prefer the wordmark when the symbol is already visible nearby.
 - Prefer the lockup for primary brand identification.
 - Provide “Allfit One” as accessible text when the asset is decorative or its internal title is not exposed by the host platform.

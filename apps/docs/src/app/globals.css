@@ -2,6 +2,13 @@
   box-sizing: border-box;
 }
 
+/* Wire the next/font-loaded families into the token font stacks so every
+   consumer of the display/body tokens renders the self-hosted fonts. */
+:root {
+  --afo-font-family-display: var(--font-display), "Barlow Condensed", "Arial Narrow", sans-serif;
+  --afo-font-family-body: var(--font-body), "Manrope", system-ui, -apple-system, sans-serif;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 7rem;
@@ -57,11 +64,12 @@ button {
   align-items: center;
   min-height: 4.5rem;
   padding: 0.75rem 1.25rem;
-  border: 1px solid var(--afo-color-border-subtle);
+  border: 1px solid var(--afo-material-glass-border);
   border-radius: var(--afo-radius-panel);
-  background: color-mix(in srgb, var(--afo-color-background-canvas) 86%, transparent);
+  background: var(--afo-material-glass-fill);
   box-shadow: var(--afo-shadow-floating);
-  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(var(--afo-material-glass-blur)) saturate(var(--afo-material-glass-saturate));
+  backdrop-filter: blur(var(--afo-material-glass-blur)) saturate(var(--afo-material-glass-saturate));
 }
 
 .brand {
@@ -75,7 +83,7 @@ button {
   margin-left: 0.55rem;
   color: var(--afo-color-text-muted);
   font-family: var(--font-body), var(--afo-font-family-body);
-  font-size: 0.48rem;
+  font-size: var(--afo-font-size-xs);
   font-style: normal;
   letter-spacing: 0.18em;
 }
@@ -84,6 +92,20 @@ button {
   display: inline-grid;
   flex: 0 0 auto;
   place-items: center;
+}
+
+.brand-pulse {
+  flex: 0 0 auto;
+  margin-left: 0.15rem;
+  color: var(--afo-color-text-accent);
+}
+
+.brand-pulse path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
 }
 
 .brand-lockup__asset {
@@ -116,7 +138,7 @@ html[data-afo-theme="light"] .brand-lockup__asset--light {
   min-height: var(--afo-space-touch-target);
   align-items: center;
   color: var(--afo-color-text-muted);
-  font-size: 0.55rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-bold);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -133,7 +155,6 @@ html[data-afo-theme="light"] .brand-lockup__asset--light {
   width: max-content;
   justify-self: end;
   padding: 0.2rem;
-  border: 1px solid var(--afo-color-border-subtle);
   border-radius: var(--afo-radius-pill);
   background: var(--afo-color-background-surface-subtle);
 }
@@ -145,15 +166,15 @@ html[data-afo-theme="light"] .brand-lockup__asset--light {
   border-radius: var(--afo-radius-pill);
   background: transparent;
   color: var(--afo-color-text-muted);
-  font-size: 0.55rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-extrabold);
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .theme-toggle__option[aria-pressed="true"] {
-  background: var(--afo-color-action-primary);
-  color: var(--afo-color-action-on-primary);
+  background: var(--afo-gradient-accent);
+  color: var(--afo-color-accent-on-accent);
 }
 
 .hero {
@@ -189,7 +210,7 @@ html[data-afo-theme="light"] .brand-lockup__asset--light {
 .section-index {
   margin: 0;
   color: var(--afo-color-text-accent);
-  font-size: 0.58rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-extrabold);
   letter-spacing: var(--afo-letter-spacing-eyebrow);
   text-transform: uppercase;
@@ -276,7 +297,7 @@ html[data-afo-theme="light"] .hero-signature__asset--light {
 
 .hero-pipeline li > span {
   color: var(--afo-color-text-muted);
-  font-size: 0.55rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-extrabold);
   letter-spacing: 0.15em;
 }
@@ -293,14 +314,12 @@ html[data-afo-theme="light"] .hero-signature__asset--light {
 
 .hero-pipeline small {
   color: var(--afo-color-text-muted);
-  font-size: 0.62rem;
+  font-size: var(--afo-font-size-xs);
 }
 
 .foundation-section {
   padding: clamp(5rem, 9vw, 9rem) clamp(1.25rem, 4vw, 4rem);
   border-top: 1px solid var(--afo-color-border-subtle);
-  content-visibility: auto;
-  contain-intrinsic-size: 50rem;
 }
 
 .section-heading {
@@ -337,7 +356,7 @@ html[data-afo-theme="light"] .hero-signature__asset--light {
 .sample-panel__header span {
   margin: 0 0 1rem;
   color: var(--afo-color-text-muted);
-  font-size: 0.58rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-extrabold);
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -371,14 +390,14 @@ html[data-afo-theme="light"] .hero-signature__asset--light {
 
 .swatch strong {
   overflow: hidden;
-  font-size: 0.68rem;
+  font-size: var(--afo-font-size-xs);
   text-overflow: ellipsis;
 }
 
 code {
   color: var(--afo-color-text-muted);
   font-family: var(--font-body), var(--afo-font-family-body);
-  font-size: 0.58rem;
+  font-size: var(--afo-font-size-xs);
   letter-spacing: 0.04em;
 }
 
@@ -391,9 +410,9 @@ code {
 
 .theme-preview {
   overflow: hidden;
-  border: 1px solid var(--afo-color-border-subtle);
   border-radius: var(--afo-radius-panel);
   background: var(--afo-color-background-canvas);
+  box-shadow: var(--afo-shadow-card);
   color: var(--afo-color-text-primary);
 }
 
@@ -405,7 +424,7 @@ code {
   gap: 1rem;
   padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--afo-color-border-subtle);
-  font-size: 0.55rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-bold);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -444,7 +463,7 @@ code {
 .theme-preview__metric span,
 .theme-preview__metric small {
   color: var(--afo-color-text-muted);
-  font-size: 0.65rem;
+  font-size: var(--afo-font-size-xs);
 }
 
 .theme-preview__metric strong {
@@ -464,9 +483,9 @@ code {
   align-items: end;
   gap: 0.4rem;
   padding: 1rem;
-  border: 1px solid var(--afo-color-border-subtle);
   border-radius: var(--afo-radius-card);
   background: var(--afo-color-background-surface);
+  box-shadow: var(--afo-shadow-card);
 }
 
 .theme-preview__chart span {
@@ -497,8 +516,9 @@ code {
 .body-specimen {
   min-height: 34rem;
   padding: clamp(1.5rem, 4vw, 3rem);
-  border: 1px solid var(--afo-color-border-subtle);
+  border-radius: var(--afo-radius-panel);
   background: var(--afo-color-background-surface);
+  box-shadow: var(--afo-shadow-card);
 }
 
 .specimen-meta {
@@ -545,7 +565,7 @@ code {
 .weight-row small {
   overflow: hidden;
   color: var(--afo-color-text-muted);
-  font-size: 0.5rem;
+  font-size: var(--afo-font-size-xs);
   text-overflow: ellipsis;
 }
 
@@ -607,13 +627,13 @@ code {
 }
 
 .icon-token strong {
-  font-size: 0.72rem;
+  font-size: var(--afo-font-size-xs);
 }
 
 .icon-token code,
 .icon-token small {
   color: var(--afo-color-text-muted);
-  font-size: 0.52rem;
+  font-size: var(--afo-font-size-xs);
 }
 
 .icon-token small {
@@ -644,7 +664,7 @@ code {
 
 .space-scale small {
   color: var(--afo-color-text-muted);
-  font-size: 0.62rem;
+  font-size: var(--afo-font-size-xs);
   text-align: right;
 }
 
@@ -668,7 +688,7 @@ code {
   gap: 1rem;
   padding: 1.25rem;
   background: var(--afo-color-background-surface);
-  font-size: 0.65rem;
+  font-size: var(--afo-font-size-xs);
 }
 
 .semantic-strip span,
@@ -709,7 +729,7 @@ code {
 .radius-token > div {
   display: flex;
   justify-content: space-between;
-  font-size: 0.7rem;
+  font-size: var(--afo-font-size-xs);
 }
 
 .radius-roles span {
@@ -730,17 +750,16 @@ code {
   flex-direction: column;
   justify-content: space-between;
   padding: 1.25rem;
-  border: 1px solid var(--afo-color-border-subtle);
   border-radius: var(--afo-radius-card);
   background: var(--afo-color-background-surface);
-  font-size: 0.68rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-bold);
 }
 
 .token-note {
   margin: 2rem 0 0;
   color: var(--afo-color-text-muted);
-  font-size: 0.62rem;
+  font-size: var(--afo-font-size-xs);
   line-height: 1.7;
 }
 
@@ -761,7 +780,7 @@ code {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  font-size: 0.68rem;
+  font-size: var(--afo-font-size-xs);
 }
 
 .motion-track {
@@ -798,7 +817,6 @@ code {
 .sample-panel {
   min-width: 0;
   padding: 1.5rem;
-  border: 1px solid var(--afo-color-border-subtle);
   border-radius: var(--afo-radius-panel);
   background: var(--afo-color-background-surface);
   box-shadow: var(--afo-shadow-card);
@@ -848,14 +866,14 @@ code {
   flex-direction: column;
   gap: 0.5rem;
   padding: 1rem;
-  border: 1px solid var(--afo-color-border-subtle);
   border-radius: var(--afo-radius-card);
+  background: var(--afo-color-background-surface-subtle);
 }
 
 .sample-stats span,
 .sample-stats small {
   color: var(--afo-color-text-muted);
-  font-size: 0.58rem;
+  font-size: var(--afo-font-size-xs);
 }
 
 .sample-stats strong {
@@ -877,9 +895,8 @@ code {
   gap: clamp(0.4rem, 1vw, 1rem);
   margin-top: 1rem;
   padding: 2rem 1.5rem 1rem;
-  border: 1px solid var(--afo-color-border-subtle);
   border-radius: var(--afo-radius-card);
-  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--afo-color-action-primary) 4%, transparent));
+  background: var(--afo-color-background-surface-subtle);
 }
 
 .sample-graph span {
@@ -914,7 +931,7 @@ code {
   padding-inline: 1rem;
   border: 1px solid transparent;
   border-radius: var(--afo-radius-control);
-  font-size: 0.62rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-extrabold);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -949,11 +966,10 @@ code {
   align-items: center;
   gap: 0.5rem;
   padding-inline: 0.75rem;
-  border: 1px solid var(--status-color);
   border-radius: var(--afo-radius-pill);
-  background: color-mix(in srgb, var(--status-color) 14%, var(--afo-color-background-surface));
+  background: color-mix(in srgb, var(--status-color) 12%, transparent);
   color: var(--afo-color-text-primary);
-  font-size: 0.58rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-bold);
 }
 
@@ -986,7 +1002,7 @@ code {
 .footer p {
   margin: 0;
   color: var(--afo-color-text-muted);
-  font-size: 0.5rem;
+  font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-bold);
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1044,7 +1060,7 @@ code {
   .theme-toggle__option {
     min-width: 2.8rem;
     min-height: var(--afo-space-touch-target);
-    font-size: 0.48rem;
+  font-size: var(--afo-font-size-xs);
   }
 
   .hero {

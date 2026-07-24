@@ -1,0 +1,594 @@
+import type { CSSProperties } from "react";
+import type { Metadata } from "next";
+import Link from "next/link";
+
+import {
+  BrandLockup,
+  BrandLogo,
+  BrandLogoCarrier,
+  BrandWordmark,
+} from "@allfitone/react/brand";
+import { Button } from "@allfitone/react/components/button";
+import { Field, FieldGroup, FieldLabel } from "@allfitone/react/components/field";
+import { Input } from "@allfitone/react/components/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@allfitone/react/components/select";
+import { FoundationIcon, iconCatalog, type IconName } from "@allfitone/react/icons";
+import {
+  color,
+  motion,
+  radius,
+  semanticColor,
+  semanticRadius,
+  semanticShadow,
+  semanticSpacing,
+  shadow,
+  spacing,
+  typography,
+  type ShadowLayer,
+} from "@allfitone/react/tokens";
+
+import {
+  DesignSystemFooter,
+  DesignSystemLayout,
+} from "@/components/design-system-shell";
+
+export const metadata: Metadata = {
+  title: "UI Foundation | Allfit One Design System",
+  description: "Visual reference for the Allfit One cross-platform design tokens.",
+};
+
+const colorGroups = [
+  ["Brand", color.brand],
+  ["Ink", color.ink],
+  ["Neutral", color.neutral],
+  ["Feedback", color.feedback],
+] as const;
+
+const iconNames = Object.keys(iconCatalog) as IconName[];
+const trainingGoals = [
+  { label: "Performance", value: "performance" },
+  { label: "General fitness", value: "general-fitness" },
+  { label: "Recovery", value: "recovery" },
+];
+
+const tokenLabel = (value: string) =>
+  value.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/^./, (character) => character.toUpperCase());
+
+const shadowToCss = (layers: readonly ShadowLayer[]) =>
+  layers.length === 0
+    ? "none"
+    : layers.map(({ x, y, blur, spread, color: layerColor }) => `${x}px ${y}px ${blur}px ${spread}px ${layerColor}`).join(", ");
+
+function SectionHeader({ code, title, description }: { code: string; title: string; description: string }) {
+  return (
+    <div className="section-heading">
+      <div className="section-heading__title">
+        <p className="section-index">{code}</p>
+        <h2>{title}</h2>
+      </div>
+      <p className="section-heading__description">{description}</p>
+    </div>
+  );
+}
+
+function AllfitOsMark({ title }: { title?: string }) {
+  return (
+    <svg
+      className="allfit-os-mark"
+      viewBox="0 0 34 14"
+      role={title ? "img" : "presentation"}
+      aria-label={title}
+      aria-hidden={title ? undefined : true}
+      focusable="false"
+    >
+      {title ? <title>{title}</title> : null}
+      <path d="M1 8h6l3-6 4 10 3-7 2 3h14" />
+    </svg>
+  );
+}
+
+function AllfitOsWordmark({ surface }: { surface: "dark" | "light" }) {
+  return (
+    <span className="allfit-os-wordmark" data-surface={surface} role="img" aria-label="Allfit OS">
+      <span className="allfit-os-signature__allfit" aria-hidden="true">
+        <BrandWordmark surface={surface} />
+      </span>
+      <span className="allfit-os-signature__suffix" aria-hidden="true">OS</span>
+    </span>
+  );
+}
+
+function AllfitOsLockup({ surface }: { surface: "dark" | "light" }) {
+  return (
+    <span className="allfit-os-lockup" data-surface={surface} role="img" aria-label="Allfit OS">
+      <AllfitOsMark />
+      <span aria-hidden="true"><AllfitOsWordmark surface={surface} /></span>
+    </span>
+  );
+}
+
+function ThemePreview({ theme }: { theme: keyof typeof semanticColor }) {
+  const tokens = semanticColor[theme];
+
+  return (
+    <article className="theme-preview" data-afo-theme={theme}>
+      <div className="theme-preview__header">
+        <span>{theme} theme</span>
+        <span className="theme-preview__status">Live</span>
+      </div>
+      <div className="theme-preview__body">
+        <div className="theme-preview__metric">
+          <span>Weekly volume</span>
+          <strong>42.8K</strong>
+          <small>+8.4% this week</small>
+        </div>
+        <div className="theme-preview__chart" aria-hidden="true">
+          {[32, 48, 40, 66, 58, 82, 72].map((height, index) => (
+            <span key={index} style={{ height: `${height}%` }} />
+          ))}
+        </div>
+        <button type="button" className="sample-button sample-button--primary">Review activity</button>
+      </div>
+      <footer>
+        <code>{tokens.background.canvas}</code>
+        <code>{tokens.text.primary}</code>
+        <code>{tokens.action.primary}</code>
+      </footer>
+    </article>
+  );
+}
+
+export default function Home() {
+  return (
+    <DesignSystemLayout
+      current="foundations"
+      id="top"
+      className="design-system-workspace foundation-guide"
+      label="UI Foundation"
+      homeHref="#top"
+      skipHref="#guide-content"
+      skipLabel="Skip to foundation content"
+    >
+      <div id="guide-content" className="design-system-content">
+          <section id="overview" className="guide-overview">
+            <div className="guide-overview__copy">
+              <p className="eyebrow">Allfit One / Design system</p>
+              <h1>UI Foundation</h1>
+              <p>
+                The shared visual language behind Allfit Space and Allfit OS. Use this guide to choose the right token, understand its role, and see how foundations behave across products and themes.
+              </p>
+              <div className="guide-overview__links">
+                <a href="#brand-assets">Browse foundations</a>
+                <Link href="/components">Open components <span aria-hidden="true">↗</span></Link>
+              </div>
+            </div>
+
+            <aside className="guide-overview__reference" aria-label="Foundation reference">
+              <div className="guide-overview__status"><span />Reference is current</div>
+              <dl>
+                <div><dt>Scope</dt><dd>Web + native</dd></div>
+                <div><dt>Themes</dt><dd>Dark / light</dd></div>
+                <div><dt>Base unit</dt><dd>4 px</dd></div>
+                <div><dt>Packages</dt><dd>6 workspaces</dd></div>
+              </dl>
+            </aside>
+          </section>
+
+          <ol className="guide-flow" aria-label="Token architecture">
+            <li><span>Source</span><strong>Primitive values</strong><small>Stable, named scales</small></li>
+            <li><span>Meaning</span><strong>Semantic roles</strong><small>Product and theme aware</small></li>
+            <li><span>Output</span><strong>Platform adapters</strong><small>React and React Native</small></li>
+          </ol>
+
+      <section id="brand-assets" className="foundation-section brand-assets-section">
+        <SectionHeader
+          code="BRD"
+          title="Brand assets"
+          description="Identity assets organized by product, with the correct variant, size, and role for each placement."
+        />
+
+        <div className="brand-product-stack">
+          <section className="brand-product" aria-labelledby="allfit-one-assets">
+            <header className="brand-product__header">
+              <span className="brand-product__code">Master brand</span>
+              <div>
+                <h3 id="allfit-one-assets">Allfit One</h3>
+                <p>The ecosystem identity. Use these assets whenever the parent brand must be recognized.</p>
+              </div>
+              <span className="brand-asset-status">Canonical</span>
+            </header>
+
+            <div className="brand-asset-grid brand-asset-grid--allfit-one">
+              <article className="brand-asset-card brand-asset-card--logo">
+                <header>
+                  <div>
+                    <span className="brand-asset-card__index">Symbol</span>
+                    <h4>Logo</h4>
+                  </div>
+                </header>
+                <div className="brand-asset-preview brand-asset-preview--logo">
+                  <div className="brand-asset-preview__surface" data-surface="dark">
+                    <BrandLogo variant="cyan" title="Allfit One" />
+                  </div>
+                  <div className="brand-asset-preview__scale" aria-label="Recommended logo sizes">
+                    {[64, 48, 32].map((size) => (
+                      <span key={size}>
+                        <BrandLogo variant="cyan" aria-hidden="true" style={{ height: `${size}px` }} />
+                        <small>{size}</small>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <dl className="brand-asset-specs">
+                  <div><dt>Use for</dt><dd>Compact and vertical placements</dd></div>
+                  <div><dt>Minimum</dt><dd>32 px high</dd></div>
+                  <div><dt>Standard</dt><dd>32 / 48 / 64 px high</dd></div>
+                  <div><dt>Ratio</dt><dd>405 : 1149</dd></div>
+                </dl>
+              </article>
+
+              <article className="brand-asset-card brand-asset-card--carrier">
+                <header>
+                  <div>
+                    <span className="brand-asset-card__index">Contained symbol</span>
+                    <h4>Logo with carrier</h4>
+                  </div>
+                </header>
+                <div className="brand-asset-preview brand-asset-preview--paired">
+                  <div className="brand-asset-preview__surface" data-surface="dark">
+                    <BrandLogoCarrier title="Allfit One" />
+                    <small>On dark</small>
+                  </div>
+                  <div className="brand-asset-preview__surface" data-surface="light">
+                    <BrandLogoCarrier title="Allfit One" />
+                    <small>On light</small>
+                  </div>
+                </div>
+                <dl className="brand-asset-specs">
+                  <div><dt>Use for</dt><dd>App entry points and avatars</dd></div>
+                  <div><dt>Minimum</dt><dd>32 px high</dd></div>
+                  <div><dt>Standard</dt><dd>32 / 48 / 64 px high</dd></div>
+                  <div><dt>Ratio</dt><dd>23 : 24</dd></div>
+                </dl>
+              </article>
+
+              <article className="brand-asset-card brand-asset-card--wordmark">
+                <header>
+                  <div>
+                    <span className="brand-asset-card__index">Name</span>
+                    <h4>Wordmark</h4>
+                  </div>
+                </header>
+                <div className="brand-asset-preview brand-asset-preview--paired">
+                  <div className="brand-asset-preview__surface" data-surface="dark">
+                    <BrandWordmark surface="dark" title="Allfit One" />
+                    <small>On dark</small>
+                  </div>
+                  <div className="brand-asset-preview__surface" data-surface="light">
+                    <BrandWordmark surface="light" title="Allfit One" />
+                    <small>On light</small>
+                  </div>
+                </div>
+                <dl className="brand-asset-specs">
+                  <div><dt>Use for</dt><dd>When the symbol is already nearby</dd></div>
+                  <div><dt>Minimum</dt><dd>20 px high</dd></div>
+                  <div><dt>Standard</dt><dd>20 / 24 / 32 px high</dd></div>
+                  <div><dt>Ratio</dt><dd>4047 : 756</dd></div>
+                </dl>
+              </article>
+
+              <article className="brand-asset-card brand-asset-card--lockup">
+                <header>
+                  <div>
+                    <span className="brand-asset-card__index">Primary signature</span>
+                    <h4>Logo + wordmark</h4>
+                  </div>
+                </header>
+                <div className="brand-asset-preview brand-asset-preview--paired">
+                  <div className="brand-asset-preview__surface" data-surface="dark">
+                    <BrandLockup surface="dark" title="Allfit One" />
+                    <small>On dark</small>
+                  </div>
+                  <div className="brand-asset-preview__surface" data-surface="light">
+                    <BrandLockup surface="light" title="Allfit One" />
+                    <small>On light</small>
+                  </div>
+                </div>
+                <dl className="brand-asset-specs">
+                  <div><dt>Use for</dt><dd>Primary brand identification</dd></div>
+                  <div><dt>Minimum</dt><dd>32 px high</dd></div>
+                  <div><dt>Standard</dt><dd>32 / 40 / 48 px high</dd></div>
+                  <div><dt>Ratio</dt><dd>1678 : 480</dd></div>
+                </dl>
+              </article>
+            </div>
+          </section>
+
+          <section className="brand-product brand-product--os" aria-labelledby="allfit-os-assets">
+            <header className="brand-product__header">
+              <span className="brand-product__code">Product brand</span>
+              <div>
+                <h3 id="allfit-os-assets">Allfit OS</h3>
+                <p>The professional workspace identity. Keep it inside Allfit OS product surfaces.</p>
+              </div>
+              <span className="brand-asset-status brand-asset-status--provisional">Provisional</span>
+            </header>
+
+            <div className="brand-asset-grid brand-asset-grid--allfit-os">
+              <article className="brand-asset-card brand-asset-card--os-mark">
+                <header>
+                  <div>
+                    <span className="brand-asset-card__index">Symbol</span>
+                    <h4>Logo</h4>
+                  </div>
+                </header>
+                <div className="brand-asset-preview brand-asset-preview--paired">
+                  <div className="brand-asset-preview__surface" data-surface="dark">
+                    <AllfitOsMark title="Allfit OS" />
+                    <small>On dark</small>
+                  </div>
+                  <div className="brand-asset-preview__surface" data-surface="light">
+                    <AllfitOsMark title="Allfit OS" />
+                    <small>On light</small>
+                  </div>
+                </div>
+                <dl className="brand-asset-specs">
+                  <div><dt>Use for</dt><dd>Compact product identification</dd></div>
+                  <div><dt>Minimum</dt><dd>24 px wide</dd></div>
+                  <div><dt>Standard</dt><dd>24 / 32 / 40 px wide</dd></div>
+                  <div><dt>Color</dt><dd>Allfit cyan only</dd></div>
+                </dl>
+              </article>
+
+              <article className="brand-asset-card brand-asset-card--os-wordmark">
+                <header>
+                  <div>
+                    <span className="brand-asset-card__index">Name</span>
+                    <h4>Wordmark</h4>
+                  </div>
+                </header>
+                <div className="brand-asset-preview brand-asset-preview--paired">
+                  <div className="brand-asset-preview__surface" data-surface="dark">
+                    <AllfitOsWordmark surface="dark" />
+                    <small>On dark</small>
+                  </div>
+                  <div className="brand-asset-preview__surface" data-surface="light">
+                    <AllfitOsWordmark surface="light" />
+                    <small>On light</small>
+                  </div>
+                </div>
+                <dl className="brand-asset-specs">
+                  <div><dt>Use for</dt><dd>When the signal is already visible</dd></div>
+                  <div><dt>Minimum</dt><dd>20 px high</dd></div>
+                  <div><dt>Standard</dt><dd>20 / 24 / 32 px high</dd></div>
+                  <div><dt>Alignment</dt><dd>Equal optical cap height</dd></div>
+                </dl>
+              </article>
+
+              <article className="brand-asset-card brand-asset-card--os-lockup">
+                <header>
+                  <div>
+                    <span className="brand-asset-card__index">Primary signature</span>
+                    <h4>Logo + wordmark</h4>
+                  </div>
+                </header>
+                <div className="brand-asset-preview brand-asset-preview--paired">
+                  <div className="brand-asset-preview__surface" data-surface="dark">
+                    <AllfitOsLockup surface="dark" />
+                    <small>On dark</small>
+                  </div>
+                  <div className="brand-asset-preview__surface" data-surface="light">
+                    <AllfitOsLockup surface="light" />
+                    <small>On light</small>
+                  </div>
+                </div>
+                <dl className="brand-asset-specs">
+                  <div><dt>Use for</dt><dd>Allfit OS shell and product entry</dd></div>
+                  <div><dt>Minimum</dt><dd>24 px high</dd></div>
+                  <div><dt>Standard</dt><dd>24 / 32 / 40 px high</dd></div>
+                  <div><dt>Status</dt><dd>Canonical SVG pending</dd></div>
+                </dl>
+              </article>
+            </div>
+          </section>
+        </div>
+
+        <div className="brand-usage-rules" aria-label="Brand asset rules">
+          <p><strong>Keep proportions</strong><small>Never stretch, skew, or redraw.</small></p>
+          <p><strong>Match the surface</strong><small>Use the on-light or on-dark export.</small></p>
+          <p><strong>Preserve emphasis</strong><small>Keep ONE and OS in Allfit cyan.</small></p>
+          <p><strong>Name accessibly</strong><small>Expose the matching product name.</small></p>
+        </div>
+        <p className="token-note brand-assets-note">
+          Source of truth: <code>@allfitone/brand</code>. The Allfit OS reference is documented for review but must not be exported as canonical artwork yet.
+        </p>
+      </section>
+
+      <section id="color" className="foundation-section">
+        <SectionHeader code="COL" title="Color" description="Brand primitives stay exact. Semantic color carries meaning across themes." />
+        <div className="color-groups">
+          {colorGroups.map(([groupName, values]) => (
+            <article key={groupName} className="token-group">
+              <h3>{groupName}</h3>
+              <div className="swatch-grid">
+                {Object.entries(values).map(([name, value]) => (
+                  <div key={name} className="swatch" style={{ "--swatch-color": value } as CSSProperties}>
+                    <div className="swatch__color" />
+                    <div><strong>{tokenLabel(name)}</strong><code>{value}</code></div>
+                  </div>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+        <div className="theme-grid">
+          <ThemePreview theme="dark" />
+          <ThemePreview theme="light" />
+        </div>
+      </section>
+
+      <section id="type" className="foundation-section">
+        <SectionHeader code="TYP" title="Typography" description="Barlow Condensed creates athletic character. Manrope carries interface clarity." />
+        <div className="type-specimens">
+          <article className="display-specimen">
+            <div className="specimen-meta"><span>Display / Bold</span><code>Barlow Condensed 700</code></div>
+            <p>Move with<br /><em>intent.</em></p>
+          </article>
+          <article className="body-specimen">
+            <div className="specimen-meta"><span>Body / Regular</span><code>Manrope 400</code></div>
+            <p>Training is complex. The interface should make the next action obvious without removing the depth athletes and professionals need.</p>
+            <div className="weight-row">
+              {Object.entries(typography.weight).map(([name, value]) => (
+                <span key={name} style={{ fontWeight: value }}><b>Aa</b><small>{name} / {value}</small></span>
+              ))}
+            </div>
+          </article>
+        </div>
+        <div className="type-scale">
+          {Object.entries(typography.size).map(([name, value]) => (
+            <div key={name}><code>{name} / {value}px</code><span style={{ fontSize: `${Math.min(value, 80)}px` }}>Ag</span></div>
+          ))}
+        </div>
+      </section>
+
+      <section id="icons" className="foundation-section">
+        <SectionHeader code="ICO" title="Iconography" description="One semantic vocabulary across products. Lucide provides geometry; Allfit One defines meaning, scale, and stroke." />
+        <div className="icon-grid">
+          {iconNames.map((name) => (
+            <article key={name} className="icon-token">
+              <FoundationIcon name={name} size="lg" />
+              <div>
+                <strong>{tokenLabel(name)}</strong>
+                <code>{iconCatalog[name].source}</code>
+              </div>
+              <small>{iconCatalog[name].category}</small>
+            </article>
+          ))}
+        </div>
+        <p className="token-note">Default: 20 px / 1.75 stroke. Semantic names remain stable even if source geometry evolves.</p>
+      </section>
+
+      <section id="space" className="foundation-section">
+        <SectionHeader code="SPC" title="Spacing" description="A 4 px rhythm with one 2 px optical half-step, 44 px Web/iOS targets, and 48 dp Android targets." />
+        <div className="space-scale">
+          {Object.entries(spacing).map(([name, value]) => (
+            <div key={name}>
+              <code>{name}</code>
+              <span className="space-bar" style={{ width: `${Math.max(value, 2)}px` }} />
+              <small>{value}px</small>
+            </div>
+          ))}
+        </div>
+        <div className="semantic-strip">
+          {Object.entries(semanticSpacing).map(([name, value]) => (
+            <div key={name}><span>{tokenLabel(name)}</span><strong>{value}px</strong></div>
+          ))}
+        </div>
+      </section>
+
+      <section id="radius" className="foundation-section">
+        <SectionHeader code="RAD" title="Radius" description="Curvature communicates function and hierarchy; it is never default decoration." />
+        <div className="radius-grid">
+          {Object.entries(radius).map(([name, value]) => (
+            <div key={name} className="radius-token">
+              <span style={{ borderRadius: `${value}px` }} />
+              <div><strong>{name}</strong><code>{value}px</code></div>
+            </div>
+          ))}
+        </div>
+        <div className="radius-roles">
+          {Object.entries(semanticRadius).map(([name, value]) => (
+            <span key={name}>{tokenLabel(name)} <b>{value}px</b></span>
+          ))}
+        </div>
+      </section>
+
+      <section id="shadow" className="foundation-section">
+        <SectionHeader code="SHD" title="Shadow" description="Elevation stays quiet. Cyan glow is reserved for one signature moment." />
+        <div className="shadow-grid">
+          {Object.entries(semanticShadow).map(([name, layers]) => (
+            <article key={name} style={{ boxShadow: shadowToCss(layers) }}>
+              <span>{tokenLabel(name)}</span>
+              <code>{layers.length} layer{layers.length === 1 ? "" : "s"}</code>
+            </article>
+          ))}
+        </div>
+        <p className="token-note">Primitive range: {Object.keys(shadow).join(" / ")}</p>
+      </section>
+
+      <section id="motion" className="foundation-section">
+        <SectionHeader code="MOT" title="Motion" description="Motion explains response and continuity. Hover each track to compare duration." />
+        <div className="motion-list">
+          {Object.entries(motion.duration).filter(([name]) => name !== "instant").map(([name, value]) => (
+            <div key={name} className="motion-row">
+              <div><strong>{tokenLabel(name)}</strong><code>{value}ms</code></div>
+              <div className="motion-track" style={{ "--motion-duration": `${value}ms` } as CSSProperties}><span /></div>
+            </div>
+          ))}
+        </div>
+        <div className="easing-grid">
+          {Object.entries(motion.easing).map(([name, value]) => (
+            <div key={name}><span>{tokenLabel(name)}</span><code>{value.join(", ")}</code></div>
+          ))}
+        </div>
+      </section>
+
+      <section id="applied" className="foundation-section">
+        <SectionHeader code="APL" title="Applied sample" description="A visual stress test of the foundations—not a final component API." />
+        <div className="applied-grid">
+          <article className="sample-panel sample-panel--wide">
+            <div className="sample-panel__header"><div><span>Performance overview</span><strong>Training load</strong></div><span className="status-dot">Live</span></div>
+            <div className="sample-stats">
+              <div><span>Volume</span><strong>42,840 kg</strong><small>+8.4%</small></div>
+              <div><span>Sessions</span><strong>18</strong><small>+3</small></div>
+              <div><span>Consistency</span><strong>92%</strong><small>On track</small></div>
+            </div>
+            <div className="sample-graph" aria-hidden="true"><span /><span /><span /><span /><span /><span /><span /><span /></div>
+          </article>
+          <article className="sample-panel">
+            <div className="sample-panel__header"><div><span>Controls</span><strong>Foundation states</strong></div></div>
+            <FieldGroup className="sample-form">
+              <Field>
+                <FieldLabel htmlFor="program-name">Program name</FieldLabel>
+                <Input id="program-name" defaultValue="Hybrid strength" />
+              </Field>
+              <Field>
+                <FieldLabel>Training goal</FieldLabel>
+                <Select items={trainingGoals} defaultValue="performance">
+                  <SelectTrigger className="w-full" aria-label="Training goal">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {trainingGoals.map((goal) => (
+                        <SelectItem key={goal.value} value={goal.value}>{goal.label}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
+            </FieldGroup>
+            <div className="sample-actions">
+              <Button type="button">Save changes</Button>
+              <Button type="button" variant="outline">Cancel</Button>
+            </div>
+          </article>
+          <article className="sample-panel">
+            <div className="sample-panel__header"><div><span>Status</span><strong>System feedback</strong></div></div>
+            <div className="status-list"><span data-status="success">Synced</span><span data-status="warning">Review needed</span><span data-status="danger">Payment failed</span><span data-status="info">New activity</span></div>
+          </article>
+        </div>
+      </section>
+
+        <DesignSystemFooter label="UI Foundation / Tokens" topHref="#top" />
+      </div>
+    </DesignSystemLayout>
+  );
+}

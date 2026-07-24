@@ -7,11 +7,13 @@ import "@allfitone/react/tokens.css";
 import "@allfitone/react/styles.css";
 import "./globals.css";
 import "./components.css";
+import "./foundation.css";
 
 const display = Barlow_Condensed({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["500", "600", "700", "800"],
+  weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 const body = Manrope({
@@ -20,8 +22,8 @@ const body = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "UI Foundation | Allfit One Design System",
-  description: "Visual reference for the Allfit One cross-platform design tokens.",
+  title: "Allfit One Design System",
+  description: "Foundation and component reference for the Allfit One product ecosystem.",
   robots: { index: false, follow: false },
 };
 
@@ -30,10 +32,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html
       lang="en"
       data-afo-theme="dark"
+      data-scroll-behavior="smooth"
       className={`${display.variable} ${body.variable}`}
       suppressHydrationWarning
     >
-      <body>
+      {/* suppressHydrationWarning: extensiones de navegador inyectan
+          atributos en <body> (bis_register, __processed_*) antes de
+          hidratar — falso positivo, no es código nuestro. */}
+      <body suppressHydrationWarning>
         <TooltipProvider>
           {children}
           <Toaster position="bottom-right" closeButton />

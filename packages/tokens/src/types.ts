@@ -1,5 +1,22 @@
 export type HexColor = `#${string}`;
 
+export type GradientStop = Readonly<{
+  color: HexColor;
+  position: number;
+}>;
+
+export type Gradient = Readonly<{
+  angle: number;
+  stops: readonly GradientStop[];
+}>;
+
+export type GlassMaterial = Readonly<{
+  fill: HexColor;
+  border: HexColor;
+  blur: number;
+  saturate: number;
+}>;
+
 export type ShadowLayer = Readonly<{
   x: number;
   y: number;

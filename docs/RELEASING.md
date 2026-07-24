@@ -1,6 +1,6 @@
 # Releasing public packages
 
-The npm organization is `@allfitone`. The packages are public and remain version-aligned while the design system is in `0.x`.
+The npm organization is `@allfitone`. The packages are public and use one global version. The bootstrap release is `0.1.0`.
 
 ## Public packages
 
@@ -12,9 +12,9 @@ The npm organization is `@allfitone`. The packages are public and remain version
 
 `@allfitone/docs` is private and is never published.
 
-## Bootstrap release
+## Bootstrap release: 0.1.0
 
-The first release must be published interactively because npm cannot configure a trusted publisher until each package exists. Enable 2FA on the npm account first, then run:
+The first release must be published interactively because npm cannot configure a trusted publisher until each package exists. It is already versioned as `0.1.0`; the repository carries an empty bootstrap Changeset so validation passes without a semver bump. Do not run `npm run version-packages` for this bootstrap release. Enable 2FA on the npm account first, then run:
 
 ```bash
 npm login
@@ -44,12 +44,22 @@ After the bootstrap release, configure a trusted publisher in the settings of ev
 
 Create a protected GitHub environment named `npm` and require approval before deployment. Once one OIDC release succeeds, set each npm package to require 2FA and disallow traditional publishing tokens.
 
-## Normal release flow
+## Global version contract
 
-1. Run `npm run changeset` in any pull request that modifies a public contract.
+Every public package exports the same runtime value:
+
+```ts
+import { designSystemVersion } from "@allfitone/react";
+```
+
+Token consumers can also inspect `tokenBundle.meta.version`, `@allfitone/tokens/tokens.json`, or the CSS custom property `--afo-design-system-version`. `npm run check:versions` rejects any mismatch across public packages, Docs, internal dependencies, and `package-lock.json`.
+
+## Normal release flow after 0.1.0
+
+1. Run `npm run changeset` in any pull request that modifies a public contract. Because the public packages form a fixed Changesets group, they receive one global version.
 2. Merge the change into `main` after CI passes.
 3. Review and merge the automated `chore: version packages` pull request.
-4. Manually dispatch **Publish to npm** from GitHub Actions.
+4. After the full **CI** workflow succeeds for the merged `main` commit, manually dispatch **Publish to npm** from that exact `main` ref. The publish job rejects other branches and waits for the matching CI run, including canonical Windows visual regression.
 5. Confirm the published versions and install them in a smoke consumer before updating product applications.
 
 ## Promoting the pilot

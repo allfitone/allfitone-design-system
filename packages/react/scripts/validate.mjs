@@ -36,7 +36,11 @@ const requiredOutputs = [
 await Promise.all(requiredOutputs.map((file) => access(resolve(packageRoot, "dist", file))));
 
 const css = await readFile(resolve(packageRoot, "dist/tokens.css"), "utf8");
-if (!css.includes("--afo-color-brand-primary") || !css.includes("--afo-space-touch-target-web")) {
+if (
+  !css.includes("--afo-color-brand-primary") ||
+  !css.includes("--afo-space-touch-target-web") ||
+  !css.includes("--afo-typography-data-font-family")
+) {
   throw new Error("React token CSS is missing required generated variables.");
 }
 
@@ -83,6 +87,20 @@ for (const { component, source } of sourceFiles) {
 }
 
 const packageJson = JSON.parse(await readFile(resolve(packageRoot, "package.json"), "utf8"));
+const { allfitoneReact, designSystemVersion } = await import(
+  pathToFileURL(resolve(packageRoot, "dist/index.js")).href
+);
+if (designSystemVersion !== packageJson.version) {
+  throw new Error(
+    `Global React version ${designSystemVersion} must match package version ${packageJson.version}.`,
+  );
+}
+if (allfitoneReact.packageVersion !== packageJson.version) {
+  throw new Error(
+    `Runtime React version ${allfitoneReact.packageVersion} must match package version ${packageJson.version}.`,
+  );
+}
+
 const expectedSideEffects = ["./dist/tokens.css", "./dist/styles.css"];
 if (JSON.stringify(packageJson.sideEffects) !== JSON.stringify(expectedSideEffects)) {
   throw new Error("Only tokens.css and styles.css may be marked as side effects.");

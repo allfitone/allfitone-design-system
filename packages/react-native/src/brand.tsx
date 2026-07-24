@@ -41,6 +41,29 @@ export function BrandLogo({
   );
 }
 
+export function BrandLogoCarrier({
+  accessibilityLabel,
+  decorative,
+  width = 46,
+  height = 48,
+  ...props
+}: Omit<SvgProps, "color"> & NativeBrandAccessibilityProps) {
+  return (
+    <Svg
+      {...props}
+      {...accessibilityProps(accessibilityLabel, decorative)}
+      width={width}
+      height={height}
+      viewBox={brandDimensions.logoCarrier.viewBox}
+    >
+      <G transform="translate(32 36)">
+        <Path fill={brandColors.cyan} d="M65 0h330l-65 408H0L65 0Z" />
+        <Path fill={brandColors.ink} d={brandGeometry.logoPath} transform="translate(142 22) scale(.318)" />
+      </G>
+    </Svg>
+  );
+}
+
 export function BrandWordmark({
   surface = "dark",
   accessibilityLabel,

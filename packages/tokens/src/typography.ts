@@ -41,6 +41,8 @@ export const typography = {
     display: -0.055,
     tight: -0.025,
     normal: 0,
+    brand: 0.02,
+    micro: 0.08,
     utility: 0.16,
     eyebrow: 0.2,
   },
@@ -76,6 +78,16 @@ export const typographyRole = {
     weight: "extrabold",
     lineHeight: "compact",
     letterSpacing: "eyebrow",
+  },
+  /**
+   * Ink & Signal v2: large data numerals (metrics, timers, KPIs) render in
+   * the condensed display face with tabular figures for athletic character.
+   */
+  data: {
+    family: "display",
+    weight: "semibold",
+    lineHeight: "tight",
+    letterSpacing: "normal",
   },
 } as const;
 

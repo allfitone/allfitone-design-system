@@ -2,6 +2,7 @@
 
 import { useState, type CSSProperties, type ReactNode } from "react";
 
+import { AccentBlock, AccentBlockLabel, AccentBlockMeta, AccentBlockTitle } from "@allfitone/react/components/accent-block";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@allfitone/react/components/alert-dialog";
 import { Badge } from "@allfitone/react/components/badge";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@allfitone/react/components/breadcrumb";
@@ -18,16 +19,19 @@ import { Input } from "@allfitone/react/components/input";
 import { Label } from "@allfitone/react/components/label";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@allfitone/react/components/navigation-menu";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@allfitone/react/components/pagination";
+import { PulseMark } from "@allfitone/react/components/pulse-mark";
 import { RadioGroup, RadioGroupItem } from "@allfitone/react/components/radio-group";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@allfitone/react/components/select";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@allfitone/react/components/sheet";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem } from "@allfitone/react/components/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem } from "@allfitone/react/components/sidebar";
 import { Skeleton } from "@allfitone/react/components/skeleton";
 import { toast } from "@allfitone/react/components/sonner";
 import { Spinner } from "@allfitone/react/components/spinner";
+import { StatStrip, StatStripItem } from "@allfitone/react/components/stat-strip";
 import { Switch } from "@allfitone/react/components/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@allfitone/react/components/tabs";
 import { Textarea } from "@allfitone/react/components/textarea";
+import { TickRing } from "@allfitone/react/components/tick-ring";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@allfitone/react/components/tooltip";
 import { WorkspaceActions, WorkspaceContent, WorkspaceEyebrow, WorkspaceHeader, WorkspaceHeading, WorkspaceMain, WorkspaceShell, WorkspaceTitle } from "@allfitone/react/components/workspace-shell";
 import { FoundationIcon } from "@allfitone/react/icons";
@@ -175,7 +179,7 @@ export function ComponentCatalog() {
               <DrawerContent>
                 <DrawerHeader><DrawerTitle>Workspace</DrawerTitle><DrawerDescription>Move through Allfit Performance.</DrawerDescription></DrawerHeader>
                 <nav className="drawer-navigation" aria-label="Mobile workspace">
-                  <a href="#navigation" onClick={() => setDrawerOpen(false)}><FoundationIcon name="overview" decorative />Overview</a>
+                  <a href="#navigation" aria-current="page" onClick={() => setDrawerOpen(false)}><FoundationIcon name="overview" decorative />Overview</a>
                   <a href="#navigation" onClick={() => setDrawerOpen(false)}><FoundationIcon name="people" decorative />People</a>
                   <a href="#navigation" onClick={() => setDrawerOpen(false)}><FoundationIcon name="training" decorative />Training</a>
                   <a href="#navigation" onClick={() => setDrawerOpen(false)}><FoundationIcon name="operation" decorative />Operation</a>
@@ -185,26 +189,28 @@ export function ComponentCatalog() {
           </ComponentSection>
 
           <ComponentSection id="workspace-shell" title="Sidebar + WorkspaceShell" description="The application frame keeps organization, product area and current task in one disciplined hierarchy." importPath="@allfitone/react/components/workspace-shell" contract={["Desktop sidebar", "Mobile sheet", "Collapsed state", "Landmark order"]}>
-            <WorkspaceShell className="workspace-preview" style={{ "--sidebar-width": "15rem" } as CSSProperties}>
+            <WorkspaceShell className="workspace-preview" lang="es" style={{ "--sidebar-width": "15rem" } as CSSProperties}>
               <Sidebar collapsible="none">
                 <SidebarHeader>
-                  <div className="workspace-preview__organization"><FoundationIcon name="organization" decorative /><span><strong>Allfit Performance</strong><small>Bogotá · Main workspace</small></span></div>
+                  <div className="workspace-preview__brand">
+                    <svg viewBox="0 0 34 14" aria-hidden="true"><path d="M1 8h6l3-6 4 10 3-7 2 3h14" /></svg>
+                    <span>Allfit <em>OS</em></span>
+                  </div>
                 </SidebarHeader>
                 <SidebarContent>
                   <SidebarGroup>
-                    <SidebarGroupLabel>Workspace</SidebarGroupLabel>
                     <SidebarGroupContent>
                       <SidebarMenu>
-                        <SidebarMenuItem><SidebarMenuButton isActive><FoundationIcon name="overview" decorative /><span>Overview</span><SidebarMenuBadge>3</SidebarMenuBadge></SidebarMenuButton></SidebarMenuItem>
-                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="people" decorative /><span>People</span></SidebarMenuButton></SidebarMenuItem>
-                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="training" decorative /><span>Training</span></SidebarMenuButton></SidebarMenuItem>
-                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="operation" decorative /><span>Operation</span></SidebarMenuButton></SidebarMenuItem>
-                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="business" decorative /><span>Business</span></SidebarMenuButton></SidebarMenuItem>
+                        <SidebarMenuItem><SidebarMenuButton isActive><FoundationIcon name="overview" decorative /><span>Panel</span><SidebarMenuBadge>3</SidebarMenuBadge></SidebarMenuButton></SidebarMenuItem>
+                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="people" decorative /><span>Clientes</span></SidebarMenuButton></SidebarMenuItem>
+                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="operation" decorative /><span>Agenda</span></SidebarMenuButton></SidebarMenuItem>
+                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="training" decorative /><span>Rutinas</span></SidebarMenuButton></SidebarMenuItem>
+                        <SidebarMenuItem><SidebarMenuButton><FoundationIcon name="business" decorative /><span>Monetización</span></SidebarMenuButton></SidebarMenuItem>
                       </SidebarMenu>
                     </SidebarGroupContent>
                   </SidebarGroup>
                 </SidebarContent>
-                <SidebarFooter><SidebarMenu><SidebarMenuItem><SidebarMenuButton><FoundationIcon name="settings" decorative /><span>Settings</span></SidebarMenuButton></SidebarMenuItem></SidebarMenu></SidebarFooter>
+                <SidebarFooter><SidebarMenu><SidebarMenuItem><SidebarMenuButton><FoundationIcon name="settings" decorative /><span>Configuración</span></SidebarMenuButton></SidebarMenuItem></SidebarMenu></SidebarFooter>
               </Sidebar>
               <WorkspaceMain as="div">
                 <WorkspaceHeader>
@@ -274,6 +280,71 @@ export function ComponentCatalog() {
           <ComponentSection id="card" title="Card" description="Structured composition keeps title, action, content and footer predictable." importPath="@allfitone/react/components/card" contract={["Default / active", "Action slot", "Long content", "Responsive"]}><Card data-state="active"><CardHeader><CardTitle>Strength cycle</CardTitle><CardDescription>4-week program · week 2</CardDescription><CardAction><Badge>Active</Badge></CardAction></CardHeader><CardContent><strong className="metric-value">18,420 kg</strong><p className="metric-caption">Volume completed this week</p></CardContent><CardFooter><Button size="sm" variant="ghost">Open program</Button></CardFooter></Card></ComponentSection>
           <ComponentSection id="skeleton" title="Skeleton" description="Decorative loading placeholders respect reduced motion." importPath="@allfitone/react/components/skeleton" contract={["Decorative only", "Reduced motion", "Content-shaped"]}><div className="skeleton-stack"><Skeleton className="skeleton-avatar" /><div><Skeleton className="skeleton-line skeleton-line--strong" /><Skeleton className="skeleton-line" /></div></div></ComponentSection>
           <ComponentSection id="empty" title="Empty" description="Empty states explain what happened and provide the next action." importPath="@allfitone/react/components/empty" contract={["Clear reason", "Next action", "Long content"]}><Empty className="catalog-empty"><EmptyHeader><EmptyMedia variant="icon"><FoundationIcon name="activity" decorative /></EmptyMedia><EmptyTitle>No sessions yet</EmptyTitle><EmptyDescription>Record the first session to start building this member&apos;s history.</EmptyDescription></EmptyHeader><EmptyContent><Button size="sm"><FoundationIcon name="add" data-icon="inline-start" decorative />Record session</Button></EmptyContent></Empty></ComponentSection>
+        </div>
+      </section>
+
+      <section className="catalog-category" aria-labelledby="signature-heading">
+        <CategoryHeader id="signature" code="SIG" title="Signature" description="Ink & Signal brand elements: one signal per screen, athletic numerals and the pulse motif." />
+        <div className="component-grid">
+          <ComponentSection id="accent-block" title="AccentBlock" description="The single accent surface per screen carries the next action on the signal gradient." importPath="@allfitone/react/components/accent-block" contract={["One per screen", "Theme-invariant gradient", "On-accent ink text", "Dot texture"]}>
+            <AccentBlock className="signature-accent-demo">
+              <AccentBlockLabel>Entrenamiento programado</AccentBlockLabel>
+              <AccentBlockTitle>Fuerza — Tren superior</AccentBlockTitle>
+              <AccentBlockMeta>18:00 · Factory Fitness Chapinero</AccentBlockMeta>
+              <Button className="signature-accent-demo__action">Empezar entrenamiento</Button>
+            </AccentBlock>
+          </ComponentSection>
+
+          <ComponentSection id="stat-strip" title="StatStrip" description="Big session metrics divided by hairlines, set in condensed tabular numerals." importPath="@allfitone/react/components/stat-strip" contract={["Tabular numerals", "Hairline dividers", "Equal-width items", "Long values"]}>
+            <StatStrip>
+              <StatStripItem value="4.320" label="Volumen" />
+              <StatStripItem value="22" label="Series" />
+              <StatStripItem value="186" label="Rep." />
+            </StatStrip>
+          </ComponentSection>
+
+          <ComponentSection id="tick-ring" title="TickRing" description="Bezel-style progress built from tick dashes with a single signal arc." importPath="@allfitone/react/components/tick-ring" contract={["role=meter", "0–100 clamp", "Center label slot", "Reference geometry"]}>
+            <div className="demo-row">
+              <TickRing value={86} size={64} aria-label="Adherencia semanal">
+                <span className="signature-tick-demo__value">86%</span>
+              </TickRing>
+              <p className="signature-tick-demo__caption">Adherencia semanal</p>
+            </div>
+          </ComponentSection>
+
+          <ComponentSection id="pulse-mark" title="PulseMark" description="The EKG brand motif composes next to wordmarks and eyebrows." importPath="@allfitone/react/components/pulse-mark" contract={["aria-hidden by default", "Optional label", "currentColor stroke"]}>
+            <div className="demo-row signature-wordmark">
+              <PulseMark width={34} label="Pulso AllfitOne" />
+              <span className="signature-wordmark__text">Allfit <em>One</em></span>
+            </div>
+          </ComponentSection>
+
+          <ComponentSection id="class-cards" title="Class cards" description="Patrón de reservas del producto: clase destacada, inscrita y no disponible — AccentBlock, Card, Badge y Button compuestos." importPath="@allfitone/react (composición)" contract={["Destacada única", "Estados de reserva", "CTA invertido", "Dark / light"]}>
+            <div className="class-cards-demo" lang="es">
+              <AccentBlock>
+                <div className="class-cards-demo__top"><AccentBlockTitle>Functional 45′</AccentBlockTitle><Badge>HIIT</Badge></div>
+                <AccentBlockMeta>Vie 24 jul · 7:00 – 7:45 · Clase en vivo</AccentBlockMeta>
+                <AccentBlockMeta><strong>14/16</strong> reservas · quedan 2 cupos</AccentBlockMeta>
+                <Button className="class-cards-demo__cta">Reservar clase</Button>
+              </AccentBlock>
+              <Card size="sm">
+                <CardContent>
+                  <div className="class-cards-demo__top"><span className="class-cards-demo__name">Movilidad</span><Badge variant="info">Inscrito</Badge></div>
+                  <p className="class-cards-demo__meta">Sáb 25 jul · 7:00 – 7:50 · Clase en vivo</p>
+                  <p className="class-cards-demo__meta"><strong>12/16</strong> reservas</p>
+                  <Button className="class-cards-demo__cta class-cards-demo__cta--tonal">Cancelar reserva</Button>
+                </CardContent>
+              </Card>
+              <Card size="sm">
+                <CardContent>
+                  <div className="class-cards-demo__top"><span className="class-cards-demo__name">Yoga Flow</span><Badge variant="sport">Yoga</Badge></div>
+                  <p className="class-cards-demo__meta">Dom 26 jul · 9:00 – 10:00 · Contenido digital</p>
+                  <p className="class-cards-demo__meta">Cupos abiertos</p>
+                  <Button variant="secondary" disabled className="class-cards-demo__cta">No disponible</Button>
+                </CardContent>
+              </Card>
+            </div>
+          </ComponentSection>
         </div>
       </section>
 

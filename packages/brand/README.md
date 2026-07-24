@@ -7,10 +7,11 @@ This is a foundational source package. Product applications should normally impo
 ## React
 
 ```tsx
-import { BrandLockup, BrandLogo, BrandWordmark } from "@allfitone/brand/react";
+import { BrandLockup, BrandLogo, BrandLogoCarrier, BrandWordmark } from "@allfitone/brand/react";
 
 <BrandLockup surface="dark" title="Allfit One" />
 <BrandLogo variant="cyan" />
+<BrandLogoCarrier title="Allfit One" />
 <BrandWordmark surface="light" title="Allfit One" />
 ```
 

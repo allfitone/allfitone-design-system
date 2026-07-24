@@ -39,7 +39,7 @@ function WorkspaceHeader({
     <header
       data-slot="workspace-header"
       className={cn(
-        "sticky top-0 flex min-h-16 items-center gap-3 border-b border-border bg-background/95 px-4 backdrop-blur-sm md:px-6",
+        "sticky top-0 z-10 flex min-h-16 items-center gap-3 border-b border-[var(--afo-material-glass-border)] bg-[var(--afo-material-glass-fill)] px-4 backdrop-blur-[var(--afo-material-glass-blur)] backdrop-saturate-[var(--afo-material-glass-saturate)] md:px-6",
         className
       )}
       {...props}
@@ -68,7 +68,7 @@ function WorkspaceEyebrow({
     <p
       data-slot="workspace-eyebrow"
       className={cn(
-        "m-0 text-[0.6rem] font-extrabold tracking-[0.16em] text-muted-foreground uppercase",
+        "m-0 text-xs font-extrabold tracking-[var(--afo-letter-spacing-utility)] text-muted-foreground uppercase",
         className
       )}
       {...props}
@@ -85,7 +85,8 @@ function WorkspaceTitle({
     <Component
       data-slot="workspace-title"
       className={cn(
-        "m-0 truncate font-display text-2xl font-semibold tracking-[-0.035em] uppercase",
+        // Reference .os-top h3: 24px / 600 / uppercase / +0.02em / lh 1.
+        "m-0 truncate font-display text-2xl leading-none font-semibold tracking-[var(--afo-letter-spacing-brand)] uppercase",
         className
       )}
       {...props}

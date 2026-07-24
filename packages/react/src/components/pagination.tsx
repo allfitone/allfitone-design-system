@@ -72,7 +72,7 @@ function PaginationPrevious({
     <PaginationLink
       aria-label="Go to previous page"
       size="default"
-      className={cn("pl-1.5!", className)}
+      className={cn("min-w-11 pl-1.5!", className)}
       {...props}
     >
       <FoundationIcon name="back" data-icon="inline-start" decorative />
@@ -90,7 +90,7 @@ function PaginationNext({
     <PaginationLink
       aria-label="Go to next page"
       size="default"
-      className={cn("pr-1.5!", className)}
+      className={cn("min-w-11 pr-1.5!", className)}
       {...props}
     >
       <span className="hidden sm:block">{text}</span>

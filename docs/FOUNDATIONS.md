@@ -9,7 +9,7 @@ These rules keep Allfit Space and Allfit OS recognizably related without forcing
 | Token | Value | Role |
 | --- | --- | --- |
 | `color.brand.primary` | `#55EFFB` | Primary signature, active action, selected state |
-| `color.brand.light` | `#68EEF4` | Hover and focus emphasis |
+| `color.brand.light` | `#6FF3FD` | Hover and focus emphasis |
 | `color.brand.turquoise` | `#60D1D6` | Supporting brand tone |
 | `color.brand.turquoiseDark` | `#348E94` | Borders and restrained support |
 | `color.brand.turquoiseDeep` | `#176D72` | Accessible accent text on light surfaces |
@@ -35,6 +35,8 @@ Rules:
 - Display type should be uppercase only when hierarchy or brand voice justifies it.
 - Use `typographyRole` before composing a new role from primitives.
 - Product body text should normally start at `typography.size.sm` or `typography.size.md`.
+- Compact utility text must not render below `typography.size.xs`; status badges and control labels use `xs` or larger.
+- Web adapters expose each semantic role as `--afo-typography-{role}-*` variables.
 
 Letter spacing tokens are unitless `em` ratios. React Native adapters must multiply the ratio by the active font size to produce its numeric `letterSpacing` value.
 

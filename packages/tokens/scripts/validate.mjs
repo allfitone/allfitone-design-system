@@ -1,4 +1,15 @@
-import { color, motion, radius, semanticColor, semanticSpacing, spacing } from "../dist/index.js";
+import { readFile } from "node:fs/promises";
+
+import {
+  color,
+  designSystemVersion,
+  motion,
+  radius,
+  semanticColor,
+  semanticSpacing,
+  spacing,
+  tokenBundle,
+} from "../dist/index.js";
 
 const fail = (message) => {
   throw new Error(message);
@@ -7,6 +18,35 @@ const fail = (message) => {
 const assert = (condition, message) => {
   if (!condition) fail(message);
 };
+
+const packageMetadata = JSON.parse(
+  await readFile(new URL("../package.json", import.meta.url), "utf8"),
+);
+assert(
+  tokenBundle.meta.version === packageMetadata.version,
+  `Runtime token version ${tokenBundle.meta.version} must match package version ${packageMetadata.version}.`,
+);
+assert(
+  designSystemVersion === packageMetadata.version,
+  `Global token version ${designSystemVersion} must match package version ${packageMetadata.version}.`,
+);
+const generatedCss = await readFile(
+  new URL("../dist/tokens.css", import.meta.url),
+  "utf8",
+);
+assert(
+  generatedCss.includes(
+    `--afo-design-system-version: "${packageMetadata.version}";`,
+  ),
+  "Generated token CSS must expose the global design system version.",
+);
+const generatedTokens = JSON.parse(
+  await readFile(new URL("../dist/tokens.json", import.meta.url), "utf8"),
+);
+assert(
+  generatedTokens.meta.version === packageMetadata.version,
+  "Generated tokens.json must expose the global design system version.",
+);
 
 const rgba = (hex) => {
   const normalized = hex.slice(1);
@@ -55,8 +95,17 @@ const contrastPairs = [
   ["warning status fill", semanticColor.dark.status.onStatus, semanticColor.dark.status.warning, 4.5],
   ["danger status fill", semanticColor.dark.status.onStatus, semanticColor.dark.status.danger, 4.5],
   ["info status fill", semanticColor.dark.status.onStatus, semanticColor.dark.status.info, 4.5],
+  ["sport status fill", semanticColor.dark.status.onStatus, semanticColor.dark.status.sport, 4.5],
+  ["light success status fill", semanticColor.light.status.onStatus, semanticColor.light.status.success, 4.5],
+  ["light warning status fill", semanticColor.light.status.onStatus, semanticColor.light.status.warning, 4.5],
+  ["light danger status fill", semanticColor.light.status.onStatus, semanticColor.light.status.danger, 4.5],
+  ["light info status fill", semanticColor.light.status.onStatus, semanticColor.light.status.info, 4.5],
+  ["light sport status fill", semanticColor.light.status.onStatus, semanticColor.light.status.sport, 4.5],
+  ["light muted text on muted surface", semanticColor.light.text.muted, semanticColor.light.background.surfaceMuted, 4.5],
   ["dark secondary icon", semanticColor.dark.icon.secondary, semanticColor.dark.background.canvas, 3],
   ["light secondary icon", semanticColor.light.icon.secondary, semanticColor.light.background.canvas, 3],
+  ["dark default boundary", semanticColor.dark.border.default, semanticColor.dark.background.surfaceSubtle, 3],
+  ["light default boundary", semanticColor.light.border.default, semanticColor.light.background.surfaceSubtle, 3],
   ["dark strong boundary", semanticColor.dark.border.strong, semanticColor.dark.background.canvas, 3],
   ["light strong boundary", semanticColor.light.border.strong, semanticColor.light.background.canvas, 3],
   ["dark focus ring", semanticColor.dark.focus.ring, semanticColor.dark.background.canvas, 3],

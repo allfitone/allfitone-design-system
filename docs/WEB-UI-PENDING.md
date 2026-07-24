@@ -13,8 +13,10 @@ The following areas already have a canonical implementation:
 - forms: Field, Label, Input, and Textarea;
 - selection: Checkbox, RadioGroup, Switch, Select, and Tabs;
 - data display: Badge, Card, Skeleton, and Empty;
+- signature: AccentBlock, StatStrip, TickRing, and PulseMark;
 - overlays: Dialog, AlertDialog, Sheet, and Tooltip;
 - feedback: Sonner/Toast and Spinner.
+- composition: Collapsible and Separator.
 
 Navigation is ready as a reusable foundation. Product repositories still need to supply their routes, permissions, labels, active state, and responsive information architecture.
 
@@ -38,7 +40,7 @@ These components cover the most likely operational and administrative workflows 
 
 ## Priority 1 — complete common product workflows
 
-- Accordion and Collapsible for dense detail and filter surfaces.
+- Accordion for dense detail and filter surfaces; it should compose the existing Collapsible behavior.
 - SearchField with clear action, loading, results count, and native search semantics.
 - NumberField with step controls, boundaries, units, and locale-aware input behavior.
 - Slider for bounded numeric selection, including range and keyboard increments.
@@ -79,7 +81,7 @@ These behaviors belong in Allfit OS first. Only generic routing adapters proven 
 
 ## Validation and release gates still pending
 
-- Regenerate the Linux Playwright visual baselines from a Linux CI run. Do not copy the Windows captures over the Linux references.
+- Keep Windows Chromium as the canonical visual-regression platform; Linux CI continues to run behavior, reflow, keyboard, reduced-motion, and Axe checks.
 - Complete a manual keyboard pass in the Explorer and in the first consuming OS shell.
 - Complete the required NVDA review on Windows.
 - Complete the required VoiceOver and Safari review before the first public package release.

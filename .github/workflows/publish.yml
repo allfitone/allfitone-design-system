@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
   id-token: write
 
@@ -12,12 +13,40 @@ concurrency:
 
 jobs:
   publish:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: npm
     timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Require successful CI for this main commit
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ci_run_id=""
+          for attempt in {1..12}; do
+            ci_run_id="$(gh run list \
+              --workflow ci.yml \
+              --branch main \
+              --commit "$GITHUB_SHA" \
+              --limit 1 \
+              --json databaseId \
+              --jq '.[0].databaseId // empty')"
+            if [ -n "$ci_run_id" ]; then
+              break
+            fi
+            sleep 10
+          done
+
+          if [ -z "$ci_run_id" ]; then
+            echo "No CI run exists for main commit $GITHUB_SHA."
+            exit 1
+          fi
+
+          gh run watch "$ci_run_id" --exit-status
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
