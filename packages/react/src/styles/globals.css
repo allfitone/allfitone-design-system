@@ -97,9 +97,10 @@
   --afo-success-soft: color-mix(in srgb, var(--success) 13%, transparent);
   --afo-warning-soft: color-mix(in srgb, var(--warning) 15%, transparent);
   --afo-info-soft: color-mix(in srgb, var(--info) 13%, transparent);
-  --afo-control-shadow: 0 1px 2px color-mix(in srgb, var(--afo-color-ink-void) 18%, transparent), inset 0 1px 0 color-mix(in srgb, var(--afo-color-neutral-white) 7%, transparent);
-  --afo-control-shadow-hover: 0 5px 16px -9px color-mix(in srgb, var(--afo-color-ink-void) 52%, transparent), inset 0 1px 0 color-mix(in srgb, var(--afo-color-neutral-white) 10%, transparent);
-  --afo-surface-shadow: 0 16px 42px -26px color-mix(in srgb, var(--afo-color-ink-void) 62%, transparent), inset 0 1px 0 color-mix(in srgb, var(--afo-color-neutral-white) 5%, transparent);
+  /* Ink & Signal: sin gloss/bisel interior — sombras planas y suaves. */
+  --afo-control-shadow: 0 1px 2px color-mix(in srgb, var(--afo-color-ink-void) 18%, transparent);
+  --afo-control-shadow-hover: 0 8px 24px -10px color-mix(in srgb, var(--afo-color-brand-primary) 45%, transparent);
+  --afo-surface-shadow: 0 16px 42px -26px color-mix(in srgb, var(--afo-color-ink-void) 62%, transparent);
 }
 
 @layer base {
