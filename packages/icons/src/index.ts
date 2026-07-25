@@ -1,4 +1,4 @@
-export const designSystemVersion = "0.1.0" as const;
+export const designSystemVersion = "0.2.0" as const;
 
 export const iconSize = {
   xs: 12,

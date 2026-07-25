@@ -25,6 +25,10 @@ function readWorkspacePackageVersion(packageDirectory: "react" | "tokens") {
 
 const reactPackageVersion = readWorkspacePackageVersion("react");
 const tokensPackageVersion = readWorkspacePackageVersion("tokens");
+const fullPageScreenshotOptions = {
+  fullPage: true,
+  maxDiffPixelRatio: 0.0001,
+} as const;
 
 async function verifyPackageVersion(page: Page, expectedLabels: readonly string[]) {
   for (const label of expectedLabels) {
@@ -365,6 +369,7 @@ test("honors reduced motion and forced color focus", async ({ page }) => {
 
 test("matches the approved catalog composition", async ({ page }) => {
   test.skip(process.platform !== "win32", "Visual baselines are canonical on Windows.");
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("button", { name: "dark", exact: true }).click();
   await verifyPackageVersion(page, [
@@ -373,16 +378,23 @@ test("matches the approved catalog composition", async ({ page }) => {
     `React components / v${reactPackageVersion}`,
   ]);
   await normalizePackageVersions(page);
-  await expect(page).toHaveScreenshot("components-dark-desktop.png", { fullPage: true });
+  await expect(page).toHaveScreenshot(
+    "components-dark-desktop.png",
+    fullPageScreenshotOptions,
+  );
 
   await page.getByRole("button", { name: "light", exact: true }).click();
   await page.setViewportSize({ width: 320, height: 800 });
   await normalizePackageVersions(page);
-  await expect(page).toHaveScreenshot("components-light-mobile.png", { fullPage: true });
+  await expect(page).toHaveScreenshot(
+    "components-light-mobile.png",
+    fullPageScreenshotOptions,
+  );
 });
 
 test("matches the approved foundation composition", async ({ page }) => {
   test.skip(process.platform !== "win32", "Visual baselines are canonical on Windows.");
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/ui-foundation");
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("button", { name: "dark", exact: true }).click();
@@ -392,12 +404,18 @@ test("matches the approved foundation composition", async ({ page }) => {
     `UI Foundation / Tokens / v${tokensPackageVersion}`,
   ]);
   await normalizePackageVersions(page);
-  await expect(page).toHaveScreenshot("foundation-dark-desktop.png", { fullPage: true });
+  await expect(page).toHaveScreenshot(
+    "foundation-dark-desktop.png",
+    fullPageScreenshotOptions,
+  );
 
   await page.getByRole("button", { name: "light", exact: true }).click();
   await page.setViewportSize({ width: 320, height: 800 });
   await normalizePackageVersions(page);
-  await expect(page).toHaveScreenshot("foundation-light-mobile.png", { fullPage: true });
+  await expect(page).toHaveScreenshot(
+    "foundation-light-mobile.png",
+    fullPageScreenshotOptions,
+  );
 });
 
 test("matches key overlay states in both themes", async ({ page }) => {
