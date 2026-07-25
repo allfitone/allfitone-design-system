@@ -81,7 +81,7 @@ jobs:
         run: node scripts/verify-published-packages.mjs
 
   github-release:
-    name: Release ${{ matrix.package.tag }}
+    name: Release ${{ matrix.tag }}
     needs: publish
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -89,7 +89,7 @@ jobs:
       fail-fast: false
       max-parallel: 1
       matrix:
-        package: ${{ fromJSON(needs.publish.outputs.packages) }}
+        include: ${{ fromJSON(needs.publish.outputs.packages) }}
     permissions:
       contents: write
     steps:
@@ -101,7 +101,7 @@ jobs:
       - name: Create the annotated package tag
         shell: bash
         env:
-          TAG: ${{ matrix.package.tag }}
+          TAG: ${{ matrix.tag }}
         run: |
           if git rev-parse "refs/tags/${TAG}" >/dev/null 2>&1; then
             tagged_commit="$(git rev-list -n 1 "$TAG")"
@@ -121,7 +121,7 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ matrix.package.tag }}
+          TAG: ${{ matrix.tag }}
         run: |
           if gh release view "$TAG" >/dev/null 2>&1; then
             release_title="$(gh release view "$TAG" --json name --jq '.name')"
