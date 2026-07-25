@@ -54,6 +54,31 @@ for (const { metadata, sourceUrl } of packageMetadata) {
   );
 }
 
+const brandPackage = packageMetadata.find(
+  ({ metadata }) => metadata.name === "@allfitone/brand",
+);
+if (!brandPackage) {
+  throw new Error("Could not locate @allfitone/brand package metadata.");
+}
+const brandManifestUrl = new URL(
+  "../packages/brand/assets/manifest.json",
+  import.meta.url,
+);
+const brandManifest = JSON.parse(await readFile(brandManifestUrl, "utf8"));
+
+if (brandManifest.brandVersion !== brandPackage.metadata.version) {
+  brandManifest.brandVersion = brandPackage.metadata.version;
+  await writeFile(
+    brandManifestUrl,
+    `${JSON.stringify(brandManifest, null, 2)}\n`,
+    "utf8",
+  );
+}
+
+console.log(
+  `Synchronized @allfitone/brand asset manifest to ${brandPackage.metadata.version}.`,
+);
+
 const publicPackageVersions = new Map(
   packageMetadata.map(({ metadata }) => [metadata.name, metadata.version]),
 );

@@ -57,7 +57,7 @@ export function BrandLogoCarrier({
       viewBox={brandDimensions.logoCarrier.viewBox}
     >
       <G transform="translate(32 36)">
-        <Path fill={brandColors.cyan} d="M65 0h330l-65 408H0L65 0Z" />
+        <Path fill={brandColors.cyan} d={brandGeometry.carrierPath} />
         <Path fill={brandColors.ink} d={brandGeometry.logoPath} transform="translate(142 22) scale(.318)" />
       </G>
     </Svg>
@@ -111,7 +111,7 @@ export function BrandLockup({
       viewBox={brandDimensions.lockup.viewBox}
     >
       <G transform="translate(44 36)">
-        <Path fill={brandColors.cyan} d="M65 0h330l-65 408H0L65 0Z" />
+        <Path fill={brandColors.cyan} d={brandGeometry.carrierPath} />
         <Path fill={brandColors.ink} d={brandGeometry.logoPath} transform="translate(142 22) scale(.318)" />
       </G>
       <G transform="translate(512 337) scale(.28 -.28)" fill={neutral}>

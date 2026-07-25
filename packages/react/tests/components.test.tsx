@@ -5,6 +5,7 @@ import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
 import { Button } from "../src/components/button.js";
+import { AnimatedBrandLockup } from "../src/components/animated-brand-lockup.js";
 import { AccentBlock, AccentBlockLabel, AccentBlockTitle } from "../src/components/accent-block.js";
 import { Badge } from "../src/components/badge.js";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../src/components/breadcrumb.js";
@@ -163,6 +164,26 @@ describe("ALLFIT ONE React components", () => {
     expect(screen.getByTestId("decorative-pulse")).toHaveAttribute("aria-hidden", "true");
     expect(container.querySelector('[data-slot="accent-block"]')).toBeInTheDocument();
     expect(container.querySelector('[data-slot="stat-strip"]')).toBeInTheDocument();
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("renders the animated brand lockup from canonical geometry", async () => {
+    const { container } = render(
+      <div>
+        <AnimatedBrandLockup label="Allfit One" replayKey="test" />
+        <AnimatedBrandLockup data-testid="decorative-lockup" />
+      </div>,
+    );
+
+    expect(screen.getByRole("img", { name: "Allfit One" })).toHaveAttribute(
+      "viewBox",
+      "0 0 1678 480",
+    );
+    expect(screen.getByTestId("decorative-lockup")).toHaveAttribute(
+      "aria-hidden",
+      "true",
+    );
+    expect(container.querySelectorAll('[data-slot="animated-brand-lockup"]')).toHaveLength(2);
     expect(await axe(container)).toHaveNoViolations();
   });
 

@@ -340,6 +340,18 @@ test("keeps the Ink & Signal signature stable in both themes", async ({ page }) 
   expect(lightSignal).toBe(darkSignal);
 });
 
+test("renders the brand entrance as a static final frame for reduced motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/ui-foundation?motion=reduced");
+  await expect(page.getByRole("heading", { level: 1, name: "UI Foundation" })).toBeVisible();
+
+  const brandLockup = page.locator('[data-slot="animated-brand-lockup"]');
+  await expect(brandLockup).toHaveAttribute("data-motion-reduced", "true");
+  await expect(brandLockup).toHaveAccessibleName("Allfit One");
+  await page.getByRole("button", { name: "Replay entrance" }).click();
+  await expect(brandLockup).toHaveAttribute("data-motion-reduced", "true");
+});
+
 test("honors reduced motion and forced color focus", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   const spinner = page.getByRole("status", { name: "Loading" }).first();

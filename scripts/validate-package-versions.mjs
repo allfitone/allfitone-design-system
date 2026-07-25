@@ -14,6 +14,7 @@ const workspaceTargets = [
     path: "packages/brand",
     packageUrl: new URL("../packages/brand/package.json", import.meta.url),
     sourceUrl: new URL("../packages/brand/src/index.ts", import.meta.url),
+    assetManifestUrl: new URL("../packages/brand/assets/manifest.json", import.meta.url),
   },
   {
     path: "packages/icons",
@@ -51,6 +52,17 @@ for (const entry of publicEntries) {
       `${entry.manifest.name} exports ${runtimeVersion ?? "<missing>"}; expected package version ${entry.manifest.version}.`,
     );
   }
+
+  if (entry.assetManifestUrl) {
+    const assetManifest = JSON.parse(
+      await readFile(entry.assetManifestUrl, "utf8"),
+    );
+    if (assetManifest.brandVersion !== entry.manifest.version) {
+      throw new Error(
+        `${entry.manifest.name} asset manifest is ${assetManifest.brandVersion ?? "<missing>"}; expected package version ${entry.manifest.version}.`,
+      );
+    }
+  }
 }
 
 for (const { manifest } of entries) {
@@ -86,5 +98,5 @@ for (const { path, manifest } of entries) {
 }
 
 console.log(
-  `Validated ${publicEntries.length} independently versioned public packages, ${entries.length} workspace manifests, runtime metadata, internal ranges, and package-lock.json.`,
+  `Validated ${publicEntries.length} independently versioned public packages, ${entries.length} workspace manifests, runtime and asset metadata, internal ranges, and package-lock.json.`,
 );

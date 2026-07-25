@@ -51,4 +51,6 @@ export const iconCatalog = {
 
 export type IconName = keyof typeof iconCatalog;
 export type IconSize = keyof typeof iconSize;
+export type IconStroke = keyof typeof iconStrokeWidth;
+export type IconSource = (typeof iconCatalog)[IconName]["source"];
 export type IconCategory = (typeof iconCatalog)[IconName]["category"];

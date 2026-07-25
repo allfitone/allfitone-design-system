@@ -53,6 +53,7 @@ import {
   DesignSystemFooter,
   DesignSystemLayout,
 } from "@/components/design-system-shell";
+import { BrandMotionSpecimen } from "@/components/brand-motion-specimen";
 import {
   AllfitOsLockup,
   AllfitOsMark,
@@ -566,7 +567,8 @@ export default function Home() {
       </section>
 
       <section id="motion" className="foundation-section">
-        <SectionHeader code="MOT" title="Motion" description="Motion explains response and continuity. Hover each track to compare duration." />
+        <SectionHeader code="MOT" title="Motion" description="Motion explains response and continuity. Replay the brand entrance, then hover each track to compare duration." />
+        <BrandMotionSpecimen />
         <div className="motion-list">
           {Object.entries(motion.duration).filter(([name]) => name !== "instant").map(([name, value]) => (
             <div key={name} className="motion-row">

@@ -21,6 +21,7 @@ Ink & Signal v2 uses calm blue-gray ink surfaces so one cyan signal can identify
 - `AccentBlock` owns the single featured surface for a session, class, timer, or next action.
 - Active navigation and Card states use a restrained three-pixel rail plus a tonal wash.
 - `PulseMark`, `TickRing`, condensed tabular numerals, and subtle dot texture carry the athletic signature without turning every container into decoration.
+- `AnimatedBrandLockup` provides the opt-in web entrance for Allfit One. It reveals the canonical carrier and wordmark once; it does not use the Allfit OS pulse motif.
 - Glass material is reserved for floating chrome and overlays; content cards remain solid.
 
 Visual hierarchy is intentionally quieter than the brand palette. Cyan is reserved for primary action, current selection, focus, and short semantic accents. Resting controls use neutral semantic boundaries; persistent cyan borders across every surface are not part of the system.
@@ -61,7 +62,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | Forms | Field, Label, Input, Textarea |
 | Selection | Checkbox, RadioGroup, Switch, Select, Tabs |
 | Data display | Badge, Card, Skeleton, Empty |
-| Signature | AccentBlock, StatStrip, TickRing, PulseMark |
+| Signature | AccentBlock, StatStrip, TickRing, PulseMark, AnimatedBrandLockup |
 | Overlays | Dialog, AlertDialog, Sheet, Tooltip |
 | Feedback | Sonner/Toast, Spinner |
 | Composition | Collapsible, Separator |
@@ -77,6 +78,7 @@ The package root remains metadata-only. There is no component barrel because exp
 - Loading actions compose `Spinner` and `disabled`; no component adds an `isLoading` prop.
 - `IconButton` requires `aria-label` in TypeScript.
 - `TickRing` requires `aria-label` in TypeScript because its `meter` value must always have a name.
+- `AnimatedBrandLockup` stays on its explicit component subpath so the Motion runtime is loaded only by consumers that opt into brand animation. Change `replayKey` to replay it.
 - Controlled components support `value`, `defaultValue`, and `onValueChange` through their Base UI root API.
 - Overlays support `open`, `defaultOpen`, and `onOpenChange`, require a title, contain modal focus, support Escape, make the background inert, and return focus to the trigger.
 - Field errors use text, `data-invalid`, `aria-invalid`, and an explicit description/error relationship.

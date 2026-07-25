@@ -10,6 +10,7 @@ const letterPaths = {
 } as const;
 
 export const brandGeometry = {
+  carrierPath: "M65 0h330l-65 408H0L65 0Z",
   logoPath: "M405 0 0 211l120 1L11 1149l324-490L405 0Z",
   allfitLetters: [
     [letterPaths.a, 0],

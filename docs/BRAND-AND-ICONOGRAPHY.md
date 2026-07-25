@@ -2,9 +2,14 @@
 
 ## Ownership
 
-`@allfitone/brand` is the source of truth for the Allfit One logo, wordmark, and lockups. Canonical SVG exports live in `packages/brand/assets`; React renderers are generated from the same geometry in `packages/brand/src/react.tsx`.
+`@allfitone/brand` is the source of truth for the Allfit One logo, wordmark, and lockups. Canonical SVG exports live in `packages/brand/assets`; React renderers use the same geometry in `packages/brand/src/react.tsx`, and package validation enforces parity between both representations.
 
 `@allfitone/icons` owns the semantic icon vocabulary. Lucide owns the base geometry, while Allfit One owns which glyph represents each meaning, along with size and stroke rules.
+
+Static interfaces should prefer named semantic exports such as `BackIcon` or
+`SuccessIcon` so unused glyphs remain tree-shakeable. `FoundationIcon` remains
+the dynamic renderer for catalogs and data-driven icon names. Both renderers
+resolve through the same `iconCatalog` source mapping.
 
 ## Consumption
 

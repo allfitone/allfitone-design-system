@@ -43,7 +43,8 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "check": "npm run build && node scripts/validate.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "npm run build && npm run test && node scripts/validate.mjs",
     "prepack": "npm run check"
   },
   "peerDependencies": {
@@ -51,7 +52,8 @@
   },
   "devDependencies": {
     "@types/react": "^19",
-    "react": "19.2.4"
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
   },
   "engines": {
     "node": ">=22"

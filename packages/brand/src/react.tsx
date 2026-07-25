@@ -1,9 +1,9 @@
-import type { SVGProps } from "react";
+import type { ReactNode, SVGProps } from "react";
 
 import { brandColors, brandDimensions, brandGeometry, type BrandLogoVariant, type BrandSurface } from "./index.js";
 
-export type BrandSvgProps = Omit<SVGProps<SVGSVGElement>, "color"> & {
-  title?: string;
+export type BrandSvgProps = Omit<SVGProps<SVGSVGElement>, "children" | "color"> & {
+  title?: string | undefined;
 };
 
 export type BrandLogoProps = BrandSvgProps & {
@@ -14,42 +14,64 @@ export type SurfaceBrandProps = BrandSvgProps & {
   surface?: BrandSurface;
 };
 
-function Accessibility({ title }: { title: string | undefined }) {
-  return title ? <title>{title}</title> : null;
+type BrandSvgFrameProps = BrandSvgProps & {
+  children: ReactNode;
+  viewBox: string;
+};
+
+function BrandSvgFrame({
+  title,
+  children,
+  viewBox,
+  role,
+  focusable,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
+  "aria-hidden": ariaHidden,
+  ...props
+}: BrandSvgFrameProps) {
+  const hasAccessibleName = Boolean(title || ariaLabel || ariaLabelledBy);
+
+  return (
+    <svg
+      {...props}
+      viewBox={viewBox}
+      role={role ?? (hasAccessibleName ? "img" : "presentation")}
+      aria-label={ariaLabel ?? (ariaLabelledBy ? undefined : title)}
+      aria-labelledby={ariaLabelledBy}
+      aria-hidden={ariaHidden ?? (hasAccessibleName ? undefined : true)}
+      focusable={focusable ?? "false"}
+    >
+      {title ? <title>{title}</title> : null}
+      {children}
+    </svg>
+  );
 }
 
 export function BrandLogo({ variant = "cyan", title, ...props }: BrandLogoProps) {
   return (
-    <svg
+    <BrandSvgFrame
       {...props}
       viewBox={brandDimensions.logo.viewBox}
-      role={title ? "img" : "presentation"}
-      aria-label={title}
-      aria-hidden={title ? undefined : true}
-      focusable="false"
+      title={title}
     >
-      <Accessibility title={title} />
       <path fill={brandColors[variant]} d={brandGeometry.logoPath} />
-    </svg>
+    </BrandSvgFrame>
   );
 }
 
 export function BrandLogoCarrier({ title, ...props }: BrandSvgProps) {
   return (
-    <svg
+    <BrandSvgFrame
       {...props}
       viewBox={brandDimensions.logoCarrier.viewBox}
-      role={title ? "img" : "presentation"}
-      aria-label={title}
-      aria-hidden={title ? undefined : true}
-      focusable="false"
+      title={title}
     >
-      <Accessibility title={title} />
       <g transform="translate(32 36)">
-        <path fill={brandColors.cyan} d="M65 0h330l-65 408H0L65 0Z" />
+        <path fill={brandColors.cyan} d={brandGeometry.carrierPath} />
         <path fill={brandColors.ink} d={brandGeometry.logoPath} transform="translate(142 22) scale(.318)" />
       </g>
-    </svg>
+    </BrandSvgFrame>
   );
 }
 
@@ -57,22 +79,18 @@ export function BrandWordmark({ surface = "dark", title, ...props }: SurfaceBran
   const neutral = surface === "dark" ? brandColors.chalk : brandColors.ink;
 
   return (
-    <svg
+    <BrandSvgFrame
       {...props}
       viewBox={brandDimensions.wordmark.viewBox}
-      role={title ? "img" : "presentation"}
-      aria-label={title}
-      aria-hidden={title ? undefined : true}
-      focusable="false"
+      title={title}
     >
-      <Accessibility title={title} />
       <g transform="translate(20 728) scale(1 -1)" fill={neutral}>
         {brandGeometry.allfitLetters.map(([path, x], index) => <path key={index} d={path} transform={`translate(${x} 0)`} />)}
       </g>
       <g transform="translate(20 728) scale(1 -1)" fill={brandColors.cyan}>
         {brandGeometry.oneLetters.map(([path, x], index) => <path key={index} d={path} transform={`translate(${x} 0)`} />)}
       </g>
-    </svg>
+    </BrandSvgFrame>
   );
 }
 
@@ -80,17 +98,13 @@ export function BrandLockup({ surface = "dark", title, ...props }: SurfaceBrandP
   const neutral = surface === "dark" ? brandColors.chalk : brandColors.ink;
 
   return (
-    <svg
+    <BrandSvgFrame
       {...props}
       viewBox={brandDimensions.lockup.viewBox}
-      role={title ? "img" : "presentation"}
-      aria-label={title}
-      aria-hidden={title ? undefined : true}
-      focusable="false"
+      title={title}
     >
-      <Accessibility title={title} />
       <g transform="translate(44 36)">
-        <path fill={brandColors.cyan} d="M65 0h330l-65 408H0L65 0Z" />
+        <path fill={brandColors.cyan} d={brandGeometry.carrierPath} />
         <path fill={brandColors.ink} d={brandGeometry.logoPath} transform="translate(142 22) scale(.318)" />
       </g>
       <g transform="translate(512 337) scale(.28 -.28)" fill={neutral}>
@@ -99,6 +113,6 @@ export function BrandLockup({ surface = "dark", title, ...props }: SurfaceBrandP
       <g transform="translate(1240 337) scale(.28 -.28)" fill={brandColors.cyan}>
         {brandGeometry.oneLetters.map(([path, x], index) => <path key={index} d={path} transform={`translate(${x - 2600} 0)`} />)}
       </g>
-    </svg>
+    </BrandSvgFrame>
   );
 }

@@ -34,4 +34,6 @@ All files have transparent backgrounds. The wordmark lettering is converted to v
 - Prefer the lockup for primary brand identification.
 - Provide “Allfit One” as accessible text when the asset is decorative or its internal title is not exposed by the host platform.
 
-These files are the source of truth. Consumer copies are generated artifacts and must not be edited by hand.
+These are the canonical distributable files. `npm run check` enforces parity
+between them, `src/geometry.ts`, and `assets/manifest.json`. Consumer copies are
+generated artifacts and must not be edited by hand.

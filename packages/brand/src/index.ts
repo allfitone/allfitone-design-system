@@ -13,6 +13,10 @@ export const brandDimensions = {
   lockup: { width: 1678, height: 480, viewBox: "0 0 1678 480" },
 } as const;
 
+/**
+ * Package-relative asset paths used by the manifest and filesystem tooling.
+ * Use `brandAssetSpecifiers` when resolving an asset through a package loader.
+ */
 export const brandAssetFiles = {
   logo: {
     cyan: "assets/logo/allfit-one-logo-cyan.svg",
@@ -27,6 +31,27 @@ export const brandAssetFiles = {
   lockup: {
     onDark: "assets/lockup/allfit-one-lockup-on-dark.svg",
     onLight: "assets/lockup/allfit-one-lockup-on-light.svg",
+  },
+} as const;
+
+const toBrandAssetSpecifier = <Path extends string>(path: Path) =>
+  `@allfitone/brand/${path}` as const;
+
+/** Public module specifiers accepted by package-aware resolvers and bundlers. */
+export const brandAssetSpecifiers = {
+  logo: {
+    cyan: toBrandAssetSpecifier(brandAssetFiles.logo.cyan),
+    ink: toBrandAssetSpecifier(brandAssetFiles.logo.ink),
+    chalk: toBrandAssetSpecifier(brandAssetFiles.logo.chalk),
+  },
+  logoCarrier: toBrandAssetSpecifier(brandAssetFiles.logoCarrier),
+  wordmark: {
+    onDark: toBrandAssetSpecifier(brandAssetFiles.wordmark.onDark),
+    onLight: toBrandAssetSpecifier(brandAssetFiles.wordmark.onLight),
+  },
+  lockup: {
+    onDark: toBrandAssetSpecifier(brandAssetFiles.lockup.onDark),
+    onLight: toBrandAssetSpecifier(brandAssetFiles.lockup.onLight),
   },
 } as const;
 

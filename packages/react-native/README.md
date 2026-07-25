@@ -11,6 +11,7 @@ const theme = getNativeTheme("dark");
 
 <BrandLockup surface="dark" accessibilityLabel="Allfit One" />;
 <FoundationIcon name="activity" color={theme.icon.primary} decorative />;
+<FoundationIcon name="back" color={theme.icon.primary} size="sm" strokeScale="compact" decorative />;
 getNativeTouchTarget("android"); // 48
 ```
 
