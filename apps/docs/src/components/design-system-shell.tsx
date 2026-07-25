@@ -3,6 +3,7 @@
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
 
+import { designSystemVersion as reactPackageVersion } from "@allfitone/react";
 import { BrandLockup } from "@allfitone/react/brand";
 import { buttonVariants } from "@allfitone/react/components/button";
 import {
@@ -30,7 +31,7 @@ import {
   useSidebar,
 } from "@allfitone/react/components/sidebar";
 import { FoundationIcon, type IconName } from "@allfitone/react/icons";
-import { designSystemVersion } from "@allfitone/react/tokens";
+import { designSystemVersion as tokensPackageVersion } from "@allfitone/react/tokens";
 
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -90,12 +91,12 @@ const guideMeta = {
   foundations: {
     eyebrow: "UI Foundation",
     title: "Core reference",
-    meta: `Web + native · v${designSystemVersion}`,
+    meta: `Tokens · v${tokensPackageVersion}`,
   },
   components: {
     eyebrow: "Component library",
     title: "React reference",
-    meta: `Accessible · v${designSystemVersion}`,
+    meta: `React · v${reactPackageVersion}`,
   },
 } as const;
 
@@ -330,11 +331,11 @@ export function DesignSystemLayout({
   );
 }
 
-export function DesignSystemFooter({ label }: { label: string }) {
+export function DesignSystemFooter({ label, version }: { label: string; version: string }) {
   return (
     <footer className="guide-footer">
       <div className="brand"><AdaptiveBrandLockup /></div>
-      <p>{label} / v{designSystemVersion}</p>
+      <p>{label} / v{version}</p>
     </footer>
   );
 }

@@ -50,9 +50,9 @@
     "prepack": "npm run check"
   },
   "dependencies": {
-    "@allfitone/brand": "0.1.0",
-    "@allfitone/icons": "0.1.0",
-    "@allfitone/tokens": "0.1.0",
+    "@allfitone/brand": "^0.1.0",
+    "@allfitone/icons": "^0.1.0",
+    "@allfitone/tokens": "^0.1.0",
     "lucide-react-native": "^1.25.0"
   },
   "peerDependencies": {

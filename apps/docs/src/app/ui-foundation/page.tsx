@@ -36,7 +36,7 @@ import {
 import { FoundationIcon, iconCatalog, type IconName } from "@allfitone/react/icons";
 import {
   color,
-  designSystemVersion,
+  designSystemVersion as tokensPackageVersion,
   motion,
   radius,
   semanticColor,
@@ -183,7 +183,7 @@ export default function Home() {
                 <span className="foundation-resolver__status" aria-hidden="true" />
                 <span>Token resolver</span>
               </div>
-              <Badge variant="outline">v{designSystemVersion}</Badge>
+              <Badge variant="outline">v{tokensPackageVersion}</Badge>
             </header>
             <ol className="foundation-resolver__chain">
               <li>
@@ -658,7 +658,7 @@ export default function Home() {
         </div>
       </section>
 
-        <DesignSystemFooter label="UI Foundation / Tokens" />
+        <DesignSystemFooter label="UI Foundation / Tokens" version={tokensPackageVersion} />
       </div>
     </DesignSystemLayout>
   );

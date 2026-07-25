@@ -3,11 +3,6 @@ name: Publish to npm
 on:
   workflow_dispatch:
 
-permissions:
-  actions: read
-  contents: read
-  id-token: write
-
 concurrency:
   group: publish-npm
 
@@ -17,6 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     environment: npm
     timeout-minutes: 25
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+    outputs:
+      packages: ${{ steps.release-plan.outputs.packages }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -67,5 +68,71 @@ jobs:
       - name: Validate release
         run: npm run check:release
 
+      - name: Determine package release plan
+        id: release-plan
+        run: node scripts/prepare-release-plan.mjs
+
       - name: Publish unpublished versions
         run: npm run release
+
+      - name: Verify published packages
+        env:
+          RELEASE_PLAN: ${{ steps.release-plan.outputs.packages }}
+        run: node scripts/verify-published-packages.mjs
+
+  github-release:
+    name: Release ${{ matrix.package.tag }}
+    needs: publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        package: ${{ fromJSON(needs.publish.outputs.packages) }}
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout with tags
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Create the annotated package tag
+        shell: bash
+        env:
+          TAG: ${{ matrix.package.tag }}
+        run: |
+          if git rev-parse "refs/tags/${TAG}" >/dev/null 2>&1; then
+            tagged_commit="$(git rev-list -n 1 "$TAG")"
+
+            if [ "$tagged_commit" != "$GITHUB_SHA" ]; then
+              echo "${TAG} already points to ${tagged_commit}, not ${GITHUB_SHA}."
+              exit 1
+            fi
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git tag --annotate "$TAG" --message "$TAG" "$GITHUB_SHA"
+            git push origin "$TAG"
+          fi
+
+      - name: Create the GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ matrix.package.tag }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            release_title="$(gh release view "$TAG" --json name --jq '.name')"
+
+            if [ "$release_title" != "$TAG" ]; then
+              echo "${TAG} already has the unexpected release title '${release_title}'."
+              exit 1
+            fi
+          else
+            gh release create "$TAG" \
+              --verify-tag \
+              --title "$TAG" \
+              --generate-notes
+          fi

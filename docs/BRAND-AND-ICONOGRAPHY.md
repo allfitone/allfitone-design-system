@@ -21,7 +21,7 @@ Installed package files and synchronized public assets are generated consumer co
 ## Repository-local adoption status
 
 - The Design System Explorer consumes `@allfitone/react` through the workspace using the same public subpaths that npm consumers will install.
-- The five public packages are prepared for the bootstrap `0.1.0` release; until that release exists in npm, external products cannot install them from the registry.
+- The five public packages are available from npm at `0.1.0`. External products must install an exact released version rather than a sibling checkout or copied source.
 - The Explorer documents a provisional Allfit OS mark, wordmark, and lockup for review. They are not canonical exports from `@allfitone/brand` yet.
 
 Adoption inside Landing, Allfit OS, and Allfit Space must be tracked and verified in each product repository. This repository defines the consumer contract but must not claim that an external application has migrated without evidence from that application's current source.

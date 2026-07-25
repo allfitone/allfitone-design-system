@@ -84,10 +84,10 @@ These behaviors belong in Allfit OS first. Only generic routing adapters proven 
 - Keep Windows Chromium as the canonical visual-regression platform; Linux CI continues to run behavior, reflow, keyboard, reduced-motion, and Axe checks.
 - Complete a manual keyboard pass in the Explorer and in the first consuming OS shell.
 - Complete the required NVDA review on Windows.
-- Complete the required VoiceOver and Safari review before the first public package release.
+- Complete the required VoiceOver and Safari review before the next public package release.
 - Run a consumer smoke test from Allfit OS using only public `@allfitone/react` subpaths.
 - Validate real navigation labels, dense tables, translated content, zoom at 200%, and 320 px layouts with production-like data.
-- Keep the existing bootstrap Changeset for the unreleased `0.1.0` package set. After that release, every public navigation contract change requires its own Changeset.
+- Every public navigation contract change requires a Changeset. Documentation-only Explorer changes do not.
 
 ## Definition of done for every new component
 

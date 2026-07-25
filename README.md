@@ -20,7 +20,7 @@ This foundation release contains shared foundations, canonical brand assets, acc
 
 Platform adapters are separated so Web and native applications share decisions without sharing incompatible rendering code. React components live only in `@allfitone/react`; product repositories consume public package subpaths rather than copying component source.
 
-Public npm releases use the `@allfitone` organization, Changesets, and an approval-gated OIDC workflow. Bootstrap and normal release instructions live in [Releasing public packages](docs/RELEASING.md).
+Public npm releases use the `@allfitone` organization, independent package versions, Changesets, and an approval-gated OIDC workflow. Bootstrap and normal release instructions live in [Releasing public packages](docs/RELEASING.md).
 
 ## Packages
 

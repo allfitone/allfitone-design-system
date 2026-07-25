@@ -20,6 +20,6 @@ Initial public release of the Ink & Signal design system.
 
 ### Release metadata
 
-- All public packages ship at the same global version.
-- Every package exports `designSystemVersion`.
-- Tokens also expose the version through `tokenBundle.meta.version`, `tokens.json`, and `--afo-design-system-version`.
+- All five public packages shipped their initial release at `0.1.0`.
+- Every package exports its package-local manifest version through `designSystemVersion`.
+- Tokens also expose the Tokens package version through `tokenBundle.meta.version`, `tokens.json`, and `--afo-design-system-version`.

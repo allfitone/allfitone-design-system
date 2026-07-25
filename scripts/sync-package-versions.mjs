@@ -1,5 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 
+import semver from "semver";
+
 const publicPackages = [
   {
     packageUrl: new URL("../packages/tokens/package.json", import.meta.url),
@@ -29,15 +31,6 @@ const packageMetadata = await Promise.all(
     metadata: JSON.parse(await readFile(target.packageUrl, "utf8")),
   })),
 );
-const versions = new Set(packageMetadata.map(({ metadata }) => metadata.version));
-
-if (versions.size !== 1) {
-  throw new Error(
-    `Public package versions must remain aligned; received ${[...versions].join(", ")}.`,
-  );
-}
-
-const [designSystemVersion] = versions;
 const versionPattern = /(export const designSystemVersion = ")[^"]+(" as const;)/;
 
 for (const { metadata, sourceUrl } of packageMetadata) {
@@ -49,7 +42,7 @@ for (const { metadata, sourceUrl } of packageMetadata) {
 
   const updated = source.replace(
     versionPattern,
-    `$1${designSystemVersion}$2`,
+    `$1${metadata.version}$2`,
   );
 
   if (updated !== source) {
@@ -57,23 +50,42 @@ for (const { metadata, sourceUrl } of packageMetadata) {
   }
 
   console.log(
-    `Synchronized ${metadata.name} runtime metadata to ${designSystemVersion}.`,
+    `Synchronized ${metadata.name} runtime metadata to ${metadata.version}.`,
   );
 }
 
-const publicPackageNames = new Set(
-  packageMetadata.map(({ metadata }) => metadata.name),
+const publicPackageVersions = new Map(
+  packageMetadata.map(({ metadata }) => [metadata.name, metadata.version]),
 );
-const workspaceManifests = [
-  new URL("../package.json", import.meta.url),
-  new URL("../apps/docs/package.json", import.meta.url),
-  ...publicPackages.map(({ packageUrl }) => packageUrl),
-];
 
-for (const manifestUrl of workspaceManifests) {
+for (const { metadata } of packageMetadata) {
+  for (const dependencyType of [
+    "dependencies",
+    "devDependencies",
+    "peerDependencies",
+    "optionalDependencies",
+  ]) {
+    for (const [dependencyName, range] of Object.entries(metadata[dependencyType] ?? {})) {
+      const dependencyVersion = publicPackageVersions.get(dependencyName);
+
+      if (
+        dependencyVersion &&
+        (!semver.validRange(range) ||
+          !semver.satisfies(dependencyVersion, range, { includePrerelease: true }))
+      ) {
+        throw new Error(
+          `${metadata.name} declares ${dependencyName}@${range}, which does not accept ${dependencyVersion}. Changesets must version the dependent package and update its range.`,
+        );
+      }
+    }
+  }
+}
+
+const privateManifestUrls = [new URL("../apps/docs/package.json", import.meta.url)];
+
+for (const manifestUrl of privateManifestUrls) {
   const manifest = JSON.parse(await readFile(manifestUrl, "utf8"));
-  let changed = manifest.version !== designSystemVersion;
-  manifest.version = designSystemVersion;
+  let changed = false;
 
   for (const dependencyType of [
     "dependencies",
@@ -85,11 +97,20 @@ for (const manifestUrl of workspaceManifests) {
     if (!dependencies) continue;
 
     for (const dependencyName of Object.keys(dependencies)) {
+      const dependencyVersion = publicPackageVersions.get(dependencyName);
+      const currentRange = dependencies[dependencyName];
+
       if (
-        publicPackageNames.has(dependencyName) &&
-        dependencies[dependencyName] !== designSystemVersion
+        dependencyVersion &&
+        (!semver.validRange(currentRange) ||
+          !semver.satisfies(dependencyVersion, currentRange, { includePrerelease: true }))
       ) {
-        dependencies[dependencyName] = designSystemVersion;
+        const prefix = currentRange.startsWith("^")
+          ? "^"
+          : currentRange.startsWith("~")
+            ? "~"
+            : "";
+        dependencies[dependencyName] = `${prefix}${dependencyVersion}`;
         changed = true;
       }
     }
@@ -104,6 +125,4 @@ for (const manifestUrl of workspaceManifests) {
   }
 }
 
-console.log(
-  `Allfit One Design System manifests are aligned at ${designSystemVersion}.`,
-);
+console.log("Synchronized package-local runtime versions and compatible private workspace ranges.");

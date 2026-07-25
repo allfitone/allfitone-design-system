@@ -93,4 +93,4 @@ Component entries document their behavioral contract next to the interactive exa
 
 `npm run check` runs TypeScript, lint, package builds, unit tests, axe assertions, token validation, and output-contract validation. `npm run check:e2e` builds the workspace and runs Playwright for keyboard behavior, overlay focus, theme switching, WCAG scans, target sizes, 320 px reflow, and desktop/mobile visual regression.
 
-Before publication, complete manual keyboard and NVDA testing on Windows. VoiceOver with Safari remains a required publication gate.
+Before the next public package release, complete manual keyboard and NVDA testing on Windows. VoiceOver with Safari remains a required publication gate.

@@ -6,4 +6,4 @@ Add a changeset whenever a pull request changes the public API or behavior of a 
 npm run changeset
 ```
 
-The five public packages are kept in one fixed version group while the design system is in `0.x`. Documentation-only changes do not need a changeset.
+Select only the packages whose published contract changes. Changesets versions packages independently and adds dependent packages only when an internal dependency range must change. Documentation-only changes do not need a changeset.

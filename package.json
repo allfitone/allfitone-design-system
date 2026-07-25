@@ -11,17 +11,18 @@
     "dev": "npm run build --workspace @allfitone/brand && npm run build --workspace @allfitone/icons && npm run build --workspace @allfitone/tokens && npm run build --workspace @allfitone/react && npm run build --workspace @allfitone/react-native && npm run dev --workspace @allfitone/docs",
     "build": "npm run build --workspace @allfitone/brand && npm run build --workspace @allfitone/icons && npm run build --workspace @allfitone/tokens && npm run build --workspace @allfitone/react && npm run build --workspace @allfitone/react-native && npm run build:next --workspace @allfitone/docs",
     "check": "npm run check:versions && npm run check --workspace @allfitone/brand && npm run check --workspace @allfitone/icons && npm run check --workspace @allfitone/tokens && npm run check --workspace @allfitone/react && npm run check --workspace @allfitone/react-native && npm run check --workspace @allfitone/docs",
-    "check:versions": "node scripts/validate-global-version.mjs",
+    "check:versions": "node scripts/validate-package-versions.mjs",
     "check:e2e": "npm run build && npm run test:e2e --workspace @allfitone/docs",
     "check:pack": "node scripts/check-packages.mjs",
     "check:release": "npm run check && npm run check:e2e && npm run check:pack",
     "changeset": "changeset",
     "sync:versions": "node scripts/sync-package-versions.mjs",
     "version-packages": "changeset version && npm run sync:versions && npm install --package-lock-only",
-    "release": "changeset publish"
+    "release": "changeset publish --no-git-tag"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.1",
+    "semver": "^7.8.5",
     "typescript": "5.9.3"
   }
 }
