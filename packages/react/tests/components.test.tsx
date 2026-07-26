@@ -463,7 +463,9 @@ describe("ALLFIT ONE React components", () => {
 
     await user.clear(search);
     await user.click(view.getByRole("button", { name: "Columns" }));
-    await user.click(screen.getByRole("menuitemcheckbox", { name: "Plan" }));
+    await user.click(
+      await screen.findByRole("menuitemcheckbox", { name: "Plan" }),
+    );
     expect(view.queryByRole("columnheader", { name: "Plan" })).not.toBeInTheDocument();
 
     await user.click(view.getByRole("button", { name: "Next page" }));
