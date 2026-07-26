@@ -45,6 +45,12 @@ import { designSystemVersion } from "@allfitone/react";
 
 Despite the historical export name, `designSystemVersion` means the version of the package that exports it; it is not a global release-train version. Token consumers can also inspect the Tokens package version through `tokenBundle.meta.version`, `@allfitone/tokens/tokens.json`, or `--afo-design-system-version`.
 
+All `0.x.y` package releases belong to the beta maturity line. The first
+official Design System release is `1.0.0`, after Allfit One validates both
+products in market. The Explorer therefore presents only `v0` during beta;
+package manifests and release tooling continue to use their complete,
+independent SemVer versions.
+
 `npm run check:versions` verifies each package against its own runtime metadata, ensures internal semver ranges accept the workspace dependency versions, and checks each workspace entry in `package-lock.json`.
 
 ## Normal release flow after 0.1.0

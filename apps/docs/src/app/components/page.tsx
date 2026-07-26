@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { designSystemVersion as reactPackageVersion } from "@allfitone/react";
 import { Badge } from "@allfitone/react/components/badge";
 import { PulseMark } from "@allfitone/react/components/pulse-mark";
 import { FoundationIcon, type IconName } from "@allfitone/react/icons";
@@ -12,6 +11,7 @@ import {
   DesignSystemLayout,
 } from "@/components/design-system-shell";
 import { MovementSequence } from "@/components/movement-sequence";
+import { explorerReleaseLabel } from "@/lib/release";
 
 export const metadata: Metadata = {
   title: "Components | Allfit One Design System",
@@ -70,7 +70,7 @@ export default function ComponentsPage() {
                 <span className="component-manifest__pulse" aria-hidden="true" />
                 <span>Library manifest</span>
               </div>
-              <Badge variant="outline">v{reactPackageVersion}</Badge>
+              <Badge variant="outline">{explorerReleaseLabel}</Badge>
             </header>
             <div className="component-manifest__list">
               {componentCategories.map((category) => (
@@ -107,7 +107,7 @@ export default function ComponentsPage() {
 
         <ComponentCatalog />
 
-        <DesignSystemFooter label="React components" version={reactPackageVersion} />
+        <DesignSystemFooter label="React components" />
       </div>
     </DesignSystemLayout>
   );

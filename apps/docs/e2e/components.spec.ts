@@ -1,56 +1,17 @@
-import { existsSync, readFileSync } from "node:fs";
-import { resolve } from "node:path";
-
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
-function readWorkspacePackageVersion(packageDirectory: "react" | "tokens") {
-  const candidates = [
-    resolve(process.cwd(), "packages", packageDirectory, "package.json"),
-    resolve(process.cwd(), "..", "..", "packages", packageDirectory, "package.json"),
-  ];
-  const manifestPath = candidates.find((candidate) => existsSync(candidate));
-
-  if (!manifestPath) {
-    throw new Error(`Unable to locate the @allfitone/${packageDirectory} package manifest.`);
-  }
-
-  const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as { version?: unknown };
-  if (typeof manifest.version !== "string") {
-    throw new Error(`@allfitone/${packageDirectory} does not declare a valid version.`);
-  }
-
-  return manifest.version;
-}
-
-const reactPackageVersion = readWorkspacePackageVersion("react");
-const tokensPackageVersion = readWorkspacePackageVersion("tokens");
 const fullPageScreenshotOptions = {
   fullPage: true,
   maxDiffPixelRatio: 0.0001,
   timeout: 15_000,
 } as const;
 
-async function verifyPackageVersion(page: Page, expectedLabels: readonly string[]) {
+async function verifyExplorerVersion(page: Page, expectedLabels: readonly string[]) {
   for (const label of expectedLabels) {
     await expect(page.getByText(label, { exact: true })).toBeVisible();
   }
-}
-
-async function normalizePackageVersions(page: Page) {
-  await page.locator("body").evaluate((body) => {
-    const walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT);
-    let node = walker.nextNode();
-
-    while (node) {
-      node.textContent =
-        node.textContent?.replace(
-          /\bv\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?\b/g,
-          "v0.0.0",
-        ) ?? null;
-      node = walker.nextNode();
-    }
-  });
+  await expect(page.locator("body")).not.toContainText(/\bv\d+\.\d+\.\d+\b/);
 }
 
 test.beforeEach(async ({ page }) => {
@@ -880,12 +841,11 @@ test("matches the approved catalog composition", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("button", { name: "dark", exact: true }).click();
-  await verifyPackageVersion(page, [
-    `React \u00b7 v${reactPackageVersion}`,
-    `v${reactPackageVersion}`,
-    `React components / v${reactPackageVersion}`,
+  await verifyExplorerVersion(page, [
+    "React \u00b7 v0",
+    "v0",
+    "React components / v0",
   ]);
-  await normalizePackageVersions(page);
   await expect(page).toHaveScreenshot(
     "components-dark-desktop.png",
     fullPageScreenshotOptions,
@@ -896,7 +856,6 @@ test("matches the approved catalog composition", async ({ page }) => {
 
   await page.getByRole("button", { name: "light", exact: true }).click();
   await page.setViewportSize({ width: 320, height: 800 });
-  await normalizePackageVersions(page);
   await expect(page).toHaveScreenshot(
     "components-light-mobile.png",
     fullPageScreenshotOptions,
@@ -909,12 +868,11 @@ test("matches the approved foundation composition", async ({ page }) => {
   await page.goto("/ui-foundation");
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("button", { name: "dark", exact: true }).click();
-  await verifyPackageVersion(page, [
-    `Tokens \u00b7 v${tokensPackageVersion}`,
-    `v${tokensPackageVersion}`,
-    `UI Foundation / Tokens / v${tokensPackageVersion}`,
+  await verifyExplorerVersion(page, [
+    "Tokens \u00b7 v0",
+    "v0",
+    "UI Foundation / Tokens / v0",
   ]);
-  await normalizePackageVersions(page);
   await expect(page).toHaveScreenshot(
     "foundation-dark-desktop.png",
     fullPageScreenshotOptions,
@@ -922,7 +880,6 @@ test("matches the approved foundation composition", async ({ page }) => {
 
   await page.getByRole("button", { name: "light", exact: true }).click();
   await page.setViewportSize({ width: 320, height: 800 });
-  await normalizePackageVersions(page);
   await expect(page).toHaveScreenshot(
     "foundation-light-mobile.png",
     fullPageScreenshotOptions,

@@ -79,7 +79,11 @@ New semantic components should use matching export names and prop meaning across
 - Public packages follow independent semantic versions. A change to one package does not publish untouched packages.
 - Every public package exports its own package-manifest version through `designSystemVersion`.
 - `@allfitone/tokens` additionally exposes the Tokens package version in `tokenBundle.meta.version`, generated `tokens.json`, and `--afo-design-system-version`.
-- The Explorer labels Foundation content with the Tokens package version and the component catalog with the React package version.
+- Every `0.x.y` release is a Design System beta. The first official Design
+  System release will be `1.0.0`, after both products have been validated in
+  market.
+- The Explorer communicates only the shared maturity major (`v0` during beta);
+  it does not expose package-local minor or patch versions in the interface.
 - Release foundation packages before platform packages.
 - Platform packages declare compatible foundation ranges as runtime dependencies and React/platform runtimes as peer dependencies where appropriate.
 - A compatible foundation patch does not force an adapter release. Changesets bumps a dependent adapter only when its internal range must change.

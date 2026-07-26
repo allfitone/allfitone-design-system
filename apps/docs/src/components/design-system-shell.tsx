@@ -3,7 +3,6 @@
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
 
-import { designSystemVersion as reactPackageVersion } from "@allfitone/react";
 import { BrandLockup } from "@allfitone/react/brand";
 import { buttonVariants } from "@allfitone/react/components/button";
 import {
@@ -31,9 +30,9 @@ import {
   useSidebar,
 } from "@allfitone/react/components/sidebar";
 import { FoundationIcon, type IconName } from "@allfitone/react/icons";
-import { designSystemVersion as tokensPackageVersion } from "@allfitone/react/tokens";
 
 import { ThemeToggle } from "@/components/theme-toggle";
+import { explorerReleaseLabel } from "@/lib/release";
 
 type GuideSection = "foundations" | "components";
 
@@ -91,12 +90,12 @@ const guideMeta = {
   foundations: {
     eyebrow: "UI Foundation",
     title: "Core reference",
-    meta: `Tokens · v${tokensPackageVersion}`,
+    meta: `Tokens · ${explorerReleaseLabel}`,
   },
   components: {
     eyebrow: "Component library",
     title: "React reference",
-    meta: `React · v${reactPackageVersion}`,
+    meta: `React · ${explorerReleaseLabel}`,
   },
 } as const;
 
@@ -331,11 +330,11 @@ export function DesignSystemLayout({
   );
 }
 
-export function DesignSystemFooter({ label, version }: { label: string; version: string }) {
+export function DesignSystemFooter({ label }: { label: string }) {
   return (
     <footer className="guide-footer">
       <div className="brand"><AdaptiveBrandLockup /></div>
-      <p>{label} / v{version}</p>
+      <p>{label} / {explorerReleaseLabel}</p>
     </footer>
   );
 }

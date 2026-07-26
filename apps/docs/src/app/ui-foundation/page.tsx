@@ -36,7 +36,6 @@ import {
 import { FoundationIcon, iconCatalog, type IconName } from "@allfitone/react/icons";
 import {
   color,
-  designSystemVersion as tokensPackageVersion,
   motion,
   radius,
   semanticColor,
@@ -59,6 +58,7 @@ import {
   AllfitOsMark,
   AllfitOsWordmark,
 } from "@/components/allfit-os-brand";
+import { explorerReleaseLabel } from "@/lib/release";
 
 export const metadata: Metadata = {
   title: "UI Foundation | Allfit One Design System",
@@ -184,7 +184,7 @@ export default function Home() {
                 <span className="foundation-resolver__status" aria-hidden="true" />
                 <span>Token resolver</span>
               </div>
-              <Badge variant="outline">v{tokensPackageVersion}</Badge>
+              <Badge variant="outline">{explorerReleaseLabel}</Badge>
             </header>
             <ol className="foundation-resolver__chain">
               <li>
@@ -660,7 +660,7 @@ export default function Home() {
         </div>
       </section>
 
-        <DesignSystemFooter label="UI Foundation / Tokens" version={tokensPackageVersion} />
+        <DesignSystemFooter label="UI Foundation / Tokens" />
       </div>
     </DesignSystemLayout>
   );

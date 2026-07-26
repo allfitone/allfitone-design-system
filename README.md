@@ -2,6 +2,11 @@
 
 The shared visual foundation for Allfit One, Allfit Space, Allfit OS, and the public landing experience.
 
+> **Beta:** Every `0.x.y` release belongs to the beta maturity line. The first
+> official Design System release will be `1.0.0`, after both products have been
+> validated in market. Package versions remain independent, while the Explorer
+> communicates the current maturity line simply as `v0`.
+
 ## Current scope
 
 This foundation release contains shared foundations, canonical brand assets, accessible Web components, and a visual explorer:

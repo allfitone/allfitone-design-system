@@ -52,6 +52,12 @@ npm run check:pack
 
 ## Independent package versioning
 
+- The Design System remains in beta throughout the `0.x.y` line. The first
+  official release is `1.0.0`, after both products have been validated in
+  market and that milestone is explicitly approved.
+- During beta, the Explorer in `apps/docs` displays only the shared maturity
+  label `v0`; do not expose package-local minor or patch versions as the Design
+  System version.
 - Public packages have independent semantic versions. A change to one package
   does not automatically bump the others.
 - Never edit package versions, runtime `designSystemVersion` values,
@@ -70,8 +76,10 @@ npm run check:pack
 - The automated `chore: version packages` pull request owns manifest version
   updates and changelog generation.
 
-Read `.changeset/README.md` and `docs/RELEASING.md` before modifying release
-automation or preparing a publication.
+The canonical maturity and version policy lives in
+`docs/PLATFORM-PACKAGES.md`. Read it together with `.changeset/README.md` and
+`docs/RELEASING.md` before modifying release automation, Explorer version
+labels, or preparing a publication.
 
 ## Publishing
 
