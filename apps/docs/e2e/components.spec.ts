@@ -586,6 +586,35 @@ test("keeps alert meaning explicit beyond color", async ({ page }) => {
   await expect(action).toBeFocused();
 });
 
+test("keeps progress named, textual and still with reduced motion", async ({ page }) => {
+  const specimen = page.locator("#progress");
+  const published = specimen.getByRole("progressbar", {
+    name: "Published sessions",
+  });
+  const indeterminate = specimen.getByRole("progressbar", {
+    name: "Session sync",
+  });
+
+  await expect(published).toHaveAttribute("aria-valuenow", "8");
+  await expect(published).toHaveAttribute("aria-valuemax", "12");
+  await expect(published).toHaveAttribute(
+    "aria-valuetext",
+    "8 of 12 sessions published",
+  );
+  await expect(specimen.getByText("8 / 12", { exact: true })).toBeVisible();
+  await expect(indeterminate).not.toHaveAttribute("aria-valuenow");
+  await expect(indeterminate).toHaveAttribute("data-indeterminate");
+  await expect(specimen.getByText("In progress", { exact: true })).toBeVisible();
+
+  await specimen.getByRole("button", { name: "Publish next session" }).click();
+  await expect(published).toHaveAttribute("aria-valuenow", "9");
+  await expect(specimen.getByText("9 / 12", { exact: true })).toBeVisible();
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const indicator = indeterminate.locator('[data-slot="progress-indicator"]');
+  await expect(indicator).toHaveCSS("animation-name", "none");
+});
+
 test("announces toast feedback without stealing focus", async ({ page }) => {
   const trigger = page.getByRole("button", { name: "Show success" });
   await trigger.focus();

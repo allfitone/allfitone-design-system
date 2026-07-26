@@ -311,14 +311,43 @@
   }
 }
 
+@keyframes afo-progress-indeterminate {
+  from {
+    inset-inline-start: -38%;
+  }
+
+  to {
+    inset-inline-start: 100%;
+  }
+}
+
+[data-slot="progress-indicator"][data-indeterminate] {
+  animation: afo-progress-indeterminate 1.35s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   :where([data-slot]) {
     animation-duration: var(--afo-motion-reduced-duration) !important;
     transition-duration: var(--afo-motion-reduced-duration) !important;
   }
+
+  [data-slot="progress-indicator"][data-indeterminate] {
+    inset-inline-start: 31%;
+    animation: none !important;
+  }
 }
 
 @media (forced-colors: active) {
+  [data-slot="progress-track"] {
+    border-color: CanvasText;
+    background: Canvas;
+    forced-color-adjust: none;
+  }
+
+  [data-slot="progress-indicator"] {
+    background: Highlight;
+  }
+
   [data-slot="popover-content"] {
     border-color: CanvasText;
   }

@@ -64,7 +64,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | Data display | Table, DataTable, Badge, Card, Skeleton, Empty |
 | Signature | AccentBlock, StatStrip, TickRing, PulseMark, AnimatedBrandLockup |
 | Overlays | Dialog, AlertDialog, Sheet, Popover, Tooltip |
-| Feedback | Alert, Sonner/Toast, Spinner |
+| Feedback | Progress, Alert, Sonner/Toast, Spinner |
 | Composition | Collapsible, Separator |
 
 `Collapsible` and `Separator` are public compositional dependencies used by navigation and forms.
@@ -127,6 +127,13 @@ The package root remains metadata-only. There is no component barrel because exp
 - Alert uses a distinct status icon, title, and plain-language description so
   meaning never depends on its semantic rail color. Its variants are `info`,
   `success`, `warning`, and `danger`; actions compose through `AlertAction`.
+- Progress composes a visible `ProgressLabel` and `ProgressValue` with
+  `ProgressTrack` and `ProgressIndicator`. Use the full variant for a task with
+  supporting context and the compact variant inside dense cards or rows.
+- Pass `value={null}` for indeterminate work and keep the default “In progress”
+  text or provide an equally explicit value renderer. Domain values such as
+  sessions published should pair a custom visible value with
+  `getAriaValueText`; reduced motion leaves a static signal in the track.
 - Static Alert callouts do not create a live region. Use `live="polite"` for
   non-urgent updates and `live="assertive"` only for urgent failures that
   appear dynamically. Neither priority moves focus.

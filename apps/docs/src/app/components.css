@@ -1792,3 +1792,102 @@
   font-variant-numeric: tabular-nums;
   font-weight: var(--afo-font-weight-extrabold);
 }
+
+.progress-specimen {
+  display: grid;
+  width: min(42rem, 100%);
+  grid-template-columns: minmax(0, 1.35fr) minmax(13rem, 0.85fr);
+  gap: 1rem;
+}
+
+.progress-specimen__primary,
+.progress-specimen__queue {
+  min-width: 0;
+  border: 1px solid var(--afo-color-border-subtle);
+  border-radius: var(--afo-radius-card);
+  background: var(--afo-color-background-surface);
+  box-shadow: var(--afo-shadow-card);
+}
+
+.progress-specimen__primary {
+  padding: 1.15rem;
+}
+
+.progress-specimen__context {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--afo-color-border-subtle);
+}
+
+.progress-specimen__context > div {
+  display: grid;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.progress-specimen__context strong,
+.progress-specimen__queue-header strong {
+  color: var(--afo-color-text-primary);
+  font-size: var(--afo-font-size-sm);
+}
+
+.progress-specimen__context span,
+.progress-specimen__queue-header span {
+  color: var(--afo-color-text-muted);
+  font-size: var(--afo-font-size-xs);
+}
+
+.progress-specimen__marker {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid var(--afo-color-border-default);
+  border-radius: var(--afo-radius-control);
+  background: var(--afo-color-accent-tonal);
+  color: var(--afo-color-text-accent) !important;
+}
+
+.progress-specimen__marker svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.progress-specimen__action {
+  margin-top: 1rem;
+}
+
+.progress-specimen__queue {
+  align-self: start;
+  overflow: hidden;
+}
+
+.progress-specimen__queue-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--afo-color-background-surface-muted);
+}
+
+.progress-specimen__queue-header span {
+  font-weight: var(--afo-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--afo-letter-spacing-eyebrow);
+}
+
+.progress-specimen__queue-item {
+  padding: 1rem;
+  border-top: 1px solid var(--afo-color-border-subtle);
+}
+
+@media (max-width: 42.5rem) {
+  .progress-specimen {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

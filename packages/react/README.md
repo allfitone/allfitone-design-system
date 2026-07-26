@@ -39,7 +39,7 @@ Available public component subpaths are:
 - data display: `table`, `data-table`, `badge`, `card`, `skeleton`, and `empty`;
 - signature: `accent-block`, `stat-strip`, `tick-ring`, `pulse-mark`, and `animated-brand-lockup`;
 - overlays: `dialog`, `alert-dialog`, `sheet`, `popover`, and `tooltip`;
-- feedback: `alert`, `sonner`, and `spinner`;
+- feedback: `progress`, `alert`, `sonner`, and `spinner`;
 - composition: `collapsible` and `separator`.
 
 There is no all-components barrel. Import each component from its explicit `@allfitone/react/components/{name}` subpath.
@@ -81,6 +81,11 @@ product.
 automatic semantic icon, title, description, and optional action. Static
 callouts stay silent by default; use `live="polite"` for status updates or
 `live="assertive"` for urgent failures inserted at runtime.
+
+`Progress` composes a visible label and value with its track and indicator.
+Use `value={null}` for indeterminate operations, and pair domain-specific
+visible values with `getAriaValueText`. The `full` and `compact` variants share
+the same semantics and retain a static signal when reduced motion is enabled.
 
 `AnimatedBrandLockup` is the opt-in web entrance for the canonical Allfit One
 lockup. It plays once, renders the final frame when reduced motion is requested,

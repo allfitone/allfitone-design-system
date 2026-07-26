@@ -25,6 +25,7 @@ import { Label } from "@allfitone/react/components/label";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@allfitone/react/components/navigation-menu";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@allfitone/react/components/pagination";
 import { Popover, PopoverClose, PopoverContent, PopoverDescription, PopoverFooter, PopoverHeader, PopoverTitle, PopoverTrigger } from "@allfitone/react/components/popover";
+import { Progress, ProgressDescription, ProgressHeader, ProgressIndicator, ProgressLabel, ProgressTrack, ProgressValue } from "@allfitone/react/components/progress";
 import { RadioGroup, RadioGroupItem } from "@allfitone/react/components/radio-group";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@allfitone/react/components/select";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@allfitone/react/components/sheet";
@@ -926,6 +927,88 @@ function AlertSpecimen() {
   );
 }
 
+function ProgressSpecimen() {
+  const [publishedSessions, setPublishedSessions] = useState(8);
+  const isComplete = publishedSessions === 12;
+
+  return (
+    <div className="progress-specimen">
+      <div className="progress-specimen__primary">
+        <div className="progress-specimen__context">
+          <span className="progress-specimen__marker" aria-hidden="true">
+            <FoundationIcon name="training" decorative />
+          </span>
+          <div>
+            <strong>Strength foundation</strong>
+            <span>Four-week training block</span>
+          </div>
+        </div>
+
+        <Progress
+          value={publishedSessions}
+          max={12}
+          getAriaValueText={(_, value) => `${value} of 12 sessions published`}
+        >
+          <ProgressHeader>
+            <ProgressLabel>Published sessions</ProgressLabel>
+            <ProgressValue>
+              {(_, value) => `${value} / 12`}
+            </ProgressValue>
+          </ProgressHeader>
+          <ProgressTrack>
+            <ProgressIndicator />
+          </ProgressTrack>
+          <ProgressDescription>
+            {isComplete
+              ? "The complete block is available to members."
+              : `${12 - publishedSessions} sessions remain in draft.`}
+          </ProgressDescription>
+        </Progress>
+
+        <Button
+          size="sm"
+          variant="outline"
+          className="progress-specimen__action"
+          onClick={() =>
+            setPublishedSessions((current) => current === 12 ? 8 : current + 1)
+          }
+        >
+          {isComplete ? "Reset preview" : "Publish next session"}
+        </Button>
+      </div>
+
+      <div className="progress-specimen__queue" aria-label="Background operations">
+        <div className="progress-specimen__queue-header">
+          <strong>Background operations</strong>
+          <span>Live</span>
+        </div>
+        <div className="progress-specimen__queue-item">
+          <Progress value={82} variant="compact">
+            <ProgressHeader>
+              <ProgressLabel>Member import</ProgressLabel>
+              <ProgressValue />
+            </ProgressHeader>
+            <ProgressTrack>
+              <ProgressIndicator />
+            </ProgressTrack>
+          </Progress>
+        </div>
+        <div className="progress-specimen__queue-item">
+          <Progress value={null} variant="compact">
+            <ProgressHeader>
+              <ProgressLabel>Session sync</ProgressLabel>
+              <ProgressValue />
+            </ProgressHeader>
+            <ProgressTrack>
+              <ProgressIndicator />
+            </ProgressTrack>
+          </Progress>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ComponentCatalog() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -1220,8 +1303,9 @@ export function ComponentCatalog() {
       </section>
 
       <section className="catalog-category" aria-labelledby="feedback-heading">
-        <CategoryHeader id="feedback" code="FDB" title="Feedback" description="Progress and outcomes are announced without stealing focus." count={3} />
+        <CategoryHeader id="feedback" code="FDB" title="Feedback" description="Progress and outcomes are announced without stealing focus." count={4} />
         <div className="component-grid">
+          <ComponentSection id="progress" title="Progress" description="Training work and background operations expose their current state as readable data, not color alone." importPath="@allfitone/react/components/progress" contract={["Determinate / indeterminate", "Visible value", "Full / compact", "Reduced motion"]}><ProgressSpecimen /></ComponentSection>
           <ComponentSection id="alert" title="Alert" description="Operational callouts pair plain-language meaning with a distinct icon and restrained status signal." importPath="@allfitone/react/components/alert" contract={["Info / success / warning / danger", "Icon plus text", "Optional action", "Explicit live priority"]}><AlertSpecimen /></ComponentSection>
           <ComponentSection id="spinner" title="Spinner" description="A named status indicator composes inside actions and surfaces." importPath="@allfitone/react/components/spinner" contract={["Named status", "Reduced motion", "Composed loading"]}><div className="demo-row"><Spinner /><Button disabled><Spinner data-icon="inline-start" label="Saving" />Saving</Button></div></ComponentSection>
           <ComponentSection id="toast" title="Sonner / Toast" description="Polite, textual feedback follows the active ALLFIT ONE theme." importPath="@allfitone/react/components/sonner" contract={["Live region", "No focus steal", "Text plus color", "Dismissible"]}><div className="demo-row"><Button onClick={() => toast.success("Session saved", { description: "The member history is up to date." })}>Show success</Button><Button variant="outline" onClick={() => toast.error("Sync failed", { description: "Check the connection and try again." })}>Show error</Button></div></ComponentSection>

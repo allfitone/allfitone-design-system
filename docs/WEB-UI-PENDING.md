@@ -15,7 +15,7 @@ The following areas already have a canonical implementation:
 - data display: Table, DataTable, Badge, Card, Skeleton, and Empty;
 - signature: AccentBlock, StatStrip, TickRing, and PulseMark;
 - overlays: Dialog, AlertDialog, Sheet, Popover, and Tooltip;
-- feedback: Alert, Sonner/Toast, and Spinner.
+- feedback: Progress, Alert, Sonner/Toast, and Spinner.
 - composition: Collapsible and Separator.
 
 Navigation is ready as a reusable foundation. Product repositories still need to supply their routes, permissions, labels, active state, and responsive information architecture.
@@ -26,7 +26,6 @@ These components cover the most likely operational and administrative workflows 
 
 | Component | Required scope |
 | --- | --- |
-| Progress | Determinate and indeterminate progress with an accessible name, textual value, reduced motion, and compact/full variants. |
 | Avatar | Image, initials fallback, loading failure, accessible name guidance, group composition, and presence expressed beyond color. |
 | Command | Searchable keyboard-first command list with groups, shortcuts, empty results, and disabled items. |
 | CommandDialog | Command composed with Dialog for global navigation and actions without creating a second command API. |
@@ -102,7 +101,6 @@ Before starting a backlog item, document the product use cases that need it. Pre
 
 The recommended implementation order is:
 
-1. Progress;
-2. Avatar;
-3. Command and CommandDialog;
-4. Priority 1 components as required by actual OS screens.
+1. Avatar;
+2. Command and CommandDialog;
+3. Priority 1 components as required by actual OS screens.
