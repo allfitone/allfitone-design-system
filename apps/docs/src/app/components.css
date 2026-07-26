@@ -734,7 +734,7 @@
   grid-area: contract;
 }
 
-.component-entry:is(#table, #combobox) {
+.component-entry:is(#table, #combobox, #popover) {
   grid-column: 1 / -1;
 }
 
@@ -806,6 +806,76 @@
 .combobox-specimen__option small {
   color: var(--afo-color-text-secondary);
   font-size: var(--afo-font-size-xs);
+}
+
+.popover-specimen {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.popover-specimen__use-case {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 1rem;
+  border: 1px solid var(--afo-color-border-subtle);
+  border-radius: var(--afo-radius-card);
+  background: var(--afo-color-surface-recessed);
+}
+
+.popover-specimen__use-case--end {
+  align-items: flex-end;
+}
+
+.popover-specimen__use-case > span {
+  color: var(--afo-color-text-muted);
+  font-size: var(--afo-font-size-xs);
+  font-weight: var(--afo-font-weight-bold);
+  letter-spacing: var(--afo-letter-spacing-utility);
+  text-transform: uppercase;
+}
+
+.popover-specimen__identity {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.popover-specimen__identity > div {
+  min-width: 0;
+}
+
+.popover-specimen__metrics {
+  display: grid;
+  margin: 0;
+}
+
+.popover-specimen__metrics > div {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 0.75rem;
+  padding-block: 0.65rem;
+  border-top: 1px solid var(--afo-color-border-subtle);
+}
+
+.popover-specimen__metrics dt {
+  color: var(--afo-color-text-muted);
+  font-size: var(--afo-font-size-xs);
+}
+
+.popover-specimen__metrics dd {
+  margin: 0;
+  color: var(--afo-color-text-primary);
+  font-size: var(--afo-font-size-xs);
+  font-weight: var(--afo-font-weight-semibold);
+  text-align: right;
 }
 
 .navigation-menu-demo {
@@ -1175,6 +1245,15 @@
 }
 
 @media (max-width: 620px) {
+  .popover-specimen {
+    grid-template-columns: 1fr;
+  }
+
+  .popover-specimen__use-case,
+  .popover-specimen__use-case--end {
+    align-items: stretch;
+  }
+
   .combobox-specimen__grid {
     grid-template-columns: 1fr;
   }

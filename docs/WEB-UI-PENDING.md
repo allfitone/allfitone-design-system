@@ -14,7 +14,7 @@ The following areas already have a canonical implementation:
 - selection: Checkbox, RadioGroup, Switch, Select, Combobox, and Tabs;
 - data display: Table, DataTable, Badge, Card, Skeleton, and Empty;
 - signature: AccentBlock, StatStrip, TickRing, and PulseMark;
-- overlays: Dialog, AlertDialog, Sheet, and Tooltip;
+- overlays: Dialog, AlertDialog, Sheet, Popover, and Tooltip;
 - feedback: Sonner/Toast and Spinner.
 - composition: Collapsible and Separator.
 
@@ -26,7 +26,6 @@ These components cover the most likely operational and administrative workflows 
 
 | Component | Required scope |
 | --- | --- |
-| Popover | Non-modal anchored content with placement, collision handling, Escape dismissal, and focus restoration. |
 | Calendar | Single date, range, disabled dates, locale-ready labels, keyboard grid navigation, and responsive months. |
 | DatePicker | Field, Calendar, and Popover composition with parsing, visible format guidance, invalid state, and controlled values. |
 | Alert | Informational, success, warning, and danger variants with icon, title, description, and optional action. Meaning must not depend on color. |
@@ -106,7 +105,7 @@ Before starting a backlog item, document the product use cases that need it. Pre
 
 The recommended implementation order is:
 
-1. Popover, Calendar, and DatePicker;
+1. Calendar and DatePicker;
 2. Alert and Progress;
 3. Avatar;
 4. Command and CommandDialog;

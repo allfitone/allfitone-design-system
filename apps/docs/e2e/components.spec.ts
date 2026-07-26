@@ -148,6 +148,47 @@ test("contains dialog focus and returns it to the trigger", async ({ page }) => 
   await expect(trigger).toBeFocused();
 });
 
+test("keeps popover content opaque, non-modal and collision-aware", async ({ page }) => {
+  const specimen = page.locator("#popover");
+  const trigger = specimen.getByRole("button", { name: "View member context" });
+  await trigger.focus();
+  await page.keyboard.press("Enter");
+
+  const popover = page.getByRole("dialog", { name: "Camila Torres" });
+  await expect(popover).toBeVisible();
+  await expect(popover.getByRole("button", { name: "Done" })).toBeFocused();
+  expect(
+    await popover.evaluate((element) => {
+      const styles = getComputedStyle(element);
+      return {
+        backgroundColor: styles.backgroundColor,
+        opacity: styles.opacity,
+        zIndex: Number(styles.zIndex),
+      };
+    }),
+  ).toEqual({
+    backgroundColor: "rgb(11, 20, 29)",
+    opacity: "1",
+    zIndex: 50,
+  });
+
+  await page.keyboard.press("Escape");
+  await expect(popover).toBeHidden();
+  await expect(trigger).toBeFocused();
+
+  await page.setViewportSize({ width: 320, height: 800 });
+  await trigger.scrollIntoViewIfNeeded();
+  await trigger.click();
+  const bounds = await popover.boundingBox();
+  expect(bounds?.x).toBeGreaterThanOrEqual(0);
+  expect((bounds?.x ?? 0) + (bounds?.width ?? 0)).toBeLessThanOrEqual(320);
+
+  const triggerBox = await trigger.boundingBox();
+  expect(triggerBox?.height).toBeGreaterThanOrEqual(44);
+  await page.mouse.click(2, 2);
+  await expect(popover).toBeHidden();
+});
+
 test("operates composite selection controls from the keyboard", async ({ page }) => {
   const historyTab = page.getByRole("tab", { name: "History" });
   await page.getByRole("tab", { name: "Overview" }).focus();

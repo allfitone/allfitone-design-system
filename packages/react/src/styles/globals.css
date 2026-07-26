@@ -216,6 +216,12 @@
     box-shadow: var(--afo-shadow-overlay);
   }
 
+  [data-slot="popover-content"] {
+    border-color: var(--afo-color-border-strong);
+    background: var(--popover);
+    box-shadow: var(--afo-shadow-overlay);
+  }
+
   [data-slot="combobox-list"] {
     scrollbar-color: var(--afo-color-border-strong) transparent;
     scrollbar-width: thin;
@@ -308,6 +314,10 @@
 }
 
 @media (forced-colors: active) {
+  [data-slot="popover-content"] {
+    border-color: CanvasText;
+  }
+
   :where([data-slot]):focus-visible {
     outline: 2px solid CanvasText;
     outline-offset: 2px;

@@ -21,6 +21,7 @@ import { Input } from "@allfitone/react/components/input";
 import { Label } from "@allfitone/react/components/label";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@allfitone/react/components/navigation-menu";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@allfitone/react/components/pagination";
+import { Popover, PopoverClose, PopoverContent, PopoverDescription, PopoverFooter, PopoverHeader, PopoverTitle, PopoverTrigger } from "@allfitone/react/components/popover";
 import { RadioGroup, RadioGroupItem } from "@allfitone/react/components/radio-group";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@allfitone/react/components/select";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@allfitone/react/components/sheet";
@@ -611,6 +612,91 @@ function ComboboxSpecimen() {
   );
 }
 
+function PopoverSpecimen() {
+  return (
+    <div className="popover-specimen">
+      <div className="popover-specimen__use-case">
+        <span>Member context</span>
+        <Popover>
+          <PopoverTrigger render={<Button variant="outline" />}>
+            <FoundationIcon name="people" data-icon="inline-start" decorative />
+            View member context
+          </PopoverTrigger>
+          <PopoverContent align="start">
+            <PopoverHeader>
+              <div className="popover-specimen__identity">
+                <div>
+                  <PopoverTitle>Camila Torres</PopoverTitle>
+                  <PopoverDescription>AF-1042 · Strength program</PopoverDescription>
+                </div>
+                <Badge variant="success">Active</Badge>
+              </div>
+            </PopoverHeader>
+            <dl className="popover-specimen__metrics">
+              <div>
+                <dt>Adherence</dt>
+                <dd>92%</dd>
+              </div>
+              <div>
+                <dt>Last session</dt>
+                <dd>Today, 06:30</dd>
+              </div>
+              <div>
+                <dt>Coach note</dt>
+                <dd>Maintain the current upper-body load.</dd>
+              </div>
+            </dl>
+            <PopoverFooter>
+              <PopoverClose render={<Button variant="outline" size="sm" />}>
+                Done
+              </PopoverClose>
+              <Button size="sm">Open profile</Button>
+            </PopoverFooter>
+          </PopoverContent>
+        </Popover>
+      </div>
+
+      <div className="popover-specimen__use-case popover-specimen__use-case--end">
+        <span>Bounded edit</span>
+        <Popover>
+          <PopoverTrigger render={<Button variant="outline" />}>
+            <FoundationIcon name="training" data-icon="inline-start" decorative />
+            Adjust session load
+          </PopoverTrigger>
+          <PopoverContent align="end" side="top">
+            <PopoverHeader>
+              <PopoverTitle>Adjust session load</PopoverTitle>
+              <PopoverDescription>
+                Record the perceived effort without leaving today&apos;s session.
+              </PopoverDescription>
+            </PopoverHeader>
+            <Field>
+              <FieldLabel htmlFor="popover-session-load">Perceived effort</FieldLabel>
+              <Input
+                id="popover-session-load"
+                type="number"
+                min="1"
+                max="10"
+                step="0.5"
+                defaultValue="7.5"
+              />
+              <FieldDescription>Use a value from 1 to 10.</FieldDescription>
+            </Field>
+            <PopoverFooter>
+              <PopoverClose render={<Button variant="ghost" size="sm" />}>
+                Cancel
+              </PopoverClose>
+              <PopoverClose render={<Button size="sm" />}>
+                Save load
+              </PopoverClose>
+            </PopoverFooter>
+          </PopoverContent>
+        </Popover>
+      </div>
+    </div>
+  );
+}
+
 export function ComponentCatalog() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -886,12 +972,13 @@ export function ComponentCatalog() {
       </section>
 
       <section className="catalog-category" aria-labelledby="overlays-heading">
-        <CategoryHeader id="overlays" code="OVR" title="Overlays" description="Focus enters with intent, stays contained and returns to the trigger." count={4} />
+        <CategoryHeader id="overlays" code="OVR" title="Overlays" description="Focus enters with intent and returns predictably to the trigger." count={5} />
         <div className="component-grid">
           <ComponentSection id="dialog" title="Dialog" description="A focused task with discoverable title and dismissal." importPath="@allfitone/react/components/dialog" contract={["Focus trap", "Escape", "Inert background", "Focus return"]}><Dialog><DialogTrigger render={<Button variant="outline" />}>Edit member</DialogTrigger><DialogContent><DialogHeader><DialogTitle>Edit member</DialogTitle><DialogDescription>Update the display name without changing training history.</DialogDescription></DialogHeader><Field><FieldLabel htmlFor="dialog-name">Display name</FieldLabel><Input id="dialog-name" defaultValue="Alex Morgan" /></Field><DialogFooter showCloseButton><Button>Save changes</Button></DialogFooter></DialogContent></Dialog></ComponentSection>
           <ComponentSection id="alert-dialog" title="AlertDialog" description="Destructive decisions name the consequence before confirmation." importPath="@allfitone/react/components/alert-dialog" contract={["Consequence named", "Cancel path", "Focus trap", "Focus return"]}><AlertDialog><AlertDialogTrigger render={<Button variant="destructive" />}>Remove access</AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Remove organization access?</AlertDialogTitle><AlertDialogDescription>The person keeps their history, but this organization will no longer see it.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Keep access</AlertDialogCancel><AlertDialogAction variant="destructive">Remove access</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></ComponentSection>
           <ComponentSection id="sheet" title="Sheet" description="Secondary workflows stay connected to the workspace context." importPath="@allfitone/react/components/sheet" contract={["Escape", "Inert background", "Focus return", "Responsive edge"]}><Sheet><SheetTrigger render={<Button variant="outline" />}>Open filters</SheetTrigger><SheetContent><SheetHeader><SheetTitle>Activity filters</SheetTitle><SheetDescription>Narrow the workspace without leaving the current view.</SheetDescription></SheetHeader><div className="sheet-body"><Field><FieldLabel htmlFor="sheet-search">Member</FieldLabel><Input id="sheet-search" placeholder="Search members" /></Field></div><SheetFooter><Button>Apply filters</Button></SheetFooter></SheetContent></Sheet></ComponentSection>
           <ComponentSection id="tooltip" title="Tooltip" description="Supplementary text appears on pointer and keyboard focus." importPath="@allfitone/react/components/tooltip" contract={["Pointer / keyboard", "Supplementary only", "Escape dismisses"]}><Tooltip><TooltipTrigger render={<IconButton aria-label="About activity score" variant="outline" />}><FoundationIcon name="info" decorative /></TooltipTrigger><TooltipContent>Calculated from consistency and training load.</TooltipContent></Tooltip></ComponentSection>
+          <ComponentSection id="popover" title="Popover" description="Anchored, non-modal context supports quick inspection and bounded edits without obscuring the workspace." importPath="@allfitone/react/components/popover" contract={["Solid raised surface", "Placement / collision", "Escape / outside press", "Focus return"]}><PopoverSpecimen /></ComponentSection>
         </div>
       </section>
 

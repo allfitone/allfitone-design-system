@@ -63,7 +63,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | Selection | Checkbox, RadioGroup, Switch, Select, Combobox, Tabs |
 | Data display | Table, DataTable, Badge, Card, Skeleton, Empty |
 | Signature | AccentBlock, StatStrip, TickRing, PulseMark, AnimatedBrandLockup |
-| Overlays | Dialog, AlertDialog, Sheet, Tooltip |
+| Overlays | Dialog, AlertDialog, Sheet, Popover, Tooltip |
 | Feedback | Sonner/Toast, Spinner |
 | Composition | Collapsible, Separator |
 
@@ -95,11 +95,25 @@ The package root remains metadata-only. There is no component barrel because exp
   loading and error states so assistive technology receives consistent live
   region updates. Async collections retain selected items in `items`, even
   when those items are outside the latest result page.
+- Popover provides non-modal, anchored context for quick inspection and
+  bounded edits such as reviewing a member snapshot or adjusting a session
+  value. It is not a substitute for Dialog when the task must make the
+  background inert or contain focus.
+- Compose `PopoverHeader`, `PopoverTitle`, and `PopoverDescription` for rich
+  content. Use `side`, `align`, and their offsets on `PopoverContent` for
+  placement; Base UI handles collision avoidance, Escape and outside-press
+  dismissal, and focus restoration.
+- Popover uses a solid raised surface from the first animation frame. It must
+  not inherit translucent glass or opacity transitions that allow underlying
+  tables, tabs, or text to blend through the content.
 - `IconButton` requires `aria-label` in TypeScript.
 - `TickRing` requires `aria-label` in TypeScript because its `meter` value must always have a name.
 - `AnimatedBrandLockup` stays on its explicit component subpath so the Motion runtime is loaded only by consumers that opt into brand animation. Change `replayKey` to replay it.
 - Controlled components support `value`, `defaultValue`, and `onValueChange` through their Base UI root API.
-- Overlays support `open`, `defaultOpen`, and `onOpenChange`, require a title, contain modal focus, support Escape, make the background inert, and return focus to the trigger.
+- Dialog, AlertDialog, and Sheet support controlled state, require a title,
+  contain modal focus, make the background inert, support Escape, and return
+  focus to the trigger. Popover remains non-modal and returns focus after
+  dismissal without disabling the surrounding workspace.
 - Field errors use text, `data-invalid`, `aria-invalid`, and an explicit description/error relationship.
 - Tooltips supplement a control and never carry essential instructions alone.
 - Toasts use live regions and textual status without moving focus.
