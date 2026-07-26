@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type CSSProperties, type ReactNode } from "react";
+import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
 
 import { AccentBlock, AccentBlockLabel, AccentBlockMeta, AccentBlockTitle } from "@allfitone/react/components/accent-block";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@allfitone/react/components/alert-dialog";
@@ -9,6 +9,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Button, buttonVariants } from "@allfitone/react/components/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@allfitone/react/components/card";
 import { Checkbox } from "@allfitone/react/components/checkbox";
+import { DataTable, DataTableColumnHeader, DataTableFilterInput, DataTablePagination, DataTableSelectionBar, DataTableToolbar, DataTableViewOptions, useDataTable, type ColumnDef } from "@allfitone/react/components/data-table";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@allfitone/react/components/dialog";
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@allfitone/react/components/drawer";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@allfitone/react/components/dropdown-menu";
@@ -104,7 +105,12 @@ const memberRows = [
   { id: "AF-1042", name: "Camila Torres", plan: "Strength", status: "Active", adherence: 92, lastSession: "Today, 06:30" },
   { id: "AF-1187", name: "Mateo Ruiz", plan: "Mobility", status: "Review needed", adherence: 76, lastSession: "Yesterday, 18:10" },
   { id: "AF-1294", name: "Valentina Gómez de la Torre", plan: "Conditioning", status: "Active", adherence: 88, lastSession: "Jul 23, 07:05" },
+  { id: "AF-1308", name: "Nicolás Peña", plan: "Strength", status: "Paused", adherence: 64, lastSession: "Jul 22, 17:40" },
+  { id: "AF-1371", name: "Sara Mendoza", plan: "Mobility", status: "Active", adherence: 96, lastSession: "Jul 22, 06:15" },
+  { id: "AF-1416", name: "Daniel Rojas", plan: "Conditioning", status: "Review needed", adherence: 71, lastSession: "Jul 21, 19:20" },
 ];
+
+type Member = (typeof memberRows)[number];
 
 function TableSpecimen() {
   const [previewState, setPreviewState] = useState<MemberTableState>("ready");
@@ -258,6 +264,142 @@ function TableSpecimen() {
           </TableFooter>
         ) : null}
       </Table>
+    </div>
+  );
+}
+
+function DataTableSpecimen() {
+  const columns = useMemo<ColumnDef<Member>[]>(
+    () => [
+      {
+        id: "select",
+        enableHiding: false,
+        enableSorting: false,
+        header: ({ table }) => (
+          <Checkbox
+            aria-label="Select all visible members"
+            checked={table.getIsAllPageRowsSelected()}
+            indeterminate={table.getIsSomePageRowsSelected()}
+            onCheckedChange={(checked) =>
+              table.toggleAllPageRowsSelected(Boolean(checked))
+            }
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            aria-label={`Select ${row.original.name}`}
+            checked={row.getIsSelected()}
+            onCheckedChange={(checked) => row.toggleSelected(Boolean(checked))}
+          />
+        ),
+      },
+      {
+        accessorKey: "name",
+        meta: { label: "Member" },
+        header: ({ column }) => (
+          <DataTableColumnHeader
+            column={column}
+            title="Member"
+            sortLabel="Change member sorting"
+          />
+        ),
+        cell: ({ row }) => (
+          <span className="table-specimen__member">
+            <strong>{row.original.name}</strong>
+            <small>{row.original.id}</small>
+          </span>
+        ),
+      },
+      {
+        accessorKey: "plan",
+        meta: { label: "Plan" },
+        header: "Plan",
+      },
+      {
+        accessorKey: "status",
+        meta: { label: "Status" },
+        header: "Status",
+        cell: ({ row }) => (
+          <Badge
+            variant={
+              row.original.status === "Active"
+                ? "success"
+                : row.original.status === "Paused"
+                  ? "outline"
+                  : "warning"
+            }
+          >
+            {row.original.status}
+          </Badge>
+        ),
+      },
+      {
+        accessorKey: "adherence",
+        meta: { align: "end", label: "Adherence", numeric: true },
+        header: ({ column }) => (
+          <DataTableColumnHeader
+            column={column}
+            title="Adherence"
+            sortLabel="Change adherence sorting"
+          />
+        ),
+        cell: ({ row }) => `${row.original.adherence}%`,
+      },
+      {
+        accessorKey: "lastSession",
+        meta: { align: "end", label: "Last session" },
+        header: "Last session",
+      },
+    ],
+    []
+  );
+  const table = useDataTable({
+    columns,
+    data: memberRows,
+    getRowId: (row) => row.id,
+    initialState: {
+      pagination: {
+        pageIndex: 0,
+        pageSize: 3,
+      },
+    },
+  });
+
+  return (
+    <div className="table-specimen">
+      <DataTableToolbar>
+        <DataTableFilterInput
+          table={table}
+          label="Search members"
+          placeholder="Search member, plan, or status"
+        />
+        <DataTableViewOptions
+          table={table}
+          label="Columns"
+          title="Visible columns"
+        />
+      </DataTableToolbar>
+      <DataTable
+        table={table}
+        density="compact"
+        scrollAreaLabel="Scrollable member results"
+        aria-label="Member results"
+        caption="Filtered members in the current organization."
+        emptyState={{
+          title: "No members match",
+          description: "Try another name, plan, or status.",
+        }}
+      />
+      <DataTableSelectionBar
+        table={table}
+        getSelectionLabel={(count) =>
+          `${count} member${count === 1 ? "" : "s"} selected`
+        }
+      >
+        <Button size="sm" variant="secondary">Assign plan</Button>
+        <Button size="sm" variant="outline">Export</Button>
+      </DataTableSelectionBar>
+      <DataTablePagination table={table} pageSizeOptions={[3, 6]} />
     </div>
   );
 }
@@ -457,9 +599,10 @@ export function ComponentCatalog() {
       </section>
 
       <section className="catalog-category" aria-labelledby="data-heading">
-        <CategoryHeader id="data-display" code="DAT" title="Data display" description="Compact information that stays readable under pressure." count={5} />
+        <CategoryHeader id="data-display" code="DAT" title="Data display" description="Compact information that stays readable under pressure." count={6} />
         <div className="component-grid">
           <ComponentSection id="table" title="Table" description="Operational records keep native table relationships, explicit selection and a focusable overflow region." importPath="@allfitone/react/components/table" contract={["Comfortable / compact", "Selection and sorting", "Loading / empty / error", "320 px overflow"]}><TableSpecimen /></ComponentSection>
+          <ComponentSection id="data-table" title="DataTable" description="Composable controls add filtering, column visibility, selection actions and client or server pagination without replacing Table." importPath="@allfitone/react/components/data-table" contract={["Headless controlled state", "Filter and sort", "Column visibility", "Selection and pagination"]}><DataTableSpecimen /></ComponentSection>
           <ComponentSection id="badge" title="Badge" description="Short status labels always state their meaning in words." importPath="@allfitone/react/components/badge" contract={["Text plus color", "Long status", "Interactive target"]}><div className="demo-row"><Badge>Active</Badge><Badge variant="code">ACT</Badge><Badge variant="success">Synced</Badge><Badge variant="warning">Review needed</Badge><Badge variant="info">New activity</Badge><Badge variant="destructive">Access blocked</Badge></div></ComponentSection>
           <ComponentSection id="card" title="Card" description="Structured composition keeps title, action, content and footer predictable." importPath="@allfitone/react/components/card" contract={["Default / active", "Action slot", "Long content", "Responsive"]}><Card data-state="active"><CardHeader><CardTitle>Strength cycle</CardTitle><CardDescription>4-week program · week 2</CardDescription><CardAction><Badge>Active</Badge></CardAction></CardHeader><CardContent><strong className="metric-value">18,420 kg</strong><p className="metric-caption">Volume completed this week</p></CardContent><CardFooter><Button size="sm" variant="ghost">Open program</Button></CardFooter></Card></ComponentSection>
           <ComponentSection id="skeleton" title="Skeleton" description="Decorative loading placeholders respect reduced motion." importPath="@allfitone/react/components/skeleton" contract={["Decorative only", "Reduced motion", "Content-shaped"]}><div className="skeleton-stack"><Skeleton className="skeleton-avatar" /><div><Skeleton className="skeleton-line skeleton-line--strong" /><Skeleton className="skeleton-line" /></div></div></ComponentSection>

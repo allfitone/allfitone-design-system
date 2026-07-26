@@ -61,7 +61,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | Navigation | Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell |
 | Forms | Field, Label, Input, Textarea |
 | Selection | Checkbox, RadioGroup, Switch, Select, Tabs |
-| Data display | Table, Badge, Card, Skeleton, Empty |
+| Data display | Table, DataTable, Badge, Card, Skeleton, Empty |
 | Signature | AccentBlock, StatStrip, TickRing, PulseMark, AnimatedBrandLockup |
 | Overlays | Dialog, AlertDialog, Sheet, Tooltip |
 | Feedback | Sonner/Toast, Spinner |
@@ -83,6 +83,10 @@ The package root remains metadata-only. There is no component barrel because exp
 - Table density is `comfortable` or `compact`; compact density never reduces an
   interactive control below the 44 px target. `TableState` provides named
   loading, empty, and error rows without replacing the table structure.
+- DataTable is a headless composition over Table. `useDataTable` supplies
+  client-side row models by default and preserves TanStack controlled-state and
+  manual server-mode options. Toolbar, filter, visibility, selection, and
+  pagination controls remain independently composable.
 - `IconButton` requires `aria-label` in TypeScript.
 - `TickRing` requires `aria-label` in TypeScript because its `meter` value must always have a name.
 - `AnimatedBrandLockup` stays on its explicit component subpath so the Motion runtime is loaded only by consumers that opt into brand animation. Change `replayKey` to replay it.

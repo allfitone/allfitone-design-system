@@ -229,6 +229,51 @@ test("keeps table sorting, selection and result states explicit", async ({ page 
   expect(overflow.scroll).toBeGreaterThan(overflow.client);
 });
 
+test("composes data-table controls without restyling sortable headers", async ({ page }) => {
+  const specimen = page.locator("#data-table");
+  const table = specimen.getByRole("table", { name: "Member results" });
+  const sortButton = table.getByRole("button", {
+    name: "Change member sorting",
+  });
+
+  await expect(sortButton).toHaveAttribute("data-direction", "none");
+  expect(
+    await sortButton.evaluate((element) => {
+      const styles = getComputedStyle(element);
+      return {
+        backgroundColor: styles.backgroundColor,
+        borderWidth: styles.borderWidth,
+        borderRadius: styles.borderRadius,
+      };
+    }),
+  ).toEqual({
+    backgroundColor: "rgba(0, 0, 0, 0)",
+    borderWidth: "0px",
+    borderRadius: "0px",
+  });
+
+  await sortButton.click();
+  await expect(table.locator('th[aria-sort="ascending"]')).toBeVisible();
+
+  const search = specimen.getByRole("textbox", { name: "Search members" });
+  await search.fill("Mobility");
+  await expect(table.getByText("Mateo Ruiz")).toBeVisible();
+  await expect(table.getByText("Camila Torres")).toHaveCount(0);
+  await search.fill("");
+
+  await table.getByRole("checkbox", { name: "Select Camila Torres" }).click();
+  await expect(specimen.getByRole("status")).toContainText("1 member selected");
+  await expect(specimen.getByRole("button", { name: "Assign plan" })).toBeVisible();
+
+  await specimen.getByRole("button", { name: "Columns" }).click();
+  await page.getByRole("menuitemcheckbox", { name: "Plan" }).click();
+  await expect(table.getByRole("columnheader", { name: "Plan" })).toHaveCount(0);
+  await page.keyboard.press("Escape");
+
+  await specimen.getByRole("button", { name: "Next page" }).click();
+  await expect(specimen.getByText("Page 2 of 2")).toBeVisible();
+});
+
 test("operates workspace navigation and returns focus from mobile overlays", async ({ page }) => {
   const navigationMenu = page.locator("#navigation-menu");
   const trainingTrigger = navigationMenu.getByRole("button", { name: "Training", exact: true });
@@ -284,7 +329,9 @@ test("keeps touch targets and focus treatment at the minimum contract", async ({
     "primary button": page.getByRole("button", { name: "Start session" }),
     "icon button": page.getByRole("button", { name: "Add movement" }),
     checkbox: page.getByRole("checkbox", { name: "Share training history with this coach" }),
-    "table checkbox": page.getByRole("checkbox", { name: "Select Camila Torres" }),
+    "table checkbox": page
+      .getByRole("table", { name: "Members" })
+      .getByRole("checkbox", { name: "Select Camila Torres" }),
     switch: page.getByRole("switch", { name: "Live progress sharing" }),
     "navigation trigger": page.locator("#navigation-menu").getByRole("button", { name: "Training", exact: true }),
     "workspace action": page.locator("#workspace-shell").getByRole("button", { name: /Panel/ }),

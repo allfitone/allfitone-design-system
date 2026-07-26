@@ -7,7 +7,7 @@ import { Spinner } from "./spinner.js"
 type TableDensity = "comfortable" | "compact"
 type TableAlign = "start" | "center" | "end"
 type TableStateKind = "loading" | "empty" | "error"
-type TableSortDirection = "ascending" | "descending"
+type TableSortDirection = "ascending" | "descending" | "none"
 
 type TableProps = React.ComponentProps<"table"> & {
   density?: TableDensity
@@ -153,11 +153,21 @@ function TableSortButton({
       {...props}
     >
       {children}
-      <FoundationIcon
-        name={direction === "ascending" ? "collapse" : "expand"}
-        size="xs"
-        decorative
-      />
+      {direction === "none" ? (
+        <span
+          data-slot="table-sort-indicator"
+          className="flex flex-col -space-y-1.5 text-muted-foreground"
+        >
+          <FoundationIcon name="collapse" size="xs" decorative />
+          <FoundationIcon name="expand" size="xs" decorative />
+        </span>
+      ) : (
+        <FoundationIcon
+          name={direction === "ascending" ? "collapse" : "expand"}
+          size="xs"
+          decorative
+        />
+      )}
     </button>
   )
 }

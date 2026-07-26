@@ -12,7 +12,7 @@ The following areas already have a canonical implementation:
 - navigation: Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, and WorkspaceShell;
 - forms: Field, Label, Input, and Textarea;
 - selection: Checkbox, RadioGroup, Switch, Select, and Tabs;
-- data display: Table, Badge, Card, Skeleton, and Empty;
+- data display: Table, DataTable, Badge, Card, Skeleton, and Empty;
 - signature: AccentBlock, StatStrip, TickRing, and PulseMark;
 - overlays: Dialog, AlertDialog, Sheet, and Tooltip;
 - feedback: Sonner/Toast and Spinner.
@@ -26,7 +26,6 @@ These components cover the most likely operational and administrative workflows 
 
 | Component | Required scope |
 | --- | --- |
-| DataTable | Headless composition for column visibility, filters, sorting, bulk actions, pagination, and server-controlled state. It must build on Table rather than replace it. |
 | Combobox | Searchable single and multiple selection, async/loading state, empty results, grouped options, keyboard traversal, and long labels. |
 | Popover | Non-modal anchored content with placement, collision handling, Escape dismissal, and focus restoration. |
 | Calendar | Single date, range, disabled dates, locale-ready labels, keyboard grid navigation, and responsive months. |
@@ -108,10 +107,9 @@ Before starting a backlog item, document the product use cases that need it. Pre
 
 The recommended implementation order is:
 
-1. DataTable, building on the canonical Table primitives;
-2. Combobox;
-3. Popover, Calendar, and DatePicker;
-4. Alert and Progress;
-5. Avatar;
-6. Command and CommandDialog;
-7. Priority 1 components as required by actual OS screens.
+1. Combobox;
+2. Popover, Calendar, and DatePicker;
+3. Alert and Progress;
+4. Avatar;
+5. Command and CommandDialog;
+6. Priority 1 components as required by actual OS screens.

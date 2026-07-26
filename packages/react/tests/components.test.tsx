@@ -1,6 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
+import { useState } from "react";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
@@ -10,6 +11,7 @@ import { AccentBlock, AccentBlockLabel, AccentBlockTitle } from "../src/componen
 import { Badge } from "../src/components/badge.js";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../src/components/breadcrumb.js";
 import { Checkbox } from "../src/components/checkbox.js";
+import { DataTable, DataTableColumnHeader, DataTableFilterInput, DataTablePagination, DataTableSelectionBar, DataTableToolbar, DataTableViewOptions, useDataTable, type ColumnDef } from "../src/components/data-table.js";
 import { Field, FieldDescription, FieldError, FieldLabel } from "../src/components/field.js";
 import { IconButton } from "../src/components/icon-button.js";
 import { Input } from "../src/components/input.js";
@@ -23,6 +25,124 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../src/components/tabs.js";
 import { TickRing } from "../src/components/tick-ring.js";
 import { PulseMark } from "../src/components/pulse-mark.js";
+
+type TestMember = {
+  id: string;
+  name: string;
+  plan: string;
+};
+
+const dataTableRows: TestMember[] = [
+  { id: "AF-2", name: "Mateo Ruiz", plan: "Mobility" },
+  { id: "AF-1", name: "Camila Torres", plan: "Strength" },
+  { id: "AF-3", name: "Sara Mendoza", plan: "Conditioning" },
+];
+
+const dataTableColumns: ColumnDef<TestMember>[] = [
+  {
+    id: "select",
+    enableHiding: false,
+    enableSorting: false,
+    header: ({ table }) => (
+      <Checkbox
+        aria-label="Select visible members"
+        checked={table.getIsAllPageRowsSelected()}
+        indeterminate={table.getIsSomePageRowsSelected()}
+        onCheckedChange={(checked) =>
+          table.toggleAllPageRowsSelected(Boolean(checked))
+        }
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        aria-label={`Select ${row.original.name}`}
+        checked={row.getIsSelected()}
+        onCheckedChange={(checked) => row.toggleSelected(Boolean(checked))}
+      />
+    ),
+  },
+  {
+    accessorKey: "name",
+    meta: { label: "Member" },
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Member"
+        sortLabel="Change member sorting"
+      />
+    ),
+  },
+  {
+    accessorKey: "plan",
+    meta: { label: "Plan" },
+    header: "Plan",
+  },
+];
+
+function DataTableHarness() {
+  const table = useDataTable({
+    columns: dataTableColumns,
+    data: dataTableRows,
+    getRowId: (row) => row.id,
+    initialState: {
+      pagination: {
+        pageIndex: 0,
+        pageSize: 2,
+      },
+    },
+  });
+
+  return (
+    <div>
+      <DataTableToolbar>
+        <DataTableFilterInput
+          table={table}
+          label="Search members"
+          placeholder="Search members"
+        />
+        <DataTableViewOptions table={table} />
+      </DataTableToolbar>
+      <DataTable
+        table={table}
+        aria-label="Member results"
+        emptyState={{ title: "No matching members" }}
+      />
+      <DataTableSelectionBar table={table}>
+        <Button size="sm">Assign plan</Button>
+      </DataTableSelectionBar>
+      <DataTablePagination table={table} pageSizeOptions={[2, 3]} />
+    </div>
+  );
+}
+
+function ServerDataTableHarness({
+  onPageChange,
+}: {
+  onPageChange: (pageIndex: number) => void;
+}) {
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 2,
+  });
+  const table = useDataTable({
+    columns: dataTableColumns,
+    data: dataTableRows.slice(0, 2),
+    getRowId: (row) => row.id,
+    manualPagination: true,
+    rowCount: 4,
+    state: { pagination },
+    onPaginationChange: (updater) => {
+      setPagination((current) => {
+        const next =
+          typeof updater === "function" ? updater(current) : updater;
+        onPageChange(next.pageIndex);
+        return next;
+      });
+    },
+  });
+
+  return <DataTablePagination table={table} pageSizeOptions={[2]} />;
+}
 
 describe("ALLFIT ONE React components", () => {
   it("forwards native button behavior and renders named icon actions", async () => {
@@ -307,5 +427,62 @@ describe("ALLFIT ONE React components", () => {
 
     expect(within(container).getByRole("alert")).toHaveTextContent("Members could not be loaded");
     expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("composes data-table filtering, sorting, selection, visibility and pagination", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<DataTableHarness />);
+    const view = within(container);
+
+    const sortButton = view.getByRole("button", {
+      name: "Change member sorting",
+    });
+    expect(sortButton).toHaveAttribute("data-direction", "none");
+    expect(sortButton).not.toHaveAttribute("data-variant");
+
+    await user.click(sortButton);
+    expect(sortButton).toHaveAttribute("data-direction", "ascending");
+    expect(view.getByRole("columnheader", { name: "Member" })).toHaveAttribute(
+      "aria-sort",
+      "ascending",
+    );
+
+    await user.click(view.getByRole("checkbox", { name: "Select Camila Torres" }));
+    expect(view.getByRole("row", { name: /Camila Torres/ })).toHaveAttribute(
+      "data-state",
+      "selected",
+    );
+    expect(view.getByRole("status")).toHaveTextContent("1 selected");
+    expect(view.getByRole("button", { name: "Assign plan" })).toBeVisible();
+
+    const search = view.getByRole("textbox", { name: "Search members" });
+    await user.clear(search);
+    await user.type(search, "Mobility");
+    expect(view.getByRole("row", { name: /Mateo Ruiz/ })).toBeInTheDocument();
+    expect(view.queryByRole("row", { name: /Camila Torres/ })).not.toBeInTheDocument();
+
+    await user.clear(search);
+    await user.click(view.getByRole("button", { name: "Columns" }));
+    await user.click(screen.getByRole("menuitemcheckbox", { name: "Plan" }));
+    expect(view.queryByRole("columnheader", { name: "Plan" })).not.toBeInTheDocument();
+
+    await user.click(view.getByRole("button", { name: "Next page" }));
+    expect(view.getByText("Page 2 of 2")).toBeInTheDocument();
+    expect(view.getByRole("row", { name: /Sara Mendoza/ })).toBeInTheDocument();
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("preserves controlled server pagination state", async () => {
+    const user = userEvent.setup();
+    const onPageChange = vi.fn();
+    const { container } = render(
+      <ServerDataTableHarness onPageChange={onPageChange} />,
+    );
+    const view = within(container);
+
+    expect(view.getByText("Page 1 of 2")).toBeInTheDocument();
+    await user.click(view.getByRole("button", { name: "Next page" }));
+    expect(onPageChange).toHaveBeenLastCalledWith(1);
+    expect(view.getByText("Page 2 of 2")).toBeInTheDocument();
   });
 });
