@@ -9,6 +9,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Button, buttonVariants } from "@allfitone/react/components/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@allfitone/react/components/card";
 import { Checkbox } from "@allfitone/react/components/checkbox";
+import { Combobox, ComboboxActions, ComboboxChip, ComboboxChipRemove, ComboboxChips, ComboboxChipsInput, ComboboxClear, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxInput, ComboboxInputGroup, ComboboxItem, ComboboxLabel, ComboboxList, ComboboxStatus, ComboboxTrigger, ComboboxValue } from "@allfitone/react/components/combobox";
 import { DataTable, DataTableColumnHeader, DataTableFilterInput, DataTablePagination, DataTableSelectionBar, DataTableToolbar, DataTableViewOptions, useDataTable, type ColumnDef } from "@allfitone/react/components/data-table";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@allfitone/react/components/dialog";
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@allfitone/react/components/drawer";
@@ -404,6 +405,212 @@ function DataTableSpecimen() {
   );
 }
 
+type Coach = {
+  id: string;
+  label: string;
+  role: string;
+  team: "Performance" | "Recovery";
+};
+
+type CoachGroup = {
+  value: string;
+  items: Coach[];
+};
+
+type ComboboxPreviewState = "ready" | "loading" | "empty" | "error";
+
+const coaches: Coach[] = [
+  { id: "coach-camila", label: "Camila Torres", role: "Strength coach", team: "Performance" },
+  { id: "coach-valentina", label: "Valentina Gómez de la Torre", role: "Conditioning coach", team: "Performance" },
+  { id: "coach-mateo", label: "Mateo Ruiz", role: "Mobility coach", team: "Recovery" },
+  { id: "coach-sara", label: "Sara Mendoza", role: "Physiotherapist", team: "Recovery" },
+];
+
+const coachTeams = ["Performance", "Recovery"] as const;
+const coachGroups: CoachGroup[] = coachTeams.map((team) => ({
+  value: team,
+  items: coaches.filter((coach) => coach.team === team),
+}));
+
+function CoachOption({ coach }: { coach: Coach }) {
+  return (
+    <span className="combobox-specimen__option">
+      <strong>{coach.label}</strong>
+      <small>{coach.role}</small>
+    </span>
+  );
+}
+
+function ComboboxSpecimen() {
+  const [remoteState, setRemoteState] = useState<ComboboxPreviewState>("ready");
+  const remoteItems = remoteState === "ready" ? coaches : [];
+
+  return (
+    <div className="combobox-specimen">
+      <div className="combobox-specimen__heading">
+        <div>
+          <strong>Session roster</strong>
+          <span>Filter a known directory; selection stays visibly anchored.</span>
+        </div>
+        <Badge variant="outline">4 coaches</Badge>
+      </div>
+
+      <div className="combobox-specimen__grid">
+        <Field>
+          <FieldLabel htmlFor="lead-coach-combobox">Lead coach</FieldLabel>
+          <FieldDescription>Grouped directory with long-name handling.</FieldDescription>
+          <Combobox
+            items={coachGroups}
+          >
+            <ComboboxInputGroup>
+              <ComboboxInput id="lead-coach-combobox" placeholder="Search coaches" />
+              <ComboboxActions>
+                <ComboboxClear aria-label="Clear lead coach" />
+                <ComboboxTrigger aria-label="Open lead coach options" />
+              </ComboboxActions>
+            </ComboboxInputGroup>
+            <ComboboxContent>
+              <ComboboxStatus />
+              <ComboboxEmpty>No coaches match this search.</ComboboxEmpty>
+              <ComboboxList>
+                {(group: CoachGroup) => (
+                  <ComboboxGroup key={group.value} items={group.items}>
+                    <ComboboxLabel>{group.value}</ComboboxLabel>
+                    <ComboboxCollection>
+                      {(coach: Coach) => (
+                        <ComboboxItem key={coach.id} value={coach}>
+                          <CoachOption coach={coach} />
+                        </ComboboxItem>
+                      )}
+                    </ComboboxCollection>
+                  </ComboboxGroup>
+                )}
+              </ComboboxList>
+            </ComboboxContent>
+          </Combobox>
+        </Field>
+
+        <Field>
+          <FieldLabel htmlFor="session-coaches-combobox">Session coaches</FieldLabel>
+          <FieldDescription>Multiple selection uses neutral, removable chips.</FieldDescription>
+          <Combobox
+            items={coaches}
+            itemToStringLabel={(coach: Coach) => coach.label}
+            multiple
+            defaultValue={[coaches[0]!]}
+          >
+            <ComboboxInputGroup>
+              <ComboboxChips>
+                <ComboboxValue>
+                  {(value: Coach[]) => (
+                    <>
+                      {value.map((coach) => (
+                        <ComboboxChip key={coach.id}>
+                          {coach.label}
+                          <ComboboxChipRemove aria-label={`Remove ${coach.label}`} />
+                        </ComboboxChip>
+                      ))}
+                      <ComboboxChipsInput
+                        id="session-coaches-combobox"
+                        placeholder={value.length === 0 ? "Add coaches" : ""}
+                      />
+                    </>
+                  )}
+                </ComboboxValue>
+              </ComboboxChips>
+              <ComboboxActions>
+                <ComboboxTrigger aria-label="Open session coach options" />
+              </ComboboxActions>
+            </ComboboxInputGroup>
+            <ComboboxContent>
+              <ComboboxStatus />
+              <ComboboxEmpty>No coaches match this search.</ComboboxEmpty>
+              <ComboboxList>
+                {(coach: Coach) => (
+                  <ComboboxItem key={coach.id} value={coach}>
+                    <CoachOption coach={coach} />
+                  </ComboboxItem>
+                )}
+              </ComboboxList>
+            </ComboboxContent>
+          </Combobox>
+        </Field>
+      </div>
+
+      <div className="combobox-specimen__remote">
+        <Field orientation="horizontal" className="combobox-specimen__state">
+          <FieldLabel htmlFor="combobox-preview-state">Remote state</FieldLabel>
+          <Select
+            value={remoteState}
+            onValueChange={(value) => setRemoteState(value as ComboboxPreviewState)}
+          >
+            <SelectTrigger id="combobox-preview-state" aria-label="Preview combobox remote state">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Directory state</SelectLabel>
+                <SelectItem value="ready">Ready</SelectItem>
+                <SelectItem value="loading">Loading</SelectItem>
+                <SelectItem value="empty">Empty</SelectItem>
+                <SelectItem value="error">Error</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </Field>
+
+        <Field data-invalid={remoteState === "error" || undefined}>
+          <FieldLabel htmlFor="remote-coach-combobox">Remote directory</FieldLabel>
+          <Combobox
+            items={remoteItems}
+            itemToStringLabel={(coach: Coach) => coach.label}
+          >
+            <ComboboxInputGroup>
+              <ComboboxInput
+                id="remote-coach-combobox"
+                placeholder="Search remote directory"
+                aria-invalid={remoteState === "error" || undefined}
+                aria-errormessage={remoteState === "error" ? "remote-coach-error" : undefined}
+              />
+              <ComboboxActions>
+                <ComboboxClear aria-label="Clear remote coach" />
+                <ComboboxTrigger
+                  aria-label="Open remote coach options"
+                />
+              </ComboboxActions>
+            </ComboboxInputGroup>
+            <ComboboxContent aria-busy={remoteState === "loading"}>
+              <ComboboxStatus
+                variant={remoteState === "error" ? "error" : remoteState === "loading" ? "loading" : "default"}
+                role={remoteState === "error" ? "alert" : "status"}
+              >
+                {remoteState === "loading" ? (
+                  <><Spinner label="Loading remote coaches" />Loading remote coaches</>
+                ) : remoteState === "error" ? (
+                  "Remote directory could not be loaded."
+                ) : null}
+              </ComboboxStatus>
+              <ComboboxEmpty>
+                {remoteState === "empty" ? "No remote coaches are available." : null}
+              </ComboboxEmpty>
+              <ComboboxList>
+                {(coach: Coach) => (
+                  <ComboboxItem key={coach.id} value={coach}>
+                    <CoachOption coach={coach} />
+                  </ComboboxItem>
+                )}
+              </ComboboxList>
+            </ComboboxContent>
+          </Combobox>
+          {remoteState === "error" ? (
+            <FieldError id="remote-coach-error">Check the connection and retry the directory search.</FieldError>
+          ) : null}
+        </Field>
+      </div>
+    </div>
+  );
+}
+
 export function ComponentCatalog() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -574,7 +781,7 @@ export function ComponentCatalog() {
       </section>
 
       <section className="catalog-category" aria-labelledby="selection-heading">
-        <CategoryHeader id="selection" code="SEL" title="Selection" description="State is visible through shape, position and semantics—not color alone." count={5} />
+        <CategoryHeader id="selection" code="SEL" title="Selection" description="State is visible through shape, position and semantics—not color alone." count={6} />
         <div className="component-grid">
           <ComponentSection id="checkbox" title="Checkbox" description="Checked and indeterminate states retain a 44 px target." importPath="@allfitone/react/components/checkbox" contract={["Checked", "Indeterminate", "Disabled", "44 px target"]}>
             <Field orientation="horizontal"><Checkbox id="consent" defaultChecked /><FieldLabel htmlFor="consent">Share training history with this coach</FieldLabel></Field>
@@ -590,6 +797,10 @@ export function ComponentCatalog() {
 
           <ComponentSection id="select" title="Select" description="Grouped options support keyboard traversal and explicit labels." importPath="@allfitone/react/components/select" contract={["Open / closed", "Arrow navigation", "Grouped options", "Invalid"]}>
             <Field><FieldLabel htmlFor="program-select">Program</FieldLabel><Select defaultValue="strength"><SelectTrigger id="program-select"><SelectValue placeholder="Choose a program" /></SelectTrigger><SelectContent><SelectGroup><SelectLabel>Program</SelectLabel>{programs.map((program) => <SelectItem key={program} value={program.toLowerCase()}>{program}</SelectItem>)}</SelectGroup></SelectContent></Select></Field>
+          </ComponentSection>
+
+          <ComponentSection id="combobox" title="Combobox" description="Filterable predefined options support rich items, grouped directories and multiple selection without becoming a free-form search field." importPath="@allfitone/react/components/combobox" contract={["Keyboard filtering", "Single / multiple", "Grouped rich options", "Loading / empty / error"]}>
+            <ComboboxSpecimen />
           </ComponentSection>
 
           <ComponentSection id="tabs" title="Tabs" description="The selected state combines exposed state, weight and trajectory." importPath="@allfitone/react/components/tabs" contract={["Arrow navigation", "Selected trajectory", "Disabled", "Long labels"]}>

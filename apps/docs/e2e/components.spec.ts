@@ -164,6 +164,73 @@ test("operates composite selection controls from the keyboard", async ({ page })
   await expect(select).not.toHaveText("");
 });
 
+test("filters rich combobox options and exposes multiple and remote states", async ({ page }) => {
+  const specimen = page.locator("#combobox");
+  const leadCoach = specimen.locator("#lead-coach-combobox");
+
+  await leadCoach.focus();
+  await leadCoach.fill("Valentina");
+  const popup = page.locator('[data-slot="combobox-content"]');
+  await expect(page.getByRole("option", { name: /Valentina Gómez de la Torre/ })).toBeVisible();
+  expect(
+    await popup.evaluate((element) => {
+      const styles = getComputedStyle(element);
+      return {
+        backgroundColor: styles.backgroundColor,
+        opacity: styles.opacity,
+        zIndex: Number(styles.zIndex),
+      };
+    }),
+  ).toEqual({
+    backgroundColor: "rgb(11, 20, 29)",
+    opacity: "1",
+    zIndex: 50,
+  });
+  await page.keyboard.press("ArrowDown");
+  await page.keyboard.press("Enter");
+  await expect(leadCoach).toHaveValue("Valentina Gómez de la Torre");
+
+  const clear = specimen.getByRole("button", { name: "Clear lead coach" });
+  const clearBox = await clear.boundingBox();
+  expect(clearBox?.width).toBeGreaterThanOrEqual(44);
+  expect(clearBox?.height).toBeGreaterThanOrEqual(44);
+  await clear.click();
+  await expect(leadCoach).toHaveValue("");
+
+  const multiple = specimen.locator("#session-coaches-combobox");
+  await multiple.click();
+  await page.getByRole("option", { name: /Mateo Ruiz/ }).click();
+  await page.keyboard.press("Escape");
+  const removeMateo = specimen.getByRole("button", { name: "Remove Mateo Ruiz" });
+  await expect(removeMateo).toBeVisible();
+  const removeBox = await removeMateo.boundingBox();
+  expect(removeBox?.width).toBeGreaterThanOrEqual(44);
+  expect(removeBox?.height).toBeGreaterThanOrEqual(44);
+  await removeMateo.click();
+  await expect(removeMateo).toHaveCount(0);
+
+  const stateSelect = specimen.getByRole("combobox", { name: "Preview combobox remote state" });
+  const remote = specimen.locator("#remote-coach-combobox");
+
+  await stateSelect.click();
+  await page.getByRole("option", { name: "Loading", exact: true }).click();
+  await remote.click();
+  await expect(page.getByText("Loading remote coaches", { exact: true })).toBeVisible();
+  await page.keyboard.press("Escape");
+
+  await stateSelect.click();
+  await page.getByRole("option", { name: "Empty", exact: true }).click();
+  await remote.click();
+  await expect(page.getByText("No remote coaches are available.", { exact: true })).toBeVisible();
+  await page.keyboard.press("Escape");
+
+  await stateSelect.click();
+  await page.getByRole("option", { name: "Error", exact: true }).click();
+  await expect(remote).toHaveAttribute("aria-invalid", "true");
+  await remote.click();
+  await expect(page.getByRole("alert")).toContainText("Remote directory could not be loaded.");
+});
+
 test("keeps table sorting, selection and result states explicit", async ({ page }) => {
   const table = page.getByRole("table", { name: "Members" });
   const region = page.getByRole("region", { name: "Scrollable member directory" });

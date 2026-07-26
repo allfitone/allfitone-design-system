@@ -60,7 +60,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | Actions | Button, IconButton |
 | Navigation | Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell |
 | Forms | Field, Label, Input, Textarea |
-| Selection | Checkbox, RadioGroup, Switch, Select, Tabs |
+| Selection | Checkbox, RadioGroup, Switch, Select, Combobox, Tabs |
 | Data display | Table, DataTable, Badge, Card, Skeleton, Empty |
 | Signature | AccentBlock, StatStrip, TickRing, PulseMark, AnimatedBrandLockup |
 | Overlays | Dialog, AlertDialog, Sheet, Tooltip |
@@ -87,6 +87,14 @@ The package root remains metadata-only. There is no component barrel because exp
   client-side row models by default and preserves TanStack controlled-state and
   manual server-mode options. Toolbar, filter, visibility, selection, and
   pagination controls remain independently composable.
+- Combobox filters a known collection; it does not accept arbitrary free-form
+  values. Compose `ComboboxInputGroup`, `ComboboxInput`, actions, content,
+  list, and items for a single value. Add `ComboboxChips`, `ComboboxValue`,
+  `ComboboxChip`, and a named `ComboboxChipRemove` for multiple selection.
+- Keep `ComboboxStatus` mounted and change only its children across remote
+  loading and error states so assistive technology receives consistent live
+  region updates. Async collections retain selected items in `items`, even
+  when those items are outside the latest result page.
 - `IconButton` requires `aria-label` in TypeScript.
 - `TickRing` requires `aria-label` in TypeScript because its `meter` value must always have a name.
 - `AnimatedBrandLockup` stays on its explicit component subpath so the Motion runtime is loaded only by consumers that opt into brand animation. Change `replayKey` to replay it.

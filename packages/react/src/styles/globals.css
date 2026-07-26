@@ -202,7 +202,7 @@
   }
 
   /* Glass material — reserved for floating chrome: overlays, popovers and floating bars. */
-  :where([data-slot="select-content"], [data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-content"], [data-slot="tooltip-content"]) {
+  :where([data-slot="select-content"], [data-slot="combobox-content"], [data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-content"], [data-slot="tooltip-content"]) {
     border: 1px solid var(--afo-material-glass-border);
     background: var(--afo-material-glass-fill);
     box-shadow: var(--afo-shadow-floating);
@@ -210,7 +210,22 @@
     backdrop-filter: blur(var(--afo-material-glass-blur)) saturate(var(--afo-material-glass-saturate));
   }
 
+  [data-slot="combobox-content"] {
+    border-color: var(--afo-color-border-strong);
+    background: var(--popover);
+    box-shadow: var(--afo-shadow-overlay);
+  }
+
+  [data-slot="combobox-list"] {
+    scrollbar-color: var(--afo-color-border-strong) transparent;
+    scrollbar-width: thin;
+  }
+
   :where([data-slot="select-item"], [data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox-item"], [data-slot="dropdown-menu-radio-item"]):focus {
+    box-shadow: inset 2px 0 0 var(--primary);
+  }
+
+  [data-slot="combobox-item"][data-highlighted]:not([data-selected]) {
     box-shadow: inset 2px 0 0 var(--primary);
   }
 

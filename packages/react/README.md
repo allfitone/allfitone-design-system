@@ -35,7 +35,7 @@ Available public component subpaths are:
 - actions: `button` and `icon-button`;
 - navigation: `breadcrumb`, `navigation-menu`, `dropdown-menu`, `pagination`, `drawer`, `sidebar`, and `workspace-shell`;
 - forms: `field`, `label`, `input`, and `textarea`;
-- selection: `checkbox`, `radio-group`, `switch`, `select`, and `tabs`;
+- selection: `checkbox`, `radio-group`, `switch`, `select`, `combobox`, and `tabs`;
 - data display: `table`, `data-table`, `badge`, `card`, `skeleton`, and `empty`;
 - signature: `accent-block`, `stat-strip`, `tick-ring`, `pulse-mark`, and `animated-brand-lockup`;
 - overlays: `dialog`, `alert-dialog`, `sheet`, and `tooltip`;
@@ -59,6 +59,12 @@ Create the instance with `useDataTable`, then compose `DataTableToolbar`,
 `DataTablePagination` as needed. Pass TanStack `state` and `on*Change` options
 to control sorting, filters, visibility, selection, and pagination from a
 server-backed product screen.
+
+`Combobox` filters a predefined item collection and supports single or multiple
+selection, grouped rich options, removable chips, and async loading, empty, and
+error messages. Keep `ComboboxStatus` mounted and update its children when a
+remote request changes state. For async collections, retain any selected items
+in the `items` array so their labels remain available.
 
 `AnimatedBrandLockup` is the opt-in web entrance for the canonical Allfit One
 lockup. It plays once, renders the final frame when reduced motion is requested,
