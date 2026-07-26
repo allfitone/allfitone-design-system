@@ -58,12 +58,12 @@ The package root remains metadata-only. There is no component barrel because exp
 | Category | Components |
 | --- | --- |
 | Actions | Button, IconButton |
-| Navigation | Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell |
+| Navigation | Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell, Command |
 | Forms | Field, Label, Input, Textarea |
 | Selection | Checkbox, RadioGroup, Switch, Select, Combobox, DatePicker, Calendar, Tabs |
 | Data display | Table, DataTable, Avatar, Badge, Card, Skeleton, Empty |
 | Signature | AccentBlock, StatStrip, TickRing, PulseMark, AnimatedBrandLockup |
-| Overlays | Dialog, AlertDialog, Sheet, Popover, Tooltip |
+| Overlays | Dialog, AlertDialog, Sheet, Popover, Tooltip, CommandDialog |
 | Feedback | Progress, Alert, Sonner/Toast, Spinner |
 | Composition | Collapsible, Separator |
 
@@ -73,6 +73,16 @@ The package root remains metadata-only. There is no component barrel because exp
 
 - Links that look like buttons apply `buttonVariants` to an anchor or framework `Link`. They do not render through Base UI Button.
 - Workspace navigation composes `Sidebar` and `WorkspaceShell`; product applications provide destinations and routing state rather than restyling the active signal treatment.
+- Command provides the shared keyboard-first model for workspace destinations
+  and actions. Give every root a descriptive `label`, every item a stable
+  `value`, and use keywords only as search aliases. Group headings, visible
+  shortcuts, disabled items, and plain-language empty results remain part of
+  the composition.
+- CommandDialog composes that same Command API inside Dialog. Products own the
+  global shortcut and command outcomes; the component owns modal focus,
+  Escape dismissal, background inertness, and focus return. A controlled
+  global shortcut without `DialogTrigger` stores its invoking element and
+  passes that ref to `finalFocus`.
 - Breadcrumb and Pagination use real anchors or framework links. The current resource or page is always exposed semantically and never indicated by color alone.
 - Drawer requires a visible or screen-reader title and serves mobile navigation or bounded secondary tasks; it does not replace Dialog for focused confirmations.
 - Loading actions compose `Spinner` and `disabled`; no component adds an `isLoading` prop.

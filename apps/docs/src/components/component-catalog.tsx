@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 import { AccentBlock, AccentBlockLabel, AccentBlockMeta, AccentBlockTitle } from "@allfitone/react/components/accent-block";
 import { Alert, AlertAction, AlertDescription, AlertTitle } from "@allfitone/react/components/alert";
@@ -13,6 +13,7 @@ import { Calendar, type DateRange, type Matcher } from "@allfitone/react/compone
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@allfitone/react/components/card";
 import { Checkbox } from "@allfitone/react/components/checkbox";
 import { Combobox, ComboboxActions, ComboboxChip, ComboboxChipRemove, ComboboxChips, ComboboxChipsInput, ComboboxClear, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxInput, ComboboxInputGroup, ComboboxItem, ComboboxLabel, ComboboxList, ComboboxStatus, ComboboxTrigger, ComboboxValue } from "@allfitone/react/components/combobox";
+import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from "@allfitone/react/components/command";
 import { DataTable, DataTableColumnHeader, DataTableFilterInput, DataTablePagination, DataTableSelectionBar, DataTableToolbar, DataTableViewOptions, useDataTable, type ColumnDef } from "@allfitone/react/components/data-table";
 import { DatePicker } from "@allfitone/react/components/date-picker";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@allfitone/react/components/dialog";
@@ -1096,6 +1097,181 @@ function ProgressSpecimen() {
   );
 }
 
+type WorkspaceCommandItemsProps = {
+  onSelect: (label: string) => void;
+};
+
+function WorkspaceCommandItems({ onSelect }: WorkspaceCommandItemsProps) {
+  return (
+    <CommandList label="Available workspace commands">
+      <CommandEmpty>
+        No commands match this search. Try a member, session or program.
+      </CommandEmpty>
+      <CommandGroup heading="Navigate">
+        <CommandItem
+          value="member directory"
+          keywords={["people", "clients"]}
+          onSelect={() => onSelect("Member directory")}
+        >
+          <FoundationIcon name="people" decorative />
+          <span className="command-specimen__item-copy">
+            <strong>Member directory</strong>
+            <small>Find profiles and training context</small>
+          </span>
+          <CommandShortcut>G M</CommandShortcut>
+        </CommandItem>
+        <CommandItem
+          value="today schedule"
+          keywords={["calendar", "sessions", "agenda"]}
+          onSelect={() => onSelect("Today’s schedule")}
+        >
+          <FoundationIcon name="calendar" decorative />
+          <span className="command-specimen__item-copy">
+            <strong>Today’s schedule</strong>
+            <small>Review sessions that need attention</small>
+          </span>
+          <CommandShortcut>G S</CommandShortcut>
+        </CommandItem>
+        <CommandItem
+          value="training programs"
+          keywords={["workouts", "plans"]}
+          onSelect={() => onSelect("Training programs")}
+        >
+          <FoundationIcon name="training" decorative />
+          <span className="command-specimen__item-copy">
+            <strong>Training programs</strong>
+            <small>Plan and publish member work</small>
+          </span>
+          <CommandShortcut>G P</CommandShortcut>
+        </CommandItem>
+      </CommandGroup>
+      <CommandSeparator />
+      <CommandGroup heading="Create">
+        <CommandItem
+          value="invite member"
+          keywords={["add", "person"]}
+          onSelect={() => onSelect("Invite member")}
+        >
+          <FoundationIcon name="person" decorative />
+          <span className="command-specimen__item-copy">
+            <strong>Invite member</strong>
+            <small>Send access to the current organization</small>
+          </span>
+          <CommandShortcut>⌘ I</CommandShortcut>
+        </CommandItem>
+        <CommandItem
+          value="create session"
+          keywords={["add", "calendar"]}
+          onSelect={() => onSelect("Create session")}
+        >
+          <FoundationIcon name="add" decorative />
+          <span className="command-specimen__item-copy">
+            <strong>Create session</strong>
+            <small>Add a coached or independent session</small>
+          </span>
+          <CommandShortcut>⌘ N</CommandShortcut>
+        </CommandItem>
+        <CommandItem
+          value="publish organization template"
+          keywords={["permission", "owner"]}
+          disabled
+        >
+          <FoundationIcon name="permissions" decorative />
+          <span className="command-specimen__item-copy">
+            <strong>Publish organization template</strong>
+            <small>Owner permission required</small>
+          </span>
+        </CommandItem>
+      </CommandGroup>
+    </CommandList>
+  );
+}
+
+function CommandSpecimen() {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [lastCommand, setLastCommand] = useState("No command run yet");
+  const returnFocusRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const openFromKeyboard = (event: KeyboardEvent) => {
+      if (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        returnFocusRef.current = document.activeElement as HTMLElement | null;
+        setDialogOpen((current) => !current);
+      }
+    };
+
+    document.addEventListener("keydown", openFromKeyboard);
+    return () => document.removeEventListener("keydown", openFromKeyboard);
+  }, []);
+
+  const runCommand = (label: string, closeDialog = false) => {
+    setLastCommand(label);
+    if (closeDialog) {
+      setDialogOpen(false);
+    }
+  };
+
+  const openCommandDialog = () => {
+    returnFocusRef.current = document.activeElement as HTMLElement | null;
+    setDialogOpen(true);
+  };
+
+  return (
+    <div className="command-specimen">
+      <div className="command-specimen__surface">
+        <header className="command-specimen__header">
+          <div>
+            <span>Workspace / Quick route</span>
+            <strong>Move without leaving context</strong>
+          </div>
+          <Badge variant="outline">Keyboard first</Badge>
+        </header>
+        <Command label="Search quick workspace commands" loop>
+          <CommandInput placeholder="Search people, sessions or actions…" />
+          <WorkspaceCommandItems onSelect={runCommand} />
+        </Command>
+        <footer className="command-specimen__footer">
+          <span aria-live="polite">{lastCommand}</span>
+          <span className="command-specimen__keys" aria-hidden="true">
+            <kbd>↑↓</kbd> Move <kbd>↵</kbd> Run
+          </span>
+        </footer>
+      </div>
+
+      <aside className="command-specimen__launcher">
+        <div className="command-specimen__launcher-icon">
+          <FoundationIcon name="search" decorative />
+        </div>
+        <div>
+          <span>Global command</span>
+          <strong>Available from any workspace</strong>
+          <small>Opens as a focused Dialog and returns focus when dismissed.</small>
+        </div>
+        <Button variant="outline" onClick={openCommandDialog}>
+          Open commands
+          <span className="command-specimen__trigger-key" aria-hidden="true">Ctrl K</span>
+        </Button>
+      </aside>
+
+      <CommandDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        title="Workspace command menu"
+        description="Search destinations and actions in the current organization."
+        finalFocus={returnFocusRef}
+      >
+        <Command label="Search global workspace commands" loop>
+          <CommandInput placeholder="Where do you want to go?" />
+          <WorkspaceCommandItems
+            onSelect={(label) => runCommand(label, true)}
+          />
+        </Command>
+      </CommandDialog>
+    </div>
+  );
+}
+
 export function ComponentCatalog() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -1132,7 +1308,7 @@ export function ComponentCatalog() {
       </section>
 
       <section className="catalog-category" aria-labelledby="navigation-heading">
-        <CategoryHeader id="navigation" code="NAV" title="Navigation" description="Current location stays explicit across dense workspaces, nested resources and mobile transitions." count={6} />
+        <CategoryHeader id="navigation" code="NAV" title="Navigation" description="Current location stays explicit across dense workspaces, nested resources and mobile transitions." count={7} />
         <div className="component-grid">
           <ComponentSection id="breadcrumb" title="Breadcrumb" description="Resource hierarchy stays readable without competing with the page title." importPath="@allfitone/react/components/breadcrumb" contract={["Current page", "Collapsed path", "Router composition", "44 px links"]}>
             <Breadcrumb>
@@ -1237,6 +1413,10 @@ export function ComponentCatalog() {
                 <WorkspaceContent><div className="workspace-preview__metric"><span>Needs attention</span><strong>03</strong><p>Two reviews and one relationship setup.</p></div></WorkspaceContent>
               </WorkspaceMain>
             </WorkspaceShell>
+          </ComponentSection>
+
+          <ComponentSection id="command" title="Command + CommandDialog" description="A shared keyboard-first command model moves through the workspace inline or inside a focused global Dialog." importPath="@allfitone/react/components/command" contract={["Filtering / groups", "Arrow keys / Enter", "Empty / disabled", "Dialog focus return"]}>
+            <CommandSpecimen />
           </ComponentSection>
         </div>
       </section>

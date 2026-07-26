@@ -33,12 +33,12 @@ The component API follows shadcn composition on Base UI while its visual variant
 Available public component subpaths are:
 
 - actions: `button` and `icon-button`;
-- navigation: `breadcrumb`, `navigation-menu`, `dropdown-menu`, `pagination`, `drawer`, `sidebar`, and `workspace-shell`;
+- navigation: `breadcrumb`, `navigation-menu`, `dropdown-menu`, `pagination`, `drawer`, `sidebar`, `workspace-shell`, and `command`;
 - forms: `field`, `label`, `input`, and `textarea`;
 - selection: `checkbox`, `radio-group`, `switch`, `select`, `combobox`, `date-picker`, `calendar`, and `tabs`;
 - data display: `table`, `data-table`, `avatar`, `badge`, `card`, `skeleton`, and `empty`;
 - signature: `accent-block`, `stat-strip`, `tick-ring`, `pulse-mark`, and `animated-brand-lockup`;
-- overlays: `dialog`, `alert-dialog`, `sheet`, `popover`, and `tooltip`;
+- overlays: `dialog`, `alert-dialog`, `sheet`, `popover`, `tooltip`, and the `CommandDialog` composition from `command`;
 - feedback: `progress`, `alert`, `sonner`, and `spinner`;
 - composition: `collapsible` and `separator`.
 
@@ -65,6 +65,14 @@ root with `aria-label` or `aria-labelledby`, include `AvatarFallback`, and use
 `decorative` only beside equivalent visible identity text. Presence states pair
 semantic color with distinct icons and labels; groups expose their remaining
 member count in words.
+
+`Command` filters and ranks keyboard-first workspace destinations and actions.
+Give the root a descriptive `label`, compose a named input, grouped items,
+shortcuts, and an empty state, and provide stable item values. `CommandDialog`
+uses the same command children inside the public Dialog focus contract rather
+than introducing a separate global-search API. When a controlled global
+shortcut opens the dialog without `DialogTrigger`, retain the invoking element
+in a ref and pass it to `finalFocus`.
 
 `Combobox` filters a predefined item collection and supports single or multiple
 selection, grouped rich options, removable chips, and async loading, empty, and

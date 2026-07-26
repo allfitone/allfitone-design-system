@@ -227,6 +227,24 @@
     scrollbar-width: thin;
   }
 
+  [data-slot="command-dialog-content"],
+  [data-slot="command"] {
+    background: var(--popover);
+  }
+
+  [data-slot="command-list"] {
+    scrollbar-color: var(--afo-color-border-strong) transparent;
+    scrollbar-width: thin;
+  }
+
+  [data-slot="command-input-wrapper"]:focus-within {
+    box-shadow: inset 3px 0 0 var(--primary);
+  }
+
+  [data-slot="command-input"]:focus-visible {
+    box-shadow: none;
+  }
+
   [data-slot="calendar"] {
     scrollbar-color: var(--afo-color-border-strong) transparent;
     scrollbar-width: thin;
@@ -364,6 +382,11 @@
 
   [data-slot="popover-content"] {
     border-color: CanvasText;
+  }
+
+  [data-slot="command-item"][data-selected="true"] {
+    outline: 1px solid Highlight;
+    outline-offset: -2px;
   }
 
   [data-slot="calendar-day-button"]:is(

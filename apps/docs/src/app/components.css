@@ -734,7 +734,7 @@
   grid-area: contract;
 }
 
-.component-entry:is(#table, #combobox, #date-picker, #calendar, #popover, #alert) {
+.component-entry:is(#table, #combobox, #date-picker, #calendar, #popover, #alert, #command) {
   grid-column: 1 / -1;
 }
 
@@ -1982,13 +1982,164 @@
   color: var(--afo-color-status-danger);
 }
 
+.command-specimen {
+  display: grid;
+  width: min(55rem, 100%);
+  min-width: 0;
+  grid-template-columns: minmax(0, 1.45fr) minmax(15rem, 0.75fr);
+  align-items: start;
+  gap: 1rem;
+}
+
+.command-specimen__surface,
+.command-specimen__launcher {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--afo-color-border-subtle);
+  border-radius: var(--afo-radius-card);
+  background: var(--afo-color-background-surface);
+  box-shadow: var(--afo-shadow-card);
+}
+
+.command-specimen__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.15rem;
+  border-bottom: 1px solid var(--afo-color-border-subtle);
+  background: var(--afo-color-background-surface-muted);
+}
+
+.command-specimen__header > div {
+  display: grid;
+  min-width: 0;
+  gap: 0.2rem;
+}
+
+.command-specimen__header span,
+.command-specimen__launcher > div > span {
+  color: var(--afo-color-text-muted);
+  font-size: var(--afo-font-size-xs);
+  font-weight: var(--afo-font-weight-bold);
+  letter-spacing: var(--afo-letter-spacing-utility);
+  text-transform: uppercase;
+}
+
+.command-specimen__header strong,
+.command-specimen__launcher strong {
+  color: var(--afo-color-text-primary);
+  font-size: var(--afo-font-size-sm);
+}
+
+.command-specimen__item-copy {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 0.1rem;
+}
+
+.command-specimen__item-copy strong,
+.command-specimen__item-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.command-specimen__item-copy small {
+  color: var(--afo-color-text-muted);
+  font-size: var(--afo-font-size-xs);
+  font-weight: var(--afo-font-weight-regular);
+}
+
+.command-specimen__footer {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  border-top: 1px solid var(--afo-color-border-subtle);
+  color: var(--afo-color-text-muted);
+  font-size: var(--afo-font-size-xs);
+}
+
+.command-specimen__keys {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.command-specimen__keys kbd,
+.command-specimen__trigger-key {
+  border: 1px solid var(--afo-color-border-default);
+  border-radius: var(--afo-radius-sm);
+  background: var(--afo-color-background-surface-muted);
+  color: var(--afo-color-text-secondary);
+  font-family: var(--afo-font-family-mono);
+  font-size: var(--afo-font-size-xs);
+  line-height: 1;
+}
+
+.command-specimen__keys kbd {
+  padding: 0.25rem 0.35rem;
+}
+
+.command-specimen__launcher {
+  display: grid;
+  gap: 1rem;
+  padding: 1.15rem;
+}
+
+.command-specimen__launcher > div:not(.command-specimen__launcher-icon) {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.command-specimen__launcher small {
+  color: var(--afo-color-text-muted);
+  font-size: var(--afo-font-size-xs);
+  line-height: var(--afo-line-height-relaxed);
+}
+
+.command-specimen__launcher-icon {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 1px solid var(--afo-color-border-default);
+  border-radius: var(--afo-radius-control);
+  background: var(--afo-color-accent-tonal);
+  color: var(--afo-color-text-accent);
+}
+
+.command-specimen__launcher [data-slot="button"] {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.command-specimen__trigger-key {
+  padding: 0.3rem 0.4rem;
+}
+
 @media (max-width: 42.5rem) {
   .progress-specimen,
-  .avatar-specimen {
+  .avatar-specimen,
+  .command-specimen {
     grid-template-columns: minmax(0, 1fr);
   }
 
   .avatar-specimen__presence-key {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .command-specimen__header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .command-specimen__header [data-slot="badge"] {
+    align-self: flex-start;
   }
 }

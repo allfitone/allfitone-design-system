@@ -9,25 +9,16 @@ Components enter the Design System when they are expected to be reused by Allfit
 The following areas already have a canonical implementation:
 
 - actions: Button and IconButton;
-- navigation: Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, and WorkspaceShell;
+- navigation: Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell, and Command;
 - forms: Field, Label, Input, and Textarea;
 - selection: Checkbox, RadioGroup, Switch, Select, Combobox, DatePicker, Calendar, and Tabs;
 - data display: Table, DataTable, Avatar, Badge, Card, Skeleton, and Empty;
 - signature: AccentBlock, StatStrip, TickRing, and PulseMark;
-- overlays: Dialog, AlertDialog, Sheet, Popover, and Tooltip;
+- overlays: Dialog, AlertDialog, Sheet, Popover, Tooltip, and CommandDialog;
 - feedback: Progress, Alert, Sonner/Toast, and Spinner.
 - composition: Collapsible and Separator.
 
 Navigation is ready as a reusable foundation. Product repositories still need to supply their routes, permissions, labels, active state, and responsive information architecture.
-
-## Priority 0 — unblock Allfit OS
-
-These components cover the most likely operational and administrative workflows and should be implemented next.
-
-| Component | Required scope |
-| --- | --- |
-| Command | Searchable keyboard-first command list with groups, shortcuts, empty results, and disabled items. |
-| CommandDialog | Command composed with Dialog for global navigation and actions without creating a second command API. |
 
 ## Priority 1 — complete common product workflows
 
@@ -98,7 +89,5 @@ A component is not complete until all of the following are true:
 
 Before starting a backlog item, document the product use cases that need it. Prefer one flexible primitive plus documented compositions over several components differentiated only by product wording or visual styling.
 
-The recommended implementation order is:
-
-1. Command and CommandDialog;
-2. Priority 1 components as required by actual OS screens.
+The recommended implementation order now follows Priority 1 components as
+required by actual OS screens.

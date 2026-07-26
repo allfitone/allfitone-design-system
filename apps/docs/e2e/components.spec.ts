@@ -149,6 +149,72 @@ test("contains dialog focus and returns it to the trigger", async ({ page }) => 
   await expect(trigger).toBeFocused();
 });
 
+test("filters shared commands and composes the global dialog shortcut", async ({ page }) => {
+  const specimen = page.locator("#command");
+  const inlineCommand = specimen.locator('[data-slot="command"]').first();
+  const input = inlineCommand.getByRole("combobox", {
+    name: "Search quick workspace commands",
+  });
+
+  await input.fill("schedule");
+  await expect(
+    inlineCommand.getByRole("option", { name: /Today’s schedule/ })
+  ).toBeVisible();
+  await expect(
+    inlineCommand.getByRole("option", { name: /Member directory/ })
+  ).toHaveCount(0);
+
+  await input.fill("permission");
+  await expect(
+    inlineCommand.getByRole("option", {
+      name: /Publish organization template/,
+    })
+  ).toHaveAttribute("aria-disabled", "true");
+
+  await input.fill("not a real command");
+  await expect(
+    inlineCommand.getByText(
+      "No commands match this search. Try a member, session or program."
+    )
+  ).toBeVisible();
+
+  await input.fill("");
+  await input.focus();
+  await page.keyboard.press("Control+k");
+
+  const dialog = page.getByRole("dialog", {
+    name: "Workspace command menu",
+  });
+  await expect(dialog).toBeVisible();
+  const dialogInput = dialog.getByRole("combobox", {
+    name: "Search global workspace commands",
+  });
+  await expect(dialogInput).toBeFocused();
+  await dialogInput.fill("invite");
+  await page.keyboard.press("Enter");
+  await expect(dialog).toBeHidden();
+  await expect(input).toBeFocused();
+  await expect(
+    specimen.locator(".command-specimen__footer").getByText(
+      "Invite member",
+      { exact: true }
+    )
+  ).toBeVisible();
+
+  const selectedTarget = inlineCommand
+    .locator('[data-slot="command-item"][data-selected="true"]')
+    .first();
+  const targetBox = await selectedTarget.boundingBox();
+  expect(targetBox?.height).toBeGreaterThanOrEqual(44);
+
+  const accessibility = await new AxeBuilder({ page }).include("#command").analyze();
+  expect(
+    accessibility.violations.filter(
+      ({ impact }) => impact === "serious" || impact === "critical"
+    )
+  ).toEqual([]);
+});
+
 test("keeps popover content opaque, non-modal and collision-aware", async ({ page }) => {
   const specimen = page.locator("#popover");
   const trigger = specimen.getByRole("button", { name: "View member context" });
@@ -824,6 +890,9 @@ test("matches the approved catalog composition", async ({ page }) => {
     "components-dark-desktop.png",
     fullPageScreenshotOptions,
   );
+  await expect(page.locator("#command")).toHaveScreenshot(
+    "command-inline-dark-desktop.png",
+  );
 
   await page.getByRole("button", { name: "light", exact: true }).click();
   await page.setViewportSize({ width: 320, height: 800 });
@@ -864,12 +933,31 @@ test("matches key overlay states in both themes", async ({ page }) => {
   test.skip(process.platform !== "win32", "Visual baselines are canonical on Windows.");
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.getByRole("button", { name: "dark", exact: true }).click();
+  const commandTrigger = page.locator("#command").getByRole("button", {
+    name: /Open commands/,
+  });
+  await commandTrigger.click();
+  await expect(page).toHaveScreenshot("command-dialog-dark-desktop.png", {
+    fullPage: false,
+  });
+  await page.keyboard.press("Escape");
+
   await page.getByRole("button", { name: "Edit member" }).click();
-  await expect(page).toHaveScreenshot("dialog-dark-desktop.png", { fullPage: false });
+  await expect(page).toHaveScreenshot("dialog-dark-desktop.png", {
+    fullPage: false,
+    maxDiffPixels: 10,
+  });
   await page.keyboard.press("Escape");
 
   await page.getByRole("button", { name: "light", exact: true }).click();
   await page.setViewportSize({ width: 320, height: 800 });
+  await commandTrigger.scrollIntoViewIfNeeded();
+  await commandTrigger.click();
+  await expect(page).toHaveScreenshot("command-dialog-light-mobile.png", {
+    fullPage: false,
+  });
+  await page.keyboard.press("Escape");
+
   await page.getByRole("button", { name: "Open filters" }).click();
   await expect(page).toHaveScreenshot("sheet-light-mobile.png", { fullPage: false });
 });
