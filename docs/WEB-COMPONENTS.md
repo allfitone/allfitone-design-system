@@ -64,7 +64,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | Data display | Table, DataTable, Badge, Card, Skeleton, Empty |
 | Signature | AccentBlock, StatStrip, TickRing, PulseMark, AnimatedBrandLockup |
 | Overlays | Dialog, AlertDialog, Sheet, Popover, Tooltip |
-| Feedback | Sonner/Toast, Spinner |
+| Feedback | Alert, Sonner/Toast, Spinner |
 | Composition | Collapsible, Separator |
 
 `Collapsible` and `Separator` are public compositional dependencies used by navigation and forms.
@@ -124,6 +124,12 @@ The package root remains metadata-only. There is no component barrel because exp
 - Popover uses a solid raised surface from the first animation frame. It must
   not inherit translucent glass or opacity transitions that allow underlying
   tables, tabs, or text to blend through the content.
+- Alert uses a distinct status icon, title, and plain-language description so
+  meaning never depends on its semantic rail color. Its variants are `info`,
+  `success`, `warning`, and `danger`; actions compose through `AlertAction`.
+- Static Alert callouts do not create a live region. Use `live="polite"` for
+  non-urgent updates and `live="assertive"` only for urgent failures that
+  appear dynamically. Neither priority moves focus.
 - `IconButton` requires `aria-label` in TypeScript.
 - `TickRing` requires `aria-label` in TypeScript because its `meter` value must always have a name.
 - `AnimatedBrandLockup` stays on its explicit component subpath so the Motion runtime is loaded only by consumers that opt into brand animation. Change `replayKey` to replay it.

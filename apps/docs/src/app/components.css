@@ -734,7 +734,7 @@
   grid-area: contract;
 }
 
-.component-entry:is(#table, #combobox, #date-picker, #calendar, #popover) {
+.component-entry:is(#table, #combobox, #date-picker, #calendar, #popover, #alert) {
   grid-column: 1 / -1;
 }
 
@@ -1093,6 +1093,19 @@
   font-size: var(--afo-font-size-xs);
   font-weight: var(--afo-font-weight-semibold);
   text-align: right;
+}
+
+.alert-specimen {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 1rem;
+}
+
+.alert-specimen [data-slot="alert"] {
+  height: 100%;
 }
 
 .navigation-menu-demo {
@@ -1462,6 +1475,10 @@
 }
 
 @media (max-width: 620px) {
+  .alert-specimen {
+    grid-template-columns: 1fr;
+  }
+
   .date-picker-specimen {
     grid-template-columns: 1fr;
   }

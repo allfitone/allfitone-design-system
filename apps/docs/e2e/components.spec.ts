@@ -551,6 +551,41 @@ test("demonstrates the interaction sequence from the keyboard", async ({ page })
   await expect(page.getByText("Keyboard focus is visible")).toBeVisible();
 });
 
+test("keeps alert meaning explicit beyond color", async ({ page }) => {
+  const specimen = page.locator("#alert");
+  const alerts = specimen.locator('[data-slot="alert"]');
+
+  await expect(alerts).toHaveCount(4);
+  await expect(
+    specimen.getByText("Schedule window changed", { exact: true })
+  ).toBeVisible();
+  await expect(
+    specimen.getByText("Training block published", { exact: true })
+  ).toBeVisible();
+  await expect(
+    specimen.getByText("Class capacity is nearly reached", { exact: true })
+  ).toBeVisible();
+  await expect(
+    specimen.getByText("Member sync stopped", { exact: true })
+  ).toBeVisible();
+
+  for (const variant of ["info", "success", "warning", "danger"]) {
+    await expect(
+      specimen.locator(
+        `[data-slot="alert"][data-variant="${variant}"] [data-slot="alert-icon"] svg`
+      )
+    ).toHaveCount(1);
+  }
+
+  const action = specimen.getByRole("button", { name: "Retry sync" });
+  await action.focus();
+  await expect(action).toBeFocused();
+  const actionBox = await action.boundingBox();
+  expect(actionBox?.height).toBeGreaterThanOrEqual(44);
+  await page.keyboard.press("Enter");
+  await expect(action).toBeFocused();
+});
+
 test("announces toast feedback without stealing focus", async ({ page }) => {
   const trigger = page.getByRole("button", { name: "Show success" });
   await trigger.focus();

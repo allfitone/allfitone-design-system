@@ -3,6 +3,7 @@
 import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
 
 import { AccentBlock, AccentBlockLabel, AccentBlockMeta, AccentBlockTitle } from "@allfitone/react/components/accent-block";
+import { Alert, AlertAction, AlertDescription, AlertTitle } from "@allfitone/react/components/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@allfitone/react/components/alert-dialog";
 import { Badge } from "@allfitone/react/components/badge";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@allfitone/react/components/breadcrumb";
@@ -888,6 +889,43 @@ function PopoverSpecimen() {
   );
 }
 
+function AlertSpecimen() {
+  return (
+    <div className="alert-specimen">
+      <Alert variant="info">
+        <AlertTitle>Schedule window changed</AlertTitle>
+        <AlertDescription>
+          Monday sessions now open at 06:00. <a href="#calendar">Review the calendar</a>.
+        </AlertDescription>
+      </Alert>
+      <Alert variant="success">
+        <AlertTitle>Training block published</AlertTitle>
+        <AlertDescription>
+          Camila can now see all twelve sessions in the member app.
+        </AlertDescription>
+      </Alert>
+      <Alert variant="warning">
+        <AlertTitle>Class capacity is nearly reached</AlertTitle>
+        <AlertDescription>
+          Functional 45° has two places left for Friday at 18:00.
+        </AlertDescription>
+        <AlertAction>
+          <Button size="sm" variant="outline">Review capacity</Button>
+        </AlertAction>
+      </Alert>
+      <Alert variant="danger">
+        <AlertTitle>Member sync stopped</AlertTitle>
+        <AlertDescription>
+          The latest attendance changes were not saved. Check the connection and try again.
+        </AlertDescription>
+        <AlertAction>
+          <Button size="sm" variant="outline">Retry sync</Button>
+        </AlertAction>
+      </Alert>
+    </div>
+  );
+}
+
 export function ComponentCatalog() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -1182,8 +1220,9 @@ export function ComponentCatalog() {
       </section>
 
       <section className="catalog-category" aria-labelledby="feedback-heading">
-        <CategoryHeader id="feedback" code="FDB" title="Feedback" description="Progress and outcomes are announced without stealing focus." count={2} />
+        <CategoryHeader id="feedback" code="FDB" title="Feedback" description="Progress and outcomes are announced without stealing focus." count={3} />
         <div className="component-grid">
+          <ComponentSection id="alert" title="Alert" description="Operational callouts pair plain-language meaning with a distinct icon and restrained status signal." importPath="@allfitone/react/components/alert" contract={["Info / success / warning / danger", "Icon plus text", "Optional action", "Explicit live priority"]}><AlertSpecimen /></ComponentSection>
           <ComponentSection id="spinner" title="Spinner" description="A named status indicator composes inside actions and surfaces." importPath="@allfitone/react/components/spinner" contract={["Named status", "Reduced motion", "Composed loading"]}><div className="demo-row"><Spinner /><Button disabled><Spinner data-icon="inline-start" label="Saving" />Saving</Button></div></ComponentSection>
           <ComponentSection id="toast" title="Sonner / Toast" description="Polite, textual feedback follows the active ALLFIT ONE theme." importPath="@allfitone/react/components/sonner" contract={["Live region", "No focus steal", "Text plus color", "Dismissible"]}><div className="demo-row"><Button onClick={() => toast.success("Session saved", { description: "The member history is up to date." })}>Show success</Button><Button variant="outline" onClick={() => toast.error("Sync failed", { description: "Check the connection and try again." })}>Show error</Button></div></ComponentSection>
         </div>
