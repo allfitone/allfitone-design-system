@@ -205,6 +205,86 @@ test("operates composite selection controls from the keyboard", async ({ page })
   await expect(select).not.toHaveText("");
 });
 
+test("selects calendar dates and ranges with 44 px keyboard targets", async ({ page }) => {
+  const specimen = page.locator("#calendar");
+  const single = specimen.locator(
+    '[data-slot="calendar"][aria-label="Session calendar"]',
+  );
+  const range = specimen.locator(
+    '[data-slot="calendar"][aria-label="Training block calendar"]',
+  );
+  const august20 = single.getByRole("button", {
+    name: /Thursday, August 20th, 2026/i,
+  });
+
+  await august20.click();
+  await expect(specimen.getByText("Thu, Aug 20", { exact: true })).toBeVisible();
+  await expect(august20).toHaveAttribute("data-selected-single", "true");
+
+  await august20.focus();
+  await page.keyboard.press("ArrowRight");
+  const august21 = single.getByRole("button", {
+    name: /Friday, August 21st, 2026/i,
+  });
+  await expect(august21).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(specimen.getByText("Fri, Aug 21", { exact: true })).toBeVisible();
+
+  const unavailable = single.getByRole("button", {
+    name: /Thursday, August 27th, 2026/i,
+  });
+  await expect(unavailable).toBeDisabled();
+
+  const targetBox = await august21.boundingBox();
+  const navigationBox = await single
+    .getByRole("button", { name: "Go to the Next Month" })
+    .boundingBox();
+  for (const [name, box] of [
+    ["calendar day", targetBox],
+    ["calendar navigation", navigationBox],
+  ] as const) {
+    expect(box?.width, `${name} width`).toBeGreaterThanOrEqual(44);
+    expect(box?.height, `${name} height`).toBeGreaterThanOrEqual(44);
+  }
+
+  await expect(
+    range.getByRole("button", { name: /Monday, September 7th, 2026/i }),
+  ).toHaveAttribute("data-range-start", "true");
+  await expect(
+    range.getByRole("button", { name: /Friday, September 18th, 2026/i }),
+  ).toHaveAttribute("data-range-end", "true");
+
+  await range
+    .getByRole("button", { name: /Monday, September 21st, 2026/i })
+    .click();
+  await range
+    .getByRole("button", { name: /Friday, September 25th, 2026/i })
+    .click();
+  await expect(
+    specimen.getByText("Mon, Sep 21 – Fri, Sep 25", { exact: true }),
+  ).toBeVisible();
+
+  await page.setViewportSize({ width: 320, height: 800 });
+  await range.scrollIntoViewIfNeeded();
+  expect(
+    await range.locator(".rdp-months").evaluate(
+      (element) => getComputedStyle(element).flexDirection,
+    ),
+  ).toBe("column");
+  const rangeOverflow = await range.evaluate((element) => ({
+    clientWidth: element.clientWidth,
+    scrollWidth: element.scrollWidth,
+  }));
+  expect(rangeOverflow.scrollWidth).toBeGreaterThanOrEqual(
+    rangeOverflow.clientWidth,
+  );
+  const pageWidth = await page.evaluate(() => ({
+    document: document.documentElement.scrollWidth,
+    viewport: document.documentElement.clientWidth,
+  }));
+  expect(pageWidth.document).toBeLessThanOrEqual(pageWidth.viewport);
+});
+
 test("filters rich combobox options and exposes multiple and remote states", async ({ page }) => {
   const specimen = page.locator("#combobox");
   const leadCoach = specimen.locator("#lead-coach-combobox");

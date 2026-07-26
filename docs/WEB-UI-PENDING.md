@@ -11,7 +11,7 @@ The following areas already have a canonical implementation:
 - actions: Button and IconButton;
 - navigation: Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, and WorkspaceShell;
 - forms: Field, Label, Input, and Textarea;
-- selection: Checkbox, RadioGroup, Switch, Select, Combobox, and Tabs;
+- selection: Checkbox, RadioGroup, Switch, Select, Combobox, Calendar, and Tabs;
 - data display: Table, DataTable, Badge, Card, Skeleton, and Empty;
 - signature: AccentBlock, StatStrip, TickRing, and PulseMark;
 - overlays: Dialog, AlertDialog, Sheet, Popover, and Tooltip;
@@ -26,7 +26,6 @@ These components cover the most likely operational and administrative workflows 
 
 | Component | Required scope |
 | --- | --- |
-| Calendar | Single date, range, disabled dates, locale-ready labels, keyboard grid navigation, and responsive months. |
 | DatePicker | Field, Calendar, and Popover composition with parsing, visible format guidance, invalid state, and controlled values. |
 | Alert | Informational, success, warning, and danger variants with icon, title, description, and optional action. Meaning must not depend on color. |
 | Progress | Determinate and indeterminate progress with an accessible name, textual value, reduced motion, and compact/full variants. |
@@ -105,7 +104,7 @@ Before starting a backlog item, document the product use cases that need it. Pre
 
 The recommended implementation order is:
 
-1. Calendar and DatePicker;
+1. DatePicker;
 2. Alert and Progress;
 3. Avatar;
 4. Command and CommandDialog;

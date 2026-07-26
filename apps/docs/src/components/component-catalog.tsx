@@ -7,6 +7,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Badge } from "@allfitone/react/components/badge";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@allfitone/react/components/breadcrumb";
 import { Button, buttonVariants } from "@allfitone/react/components/button";
+import { Calendar, type DateRange, type Matcher } from "@allfitone/react/components/calendar";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@allfitone/react/components/card";
 import { Checkbox } from "@allfitone/react/components/checkbox";
 import { Combobox, ComboboxActions, ComboboxChip, ComboboxChipRemove, ComboboxChips, ComboboxChipsInput, ComboboxClear, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxInput, ComboboxInputGroup, ComboboxItem, ComboboxLabel, ComboboxList, ComboboxStatus, ComboboxTrigger, ComboboxValue } from "@allfitone/react/components/combobox";
@@ -612,6 +613,138 @@ function ComboboxSpecimen() {
   );
 }
 
+const calendarScheduledDates = [
+  new Date(2026, 7, 18),
+  new Date(2026, 7, 20),
+  new Date(2026, 7, 22),
+];
+const calendarMaintenanceDates = [
+  new Date(2026, 7, 27),
+  new Date(2026, 8, 3),
+];
+const calendarDefaultMonth = new Date(2026, 7, 1);
+const calendarStartMonth = new Date(2026, 6, 1);
+const calendarEndMonth = new Date(2026, 11, 1);
+const calendarSingleDisabled: Matcher[] = [
+  { before: new Date(2026, 7, 10) },
+  ...calendarMaintenanceDates,
+];
+const calendarModifiers = {
+  maintenance: calendarMaintenanceDates,
+  scheduled: calendarScheduledDates,
+};
+const calendarModifierClassNames = {
+  maintenance: "calendar-specimen__maintenance-day",
+  scheduled: "calendar-specimen__scheduled-day",
+};
+const calendarDateFormatter = new Intl.DateTimeFormat("en-US", {
+  weekday: "short",
+  month: "short",
+  day: "numeric",
+});
+
+function CalendarSpecimen() {
+  const [sessionDate, setSessionDate] = useState<Date | undefined>(
+    () => new Date(2026, 7, 18)
+  );
+  const [trainingRange, setTrainingRange] = useState<DateRange | undefined>(
+    () => ({
+      from: new Date(2026, 8, 7),
+      to: new Date(2026, 8, 18),
+    })
+  );
+  const rangeLabel = trainingRange?.from
+    ? trainingRange.to
+      ? `${calendarDateFormatter.format(trainingRange.from)} – ${calendarDateFormatter.format(trainingRange.to)}`
+      : `Starts ${calendarDateFormatter.format(trainingRange.from)}`
+    : "Choose a start date";
+
+  return (
+    <div className="calendar-specimen">
+      <Card className="calendar-specimen__single">
+        <CardHeader>
+          <CardTitle>Schedule a session</CardTitle>
+          <CardDescription>
+            Choose one available day; planned and maintenance dates remain explicit.
+          </CardDescription>
+          <CardAction><Badge variant="code">Single</Badge></CardAction>
+        </CardHeader>
+        <CardContent className="calendar-specimen__single-layout">
+          <Calendar
+            aria-label="Session calendar"
+            defaultMonth={calendarDefaultMonth}
+            disabled={calendarSingleDisabled}
+            fixedWeeks
+            mode="single"
+            modifiers={calendarModifiers}
+            modifiersClassNames={calendarModifierClassNames}
+            onSelect={setSessionDate}
+            selected={sessionDate}
+            startMonth={calendarStartMonth}
+            endMonth={calendarEndMonth}
+            timeZone="America/Bogota"
+            weekStartsOn={1}
+          />
+          <aside className="calendar-specimen__context" aria-label="Calendar state key">
+            <div className="calendar-specimen__selection" aria-live="polite">
+              <FoundationIcon name="calendar" decorative />
+              <span>
+                <small>Selected session</small>
+                <strong>
+                  {sessionDate
+                    ? calendarDateFormatter.format(sessionDate)
+                    : "No date selected"}
+                </strong>
+              </span>
+            </div>
+            <ul className="calendar-specimen__legend">
+              <li data-state="selected"><i />Selected</li>
+              <li data-state="scheduled"><i />Already planned</li>
+              <li data-state="maintenance"><i />Unavailable</li>
+            </ul>
+          </aside>
+        </CardContent>
+        <CardFooter>
+          Use arrow keys to move by day and Page Up or Page Down to change month.
+        </CardFooter>
+      </Card>
+
+      <Card className="calendar-specimen__range">
+        <CardHeader>
+          <CardTitle>Plan a training block</CardTitle>
+          <CardDescription>
+            A two-month range becomes a stacked calendar on narrow screens.
+          </CardDescription>
+          <CardAction><Badge variant="code">Range</Badge></CardAction>
+        </CardHeader>
+        <CardContent>
+          <Calendar
+            aria-label="Training block calendar"
+            defaultMonth={calendarDefaultMonth}
+            disabled={calendarMaintenanceDates}
+            excludeDisabled
+            fixedWeeks
+            mode="range"
+            numberOfMonths={2}
+            onSelect={setTrainingRange}
+            pagedNavigation
+            resetOnSelect
+            selected={trainingRange}
+            startMonth={calendarStartMonth}
+            endMonth={calendarEndMonth}
+            timeZone="America/Bogota"
+            weekStartsOn={1}
+          />
+        </CardContent>
+        <CardFooter className="calendar-specimen__range-summary" aria-live="polite">
+          <span>Current block</span>
+          <strong>{rangeLabel}</strong>
+        </CardFooter>
+      </Card>
+    </div>
+  );
+}
+
 function PopoverSpecimen() {
   return (
     <div className="popover-specimen">
@@ -867,7 +1000,7 @@ export function ComponentCatalog() {
       </section>
 
       <section className="catalog-category" aria-labelledby="selection-heading">
-        <CategoryHeader id="selection" code="SEL" title="Selection" description="State is visible through shape, position and semantics—not color alone." count={6} />
+        <CategoryHeader id="selection" code="SEL" title="Selection" description="State is visible through shape, position and semantics—not color alone." count={7} />
         <div className="component-grid">
           <ComponentSection id="checkbox" title="Checkbox" description="Checked and indeterminate states retain a 44 px target." importPath="@allfitone/react/components/checkbox" contract={["Checked", "Indeterminate", "Disabled", "44 px target"]}>
             <Field orientation="horizontal"><Checkbox id="consent" defaultChecked /><FieldLabel htmlFor="consent">Share training history with this coach</FieldLabel></Field>
@@ -887,6 +1020,10 @@ export function ComponentCatalog() {
 
           <ComponentSection id="combobox" title="Combobox" description="Filterable predefined options support rich items, grouped directories and multiple selection without becoming a free-form search field." importPath="@allfitone/react/components/combobox" contract={["Keyboard filtering", "Single / multiple", "Grouped rich options", "Loading / empty / error"]}>
             <ComboboxSpecimen />
+          </ComponentSection>
+
+          <ComponentSection id="calendar" title="Calendar" description="Session dates and training blocks preserve a 44 px grid, explicit unavailable days and keyboard navigation across months." importPath="@allfitone/react/components/calendar" contract={["Single / range", "Disabled modifiers", "Locale / timezone ready", "Arrow and page keys"]}>
+            <CalendarSpecimen />
           </ComponentSection>
 
           <ComponentSection id="tabs" title="Tabs" description="The selected state combines exposed state, weight and trajectory." importPath="@allfitone/react/components/tabs" contract={["Arrow navigation", "Selected trajectory", "Disabled", "Long labels"]}>

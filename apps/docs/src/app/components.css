@@ -734,7 +734,7 @@
   grid-area: contract;
 }
 
-.component-entry:is(#table, #combobox, #popover) {
+.component-entry:is(#table, #combobox, #calendar, #popover) {
   grid-column: 1 / -1;
 }
 
@@ -806,6 +806,131 @@
 .combobox-specimen__option small {
   color: var(--afo-color-text-secondary);
   font-size: var(--afo-font-size-xs);
+}
+
+.calendar-specimen {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.calendar-specimen [data-slot="card-content"] {
+  min-width: 0;
+}
+
+.calendar-specimen__single-layout {
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(12rem, 1fr);
+  align-items: stretch;
+  gap: 1rem;
+}
+
+.calendar-specimen__context {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: var(--afo-radius-card);
+  background: var(--afo-color-surface-recessed);
+}
+
+.calendar-specimen__selection {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.calendar-specimen__selection > svg {
+  flex: 0 0 auto;
+  color: var(--afo-color-text-accent);
+}
+
+.calendar-specimen__selection > span {
+  display: grid;
+  min-width: 0;
+  gap: 0.2rem;
+}
+
+.calendar-specimen__selection small,
+.calendar-specimen__range-summary > span {
+  color: var(--afo-color-text-muted);
+  font-size: var(--afo-font-size-xs);
+}
+
+.calendar-specimen__selection strong,
+.calendar-specimen__range-summary > strong {
+  color: var(--afo-color-text-primary);
+  font-size: var(--afo-font-size-sm);
+}
+
+.calendar-specimen__legend {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  color: var(--afo-color-text-secondary);
+  font-size: var(--afo-font-size-xs);
+  list-style: none;
+}
+
+.calendar-specimen__legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.calendar-specimen__legend i {
+  display: block;
+  width: 1.25rem;
+  height: 0.35rem;
+  border-radius: var(--afo-radius-pill);
+  background: var(--afo-color-text-secondary);
+}
+
+.calendar-specimen__legend [data-state="selected"] i {
+  background: var(--afo-color-action-primary);
+}
+
+.calendar-specimen__legend [data-state="maintenance"] i {
+  background: var(--afo-color-text-muted);
+  opacity: 0.45;
+}
+
+.calendar-specimen__scheduled-day:not([data-selected="true"]) [data-slot="calendar-day-button"]::after {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.35rem;
+  left: 0.6rem;
+  height: 2px;
+  border-radius: var(--afo-radius-pill);
+  background: var(--afo-color-text-secondary);
+  content: "";
+}
+
+.calendar-specimen__maintenance-day [data-slot="calendar-day-button"] {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.calendar-specimen__range [data-slot="card-content"] {
+  overflow: hidden;
+}
+
+.calendar-specimen__range [data-slot="calendar"] {
+  margin-inline: auto;
+}
+
+.calendar-specimen__range-summary {
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.calendar-specimen__range-summary > strong {
+  text-align: right;
 }
 
 .popover-specimen {
@@ -1245,6 +1370,19 @@
 }
 
 @media (max-width: 620px) {
+  .calendar-specimen__single-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-specimen__range-summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .calendar-specimen__range-summary > strong {
+    text-align: left;
+  }
+
   .popover-specimen {
     grid-template-columns: 1fr;
   }

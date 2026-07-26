@@ -60,7 +60,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | Actions | Button, IconButton |
 | Navigation | Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell |
 | Forms | Field, Label, Input, Textarea |
-| Selection | Checkbox, RadioGroup, Switch, Select, Combobox, Tabs |
+| Selection | Checkbox, RadioGroup, Switch, Select, Combobox, Calendar, Tabs |
 | Data display | Table, DataTable, Badge, Card, Skeleton, Empty |
 | Signature | AccentBlock, StatStrip, TickRing, PulseMark, AnimatedBrandLockup |
 | Overlays | Dialog, AlertDialog, Sheet, Popover, Tooltip |
@@ -95,6 +95,16 @@ The package root remains metadata-only. There is no component barrel because exp
   loading and error states so assistive technology receives consistent live
   region updates. Async collections retain selected items in `items`, even
   when those items are outside the latest result page.
+- Calendar supports controlled single-date and range selection through
+  React DayPicker. Use `disabled` matchers for unavailable dates and
+  `excludeDisabled` when a range must reset instead of crossing one.
+- Pass `locale`, `lang`, `weekStartsOn`, and `timeZone` from the product
+  context instead of deriving timezone during server rendering. Calendar
+  re-exports `DateRange` and `Matcher` from its public subpath.
+- Every date and month-navigation action retains the 44 px target. Multiple
+  months move from a horizontal sequence to a vertical sequence on narrow
+  screens, while a single month keeps horizontal overflow contained inside
+  the named calendar root.
 - Popover provides non-modal, anchored context for quick inspection and
   bounded edits such as reviewing a member snapshot or adjusting a session
   value. It is not a substitute for Dialog when the task must make the

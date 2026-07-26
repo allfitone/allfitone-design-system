@@ -35,10 +35,10 @@ Available public component subpaths are:
 - actions: `button` and `icon-button`;
 - navigation: `breadcrumb`, `navigation-menu`, `dropdown-menu`, `pagination`, `drawer`, `sidebar`, and `workspace-shell`;
 - forms: `field`, `label`, `input`, and `textarea`;
-- selection: `checkbox`, `radio-group`, `switch`, `select`, `combobox`, and `tabs`;
+- selection: `checkbox`, `radio-group`, `switch`, `select`, `combobox`, `calendar`, and `tabs`;
 - data display: `table`, `data-table`, `badge`, `card`, `skeleton`, and `empty`;
 - signature: `accent-block`, `stat-strip`, `tick-ring`, `pulse-mark`, and `animated-brand-lockup`;
-- overlays: `dialog`, `alert-dialog`, `sheet`, and `tooltip`;
+- overlays: `dialog`, `alert-dialog`, `sheet`, `popover`, and `tooltip`;
 - feedback: `sonner` and `spinner`;
 - composition: `collapsible` and `separator`.
 
@@ -65,6 +65,11 @@ selection, grouped rich options, removable chips, and async loading, empty, and
 error messages. Keep `ComboboxStatus` mounted and update its children when a
 remote request changes state. For async collections, retain any selected items
 in the `items` array so their labels remain available.
+
+`Calendar` composes React DayPicker for single dates and ranges. Its public
+props support controlled selection, disabled matchers, locale and timezone
+configuration, multiple responsive months, and the canonical 44 px date grid.
+Import `DateRange` and `Matcher` types from the same component subpath.
 
 `AnimatedBrandLockup` is the opt-in web entrance for the canonical Allfit One
 lockup. It plays once, renders the final frame when reduced motion is requested,

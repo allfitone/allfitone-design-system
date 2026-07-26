@@ -227,6 +227,11 @@
     scrollbar-width: thin;
   }
 
+  [data-slot="calendar"] {
+    scrollbar-color: var(--afo-color-border-strong) transparent;
+    scrollbar-width: thin;
+  }
+
   :where([data-slot="select-item"], [data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox-item"], [data-slot="dropdown-menu-radio-item"]):focus {
     box-shadow: inset 2px 0 0 var(--primary);
   }
@@ -316,6 +321,16 @@
 @media (forced-colors: active) {
   [data-slot="popover-content"] {
     border-color: CanvasText;
+  }
+
+  [data-slot="calendar-day-button"]:is(
+    [data-selected-single="true"],
+    [data-range-start="true"],
+    [data-range-middle="true"],
+    [data-range-end="true"]
+  ) {
+    outline: 1px solid Highlight;
+    outline-offset: -2px;
   }
 
   :where([data-slot]):focus-visible {
