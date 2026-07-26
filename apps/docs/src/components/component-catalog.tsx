@@ -5,6 +5,7 @@ import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { AccentBlock, AccentBlockLabel, AccentBlockMeta, AccentBlockTitle } from "@allfitone/react/components/accent-block";
 import { Alert, AlertAction, AlertDescription, AlertTitle } from "@allfitone/react/components/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@allfitone/react/components/alert-dialog";
+import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarPresence } from "@allfitone/react/components/avatar";
 import { Badge } from "@allfitone/react/components/badge";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@allfitone/react/components/breadcrumb";
 import { Button, buttonVariants } from "@allfitone/react/components/button";
@@ -927,6 +928,92 @@ function AlertSpecimen() {
   );
 }
 
+function AvatarSpecimen() {
+  return (
+    <div className="avatar-specimen">
+      <Card className="avatar-specimen__profile">
+        <CardHeader>
+          <CardTitle>Session lead</CardTitle>
+          <CardDescription>Functional 45′ · Friday at 18:00</CardDescription>
+          <CardAction>
+            <Badge variant="secondary">Initials</Badge>
+          </CardAction>
+        </CardHeader>
+        <CardContent>
+          <div className="avatar-specimen__identity">
+            <Avatar aria-label="Camila Torres" size="lg">
+              <AvatarFallback>CT</AvatarFallback>
+              <AvatarPresence status="online" label="Camila is online" />
+            </Avatar>
+            <div className="avatar-specimen__identity-copy">
+              <strong>Camila Torres</strong>
+              <span>Strength coach</span>
+              <small>
+                <FoundationIcon name="check" decorative />
+                Online · leading the current session
+              </small>
+            </div>
+          </div>
+        </CardContent>
+        <CardFooter>
+          <p className="avatar-specimen__fallback-note">
+            No profile image · initials remain available
+          </p>
+        </CardFooter>
+      </Card>
+
+      <Card className="avatar-specimen__roster">
+        <CardHeader>
+          <CardTitle>Coaching team</CardTitle>
+          <CardDescription>Assigned to today&apos;s operation</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <AvatarGroup aria-label="Assigned coaching team">
+            <Avatar aria-label="Camila Torres">
+              <AvatarFallback>CT</AvatarFallback>
+              <AvatarPresence status="online" label="Camila is online" />
+            </Avatar>
+            <Avatar aria-label="Mateo Ruiz">
+              <AvatarFallback>MR</AvatarFallback>
+              <AvatarPresence status="away" label="Mateo is away" />
+            </Avatar>
+            <Avatar aria-label="Sara Mendoza">
+              <AvatarFallback>SM</AvatarFallback>
+              <AvatarPresence status="busy" label="Sara is busy" />
+            </Avatar>
+            <Avatar aria-label="Daniel Rojas">
+              <AvatarFallback>DR</AvatarFallback>
+              <AvatarPresence status="offline" label="Daniel is offline" />
+            </Avatar>
+            <AvatarGroupCount count={2} label="2 more assigned coaches" />
+          </AvatarGroup>
+          <ul
+            className="avatar-specimen__presence-key"
+            aria-label="Presence icon key"
+          >
+            <li data-status="online">
+              <FoundationIcon name="check" decorative />
+              Online
+            </li>
+            <li data-status="away">
+              <FoundationIcon name="time" decorative />
+              Away
+            </li>
+            <li data-status="busy">
+              <FoundationIcon name="indeterminate" decorative />
+              Busy
+            </li>
+            <li data-status="offline">
+              <FoundationIcon name="close" decorative />
+              Offline
+            </li>
+          </ul>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 function ProgressSpecimen() {
   const [publishedSessions, setPublishedSessions] = useState(8);
   const isComplete = publishedSessions === 12;
@@ -1216,10 +1303,11 @@ export function ComponentCatalog() {
       </section>
 
       <section className="catalog-category" aria-labelledby="data-heading">
-        <CategoryHeader id="data-display" code="DAT" title="Data display" description="Compact information that stays readable under pressure." count={6} />
+        <CategoryHeader id="data-display" code="DAT" title="Data display" description="Compact information that stays readable under pressure." count={7} />
         <div className="component-grid">
           <ComponentSection id="table" title="Table" description="Operational records keep native table relationships, explicit selection and a focusable overflow region." importPath="@allfitone/react/components/table" contract={["Comfortable / compact", "Selection and sorting", "Loading / empty / error", "320 px overflow"]}><TableSpecimen /></ComponentSection>
           <ComponentSection id="data-table" title="DataTable" description="Composable controls add filtering, column visibility, selection actions and client or server pagination without replacing Table." importPath="@allfitone/react/components/data-table" contract={["Headless controlled state", "Filter and sort", "Column visibility", "Selection and pagination"]}><DataTableSpecimen /></ComponentSection>
+          <ComponentSection id="avatar" title="Avatar" description="Member and coach identity survives image failure, while presence remains recognizable without relying on color." importPath="@allfitone/react/components/avatar" contract={["Named / decorative", "Image fallback", "Icon plus presence label", "Group and count"]}><AvatarSpecimen /></ComponentSection>
           <ComponentSection id="badge" title="Badge" description="Short status labels always state their meaning in words." importPath="@allfitone/react/components/badge" contract={["Text plus color", "Long status", "Interactive target"]}><div className="demo-row"><Badge>Active</Badge><Badge variant="code">ACT</Badge><Badge variant="success">Synced</Badge><Badge variant="warning">Review needed</Badge><Badge variant="info">New activity</Badge><Badge variant="destructive">Access blocked</Badge></div></ComponentSection>
           <ComponentSection id="card" title="Card" description="Structured composition keeps title, action, content and footer predictable." importPath="@allfitone/react/components/card" contract={["Default / active", "Action slot", "Long content", "Responsive"]}><Card data-state="active"><CardHeader><CardTitle>Strength cycle</CardTitle><CardDescription>4-week program · week 2</CardDescription><CardAction><Badge>Active</Badge></CardAction></CardHeader><CardContent><strong className="metric-value">18,420 kg</strong><p className="metric-caption">Volume completed this week</p></CardContent><CardFooter><Button size="sm" variant="ghost">Open program</Button></CardFooter></Card></ComponentSection>
           <ComponentSection id="skeleton" title="Skeleton" description="Decorative loading placeholders respect reduced motion." importPath="@allfitone/react/components/skeleton" contract={["Decorative only", "Reduced motion", "Content-shaped"]}><div className="skeleton-stack"><Skeleton className="skeleton-avatar" /><div><Skeleton className="skeleton-line skeleton-line--strong" /><Skeleton className="skeleton-line" /></div></div></ComponentSection>

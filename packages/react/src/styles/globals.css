@@ -338,6 +338,20 @@
 }
 
 @media (forced-colors: active) {
+  :where(
+    [data-slot="avatar"],
+    [data-slot="avatar-group-count"]
+  ) {
+    border-color: CanvasText;
+  }
+
+  [data-slot="avatar-presence"] {
+    border-color: Canvas;
+    background: ButtonFace;
+    color: ButtonText;
+    forced-color-adjust: none;
+  }
+
   [data-slot="progress-track"] {
     border-color: CanvasText;
     background: Canvas;

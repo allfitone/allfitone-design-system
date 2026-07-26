@@ -28,6 +28,7 @@ const tokensPackageVersion = readWorkspacePackageVersion("tokens");
 const fullPageScreenshotOptions = {
   fullPage: true,
   maxDiffPixelRatio: 0.0001,
+  timeout: 15_000,
 } as const;
 
 async function verifyPackageVersion(page: Page, expectedLabels: readonly string[]) {
@@ -508,6 +509,34 @@ test("composes data-table controls without restyling sortable headers", async ({
 
   await specimen.getByRole("button", { name: "Next page" }).click();
   await expect(specimen.getByText("Page 2 of 2")).toBeVisible();
+});
+
+test("keeps avatar identity and presence explicit without a profile image", async ({ page }) => {
+  const specimen = page.locator("#avatar");
+  const profile = specimen.locator(
+    '[data-slot="avatar"][aria-label="Camila Torres"]',
+  ).first();
+  const team = specimen.getByRole("group", {
+    name: "Assigned coaching team",
+  });
+
+  await expect(profile).toHaveAttribute("role", "group");
+  await expect(profile.locator('[data-slot="avatar-image"]')).toHaveCount(0);
+  await expect(profile.locator('[data-slot="avatar-fallback"]')).toHaveText("CT");
+  await expect(
+    specimen.getByText("No profile image · initials remain available"),
+  ).toBeVisible();
+  const online = profile.getByRole("img", { name: "Camila is online" });
+  await expect(online).toHaveAttribute("data-status", "online");
+  await expect(online.locator("svg")).toHaveClass(/lucide-check/);
+
+  await expect(team.getByRole("group", { name: "Mateo Ruiz" })).toBeVisible();
+  await expect(team.getByRole("img", { name: "Mateo is away" }).locator("svg"))
+    .toHaveClass(/lucide-clock/);
+  await expect(team.getByText("2 more assigned coaches")).toHaveClass("sr-only");
+
+  await page.emulateMedia({ forcedColors: "active", reducedMotion: "reduce" });
+  await expect(online).toHaveCSS("forced-color-adjust", "none");
 });
 
 test("operates workspace navigation and returns focus from mobile overlays", async ({ page }) => {

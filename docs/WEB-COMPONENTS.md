@@ -61,7 +61,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | Navigation | Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell |
 | Forms | Field, Label, Input, Textarea |
 | Selection | Checkbox, RadioGroup, Switch, Select, Combobox, DatePicker, Calendar, Tabs |
-| Data display | Table, DataTable, Badge, Card, Skeleton, Empty |
+| Data display | Table, DataTable, Avatar, Badge, Card, Skeleton, Empty |
 | Signature | AccentBlock, StatStrip, TickRing, PulseMark, AnimatedBrandLockup |
 | Overlays | Dialog, AlertDialog, Sheet, Popover, Tooltip |
 | Feedback | Progress, Alert, Sonner/Toast, Spinner |
@@ -87,6 +87,13 @@ The package root remains metadata-only. There is no component barrel because exp
   client-side row models by default and preserves TanStack controlled-state and
   manual server-mode options. Toolbar, filter, visibility, selection, and
   pagination controls remain independently composable.
+- Avatar requires an explicit accessible intent. Give standalone identity an
+  `aria-label` or `aria-labelledby`; use `decorative` only when adjacent text
+  already names the same person. `AvatarImage` is silent because the root owns
+  the name, and every composition includes `AvatarFallback`.
+- `AvatarPresence` pairs each status color with a distinct icon and requires a
+  full text label. Use `AvatarGroup` for assigned teams and name both the group
+  and any `AvatarGroupCount` so hidden members remain understandable.
 - Combobox filters a known collection; it does not accept arbitrary free-form
   values. Compose `ComboboxInputGroup`, `ComboboxInput`, actions, content,
   list, and items for a single value. Add `ComboboxChips`, `ComboboxValue`,

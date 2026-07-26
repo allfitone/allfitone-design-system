@@ -36,7 +36,7 @@ Available public component subpaths are:
 - navigation: `breadcrumb`, `navigation-menu`, `dropdown-menu`, `pagination`, `drawer`, `sidebar`, and `workspace-shell`;
 - forms: `field`, `label`, `input`, and `textarea`;
 - selection: `checkbox`, `radio-group`, `switch`, `select`, `combobox`, `date-picker`, `calendar`, and `tabs`;
-- data display: `table`, `data-table`, `badge`, `card`, `skeleton`, and `empty`;
+- data display: `table`, `data-table`, `avatar`, `badge`, `card`, `skeleton`, and `empty`;
 - signature: `accent-block`, `stat-strip`, `tick-ring`, `pulse-mark`, and `animated-brand-lockup`;
 - overlays: `dialog`, `alert-dialog`, `sheet`, `popover`, and `tooltip`;
 - feedback: `progress`, `alert`, `sonner`, and `spinner`;
@@ -59,6 +59,12 @@ Create the instance with `useDataTable`, then compose `DataTableToolbar`,
 `DataTablePagination` as needed. Pass TanStack `state` and `on*Change` options
 to control sorting, filters, visibility, selection, and pagination from a
 server-backed product screen.
+
+`Avatar` keeps identity explicit across image loading and failure. Name the
+root with `aria-label` or `aria-labelledby`, include `AvatarFallback`, and use
+`decorative` only beside equivalent visible identity text. Presence states pair
+semantic color with distinct icons and labels; groups expose their remaining
+member count in words.
 
 `Combobox` filters a predefined item collection and supports single or multiple
 selection, grouped rich options, removable chips, and async loading, empty, and

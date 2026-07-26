@@ -12,7 +12,7 @@ The following areas already have a canonical implementation:
 - navigation: Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, and WorkspaceShell;
 - forms: Field, Label, Input, and Textarea;
 - selection: Checkbox, RadioGroup, Switch, Select, Combobox, DatePicker, Calendar, and Tabs;
-- data display: Table, DataTable, Badge, Card, Skeleton, and Empty;
+- data display: Table, DataTable, Avatar, Badge, Card, Skeleton, and Empty;
 - signature: AccentBlock, StatStrip, TickRing, and PulseMark;
 - overlays: Dialog, AlertDialog, Sheet, Popover, and Tooltip;
 - feedback: Progress, Alert, Sonner/Toast, and Spinner.
@@ -26,7 +26,6 @@ These components cover the most likely operational and administrative workflows 
 
 | Component | Required scope |
 | --- | --- |
-| Avatar | Image, initials fallback, loading failure, accessible name guidance, group composition, and presence expressed beyond color. |
 | Command | Searchable keyboard-first command list with groups, shortcuts, empty results, and disabled items. |
 | CommandDialog | Command composed with Dialog for global navigation and actions without creating a second command API. |
 
@@ -101,6 +100,5 @@ Before starting a backlog item, document the product use cases that need it. Pre
 
 The recommended implementation order is:
 
-1. Avatar;
-2. Command and CommandDialog;
-3. Priority 1 components as required by actual OS screens.
+1. Command and CommandDialog;
+2. Priority 1 components as required by actual OS screens.

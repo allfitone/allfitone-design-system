@@ -1886,8 +1886,109 @@
   border-top: 1px solid var(--afo-color-border-subtle);
 }
 
+.avatar-specimen {
+  display: grid;
+  width: min(32rem, 100%);
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.avatar-specimen [data-slot="card"] {
+  min-width: 0;
+  border: 1px solid var(--afo-color-border-subtle);
+}
+
+.avatar-specimen__identity {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar-specimen__identity-copy {
+  display: grid;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.avatar-specimen__identity-copy strong {
+  color: var(--afo-color-text-primary);
+  font-size: var(--afo-font-size-md);
+}
+
+.avatar-specimen__identity-copy > span,
+.avatar-specimen__identity-copy small {
+  color: var(--afo-color-text-muted);
+  font-size: var(--afo-font-size-xs);
+}
+
+.avatar-specimen__identity-copy small {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.3rem;
+  color: var(--afo-color-text-secondary);
+  line-height: var(--afo-line-height-compact);
+}
+
+.avatar-specimen__identity-copy small svg {
+  width: 0.8rem;
+  height: 0.8rem;
+  color: var(--afo-color-status-success);
+}
+
+.avatar-specimen__fallback-note {
+  margin: 0;
+  color: var(--afo-color-text-muted);
+  font-size: var(--afo-font-size-xs);
+}
+
+.avatar-specimen__roster [data-slot="card-content"] {
+  display: grid;
+  gap: 1rem;
+}
+
+.avatar-specimen__presence-key {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.avatar-specimen__presence-key li {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--afo-color-text-muted);
+  font-size: var(--afo-font-size-xs);
+}
+
+.avatar-specimen__presence-key svg {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.avatar-specimen__presence-key [data-status="online"] svg {
+  color: var(--afo-color-status-success);
+}
+
+.avatar-specimen__presence-key [data-status="away"] svg {
+  color: var(--afo-color-status-warning);
+}
+
+.avatar-specimen__presence-key [data-status="busy"] svg {
+  color: var(--afo-color-status-danger);
+}
+
 @media (max-width: 42.5rem) {
-  .progress-specimen {
+  .progress-specimen,
+  .avatar-specimen {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .avatar-specimen__presence-key {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
