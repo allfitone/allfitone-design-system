@@ -734,7 +734,7 @@
   grid-area: contract;
 }
 
-.component-entry:is(#table, #combobox, #calendar, #popover) {
+.component-entry:is(#table, #combobox, #date-picker, #calendar, #popover) {
   grid-column: 1 / -1;
 }
 
@@ -806,6 +806,98 @@
 .combobox-specimen__option small {
   color: var(--afo-color-text-secondary);
   font-size: var(--afo-font-size-xs);
+}
+
+.date-picker-specimen {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1.35fr) minmax(15rem, 0.65fr);
+  gap: 1rem;
+}
+
+.date-picker-specimen__schedule,
+.date-picker-specimen__validation {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--afo-color-border-subtle);
+  border-radius: var(--afo-radius-card);
+  background: var(--afo-color-surface-recessed);
+}
+
+.date-picker-specimen__heading {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.date-picker-specimen__heading > span {
+  color: var(--afo-color-text-muted);
+  font-size: var(--afo-font-size-xs);
+  font-weight: var(--afo-font-weight-bold);
+  letter-spacing: var(--afo-letter-spacing-utility);
+  text-transform: uppercase;
+}
+
+.date-picker-specimen__slot {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem 0.9rem 1.15rem;
+  overflow: hidden;
+  border-radius: var(--afo-radius-control);
+  background: var(--afo-color-background-surface);
+}
+
+.date-picker-specimen__slot::before {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 0.2rem;
+  background: var(--afo-color-action-primary);
+  content: "";
+}
+
+.date-picker-specimen__slot > svg {
+  flex: 0 0 auto;
+  color: var(--afo-color-text-accent);
+}
+
+.date-picker-specimen__slot > span {
+  display: grid;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.date-picker-specimen__slot small {
+  color: var(--afo-color-text-muted);
+  font-size: var(--afo-font-size-xs);
+}
+
+.date-picker-specimen__slot strong {
+  color: var(--afo-color-text-primary);
+  font-size: var(--afo-font-size-sm);
+}
+
+.date-picker-specimen__slot em {
+  color: var(--afo-color-text-secondary);
+  font-size: var(--afo-font-size-xs);
+  font-style: normal;
+}
+
+.date-picker-specimen__validation {
+  justify-content: space-between;
+}
+
+.date-picker-specimen__validation > [data-slot="badge"] {
+  align-self: flex-start;
 }
 
 .calendar-specimen {
@@ -1370,6 +1462,10 @@
 }
 
 @media (max-width: 620px) {
+  .date-picker-specimen {
+    grid-template-columns: 1fr;
+  }
+
   .calendar-specimen__single-layout {
     grid-template-columns: 1fr;
   }

@@ -205,6 +205,54 @@ test("operates composite selection controls from the keyboard", async ({ page })
   await expect(select).not.toHaveText("");
 });
 
+test("parses date picker input and keeps its calendar bounded", async ({ page }) => {
+  const specimen = page.locator("#date-picker");
+  const field = specimen.locator('[data-slot="date-picker"]').first();
+  const input = field.getByLabel("Session date");
+  const trigger = field.getByRole("button", { name: "Open calendar" });
+
+  await expect(input).toHaveValue("08/18/2026");
+  await trigger.click();
+
+  const dialog = page.getByRole("dialog", { name: "Session date calendar" });
+  await expect(dialog).toBeVisible();
+  await dialog
+    .getByRole("button", { name: /Thursday, August 20th, 2026/i })
+    .click();
+  await expect(dialog).toBeHidden();
+  await expect(input).toHaveValue("08/20/2026");
+  await expect(
+    specimen.getByText("Thu, Aug 20", { exact: true })
+  ).toBeVisible();
+
+  await field.getByRole("button", { name: "Clear date" }).click();
+  await expect(input).toBeFocused();
+  await input.fill("08/27/2026");
+  await input.press("Enter");
+  await expect(field.getByRole("alert")).toHaveText(
+    "That date is unavailable."
+  );
+  await expect(input).toHaveAttribute("aria-invalid", "true");
+
+  await input.fill("08/25/2026");
+  await input.press("Enter");
+  await expect(input).toHaveValue("08/25/2026");
+  await expect(input).not.toHaveAttribute("aria-invalid");
+
+  const triggerBox = await trigger.boundingBox();
+  expect(triggerBox?.width).toBeGreaterThanOrEqual(44);
+  expect(triggerBox?.height).toBeGreaterThanOrEqual(44);
+
+  await page.setViewportSize({ width: 320, height: 800 });
+  await trigger.scrollIntoViewIfNeeded();
+  await trigger.click();
+  const bounds = await dialog.boundingBox();
+  expect(bounds?.x).toBeGreaterThanOrEqual(0);
+  expect((bounds?.x ?? 0) + (bounds?.width ?? 0)).toBeLessThanOrEqual(320);
+  await page.keyboard.press("Escape");
+  await expect(trigger).toBeFocused();
+});
+
 test("selects calendar dates and ranges with 44 px keyboard targets", async ({ page }) => {
   const specimen = page.locator("#calendar");
   const single = specimen.locator(

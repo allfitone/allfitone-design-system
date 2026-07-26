@@ -60,7 +60,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | Actions | Button, IconButton |
 | Navigation | Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell |
 | Forms | Field, Label, Input, Textarea |
-| Selection | Checkbox, RadioGroup, Switch, Select, Combobox, Calendar, Tabs |
+| Selection | Checkbox, RadioGroup, Switch, Select, Combobox, DatePicker, Calendar, Tabs |
 | Data display | Table, DataTable, Badge, Card, Skeleton, Empty |
 | Signature | AccentBlock, StatStrip, TickRing, PulseMark, AnimatedBrandLockup |
 | Overlays | Dialog, AlertDialog, Sheet, Popover, Tooltip |
@@ -95,6 +95,14 @@ The package root remains metadata-only. There is no component barrel because exp
   loading and error states so assistive technology receives consistent live
   region updates. Async collections retain selected items in `items`, even
   when those items are outside the latest result page.
+- DatePicker composes a text field, Popover, and Calendar around one
+  `Date | undefined` value. It supports controlled and uncontrolled use,
+  commits typed input on Enter or blur, and opens from the trailing 44 px
+  calendar action or `Alt+ArrowDown`.
+- Keep `formatPattern` and the visible `formatHint` aligned. DatePicker rejects
+  input that does not match that pattern and rejects dates matched by
+  `calendarProps.disabled`; both failures remain explicit in text and through
+  `aria-invalid`.
 - Calendar supports controlled single-date and range selection through
   React DayPicker. Use `disabled` matchers for unavailable dates and
   `excludeDisabled` when a range must reset instead of crossing one.

@@ -12,6 +12,7 @@ import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader,
 import { Checkbox } from "@allfitone/react/components/checkbox";
 import { Combobox, ComboboxActions, ComboboxChip, ComboboxChipRemove, ComboboxChips, ComboboxChipsInput, ComboboxClear, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxInput, ComboboxInputGroup, ComboboxItem, ComboboxLabel, ComboboxList, ComboboxStatus, ComboboxTrigger, ComboboxValue } from "@allfitone/react/components/combobox";
 import { DataTable, DataTableColumnHeader, DataTableFilterInput, DataTablePagination, DataTableSelectionBar, DataTableToolbar, DataTableViewOptions, useDataTable, type ColumnDef } from "@allfitone/react/components/data-table";
+import { DatePicker } from "@allfitone/react/components/date-picker";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@allfitone/react/components/dialog";
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@allfitone/react/components/drawer";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@allfitone/react/components/dropdown-menu";
@@ -643,6 +644,63 @@ const calendarDateFormatter = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
 });
 
+function DatePickerSpecimen() {
+  const [sessionDate, setSessionDate] = useState<Date | undefined>(
+    () => new Date(2026, 7, 18)
+  );
+
+  return (
+    <div className="date-picker-specimen">
+      <div className="date-picker-specimen__schedule">
+        <div className="date-picker-specimen__heading">
+          <span>Next planned session</span>
+          <Badge variant="outline">Scheduled</Badge>
+        </div>
+        <DatePicker
+          id="scheduled-session-date"
+          label="Session date"
+          description="Choose an available weekday."
+          calendarLabel="Session date calendar"
+          calendarProps={{
+            defaultMonth: calendarDefaultMonth,
+            disabled: calendarSingleDisabled,
+            fixedWeeks: true,
+            startMonth: calendarStartMonth,
+            endMonth: calendarEndMonth,
+            timeZone: "America/Bogota",
+            weekStartsOn: 1,
+          }}
+          onValueChange={setSessionDate}
+          value={sessionDate}
+        />
+        <div className="date-picker-specimen__slot" aria-live="polite">
+          <FoundationIcon name="calendar" decorative />
+          <span>
+            <small>Current slot</small>
+            <strong>
+              {sessionDate
+                ? calendarDateFormatter.format(sessionDate)
+                : "No session date"}
+            </strong>
+            <em>06:30 · Strength · Camila Torres</em>
+          </span>
+        </div>
+      </div>
+      <div className="date-picker-specimen__validation">
+        <Badge variant="code">Required state</Badge>
+        <DatePicker
+          id="review-deadline"
+          label="Review deadline"
+          description="Use the format shown below the field."
+          errorMessage="Choose a review deadline before publishing."
+          invalid
+          required
+        />
+      </div>
+    </div>
+  );
+}
+
 function CalendarSpecimen() {
   const [sessionDate, setSessionDate] = useState<Date | undefined>(
     () => new Date(2026, 7, 18)
@@ -1000,7 +1058,7 @@ export function ComponentCatalog() {
       </section>
 
       <section className="catalog-category" aria-labelledby="selection-heading">
-        <CategoryHeader id="selection" code="SEL" title="Selection" description="State is visible through shape, position and semantics—not color alone." count={7} />
+        <CategoryHeader id="selection" code="SEL" title="Selection" description="State is visible through shape, position and semantics—not color alone." count={8} />
         <div className="component-grid">
           <ComponentSection id="checkbox" title="Checkbox" description="Checked and indeterminate states retain a 44 px target." importPath="@allfitone/react/components/checkbox" contract={["Checked", "Indeterminate", "Disabled", "44 px target"]}>
             <Field orientation="horizontal"><Checkbox id="consent" defaultChecked /><FieldLabel htmlFor="consent">Share training history with this coach</FieldLabel></Field>
@@ -1020,6 +1078,10 @@ export function ComponentCatalog() {
 
           <ComponentSection id="combobox" title="Combobox" description="Filterable predefined options support rich items, grouped directories and multiple selection without becoming a free-form search field." importPath="@allfitone/react/components/combobox" contract={["Keyboard filtering", "Single / multiple", "Grouped rich options", "Loading / empty / error"]}>
             <ComboboxSpecimen />
+          </ComponentSection>
+
+          <ComponentSection id="date-picker" title="DatePicker" description="Typed dates and the calendar share one controlled value, visible format guidance and explicit unavailable or invalid states." importPath="@allfitone/react/components/date-picker" contract={["Typed parsing", "Controlled / uncontrolled", "Unavailable dates", "Visible format and error"]}>
+            <DatePickerSpecimen />
           </ComponentSection>
 
           <ComponentSection id="calendar" title="Calendar" description="Session dates and training blocks preserve a 44 px grid, explicit unavailable days and keyboard navigation across months." importPath="@allfitone/react/components/calendar" contract={["Single / range", "Disabled modifiers", "Locale / timezone ready", "Arrow and page keys"]}>

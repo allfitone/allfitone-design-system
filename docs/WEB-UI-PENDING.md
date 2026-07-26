@@ -11,7 +11,7 @@ The following areas already have a canonical implementation:
 - actions: Button and IconButton;
 - navigation: Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, and WorkspaceShell;
 - forms: Field, Label, Input, and Textarea;
-- selection: Checkbox, RadioGroup, Switch, Select, Combobox, Calendar, and Tabs;
+- selection: Checkbox, RadioGroup, Switch, Select, Combobox, DatePicker, Calendar, and Tabs;
 - data display: Table, DataTable, Badge, Card, Skeleton, and Empty;
 - signature: AccentBlock, StatStrip, TickRing, and PulseMark;
 - overlays: Dialog, AlertDialog, Sheet, Popover, and Tooltip;
@@ -26,7 +26,6 @@ These components cover the most likely operational and administrative workflows 
 
 | Component | Required scope |
 | --- | --- |
-| DatePicker | Field, Calendar, and Popover composition with parsing, visible format guidance, invalid state, and controlled values. |
 | Alert | Informational, success, warning, and danger variants with icon, title, description, and optional action. Meaning must not depend on color. |
 | Progress | Determinate and indeterminate progress with an accessible name, textual value, reduced motion, and compact/full variants. |
 | Avatar | Image, initials fallback, loading failure, accessible name guidance, group composition, and presence expressed beyond color. |
