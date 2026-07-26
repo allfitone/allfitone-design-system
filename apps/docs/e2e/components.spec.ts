@@ -164,6 +164,71 @@ test("operates composite selection controls from the keyboard", async ({ page })
   await expect(select).not.toHaveText("");
 });
 
+test("keeps table sorting, selection and result states explicit", async ({ page }) => {
+  const table = page.getByRole("table", { name: "Members" });
+  const region = page.getByRole("region", { name: "Scrollable member directory" });
+  const memberHeader = table.locator('th[aria-sort]');
+
+  await expect(region).toHaveAttribute("tabindex", "0");
+  await expect(memberHeader).toHaveAttribute("aria-sort", "ascending");
+  const sortButton = table.getByRole("button", { name: "Sort members descending" });
+  const sortButtonStyles = await sortButton.evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return {
+      backgroundColor: styles.backgroundColor,
+      borderWidth: styles.borderWidth,
+      borderRadius: styles.borderRadius,
+      hasVisibleBoxShadow: (styles.boxShadow.match(/rgba?\([^)]+\)/g) ?? [])
+        .some((color) => !color.endsWith(", 0)")),
+    };
+  });
+  expect(sortButtonStyles).toEqual({
+    backgroundColor: "rgba(0, 0, 0, 0)",
+    borderWidth: "0px",
+    borderRadius: "0px",
+    hasVisibleBoxShadow: false,
+  });
+  await sortButton.click();
+  await expect(memberHeader).toHaveAttribute("aria-sort", "descending");
+
+  const memberCheckbox = table.getByRole("checkbox", { name: "Select Camila Torres" });
+  const memberRow = memberCheckbox.locator("xpath=ancestor::tr");
+  await expect(memberRow).toHaveAttribute("data-state", "selected");
+  await memberCheckbox.click();
+  await expect(memberRow).not.toHaveAttribute("data-state", "selected");
+
+  const stateSelect = page.getByRole("combobox", { name: "Preview table state" });
+  await stateSelect.click();
+  await page.getByRole("option", { name: "Error" }).click();
+  await expect(table.getByRole("alert")).toContainText("Members could not be loaded");
+  await table.getByRole("button", { name: "Try again" }).click();
+  await expect(table.getByText("Camila Torres")).toBeVisible();
+
+  await page.getByRole("button", { name: "light", exact: true }).click();
+  await page.setViewportSize({ width: 320, height: 800 });
+  await region.scrollIntoViewIfNeeded();
+  const mobileSortStyles = await table
+    .getByRole("button", { name: "Sort members ascending" })
+    .evaluate((element) => {
+      const styles = getComputedStyle(element);
+      return {
+        backgroundColor: styles.backgroundColor,
+        borderWidth: styles.borderWidth,
+        borderRadius: styles.borderRadius,
+      };
+    });
+  expect(mobileSortStyles).toEqual({
+    backgroundColor: "rgba(0, 0, 0, 0)",
+    borderWidth: "0px",
+    borderRadius: "0px",
+  });
+  const overflow = await region.evaluate((element) => ({
+    client: element.clientWidth,
+    scroll: element.scrollWidth,
+  }));
+  expect(overflow.scroll).toBeGreaterThan(overflow.client);
+});
+
 test("operates workspace navigation and returns focus from mobile overlays", async ({ page }) => {
   const navigationMenu = page.locator("#navigation-menu");
   const trainingTrigger = navigationMenu.getByRole("button", { name: "Training", exact: true });
@@ -219,6 +284,7 @@ test("keeps touch targets and focus treatment at the minimum contract", async ({
     "primary button": page.getByRole("button", { name: "Start session" }),
     "icon button": page.getByRole("button", { name: "Add movement" }),
     checkbox: page.getByRole("checkbox", { name: "Share training history with this coach" }),
+    "table checkbox": page.getByRole("checkbox", { name: "Select Camila Torres" }),
     switch: page.getByRole("switch", { name: "Live progress sharing" }),
     "navigation trigger": page.locator("#navigation-menu").getByRole("button", { name: "Training", exact: true }),
     "workspace action": page.locator("#workspace-shell").getByRole("button", { name: /Panel/ }),

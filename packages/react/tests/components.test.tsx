@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { renderToString } from "react-dom/server";
@@ -19,6 +19,7 @@ import { Spinner } from "../src/components/spinner.js";
 import { StatStrip, StatStripItem } from "../src/components/stat-strip.js";
 import { Switch } from "../src/components/switch.js";
 import { SidebarMenuSkeleton } from "../src/components/sidebar.js";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow, TableSortButton, TableState } from "../src/components/table.js";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../src/components/tabs.js";
 import { TickRing } from "../src/components/tick-ring.js";
 import { PulseMark } from "../src/components/pulse-mark.js";
@@ -212,5 +213,99 @@ describe("ALLFIT ONE React components", () => {
     expect(firstRender.match(/--skeleton-width:/g)).toHaveLength(2);
     expect(random).not.toHaveBeenCalled();
     random.mockRestore();
+  });
+
+  it("keeps dense operational tables semantic, selected and horizontally reachable", async () => {
+    const { container } = render(
+      <Table
+        density="compact"
+        scrollAreaLabel="Member directory"
+        aria-label="Members"
+      >
+        <TableCaption>Current members and weekly adherence.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>
+              <Checkbox aria-label="Select all members" />
+            </TableHead>
+            <TableHead aria-sort="ascending">
+              <TableSortButton
+                direction="ascending"
+                aria-label="Sort members descending"
+              >
+                Member
+              </TableSortButton>
+            </TableHead>
+            <TableHead align="end">Adherence</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow selected>
+            <TableCell>
+              <Checkbox aria-label="Select Camila Torres" defaultChecked />
+            </TableCell>
+            <TableCell>Camila Torres</TableCell>
+            <TableCell align="end" numeric>92%</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>,
+    );
+
+    expect(screen.getByRole("region", { name: "Member directory" })).toHaveAttribute("tabindex", "0");
+    expect(screen.getByRole("table", { name: "Members" })).toHaveAttribute("data-density", "compact");
+    expect(screen.getByRole("columnheader", { name: "Member" })).toHaveAttribute("aria-sort", "ascending");
+    expect(screen.getByRole("button", { name: "Sort members descending" })).toHaveAttribute("data-direction", "ascending");
+    expect(screen.getByRole("button", { name: "Sort members descending" })).not.toHaveAttribute("data-variant");
+    expect(screen.getByRole("row", { name: /Camila Torres/ })).toHaveAttribute("data-state", "selected");
+    expect(screen.getByRole("cell", { name: "92%" })).toHaveAttribute("data-numeric", "true");
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("announces loading, empty and error table states", async () => {
+    const { container, rerender } = render(
+      <Table aria-label="Members">
+        <TableBody>
+          <TableState
+            colSpan={4}
+            state="loading"
+            title="Loading members"
+            description="Updating the current organization."
+          />
+        </TableBody>
+      </Table>,
+    );
+
+    expect(within(container).getByRole("status", { name: "Loading members" })).toBeInTheDocument();
+
+    rerender(
+      <Table aria-label="Members">
+        <TableBody>
+          <TableState
+            colSpan={4}
+            state="empty"
+            title="No members found"
+            description="Clear the active filters to see everyone."
+          />
+        </TableBody>
+      </Table>,
+    );
+
+    expect(within(container).getByRole("status")).toHaveTextContent("No members found");
+
+    rerender(
+      <Table aria-label="Members">
+        <TableBody>
+          <TableState
+            colSpan={4}
+            state="error"
+            title="Members could not be loaded"
+            description="Check the connection and try again."
+          />
+        </TableBody>
+      </Table>,
+    );
+
+    expect(within(container).getByRole("alert")).toHaveTextContent("Members could not be loaded");
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

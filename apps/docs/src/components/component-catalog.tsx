@@ -28,6 +28,7 @@ import { toast } from "@allfitone/react/components/sonner";
 import { Spinner } from "@allfitone/react/components/spinner";
 import { StatStrip, StatStripItem } from "@allfitone/react/components/stat-strip";
 import { Switch } from "@allfitone/react/components/switch";
+import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow, TableSortButton, TableState } from "@allfitone/react/components/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@allfitone/react/components/tabs";
 import { Textarea } from "@allfitone/react/components/textarea";
 import { TickRing } from "@allfitone/react/components/tick-ring";
@@ -96,6 +97,170 @@ function CategoryHeader({
 }
 
 const programs = ["Strength", "Conditioning", "Mobility"];
+
+type MemberTableState = "ready" | "loading" | "empty" | "error";
+
+const memberRows = [
+  { id: "AF-1042", name: "Camila Torres", plan: "Strength", status: "Active", adherence: 92, lastSession: "Today, 06:30" },
+  { id: "AF-1187", name: "Mateo Ruiz", plan: "Mobility", status: "Review needed", adherence: 76, lastSession: "Yesterday, 18:10" },
+  { id: "AF-1294", name: "Valentina Gómez de la Torre", plan: "Conditioning", status: "Active", adherence: 88, lastSession: "Jul 23, 07:05" },
+];
+
+function TableSpecimen() {
+  const [previewState, setPreviewState] = useState<MemberTableState>("ready");
+  const [sortDirection, setSortDirection] = useState<"ascending" | "descending">("ascending");
+  const [selectedIds, setSelectedIds] = useState<string[]>(["AF-1042"]);
+  const sortedRows = [...memberRows].sort((left, right) => {
+    const result = left.name.localeCompare(right.name);
+    return sortDirection === "ascending" ? result : -result;
+  });
+  const allSelected = selectedIds.length === memberRows.length;
+  const partiallySelected = selectedIds.length > 0 && !allSelected;
+
+  const toggleAll = (checked: boolean) => {
+    setSelectedIds(checked ? memberRows.map(({ id }) => id) : []);
+  };
+
+  const toggleMember = (id: string, checked: boolean) => {
+    setSelectedIds((current) =>
+      checked ? [...new Set([...current, id])] : current.filter((item) => item !== id)
+    );
+  };
+
+  return (
+    <div className="table-specimen">
+      <div className="table-specimen__toolbar">
+        <div className="table-specimen__context">
+          <strong>Member directory</strong>
+          <span aria-live="polite">{selectedIds.length} selected</span>
+        </div>
+        <Field orientation="horizontal" className="table-specimen__state">
+          <FieldLabel htmlFor="table-preview-state">Preview state</FieldLabel>
+          <Select
+            value={previewState}
+            onValueChange={(value) => setPreviewState(value as MemberTableState)}
+          >
+            <SelectTrigger id="table-preview-state" aria-label="Preview table state">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Table state</SelectLabel>
+                <SelectItem value="ready">Ready</SelectItem>
+                <SelectItem value="loading">Loading</SelectItem>
+                <SelectItem value="empty">Empty</SelectItem>
+                <SelectItem value="error">Error</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </Field>
+      </div>
+
+      <Table
+        density="compact"
+        scrollAreaLabel="Scrollable member directory"
+        aria-label="Members"
+        aria-busy={previewState === "loading"}
+      >
+        <TableCaption>
+          Active members in the current organization. Scroll horizontally on narrow screens.
+        </TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>
+              <Checkbox
+                aria-label="Select all members"
+                checked={allSelected}
+                indeterminate={partiallySelected}
+                onCheckedChange={toggleAll}
+              />
+            </TableHead>
+            <TableHead aria-sort={sortDirection}>
+              <TableSortButton
+                direction={sortDirection}
+                aria-label={`Sort members ${sortDirection === "ascending" ? "descending" : "ascending"}`}
+                onClick={() =>
+                  setSortDirection((current) =>
+                    current === "ascending" ? "descending" : "ascending"
+                  )
+                }
+              >
+                Member
+              </TableSortButton>
+            </TableHead>
+            <TableHead>Plan</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead align="end">Adherence</TableHead>
+            <TableHead align="end">Last session</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {previewState === "ready" ? (
+            sortedRows.map((member) => {
+              const selected = selectedIds.includes(member.id);
+              return (
+                <TableRow key={member.id} selected={selected}>
+                  <TableCell>
+                    <Checkbox
+                      aria-label={`Select ${member.name}`}
+                      checked={selected}
+                      onCheckedChange={(checked) => toggleMember(member.id, checked)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <span className="table-specimen__member">
+                      <strong>{member.name}</strong>
+                      <small>{member.id}</small>
+                    </span>
+                  </TableCell>
+                  <TableCell>{member.plan}</TableCell>
+                  <TableCell>
+                    <Badge variant={member.status === "Active" ? "success" : "warning"}>
+                      {member.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell align="end" numeric>{member.adherence}%</TableCell>
+                  <TableCell align="end">{member.lastSession}</TableCell>
+                </TableRow>
+              );
+            })
+          ) : previewState === "loading" ? (
+            <TableState
+              colSpan={6}
+              state="loading"
+              title="Loading members"
+              description="Updating the directory for this organization."
+            />
+          ) : previewState === "empty" ? (
+            <TableState
+              colSpan={6}
+              state="empty"
+              title="No members found"
+              description="Clear the active filters or add the first member."
+              action={<Button size="sm">Add member</Button>}
+            />
+          ) : (
+            <TableState
+              colSpan={6}
+              state="error"
+              title="Members could not be loaded"
+              description="Check the connection and try again."
+              action={<Button size="sm" variant="outline" onClick={() => setPreviewState("ready")}>Try again</Button>}
+            />
+          )}
+        </TableBody>
+        {previewState === "ready" ? (
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={4}>Current organization</TableCell>
+              <TableCell colSpan={2} align="end" numeric>{memberRows.length} members</TableCell>
+            </TableRow>
+          </TableFooter>
+        ) : null}
+      </Table>
+    </div>
+  );
+}
 
 export function ComponentCatalog() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -292,8 +457,9 @@ export function ComponentCatalog() {
       </section>
 
       <section className="catalog-category" aria-labelledby="data-heading">
-        <CategoryHeader id="data-display" code="DAT" title="Data display" description="Compact information that stays readable under pressure." count={4} />
+        <CategoryHeader id="data-display" code="DAT" title="Data display" description="Compact information that stays readable under pressure." count={5} />
         <div className="component-grid">
+          <ComponentSection id="table" title="Table" description="Operational records keep native table relationships, explicit selection and a focusable overflow region." importPath="@allfitone/react/components/table" contract={["Comfortable / compact", "Selection and sorting", "Loading / empty / error", "320 px overflow"]}><TableSpecimen /></ComponentSection>
           <ComponentSection id="badge" title="Badge" description="Short status labels always state their meaning in words." importPath="@allfitone/react/components/badge" contract={["Text plus color", "Long status", "Interactive target"]}><div className="demo-row"><Badge>Active</Badge><Badge variant="code">ACT</Badge><Badge variant="success">Synced</Badge><Badge variant="warning">Review needed</Badge><Badge variant="info">New activity</Badge><Badge variant="destructive">Access blocked</Badge></div></ComponentSection>
           <ComponentSection id="card" title="Card" description="Structured composition keeps title, action, content and footer predictable." importPath="@allfitone/react/components/card" contract={["Default / active", "Action slot", "Long content", "Responsive"]}><Card data-state="active"><CardHeader><CardTitle>Strength cycle</CardTitle><CardDescription>4-week program · week 2</CardDescription><CardAction><Badge>Active</Badge></CardAction></CardHeader><CardContent><strong className="metric-value">18,420 kg</strong><p className="metric-caption">Volume completed this week</p></CardContent><CardFooter><Button size="sm" variant="ghost">Open program</Button></CardFooter></Card></ComponentSection>
           <ComponentSection id="skeleton" title="Skeleton" description="Decorative loading placeholders respect reduced motion." importPath="@allfitone/react/components/skeleton" contract={["Decorative only", "Reduced motion", "Content-shaped"]}><div className="skeleton-stack"><Skeleton className="skeleton-avatar" /><div><Skeleton className="skeleton-line skeleton-line--strong" /><Skeleton className="skeleton-line" /></div></div></ComponentSection>

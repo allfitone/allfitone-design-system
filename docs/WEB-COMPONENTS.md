@@ -61,7 +61,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | Navigation | Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell |
 | Forms | Field, Label, Input, Textarea |
 | Selection | Checkbox, RadioGroup, Switch, Select, Tabs |
-| Data display | Badge, Card, Skeleton, Empty |
+| Data display | Table, Badge, Card, Skeleton, Empty |
 | Signature | AccentBlock, StatStrip, TickRing, PulseMark, AnimatedBrandLockup |
 | Overlays | Dialog, AlertDialog, Sheet, Tooltip |
 | Feedback | Sonner/Toast, Spinner |
@@ -76,6 +76,13 @@ The package root remains metadata-only. There is no component barrel because exp
 - Breadcrumb and Pagination use real anchors or framework links. The current resource or page is always exposed semantically and never indicated by color alone.
 - Drawer requires a visible or screen-reader title and serves mobile navigation or bounded secondary tasks; it does not replace Dialog for focused confirmations.
 - Loading actions compose `Spinner` and `disabled`; no component adds an `isLoading` prop.
+- Table preserves native caption, header, row, and cell relationships. Use
+  `scrollAreaLabel` for a keyboard-focusable overflow region, `aria-sort` on
+  sortable `TableHead` elements, `TableSortButton` for the column-label action,
+  and a named Checkbox for every selectable row.
+- Table density is `comfortable` or `compact`; compact density never reduces an
+  interactive control below the 44 px target. `TableState` provides named
+  loading, empty, and error rows without replacing the table structure.
 - `IconButton` requires `aria-label` in TypeScript.
 - `TickRing` requires `aria-label` in TypeScript because its `meter` value must always have a name.
 - `AnimatedBrandLockup` stays on its explicit component subpath so the Motion runtime is loaded only by consumers that opt into brand animation. Change `replayKey` to replay it.
