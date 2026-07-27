@@ -58,13 +58,13 @@ The package root remains metadata-only. There is no component barrel because exp
 | Category | Components |
 | --- | --- |
 | Actions | Button, IconButton |
-| Navigation | Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell |
+| Navigation | Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell, Command |
 | Forms | Field, Label, Input, Textarea |
-| Selection | Checkbox, RadioGroup, Switch, Select, Tabs |
-| Data display | Badge, Card, Skeleton, Empty |
+| Selection | Checkbox, RadioGroup, Switch, Select, Combobox, DatePicker, Calendar, Tabs |
+| Data display | Table, DataTable, Avatar, Badge, Card, Skeleton, Empty |
 | Signature | AccentBlock, StatStrip, TickRing, PulseMark, AnimatedBrandLockup |
-| Overlays | Dialog, AlertDialog, Sheet, Tooltip |
-| Feedback | Sonner/Toast, Spinner |
+| Overlays | Dialog, AlertDialog, Sheet, Popover, Tooltip, CommandDialog |
+| Feedback | Progress, Alert, Sonner/Toast, Spinner |
 | Composition | Collapsible, Separator |
 
 `Collapsible` and `Separator` are public compositional dependencies used by navigation and forms.
@@ -73,14 +73,95 @@ The package root remains metadata-only. There is no component barrel because exp
 
 - Links that look like buttons apply `buttonVariants` to an anchor or framework `Link`. They do not render through Base UI Button.
 - Workspace navigation composes `Sidebar` and `WorkspaceShell`; product applications provide destinations and routing state rather than restyling the active signal treatment.
+- Command provides the shared keyboard-first model for workspace destinations
+  and actions. Give every root a descriptive `label`, every item a stable
+  `value`, and use keywords only as search aliases. Group headings, visible
+  shortcuts, disabled items, and plain-language empty results remain part of
+  the composition.
+- CommandDialog composes that same Command API inside Dialog. Products own the
+  global shortcut and command outcomes; the component owns modal focus,
+  Escape dismissal, background inertness, and focus return. A controlled
+  global shortcut without `DialogTrigger` stores its invoking element and
+  passes that ref to `finalFocus`.
 - Breadcrumb and Pagination use real anchors or framework links. The current resource or page is always exposed semantically and never indicated by color alone.
 - Drawer requires a visible or screen-reader title and serves mobile navigation or bounded secondary tasks; it does not replace Dialog for focused confirmations.
 - Loading actions compose `Spinner` and `disabled`; no component adds an `isLoading` prop.
+- Table preserves native caption, header, row, and cell relationships. Use
+  `scrollAreaLabel` for a keyboard-focusable overflow region, `aria-sort` on
+  sortable `TableHead` elements, `TableSortButton` for the column-label action,
+  and a named Checkbox for every selectable row.
+- Table density is `comfortable` or `compact`; compact density never reduces an
+  interactive control below the 44 px target. `TableState` provides named
+  loading, empty, and error rows without replacing the table structure.
+- DataTable is a headless composition over Table. `useDataTable` supplies
+  client-side row models by default and preserves TanStack controlled-state and
+  manual server-mode options. Toolbar, filter, visibility, selection, and
+  pagination controls remain independently composable.
+- Avatar requires an explicit accessible intent. Give standalone identity an
+  `aria-label` or `aria-labelledby`; use `decorative` only when adjacent text
+  already names the same person. `AvatarImage` is silent because the root owns
+  the name, and every composition includes `AvatarFallback`.
+- `AvatarPresence` pairs each status color with a distinct icon and requires a
+  full text label. Use `AvatarGroup` for assigned teams and name both the group
+  and any `AvatarGroupCount` so hidden members remain understandable.
+- Combobox filters a known collection; it does not accept arbitrary free-form
+  values. Compose `ComboboxInputGroup`, `ComboboxInput`, actions, content,
+  list, and items for a single value. Add `ComboboxChips`, `ComboboxValue`,
+  `ComboboxChip`, and a named `ComboboxChipRemove` for multiple selection.
+- Keep `ComboboxStatus` mounted and change only its children across remote
+  loading and error states so assistive technology receives consistent live
+  region updates. Async collections retain selected items in `items`, even
+  when those items are outside the latest result page.
+- DatePicker composes a text field, Popover, and Calendar around one
+  `Date | undefined` value. It supports controlled and uncontrolled use,
+  commits typed input on Enter or blur, and opens from the trailing 44 px
+  calendar action or `Alt+ArrowDown`.
+- Keep `formatPattern` and the visible `formatHint` aligned. DatePicker rejects
+  input that does not match that pattern and rejects dates matched by
+  `calendarProps.disabled`; both failures remain explicit in text and through
+  `aria-invalid`.
+- Calendar supports controlled single-date and range selection through
+  React DayPicker. Use `disabled` matchers for unavailable dates and
+  `excludeDisabled` when a range must reset instead of crossing one.
+- Pass `locale`, `lang`, `weekStartsOn`, and `timeZone` from the product
+  context instead of deriving timezone during server rendering. Calendar
+  re-exports `DateRange` and `Matcher` from its public subpath.
+- Every date and month-navigation action retains the 44 px target. Multiple
+  months move from a horizontal sequence to a vertical sequence on narrow
+  screens, while a single month keeps horizontal overflow contained inside
+  the named calendar root.
+- Popover provides non-modal, anchored context for quick inspection and
+  bounded edits such as reviewing a member snapshot or adjusting a session
+  value. It is not a substitute for Dialog when the task must make the
+  background inert or contain focus.
+- Compose `PopoverHeader`, `PopoverTitle`, and `PopoverDescription` for rich
+  content. Use `side`, `align`, and their offsets on `PopoverContent` for
+  placement; Base UI handles collision avoidance, Escape and outside-press
+  dismissal, and focus restoration.
+- Popover uses a solid raised surface from the first animation frame. It must
+  not inherit translucent glass or opacity transitions that allow underlying
+  tables, tabs, or text to blend through the content.
+- Alert uses a distinct status icon, title, and plain-language description so
+  meaning never depends on its semantic rail color. Its variants are `info`,
+  `success`, `warning`, and `danger`; actions compose through `AlertAction`.
+- Progress composes a visible `ProgressLabel` and `ProgressValue` with
+  `ProgressTrack` and `ProgressIndicator`. Use the full variant for a task with
+  supporting context and the compact variant inside dense cards or rows.
+- Pass `value={null}` for indeterminate work and keep the default “In progress”
+  text or provide an equally explicit value renderer. Domain values such as
+  sessions published should pair a custom visible value with
+  `getAriaValueText`; reduced motion leaves a static signal in the track.
+- Static Alert callouts do not create a live region. Use `live="polite"` for
+  non-urgent updates and `live="assertive"` only for urgent failures that
+  appear dynamically. Neither priority moves focus.
 - `IconButton` requires `aria-label` in TypeScript.
 - `TickRing` requires `aria-label` in TypeScript because its `meter` value must always have a name.
 - `AnimatedBrandLockup` stays on its explicit component subpath so the Motion runtime is loaded only by consumers that opt into brand animation. Change `replayKey` to replay it.
 - Controlled components support `value`, `defaultValue`, and `onValueChange` through their Base UI root API.
-- Overlays support `open`, `defaultOpen`, and `onOpenChange`, require a title, contain modal focus, support Escape, make the background inert, and return focus to the trigger.
+- Dialog, AlertDialog, and Sheet support controlled state, require a title,
+  contain modal focus, make the background inert, support Escape, and return
+  focus to the trigger. Popover remains non-modal and returns focus after
+  dismissal without disabling the surrounding workspace.
 - Field errors use text, `data-invalid`, `aria-invalid`, and an explicit description/error relationship.
 - Tooltips supplement a control and never carry essential instructions alone.
 - Toasts use live regions and textual status without moving focus.

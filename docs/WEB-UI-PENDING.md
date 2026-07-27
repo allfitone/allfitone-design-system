@@ -9,34 +9,16 @@ Components enter the Design System when they are expected to be reused by Allfit
 The following areas already have a canonical implementation:
 
 - actions: Button and IconButton;
-- navigation: Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, and WorkspaceShell;
+- navigation: Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell, and Command;
 - forms: Field, Label, Input, and Textarea;
-- selection: Checkbox, RadioGroup, Switch, Select, and Tabs;
-- data display: Badge, Card, Skeleton, and Empty;
+- selection: Checkbox, RadioGroup, Switch, Select, Combobox, DatePicker, Calendar, and Tabs;
+- data display: Table, DataTable, Avatar, Badge, Card, Skeleton, and Empty;
 - signature: AccentBlock, StatStrip, TickRing, and PulseMark;
-- overlays: Dialog, AlertDialog, Sheet, and Tooltip;
-- feedback: Sonner/Toast and Spinner.
+- overlays: Dialog, AlertDialog, Sheet, Popover, Tooltip, and CommandDialog;
+- feedback: Progress, Alert, Sonner/Toast, and Spinner.
 - composition: Collapsible and Separator.
 
 Navigation is ready as a reusable foundation. Product repositories still need to supply their routes, permissions, labels, active state, and responsive information architecture.
-
-## Priority 0 — unblock Allfit OS
-
-These components cover the most likely operational and administrative workflows and should be implemented next.
-
-| Component | Required scope |
-| --- | --- |
-| Table | Semantic table primitives, density variants, responsive overflow, row selection, sorting state, loading, empty, and error states. |
-| DataTable | Headless composition for column visibility, filters, sorting, bulk actions, pagination, and server-controlled state. It must build on Table rather than replace it. |
-| Combobox | Searchable single and multiple selection, async/loading state, empty results, grouped options, keyboard traversal, and long labels. |
-| Popover | Non-modal anchored content with placement, collision handling, Escape dismissal, and focus restoration. |
-| Calendar | Single date, range, disabled dates, locale-ready labels, keyboard grid navigation, and responsive months. |
-| DatePicker | Field, Calendar, and Popover composition with parsing, visible format guidance, invalid state, and controlled values. |
-| Alert | Informational, success, warning, and danger variants with icon, title, description, and optional action. Meaning must not depend on color. |
-| Progress | Determinate and indeterminate progress with an accessible name, textual value, reduced motion, and compact/full variants. |
-| Avatar | Image, initials fallback, loading failure, accessible name guidance, group composition, and presence expressed beyond color. |
-| Command | Searchable keyboard-first command list with groups, shortcuts, empty results, and disabled items. |
-| CommandDialog | Command composed with Dialog for global navigation and actions without creating a second command API. |
 
 ## Priority 1 — complete common product workflows
 
@@ -107,12 +89,5 @@ A component is not complete until all of the following are true:
 
 Before starting a backlog item, document the product use cases that need it. Prefer one flexible primitive plus documented compositions over several components differentiated only by product wording or visual styling.
 
-The recommended implementation order is:
-
-1. Table and DataTable;
-2. Combobox;
-3. Popover, Calendar, and DatePicker;
-4. Alert and Progress;
-5. Avatar;
-6. Command and CommandDialog;
-7. Priority 1 components as required by actual OS screens.
+The recommended implementation order now follows Priority 1 components as
+required by actual OS screens.

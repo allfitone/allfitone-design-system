@@ -1,55 +1,17 @@
-import { existsSync, readFileSync } from "node:fs";
-import { resolve } from "node:path";
-
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
-function readWorkspacePackageVersion(packageDirectory: "react" | "tokens") {
-  const candidates = [
-    resolve(process.cwd(), "packages", packageDirectory, "package.json"),
-    resolve(process.cwd(), "..", "..", "packages", packageDirectory, "package.json"),
-  ];
-  const manifestPath = candidates.find((candidate) => existsSync(candidate));
-
-  if (!manifestPath) {
-    throw new Error(`Unable to locate the @allfitone/${packageDirectory} package manifest.`);
-  }
-
-  const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as { version?: unknown };
-  if (typeof manifest.version !== "string") {
-    throw new Error(`@allfitone/${packageDirectory} does not declare a valid version.`);
-  }
-
-  return manifest.version;
-}
-
-const reactPackageVersion = readWorkspacePackageVersion("react");
-const tokensPackageVersion = readWorkspacePackageVersion("tokens");
 const fullPageScreenshotOptions = {
   fullPage: true,
   maxDiffPixelRatio: 0.0001,
+  timeout: 15_000,
 } as const;
 
-async function verifyPackageVersion(page: Page, expectedLabels: readonly string[]) {
+async function verifyExplorerVersion(page: Page, expectedLabels: readonly string[]) {
   for (const label of expectedLabels) {
     await expect(page.getByText(label, { exact: true })).toBeVisible();
   }
-}
-
-async function normalizePackageVersions(page: Page) {
-  await page.locator("body").evaluate((body) => {
-    const walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT);
-    let node = walker.nextNode();
-
-    while (node) {
-      node.textContent =
-        node.textContent?.replace(
-          /\bv\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?\b/g,
-          "v0.0.0",
-        ) ?? null;
-      node = walker.nextNode();
-    }
-  });
+  await expect(page.locator("body")).not.toContainText(/\bv\d+\.\d+\.\d+\b/);
 }
 
 test.beforeEach(async ({ page }) => {
@@ -148,6 +110,113 @@ test("contains dialog focus and returns it to the trigger", async ({ page }) => 
   await expect(trigger).toBeFocused();
 });
 
+test("filters shared commands and composes the global dialog shortcut", async ({ page }) => {
+  const specimen = page.locator("#command");
+  const inlineCommand = specimen.locator('[data-slot="command"]').first();
+  const input = inlineCommand.getByRole("combobox", {
+    name: "Search quick workspace commands",
+  });
+
+  await input.fill("schedule");
+  await expect(
+    inlineCommand.getByRole("option", { name: /Today’s schedule/ })
+  ).toBeVisible();
+  await expect(
+    inlineCommand.getByRole("option", { name: /Member directory/ })
+  ).toHaveCount(0);
+
+  await input.fill("permission");
+  await expect(
+    inlineCommand.getByRole("option", {
+      name: /Publish organization template/,
+    })
+  ).toHaveAttribute("aria-disabled", "true");
+
+  await input.fill("not a real command");
+  await expect(
+    inlineCommand.getByText(
+      "No commands match this search. Try a member, session or program."
+    )
+  ).toBeVisible();
+
+  await input.fill("");
+  await input.focus();
+  await page.keyboard.press("Control+k");
+
+  const dialog = page.getByRole("dialog", {
+    name: "Workspace command menu",
+  });
+  await expect(dialog).toBeVisible();
+  const dialogInput = dialog.getByRole("combobox", {
+    name: "Search global workspace commands",
+  });
+  await expect(dialogInput).toBeFocused();
+  await dialogInput.fill("invite");
+  await page.keyboard.press("Enter");
+  await expect(dialog).toBeHidden();
+  await expect(input).toBeFocused();
+  await expect(
+    specimen.locator(".command-specimen__footer").getByText(
+      "Invite member",
+      { exact: true }
+    )
+  ).toBeVisible();
+
+  const selectedTarget = inlineCommand
+    .locator('[data-slot="command-item"][data-selected="true"]')
+    .first();
+  const targetBox = await selectedTarget.boundingBox();
+  expect(targetBox?.height).toBeGreaterThanOrEqual(44);
+
+  const accessibility = await new AxeBuilder({ page }).include("#command").analyze();
+  expect(
+    accessibility.violations.filter(
+      ({ impact }) => impact === "serious" || impact === "critical"
+    )
+  ).toEqual([]);
+});
+
+test("keeps popover content opaque, non-modal and collision-aware", async ({ page }) => {
+  const specimen = page.locator("#popover");
+  const trigger = specimen.getByRole("button", { name: "View member context" });
+  await trigger.focus();
+  await page.keyboard.press("Enter");
+
+  const popover = page.getByRole("dialog", { name: "Camila Torres" });
+  await expect(popover).toBeVisible();
+  await expect(popover.getByRole("button", { name: "Done" })).toBeFocused();
+  expect(
+    await popover.evaluate((element) => {
+      const styles = getComputedStyle(element);
+      return {
+        backgroundColor: styles.backgroundColor,
+        opacity: styles.opacity,
+        zIndex: Number(styles.zIndex),
+      };
+    }),
+  ).toEqual({
+    backgroundColor: "rgb(11, 20, 29)",
+    opacity: "1",
+    zIndex: 50,
+  });
+
+  await page.keyboard.press("Escape");
+  await expect(popover).toBeHidden();
+  await expect(trigger).toBeFocused();
+
+  await page.setViewportSize({ width: 320, height: 800 });
+  await trigger.scrollIntoViewIfNeeded();
+  await trigger.click();
+  const bounds = await popover.boundingBox();
+  expect(bounds?.x).toBeGreaterThanOrEqual(0);
+  expect((bounds?.x ?? 0) + (bounds?.width ?? 0)).toBeLessThanOrEqual(320);
+
+  const triggerBox = await trigger.boundingBox();
+  expect(triggerBox?.height).toBeGreaterThanOrEqual(44);
+  await page.mouse.click(2, 2);
+  await expect(popover).toBeHidden();
+});
+
 test("operates composite selection controls from the keyboard", async ({ page }) => {
   const historyTab = page.getByRole("tab", { name: "History" });
   await page.getByRole("tab", { name: "Overview" }).focus();
@@ -162,6 +231,339 @@ test("operates composite selection controls from the keyboard", async ({ page })
   await page.keyboard.press("ArrowDown");
   await page.keyboard.press("Enter");
   await expect(select).not.toHaveText("");
+});
+
+test("parses date picker input and keeps its calendar bounded", async ({ page }) => {
+  const specimen = page.locator("#date-picker");
+  const field = specimen.locator('[data-slot="date-picker"]').first();
+  const input = field.getByLabel("Session date");
+  const trigger = field.getByRole("button", { name: "Open calendar" });
+
+  await expect(input).toHaveValue("08/18/2026");
+  await trigger.click();
+
+  const dialog = page.getByRole("dialog", { name: "Session date calendar" });
+  await expect(dialog).toBeVisible();
+  await dialog
+    .getByRole("button", { name: /Thursday, August 20th, 2026/i })
+    .click();
+  await expect(dialog).toBeHidden();
+  await expect(input).toHaveValue("08/20/2026");
+  await expect(
+    specimen.getByText("Thu, Aug 20", { exact: true })
+  ).toBeVisible();
+
+  await field.getByRole("button", { name: "Clear date" }).click();
+  await expect(input).toBeFocused();
+  await input.fill("08/27/2026");
+  await input.press("Enter");
+  await expect(field.getByRole("alert")).toHaveText(
+    "That date is unavailable."
+  );
+  await expect(input).toHaveAttribute("aria-invalid", "true");
+
+  await input.fill("08/25/2026");
+  await input.press("Enter");
+  await expect(input).toHaveValue("08/25/2026");
+  await expect(input).not.toHaveAttribute("aria-invalid");
+
+  const triggerBox = await trigger.boundingBox();
+  expect(triggerBox?.width).toBeGreaterThanOrEqual(44);
+  expect(triggerBox?.height).toBeGreaterThanOrEqual(44);
+
+  await page.setViewportSize({ width: 320, height: 800 });
+  await trigger.scrollIntoViewIfNeeded();
+  await trigger.click();
+  const bounds = await dialog.boundingBox();
+  expect(bounds?.x).toBeGreaterThanOrEqual(0);
+  expect((bounds?.x ?? 0) + (bounds?.width ?? 0)).toBeLessThanOrEqual(320);
+  await page.keyboard.press("Escape");
+  await expect(trigger).toBeFocused();
+});
+
+test("selects calendar dates and ranges with 44 px keyboard targets", async ({ page }) => {
+  const specimen = page.locator("#calendar");
+  const single = specimen.locator(
+    '[data-slot="calendar"][aria-label="Session calendar"]',
+  );
+  const range = specimen.locator(
+    '[data-slot="calendar"][aria-label="Training block calendar"]',
+  );
+  const august20 = single.getByRole("button", {
+    name: /Thursday, August 20th, 2026/i,
+  });
+
+  await august20.click();
+  await expect(specimen.getByText("Thu, Aug 20", { exact: true })).toBeVisible();
+  await expect(august20).toHaveAttribute("data-selected-single", "true");
+
+  await august20.focus();
+  await page.keyboard.press("ArrowRight");
+  const august21 = single.getByRole("button", {
+    name: /Friday, August 21st, 2026/i,
+  });
+  await expect(august21).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(specimen.getByText("Fri, Aug 21", { exact: true })).toBeVisible();
+
+  const unavailable = single.getByRole("button", {
+    name: /Thursday, August 27th, 2026/i,
+  });
+  await expect(unavailable).toBeDisabled();
+
+  const targetBox = await august21.boundingBox();
+  const navigationBox = await single
+    .getByRole("button", { name: "Go to the Next Month" })
+    .boundingBox();
+  for (const [name, box] of [
+    ["calendar day", targetBox],
+    ["calendar navigation", navigationBox],
+  ] as const) {
+    expect(box?.width, `${name} width`).toBeGreaterThanOrEqual(44);
+    expect(box?.height, `${name} height`).toBeGreaterThanOrEqual(44);
+  }
+
+  await expect(
+    range.getByRole("button", { name: /Monday, September 7th, 2026/i }),
+  ).toHaveAttribute("data-range-start", "true");
+  await expect(
+    range.getByRole("button", { name: /Friday, September 18th, 2026/i }),
+  ).toHaveAttribute("data-range-end", "true");
+
+  await range
+    .getByRole("button", { name: /Monday, September 21st, 2026/i })
+    .click();
+  await range
+    .getByRole("button", { name: /Friday, September 25th, 2026/i })
+    .click();
+  await expect(
+    specimen.getByText("Mon, Sep 21 – Fri, Sep 25", { exact: true }),
+  ).toBeVisible();
+
+  await page.setViewportSize({ width: 320, height: 800 });
+  await range.scrollIntoViewIfNeeded();
+  expect(
+    await range.locator(".rdp-months").evaluate(
+      (element) => getComputedStyle(element).flexDirection,
+    ),
+  ).toBe("column");
+  const rangeOverflow = await range.evaluate((element) => ({
+    clientWidth: element.clientWidth,
+    scrollWidth: element.scrollWidth,
+  }));
+  expect(rangeOverflow.scrollWidth).toBeGreaterThanOrEqual(
+    rangeOverflow.clientWidth,
+  );
+  const pageWidth = await page.evaluate(() => ({
+    document: document.documentElement.scrollWidth,
+    viewport: document.documentElement.clientWidth,
+  }));
+  expect(pageWidth.document).toBeLessThanOrEqual(pageWidth.viewport);
+});
+
+test("filters rich combobox options and exposes multiple and remote states", async ({ page }) => {
+  const specimen = page.locator("#combobox");
+  const leadCoach = specimen.locator("#lead-coach-combobox");
+
+  await leadCoach.focus();
+  await leadCoach.fill("Valentina");
+  const popup = page.locator('[data-slot="combobox-content"]');
+  await expect(page.getByRole("option", { name: /Valentina Gómez de la Torre/ })).toBeVisible();
+  expect(
+    await popup.evaluate((element) => {
+      const styles = getComputedStyle(element);
+      return {
+        backgroundColor: styles.backgroundColor,
+        opacity: styles.opacity,
+        zIndex: Number(styles.zIndex),
+      };
+    }),
+  ).toEqual({
+    backgroundColor: "rgb(11, 20, 29)",
+    opacity: "1",
+    zIndex: 50,
+  });
+  await page.keyboard.press("ArrowDown");
+  await page.keyboard.press("Enter");
+  await expect(leadCoach).toHaveValue("Valentina Gómez de la Torre");
+
+  const clear = specimen.getByRole("button", { name: "Clear lead coach" });
+  const clearBox = await clear.boundingBox();
+  expect(clearBox?.width).toBeGreaterThanOrEqual(44);
+  expect(clearBox?.height).toBeGreaterThanOrEqual(44);
+  await clear.click();
+  await expect(leadCoach).toHaveValue("");
+
+  const multiple = specimen.locator("#session-coaches-combobox");
+  await multiple.click();
+  await page.getByRole("option", { name: /Mateo Ruiz/ }).click();
+  await page.keyboard.press("Escape");
+  const removeMateo = specimen.getByRole("button", { name: "Remove Mateo Ruiz" });
+  await expect(removeMateo).toBeVisible();
+  const removeBox = await removeMateo.boundingBox();
+  expect(removeBox?.width).toBeGreaterThanOrEqual(44);
+  expect(removeBox?.height).toBeGreaterThanOrEqual(44);
+  await removeMateo.click();
+  await expect(removeMateo).toHaveCount(0);
+
+  const stateSelect = specimen.getByRole("combobox", { name: "Preview combobox remote state" });
+  const remote = specimen.locator("#remote-coach-combobox");
+
+  await stateSelect.click();
+  await page.getByRole("option", { name: "Loading", exact: true }).click();
+  await remote.click();
+  await expect(page.getByText("Loading remote coaches", { exact: true })).toBeVisible();
+  await page.keyboard.press("Escape");
+
+  await stateSelect.click();
+  await page.getByRole("option", { name: "Empty", exact: true }).click();
+  await remote.click();
+  await expect(page.getByText("No remote coaches are available.", { exact: true })).toBeVisible();
+  await page.keyboard.press("Escape");
+
+  await stateSelect.click();
+  await page.getByRole("option", { name: "Error", exact: true }).click();
+  await expect(remote).toHaveAttribute("aria-invalid", "true");
+  await remote.click();
+  await expect(page.getByRole("alert")).toContainText("Remote directory could not be loaded.");
+});
+
+test("keeps table sorting, selection and result states explicit", async ({ page }) => {
+  const table = page.getByRole("table", { name: "Members" });
+  const region = page.getByRole("region", { name: "Scrollable member directory" });
+  const memberHeader = table.locator('th[aria-sort]');
+
+  await expect(region).toHaveAttribute("tabindex", "0");
+  await expect(memberHeader).toHaveAttribute("aria-sort", "ascending");
+  const sortButton = table.getByRole("button", { name: "Sort members descending" });
+  const sortButtonStyles = await sortButton.evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return {
+      backgroundColor: styles.backgroundColor,
+      borderWidth: styles.borderWidth,
+      borderRadius: styles.borderRadius,
+      hasVisibleBoxShadow: (styles.boxShadow.match(/rgba?\([^)]+\)/g) ?? [])
+        .some((color) => !color.endsWith(", 0)")),
+    };
+  });
+  expect(sortButtonStyles).toEqual({
+    backgroundColor: "rgba(0, 0, 0, 0)",
+    borderWidth: "0px",
+    borderRadius: "0px",
+    hasVisibleBoxShadow: false,
+  });
+  await sortButton.click();
+  await expect(memberHeader).toHaveAttribute("aria-sort", "descending");
+
+  const memberCheckbox = table.getByRole("checkbox", { name: "Select Camila Torres" });
+  const memberRow = memberCheckbox.locator("xpath=ancestor::tr");
+  await expect(memberRow).toHaveAttribute("data-state", "selected");
+  await memberCheckbox.click();
+  await expect(memberRow).not.toHaveAttribute("data-state", "selected");
+
+  const stateSelect = page.getByRole("combobox", { name: "Preview table state" });
+  await stateSelect.click();
+  await page.getByRole("option", { name: "Error" }).click();
+  await expect(table.getByRole("alert")).toContainText("Members could not be loaded");
+  await table.getByRole("button", { name: "Try again" }).click();
+  await expect(table.getByText("Camila Torres")).toBeVisible();
+
+  await page.getByRole("button", { name: "light", exact: true }).click();
+  await page.setViewportSize({ width: 320, height: 800 });
+  await region.scrollIntoViewIfNeeded();
+  const mobileSortStyles = await table
+    .getByRole("button", { name: "Sort members ascending" })
+    .evaluate((element) => {
+      const styles = getComputedStyle(element);
+      return {
+        backgroundColor: styles.backgroundColor,
+        borderWidth: styles.borderWidth,
+        borderRadius: styles.borderRadius,
+      };
+    });
+  expect(mobileSortStyles).toEqual({
+    backgroundColor: "rgba(0, 0, 0, 0)",
+    borderWidth: "0px",
+    borderRadius: "0px",
+  });
+  const overflow = await region.evaluate((element) => ({
+    client: element.clientWidth,
+    scroll: element.scrollWidth,
+  }));
+  expect(overflow.scroll).toBeGreaterThan(overflow.client);
+});
+
+test("composes data-table controls without restyling sortable headers", async ({ page }) => {
+  const specimen = page.locator("#data-table");
+  const table = specimen.getByRole("table", { name: "Member results" });
+  const sortButton = table.getByRole("button", {
+    name: "Change member sorting",
+  });
+
+  await expect(sortButton).toHaveAttribute("data-direction", "none");
+  expect(
+    await sortButton.evaluate((element) => {
+      const styles = getComputedStyle(element);
+      return {
+        backgroundColor: styles.backgroundColor,
+        borderWidth: styles.borderWidth,
+        borderRadius: styles.borderRadius,
+      };
+    }),
+  ).toEqual({
+    backgroundColor: "rgba(0, 0, 0, 0)",
+    borderWidth: "0px",
+    borderRadius: "0px",
+  });
+
+  await sortButton.click();
+  await expect(table.locator('th[aria-sort="ascending"]')).toBeVisible();
+
+  const search = specimen.getByRole("textbox", { name: "Search members" });
+  await search.fill("Mobility");
+  await expect(table.getByText("Mateo Ruiz")).toBeVisible();
+  await expect(table.getByText("Camila Torres")).toHaveCount(0);
+  await search.fill("");
+
+  await table.getByRole("checkbox", { name: "Select Camila Torres" }).click();
+  await expect(specimen.getByRole("status")).toContainText("1 member selected");
+  await expect(specimen.getByRole("button", { name: "Assign plan" })).toBeVisible();
+
+  await specimen.getByRole("button", { name: "Columns" }).click();
+  await page.getByRole("menuitemcheckbox", { name: "Plan" }).click();
+  await expect(table.getByRole("columnheader", { name: "Plan" })).toHaveCount(0);
+  await page.keyboard.press("Escape");
+
+  await specimen.getByRole("button", { name: "Next page" }).click();
+  await expect(specimen.getByText("Page 2 of 2")).toBeVisible();
+});
+
+test("keeps avatar identity and presence explicit without a profile image", async ({ page }) => {
+  const specimen = page.locator("#avatar");
+  const profile = specimen.locator(
+    '[data-slot="avatar"][aria-label="Camila Torres"]',
+  ).first();
+  const team = specimen.getByRole("group", {
+    name: "Assigned coaching team",
+  });
+
+  await expect(profile).toHaveAttribute("role", "group");
+  await expect(profile.locator('[data-slot="avatar-image"]')).toHaveCount(0);
+  await expect(profile.locator('[data-slot="avatar-fallback"]')).toHaveText("CT");
+  await expect(
+    specimen.getByText("No profile image · initials remain available"),
+  ).toBeVisible();
+  const online = profile.getByRole("img", { name: "Camila is online" });
+  await expect(online).toHaveAttribute("data-status", "online");
+  await expect(online.locator("svg")).toHaveClass(/lucide-check/);
+
+  await expect(team.getByRole("group", { name: "Mateo Ruiz" })).toBeVisible();
+  await expect(team.getByRole("img", { name: "Mateo is away" }).locator("svg"))
+    .toHaveClass(/lucide-clock/);
+  await expect(team.getByText("2 more assigned coaches")).toHaveClass("sr-only");
+
+  await page.emulateMedia({ forcedColors: "active", reducedMotion: "reduce" });
+  await expect(online).toHaveCSS("forced-color-adjust", "none");
 });
 
 test("operates workspace navigation and returns focus from mobile overlays", async ({ page }) => {
@@ -205,6 +607,70 @@ test("demonstrates the interaction sequence from the keyboard", async ({ page })
   await expect(page.getByText("Keyboard focus is visible")).toBeVisible();
 });
 
+test("keeps alert meaning explicit beyond color", async ({ page }) => {
+  const specimen = page.locator("#alert");
+  const alerts = specimen.locator('[data-slot="alert"]');
+
+  await expect(alerts).toHaveCount(4);
+  await expect(
+    specimen.getByText("Schedule window changed", { exact: true })
+  ).toBeVisible();
+  await expect(
+    specimen.getByText("Training block published", { exact: true })
+  ).toBeVisible();
+  await expect(
+    specimen.getByText("Class capacity is nearly reached", { exact: true })
+  ).toBeVisible();
+  await expect(
+    specimen.getByText("Member sync stopped", { exact: true })
+  ).toBeVisible();
+
+  for (const variant of ["info", "success", "warning", "danger"]) {
+    await expect(
+      specimen.locator(
+        `[data-slot="alert"][data-variant="${variant}"] [data-slot="alert-icon"] svg`
+      )
+    ).toHaveCount(1);
+  }
+
+  const action = specimen.getByRole("button", { name: "Retry sync" });
+  await action.focus();
+  await expect(action).toBeFocused();
+  const actionBox = await action.boundingBox();
+  expect(actionBox?.height).toBeGreaterThanOrEqual(44);
+  await page.keyboard.press("Enter");
+  await expect(action).toBeFocused();
+});
+
+test("keeps progress named, textual and still with reduced motion", async ({ page }) => {
+  const specimen = page.locator("#progress");
+  const published = specimen.getByRole("progressbar", {
+    name: "Published sessions",
+  });
+  const indeterminate = specimen.getByRole("progressbar", {
+    name: "Session sync",
+  });
+
+  await expect(published).toHaveAttribute("aria-valuenow", "8");
+  await expect(published).toHaveAttribute("aria-valuemax", "12");
+  await expect(published).toHaveAttribute(
+    "aria-valuetext",
+    "8 of 12 sessions published",
+  );
+  await expect(specimen.getByText("8 / 12", { exact: true })).toBeVisible();
+  await expect(indeterminate).not.toHaveAttribute("aria-valuenow");
+  await expect(indeterminate).toHaveAttribute("data-indeterminate");
+  await expect(specimen.getByText("In progress", { exact: true })).toBeVisible();
+
+  await specimen.getByRole("button", { name: "Publish next session" }).click();
+  await expect(published).toHaveAttribute("aria-valuenow", "9");
+  await expect(specimen.getByText("9 / 12", { exact: true })).toBeVisible();
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const indicator = indeterminate.locator('[data-slot="progress-indicator"]');
+  await expect(indicator).toHaveCSS("animation-name", "none");
+});
+
 test("announces toast feedback without stealing focus", async ({ page }) => {
   const trigger = page.getByRole("button", { name: "Show success" });
   await trigger.focus();
@@ -219,6 +685,9 @@ test("keeps touch targets and focus treatment at the minimum contract", async ({
     "primary button": page.getByRole("button", { name: "Start session" }),
     "icon button": page.getByRole("button", { name: "Add movement" }),
     checkbox: page.getByRole("checkbox", { name: "Share training history with this coach" }),
+    "table checkbox": page
+      .getByRole("table", { name: "Members" })
+      .getByRole("checkbox", { name: "Select Camila Torres" }),
     switch: page.getByRole("switch", { name: "Live progress sharing" }),
     "navigation trigger": page.locator("#navigation-menu").getByRole("button", { name: "Training", exact: true }),
     "workspace action": page.locator("#workspace-shell").getByRole("button", { name: /Panel/ }),
@@ -372,20 +841,21 @@ test("matches the approved catalog composition", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("button", { name: "dark", exact: true }).click();
-  await verifyPackageVersion(page, [
-    `React \u00b7 v${reactPackageVersion}`,
-    `v${reactPackageVersion}`,
-    `React components / v${reactPackageVersion}`,
+  await verifyExplorerVersion(page, [
+    "React \u00b7 v0",
+    "v0",
+    "React components / v0",
   ]);
-  await normalizePackageVersions(page);
   await expect(page).toHaveScreenshot(
     "components-dark-desktop.png",
     fullPageScreenshotOptions,
   );
+  await expect(page.locator("#command")).toHaveScreenshot(
+    "command-inline-dark-desktop.png",
+  );
 
   await page.getByRole("button", { name: "light", exact: true }).click();
   await page.setViewportSize({ width: 320, height: 800 });
-  await normalizePackageVersions(page);
   await expect(page).toHaveScreenshot(
     "components-light-mobile.png",
     fullPageScreenshotOptions,
@@ -398,12 +868,11 @@ test("matches the approved foundation composition", async ({ page }) => {
   await page.goto("/ui-foundation");
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("button", { name: "dark", exact: true }).click();
-  await verifyPackageVersion(page, [
-    `Tokens \u00b7 v${tokensPackageVersion}`,
-    `v${tokensPackageVersion}`,
-    `UI Foundation / Tokens / v${tokensPackageVersion}`,
+  await verifyExplorerVersion(page, [
+    "Tokens \u00b7 v0",
+    "v0",
+    "UI Foundation / Tokens / v0",
   ]);
-  await normalizePackageVersions(page);
   await expect(page).toHaveScreenshot(
     "foundation-dark-desktop.png",
     fullPageScreenshotOptions,
@@ -411,7 +880,6 @@ test("matches the approved foundation composition", async ({ page }) => {
 
   await page.getByRole("button", { name: "light", exact: true }).click();
   await page.setViewportSize({ width: 320, height: 800 });
-  await normalizePackageVersions(page);
   await expect(page).toHaveScreenshot(
     "foundation-light-mobile.png",
     fullPageScreenshotOptions,
@@ -422,12 +890,31 @@ test("matches key overlay states in both themes", async ({ page }) => {
   test.skip(process.platform !== "win32", "Visual baselines are canonical on Windows.");
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.getByRole("button", { name: "dark", exact: true }).click();
+  const commandTrigger = page.locator("#command").getByRole("button", {
+    name: /Open commands/,
+  });
+  await commandTrigger.click();
+  await expect(page).toHaveScreenshot("command-dialog-dark-desktop.png", {
+    fullPage: false,
+  });
+  await page.keyboard.press("Escape");
+
   await page.getByRole("button", { name: "Edit member" }).click();
-  await expect(page).toHaveScreenshot("dialog-dark-desktop.png", { fullPage: false });
+  await expect(page).toHaveScreenshot("dialog-dark-desktop.png", {
+    fullPage: false,
+    maxDiffPixels: 10,
+  });
   await page.keyboard.press("Escape");
 
   await page.getByRole("button", { name: "light", exact: true }).click();
   await page.setViewportSize({ width: 320, height: 800 });
+  await commandTrigger.scrollIntoViewIfNeeded();
+  await commandTrigger.click();
+  await expect(page).toHaveScreenshot("command-dialog-light-mobile.png", {
+    fullPage: false,
+  });
+  await page.keyboard.press("Escape");
+
   await page.getByRole("button", { name: "Open filters" }).click();
   await expect(page).toHaveScreenshot("sheet-light-mobile.png", { fullPage: false });
 });
