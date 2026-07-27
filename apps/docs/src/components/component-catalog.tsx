@@ -618,20 +618,23 @@ function ComboboxSpecimen() {
   );
 }
 
+const calendarTimeZone = "America/Bogota";
+const createCalendarDate = (year: number, monthIndex: number, day: number) =>
+  new Date(Date.UTC(year, monthIndex, day, 12));
 const calendarScheduledDates = [
-  new Date(2026, 7, 18),
-  new Date(2026, 7, 20),
-  new Date(2026, 7, 22),
+  createCalendarDate(2026, 7, 18),
+  createCalendarDate(2026, 7, 20),
+  createCalendarDate(2026, 7, 22),
 ];
 const calendarMaintenanceDates = [
-  new Date(2026, 7, 27),
-  new Date(2026, 8, 3),
+  createCalendarDate(2026, 7, 27),
+  createCalendarDate(2026, 8, 3),
 ];
-const calendarDefaultMonth = new Date(2026, 7, 1);
-const calendarStartMonth = new Date(2026, 6, 1);
-const calendarEndMonth = new Date(2026, 11, 1);
+const calendarDefaultMonth = createCalendarDate(2026, 7, 1);
+const calendarStartMonth = createCalendarDate(2026, 6, 1);
+const calendarEndMonth = createCalendarDate(2026, 11, 1);
 const calendarSingleDisabled: Matcher[] = [
-  { before: new Date(2026, 7, 10) },
+  { before: createCalendarDate(2026, 7, 10) },
   ...calendarMaintenanceDates,
 ];
 const calendarModifiers = {
@@ -650,7 +653,7 @@ const calendarDateFormatter = new Intl.DateTimeFormat("en-US", {
 
 function DatePickerSpecimen() {
   const [sessionDate, setSessionDate] = useState<Date | undefined>(
-    () => new Date(2026, 7, 18)
+    () => createCalendarDate(2026, 7, 18)
   );
 
   return (
@@ -671,7 +674,7 @@ function DatePickerSpecimen() {
             fixedWeeks: true,
             startMonth: calendarStartMonth,
             endMonth: calendarEndMonth,
-            timeZone: "America/Bogota",
+            timeZone: calendarTimeZone,
             weekStartsOn: 1,
           }}
           onValueChange={setSessionDate}
@@ -707,12 +710,12 @@ function DatePickerSpecimen() {
 
 function CalendarSpecimen() {
   const [sessionDate, setSessionDate] = useState<Date | undefined>(
-    () => new Date(2026, 7, 18)
+    () => createCalendarDate(2026, 7, 18)
   );
   const [trainingRange, setTrainingRange] = useState<DateRange | undefined>(
     () => ({
-      from: new Date(2026, 8, 7),
-      to: new Date(2026, 8, 18),
+      from: createCalendarDate(2026, 8, 7),
+      to: createCalendarDate(2026, 8, 18),
     })
   );
   const rangeLabel = trainingRange?.from
@@ -744,7 +747,7 @@ function CalendarSpecimen() {
             selected={sessionDate}
             startMonth={calendarStartMonth}
             endMonth={calendarEndMonth}
-            timeZone="America/Bogota"
+            timeZone={calendarTimeZone}
             weekStartsOn={1}
           />
           <aside className="calendar-specimen__context" aria-label="Calendar state key">
@@ -794,7 +797,7 @@ function CalendarSpecimen() {
             selected={trainingRange}
             startMonth={calendarStartMonth}
             endMonth={calendarEndMonth}
-            timeZone="America/Bogota"
+            timeZone={calendarTimeZone}
             weekStartsOn={1}
           />
         </CardContent>
