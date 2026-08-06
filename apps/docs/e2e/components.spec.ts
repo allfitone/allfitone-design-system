@@ -19,6 +19,31 @@ test.beforeEach(async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1, name: "Components" })).toBeVisible();
 });
 
+test("applies the public application baseline and product font bridge", async ({ page }) => {
+  const baseline = await page.evaluate(() => {
+    const root = getComputedStyle(document.documentElement);
+    const body = getComputedStyle(document.body);
+    const sample = document.createElement("div");
+    document.body.append(sample);
+    const sampleBoxSizing = getComputedStyle(sample).boxSizing;
+    sample.remove();
+
+    return {
+      bodyFont: body.fontFamily,
+      bodyMargin: body.margin,
+      bodyBackground: body.backgroundColor,
+      displayFont: root.getPropertyValue("--afo-font-family-display").trim(),
+      sampleBoxSizing,
+    };
+  });
+
+  expect(baseline.bodyMargin).toBe("0px");
+  expect(baseline.sampleBoxSizing).toBe("border-box");
+  expect(baseline.displayFont).not.toBe("");
+  expect(baseline.bodyFont).toContain("Manrope");
+  expect(baseline.bodyBackground).not.toBe("rgba(0, 0, 0, 0)");
+});
+
 test("supports both themes without serious accessibility violations", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   for (const theme of ["dark", "light"] as const) {
