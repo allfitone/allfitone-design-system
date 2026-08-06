@@ -18,6 +18,7 @@
   "type": "module",
   "sideEffects": [
     "./dist/tokens.css",
+    "./dist/app.css",
     "./dist/styles.css"
   ],
   "files": [
@@ -42,6 +43,7 @@
       "import": "./dist/tokens.js"
     },
     "./tokens.css": "./dist/tokens.css",
+    "./app.css": "./dist/app.css",
     "./styles.css": "./dist/styles.css",
     "./lib/utils": {
       "types": "./dist/lib/utils.d.ts",

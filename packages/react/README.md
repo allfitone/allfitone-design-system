@@ -7,6 +7,7 @@ import { BrandLockup } from "@allfitone/react/brand";
 import { BackIcon, FoundationIcon } from "@allfitone/react/icons";
 import { semanticColor } from "@allfitone/react/tokens";
 import "@allfitone/react/tokens.css";
+import "@allfitone/react/app.css";
 import "@allfitone/react/styles.css";
 
 import { Button } from "@allfitone/react/components/button";
@@ -20,6 +21,7 @@ import { AnimatedBrandLockup } from "@allfitone/react/components/animated-brand-
 - `@allfitone/react/icons`: semantic Lucide icon component and icon metadata.
 - `@allfitone/react/tokens`: typed platform-neutral token values.
 - `@allfitone/react/tokens.css`: generated Web token variables and theme selectors.
+- `@allfitone/react/app.css`: application canvas, browser reset, and product-font bridge.
 - `@allfitone/react/styles.css`: compiled Tailwind 4 component utilities and the ALLFIT ONE shadcn bridge.
 - `@allfitone/react/components/*`: explicit component subpaths; there is no all-components barrel.
 - `@allfitone/react/lib/utils`: public `cn` class-composition utility.
@@ -28,7 +30,22 @@ The package root contains platform metadata only. This prevents accidental broad
 
 ## Component contract
 
-The component API follows shadcn composition on Base UI while its visual variants, tokens, target sizes, focus treatment, and accessibility defaults belong to ALLFIT ONE. Import CSS once at the application root, place `tokens.css` before `styles.css`, and change themes with `data-afo-theme="dark|light"` on the document element.
+The component API follows shadcn composition on Base UI while its visual variants, tokens, target sizes, focus treatment, and accessibility defaults belong to ALLFIT ONE. Import CSS once at the application root in this order: `tokens.css`, `app.css`, then `styles.css`. Change themes with `data-afo-theme="dark|light"` on the document element.
+
+`app.css` keeps application-level visual decisions in the Design System. Products that load fonts with `next/font` should expose the generated family names as `--afo-app-font-display` and `--afo-app-font-body`:
+
+```tsx
+const display = Barlow_Condensed({
+  subsets: ["latin"],
+  variable: "--afo-app-font-display",
+  weight: ["500", "600", "700"],
+});
+
+const body = Manrope({
+  subsets: ["latin"],
+  variable: "--afo-app-font-body",
+});
+```
 
 Available public component subpaths are:
 

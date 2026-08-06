@@ -22,6 +22,7 @@ const requiredOutputs = [
   "tokens.d.ts",
   "tokens.js.map",
   "tokens.css",
+  "app.css",
   "styles.css",
   "lib/utils.js",
   "lib/utils.d.ts",
@@ -63,6 +64,21 @@ for (const token of requiredStyleTokens) {
   }
 }
 
+const appStyles = await readFile(resolve(packageRoot, "dist/app.css"), "utf8");
+const requiredAppStyleContracts = [
+  "--afo-app-font-display",
+  "--afo-app-font-body",
+  "box-sizing: border-box",
+  "background: var(--afo-color-background-canvas)",
+  "font-family: var(--afo-font-family-body)",
+];
+
+for (const contract of requiredAppStyleContracts) {
+  if (!appStyles.includes(contract)) {
+    throw new Error(`Application baseline is missing ${contract}.`);
+  }
+}
+
 const sourceFiles = await Promise.all(
   components.map(async (component) => ({
     component,
@@ -101,12 +117,12 @@ if (allfitoneReact.packageVersion !== packageJson.version) {
   );
 }
 
-const expectedSideEffects = ["./dist/tokens.css", "./dist/styles.css"];
+const expectedSideEffects = ["./dist/tokens.css", "./dist/app.css", "./dist/styles.css"];
 if (JSON.stringify(packageJson.sideEffects) !== JSON.stringify(expectedSideEffects)) {
-  throw new Error("Only tokens.css and styles.css may be marked as side effects.");
+  throw new Error("Only tokens.css, app.css, and styles.css may be marked as side effects.");
 }
 
-for (const entry of [".", "./styles.css", "./lib/utils", "./components/*"]) {
+for (const entry of [".", "./app.css", "./styles.css", "./lib/utils", "./components/*"]) {
   if (!packageJson.exports?.[entry]) {
     throw new Error(`Package export ${entry} is missing.`);
   }
