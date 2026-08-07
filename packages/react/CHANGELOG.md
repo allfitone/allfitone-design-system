@@ -1,5 +1,11 @@
 # @allfitone/react
 
+## 0.5.0
+
+### Minor Changes
+
+- c003858: Add the responsive AccessShell composition for product entry and authentication pages.
+
 ## 0.4.0
 
 ### Minor Changes
