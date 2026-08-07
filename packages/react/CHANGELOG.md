@@ -1,5 +1,11 @@
 # @allfitone/react
 
+## 0.4.0
+
+### Minor Changes
+
+- bda1260: Add a public application baseline for global canvas, browser reset, and product-loaded font integration.
+
 ## 0.3.0
 
 ### Minor Changes
