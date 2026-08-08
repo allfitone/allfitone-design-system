@@ -138,6 +138,14 @@
 }
 
 @layer components {
+  [data-slot="device-gate-fallback"] {
+    display: none;
+  }
+
+  [data-slot="device-gate-content"] {
+    display: block;
+  }
+
   /* Ink & Signal: los pills del reference no llevan tracking propio
      (font:inherit) — sin letter-spacing negativo v1. */
   :where([data-slot="button"], [data-slot="icon-button"]):not(:disabled) {
@@ -316,6 +324,32 @@
   .cn-toast [data-close-button] {
     min-width: var(--afo-space-touch-target-web);
     min-height: var(--afo-space-touch-target-web);
+  }
+}
+
+@media (max-width: 599px), (max-height: 599px) and (pointer: coarse) {
+  [data-slot="device-gate-fallback"] {
+    display: block;
+  }
+
+  [data-slot="device-gate-main"] {
+    display: flex;
+  }
+
+  [data-slot="device-gate-content"] {
+    display: none;
+  }
+}
+
+@media (max-height: 599px) and (pointer: coarse) {
+  [data-slot="device-gate-main"] {
+    min-height: calc(100svh - 5rem);
+    justify-content: flex-start;
+    padding-top: var(--afo-space-8);
+  }
+
+  [data-slot="device-gate-visual"] {
+    display: none;
   }
 }
 
