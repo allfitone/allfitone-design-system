@@ -51,7 +51,7 @@ Available public component subpaths are:
 
 - actions: `button` and `icon-button`;
 - navigation: `breadcrumb`, `navigation-menu`, `dropdown-menu`, `pagination`, `drawer`, `sidebar`, `workspace-shell`, and `command`;
-- entry: `access-shell` for responsive, brand-led authentication and product-entry pages;
+- entry: `access-shell` for responsive, brand-led authentication and product-entry pages, and `device-gate` for replacing compact-phone workspaces with device guidance;
 - forms: `field`, `label`, `input`, and `textarea`;
 - selection: `checkbox`, `radio-group`, `switch`, `select`, `combobox`, `date-picker`, `calendar`, and `tabs`;
 - data display: `table`, `data-table`, `avatar`, `badge`, `card`, `skeleton`, and `empty`;
@@ -123,3 +123,10 @@ the same semantics and retain a static signal when reduced motion is enabled.
 lockup. It plays once, renders the final frame when reduced motion is requested,
 and can be replayed by changing `replayKey`. Static brand consumers should keep
 using `BrandLockup` from `@allfitone/react/brand`.
+
+`DeviceGate` is a CSS-first composition for products that require tablet or
+desktop workspace. Compose the compact fallback before `DeviceGateContent`.
+The fallback replaces product content below `600px` wide and on coarse-pointer
+landscape viewports below `600px` high; no user-agent detection or client-side
+hydration is required. At `600px` wide and above, tablet content remains
+available.

@@ -59,7 +59,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | --- | --- |
 | Actions | Button, IconButton |
 | Navigation | Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell, Command |
-| Entry | AccessShell |
+| Entry | AccessShell, DeviceGate |
 | Forms | Field, Label, Input, Textarea |
 | Selection | Checkbox, RadioGroup, Switch, Select, Combobox, DatePicker, Calendar, Tabs |
 | Data display | Table, DataTable, Avatar, Badge, Card, Skeleton, Empty |
@@ -73,6 +73,7 @@ The package root remains metadata-only. There is no component barrel because exp
 ## Composition rules
 
 - `AccessShell` owns the responsive composition for authentication and product-entry pages. Products provide brand, copy, a real anchor action, and security context without adding local layout styles. `AccessTitle` is the page `h1`, `AccessPanel` is named by its `h2`, and `AccessJourney` is reserved for a real ordered workflow.
+- `DeviceGate` replaces a product workspace with plain device guidance on compact phones. Compose one `DeviceGateFallback` and one `DeviceGateContent`; the fallback owns the only visible `main` and `h1` while compact. The CSS contract blocks widths below `600px` and coarse-pointer landscape viewports below `600px` high, while preserving tablet access without user-agent detection or client hydration.
 - Links that look like buttons apply `buttonVariants` to an anchor or framework `Link`. They do not render through Base UI Button.
 - Workspace navigation composes `Sidebar` and `WorkspaceShell`; product applications provide destinations and routing state rather than restyling the active signal treatment.
 - Command provides the shared keyboard-first model for workspace destinations

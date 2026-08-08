@@ -923,8 +923,16 @@ test("matches key overlay states in both themes", async ({ page }) => {
     fullPage: false,
   });
   await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toBeHidden();
 
-  await page.getByRole("button", { name: "Edit member" }).click();
+  const editMemberTrigger = page.getByRole("button", { name: "Edit member" });
+  await editMemberTrigger.scrollIntoViewIfNeeded();
+  await editMemberTrigger.click();
+  const editMemberDialog = page.getByRole("dialog", { name: "Edit member" });
+  await expect(editMemberDialog).toBeVisible();
+  await expect(
+    editMemberDialog.getByRole("textbox", { name: "Display name" }),
+  ).toHaveValue("Alex Morgan");
   await expect(page).toHaveScreenshot("dialog-dark-desktop.png", {
     fullPage: false,
     maxDiffPixels: 10,
