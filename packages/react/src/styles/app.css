@@ -6,10 +6,10 @@
  */
 
 :root {
-  --afo-font-family-display: var(--afo-app-font-display, var(--font-display, "Barlow Condensed")),
-    "Arial Narrow", sans-serif;
-  --afo-font-family-body: var(--afo-app-font-body, var(--font-body, "Manrope")), system-ui,
-    -apple-system, sans-serif;
+  --afo-font-family-display: var(--afo-app-font-display, "Barlow Condensed"), "Arial Narrow",
+    sans-serif;
+  --afo-font-family-body: var(--afo-app-font-body, "Manrope"), system-ui, -apple-system,
+    sans-serif;
 }
 
 *,
