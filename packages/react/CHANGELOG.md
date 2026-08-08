@@ -1,5 +1,11 @@
 # @allfitone/react
 
+## 0.6.1
+
+### Patch Changes
+
+- cc15747: Prevent the public application font bridge from becoming cyclic in WebKit so display typography remains visible on mobile Safari.
+
 ## 0.6.0
 
 ### Minor Changes
