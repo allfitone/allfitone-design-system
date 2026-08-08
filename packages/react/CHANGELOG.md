@@ -1,5 +1,11 @@
 # @allfitone/react
 
+## 0.6.0
+
+### Minor Changes
+
+- dbf5f31: Add a CSS-first DeviceGate composition that replaces compact-phone product workspaces with accessible tablet-or-desktop guidance.
+
 ## 0.5.0
 
 ### Minor Changes
