@@ -138,6 +138,14 @@
 }
 
 @layer components {
+  [data-slot="device-gate-fallback"] {
+    display: none;
+  }
+
+  [data-slot="device-gate-content"] {
+    display: block;
+  }
+
   /* Ink & Signal: los pills del reference no llevan tracking propio
      (font:inherit) — sin letter-spacing negativo v1. */
   :where([data-slot="button"], [data-slot="icon-button"]):not(:disabled) {
@@ -319,6 +327,32 @@
   }
 }
 
+@media (max-width: 599px), (max-height: 599px) and (pointer: coarse) {
+  [data-slot="device-gate-fallback"] {
+    display: block;
+  }
+
+  [data-slot="device-gate-main"] {
+    display: flex;
+  }
+
+  [data-slot="device-gate-content"] {
+    display: none;
+  }
+}
+
+@media (max-height: 599px) and (pointer: coarse) {
+  [data-slot="device-gate-main"] {
+    min-height: calc(100svh - 5rem);
+    justify-content: flex-start;
+    padding-top: var(--afo-space-8);
+  }
+
+  [data-slot="device-gate-visual"] {
+    display: none;
+  }
+}
+
 @keyframes afo-skeleton {
   from {
     background-position: 100% 0;
@@ -387,6 +421,21 @@
   [data-slot="command-item"][data-selected="true"] {
     outline: 1px solid Highlight;
     outline-offset: -2px;
+  }
+
+  [data-slot="toggle-group"] {
+    border-color: CanvasText;
+  }
+
+  [data-slot="toggle-group-item"][data-pressed] {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+
+  [data-slot="toggle-group-item"][data-pressed]::before {
+    background: HighlightText;
   }
 
   [data-slot="calendar-day-button"]:is(

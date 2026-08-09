@@ -4,6 +4,7 @@ React Native adapters for the Allfit One foundations. The package renders canoni
 
 ```tsx
 import { Button } from "@allfitone/react-native/button";
+import { ProductLockup } from "@allfitone/react-native/brand";
 import { useAllfitFonts } from "@allfitone/react-native/fonts";
 import { Screen } from "@allfitone/react-native/screen";
 import { Text } from "@allfitone/react-native/text";
@@ -16,6 +17,7 @@ function App() {
   return (
     <ThemeProvider theme="dark">
       <Screen>
+        <ProductLockup product="space" surface="dark" accessibilityLabel="Allfit Space" />
         <Text role="display" size="4xl" uppercase>
           Todo tu fitness
         </Text>
@@ -47,7 +49,7 @@ Expo projects should install the native peers through `npx expo install` so the 
 
 ## Entry points
 
-- `@allfitone/react-native/brand`: native logo, wordmark, and lockup components.
+- `@allfitone/react-native/brand`: native master-brand logo plus Space, Studio, and Backoffice wordmark and shared-logo lockup components.
 - `@allfitone/react-native/icons`: semantic native icon component and metadata.
 - `@allfitone/react-native/tokens`: typed tokens plus touch-target, theme, and letter-spacing helpers.
 - `@allfitone/react-native/fonts`: font loading and the role-to-family mapping.
@@ -56,6 +58,11 @@ Expo projects should install the native peers through `npx expo install` so the 
 - `@allfitone/react-native/button`: pill action with the platform touch target.
 - `@allfitone/react-native/screen`: safe-area container that paints the canvas.
 - `@allfitone/react-native/gradient`: `SignalBlock` and `Scrim`.
+- `@allfitone/react-native/glass`: `GlassPanel`, the translucent chrome material.
+- `@allfitone/react-native/backdrop`: `AmbientBackdrop`, the soft blooms and dot grid.
+- `@allfitone/react-native/brand-entrance`: the mark filling with liquid, for app launch.
+- `@allfitone/react-native/text-field`: labelled text entry with a state-carrying border.
+- `@allfitone/react-native/inline-alert`: status message that sits with its control.
 
 ## Notes that are easy to get wrong
 

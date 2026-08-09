@@ -4,6 +4,7 @@ import { Toaster } from "@allfitone/react/components/sonner";
 import { TooltipProvider } from "@allfitone/react/components/tooltip";
 
 import "@allfitone/react/tokens.css";
+import "@allfitone/react/app.css";
 import "@allfitone/react/styles.css";
 import "./globals.css";
 import "./components.css";

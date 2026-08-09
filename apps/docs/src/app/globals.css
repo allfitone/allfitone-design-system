@@ -1,31 +1,10 @@
-* {
-  box-sizing: border-box;
-}
-
-/* Wire the next/font-loaded families into the token font stacks so every
-   consumer of the display/body tokens renders the self-hosted fonts. */
-:root {
-  --afo-font-family-display: var(--font-display), "Barlow Condensed", "Arial Narrow", sans-serif;
-  --afo-font-family-body: var(--font-body), "Manrope", system-ui, -apple-system, sans-serif;
-}
-
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 7rem;
 }
 
 body {
-  margin: 0;
-  background: var(--afo-color-background-canvas);
-  color: var(--afo-color-text-primary);
-  font-family: var(--font-body), var(--afo-font-family-body);
   transition: background-color var(--afo-motion-transition-duration) var(--afo-motion-transition-easing), color var(--afo-motion-transition-duration) var(--afo-motion-transition-easing);
-}
-
-button,
-input,
-select {
-  font: inherit;
 }
 
 button,

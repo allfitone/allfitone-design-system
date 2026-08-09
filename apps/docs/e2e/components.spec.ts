@@ -19,7 +19,33 @@ test.beforeEach(async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1, name: "Components" })).toBeVisible();
 });
 
+test("applies the public application baseline and product font bridge", async ({ page }) => {
+  const baseline = await page.evaluate(() => {
+    const root = getComputedStyle(document.documentElement);
+    const body = getComputedStyle(document.body);
+    const sample = document.createElement("div");
+    document.body.append(sample);
+    const sampleBoxSizing = getComputedStyle(sample).boxSizing;
+    sample.remove();
+
+    return {
+      bodyFont: body.fontFamily,
+      bodyMargin: body.margin,
+      bodyBackground: body.backgroundColor,
+      displayFont: root.getPropertyValue("--afo-font-family-display").trim(),
+      sampleBoxSizing,
+    };
+  });
+
+  expect(baseline.bodyMargin).toBe("0px");
+  expect(baseline.sampleBoxSizing).toBe("border-box");
+  expect(baseline.displayFont).not.toBe("");
+  expect(baseline.bodyFont).toContain("Manrope");
+  expect(baseline.bodyBackground).not.toBe("rgba(0, 0, 0, 0)");
+});
+
 test("supports both themes without serious accessibility violations", async ({ page }) => {
+  test.setTimeout(45_000);
   await page.emulateMedia({ reducedMotion: "reduce" });
   for (const theme of ["dark", "light"] as const) {
     await page.getByRole("button", { name: theme, exact: true }).click();
@@ -218,6 +244,16 @@ test("keeps popover content opaque, non-modal and collision-aware", async ({ pag
 });
 
 test("operates composite selection controls from the keyboard", async ({ page }) => {
+  const toggleGroup = page.locator("#toggle-group");
+  const spanishToggle = toggleGroup.getByRole("button", { name: "ES", exact: true });
+  const englishToggle = toggleGroup.getByRole("button", { name: "EN", exact: true });
+  await spanishToggle.focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(englishToggle).toBeFocused();
+  await page.keyboard.press("Space");
+  await expect(englishToggle).toHaveAttribute("aria-pressed", "true");
+  await expect(spanishToggle).toHaveAttribute("aria-pressed", "false");
+
   const historyTab = page.getByRole("tab", { name: "History" });
   await page.getByRole("tab", { name: "Overview" }).focus();
   await page.keyboard.press("ArrowRight");
@@ -689,6 +725,7 @@ test("keeps touch targets and focus treatment at the minimum contract", async ({
       .getByRole("table", { name: "Members" })
       .getByRole("checkbox", { name: "Select Camila Torres" }),
     switch: page.getByRole("switch", { name: "Live progress sharing" }),
+    "toggle group item": page.locator("#toggle-group").getByRole("button", { name: "ES" }),
     "navigation trigger": page.locator("#navigation-menu").getByRole("button", { name: "Training", exact: true }),
     "workspace action": page.locator("#workspace-shell").getByRole("button", { name: /Panel/ }),
   };
@@ -834,6 +871,10 @@ test("honors reduced motion and forced color focus", async ({ page }) => {
   const action = page.getByRole("button", { name: "Start session" });
   await action.focus();
   expect(await action.evaluate((element) => getComputedStyle(element).outlineStyle)).not.toBe("none");
+
+  const pressedToggle = page.locator("#toggle-group").getByRole("button", { name: "ES", exact: true });
+  await expect(pressedToggle).toHaveAttribute("aria-pressed", "true");
+  expect(await pressedToggle.evaluate((element) => getComputedStyle(element).forcedColorAdjust)).toBe("none");
 });
 
 test("matches the approved catalog composition", async ({ page }) => {
@@ -898,8 +939,16 @@ test("matches key overlay states in both themes", async ({ page }) => {
     fullPage: false,
   });
   await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toBeHidden();
 
-  await page.getByRole("button", { name: "Edit member" }).click();
+  const editMemberTrigger = page.getByRole("button", { name: "Edit member" });
+  await editMemberTrigger.scrollIntoViewIfNeeded();
+  await editMemberTrigger.click();
+  const editMemberDialog = page.getByRole("dialog", { name: "Edit member" });
+  await expect(editMemberDialog).toBeVisible();
+  await expect(
+    editMemberDialog.getByRole("textbox", { name: "Display name" }),
+  ).toHaveValue("Alex Morgan");
   await expect(page).toHaveScreenshot("dialog-dark-desktop.png", {
     fullPage: false,
     maxDiffPixels: 10,

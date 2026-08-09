@@ -1,5 +1,41 @@
 # @allfitone/react
 
+## 0.7.0
+
+### Minor Changes
+
+- 11b2e87: Add an accessible Base UI-backed ToggleGroup with single and multiple pressed states, arrow-key navigation, disabled behavior, and the Ink & Signal active treatment.
+- 760c84e: Add outlined Allfit Space, Studio, and Backoffice wordmarks plus Web, React Native, and static SVG lockups that temporarily reuse the exact canonical Allfit One logo.
+
+### Patch Changes
+
+- Updated dependencies [760c84e]
+  - @allfitone/brand@0.2.0
+
+## 0.6.1
+
+### Patch Changes
+
+- cc15747: Prevent the public application font bridge from becoming cyclic in WebKit so display typography remains visible on mobile Safari.
+
+## 0.6.0
+
+### Minor Changes
+
+- dbf5f31: Add a CSS-first DeviceGate composition that replaces compact-phone product workspaces with accessible tablet-or-desktop guidance.
+
+## 0.5.0
+
+### Minor Changes
+
+- c003858: Add the responsive AccessShell composition for product entry and authentication pages.
+
+## 0.4.0
+
+### Minor Changes
+
+- bda1260: Add a public application baseline for global canvas, browser reset, and product-loaded font integration.
+
 ## 0.3.0
 
 ### Minor Changes

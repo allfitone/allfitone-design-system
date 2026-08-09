@@ -10,7 +10,7 @@ const contracts = {
   "@allfitone/tokens": ["dist/index.js", "dist/index.d.ts", "dist/tokens.css", "dist/tokens.json"],
   "@allfitone/brand": ["assets/manifest.json", "dist/index.js", "dist/react.js", "scripts/sync-assets.mjs"],
   "@allfitone/icons": ["dist/index.js", "dist/react.js", "dist/react.d.ts"],
-  "@allfitone/react": ["dist/index.js", "dist/styles.css", "dist/tokens.css", "dist/components/button.js"],
+  "@allfitone/react": ["dist/index.js", "dist/app.css", "dist/styles.css", "dist/tokens.css", "dist/components/button.js"],
   "@allfitone/react-native": ["dist/index.js", "dist/brand.js", "dist/icons.js", "dist/tokens.js"],
 };
 

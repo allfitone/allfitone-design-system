@@ -1,6 +1,6 @@
 # Foundations
 
-These rules keep Allfit Space and Allfit OS recognizably related without forcing both products into identical layouts. Every foundation and component must also follow [ACCESSIBILITY.md](ACCESSIBILITY.md).
+These rules keep Allfit Space, Studio, and Backoffice recognizably related without forcing the products into identical layouts. Every foundation and component must also follow [ACCESSIBILITY.md](ACCESSIBILITY.md).
 
 ## Color
 
@@ -83,7 +83,7 @@ Motion communicates response, continuity, entry, or exit.
 - reduced: zero-duration fallback.
 
 The Allfit One web brand entrance reveals the canonical carrier and wordmark
-once. It does not borrow the Allfit OS pulse motif, and reduced-motion users
+once. It does not borrow a product logo or the secondary pulse motif, and reduced-motion users
 receive the complete final lockup without spatial movement.
 
 Use the semantic motion roles in products. Use springs for spatial movement on React Native and cubic-bezier easing for equivalent web transitions. Never require motion to understand state, and always honor reduced-motion preferences.

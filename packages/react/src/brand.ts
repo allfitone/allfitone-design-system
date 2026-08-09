@@ -1,3 +1,21 @@
-export { BrandLockup, BrandLogo, BrandLogoCarrier, BrandWordmark } from "@allfitone/brand/react";
-export type { BrandLogoProps, BrandSvgProps, SurfaceBrandProps } from "@allfitone/brand/react";
-export { brandColors, brandDimensions, brandGeometry } from "@allfitone/brand";
+export {
+  BrandLockup,
+  BrandLogo,
+  BrandLogoCarrier,
+  BrandWordmark,
+  ProductLockup,
+  ProductWordmark,
+} from "@allfitone/brand/react";
+export type {
+  BrandLogoProps,
+  BrandSvgProps,
+  ProductSurfaceBrandProps,
+  SurfaceBrandProps,
+} from "@allfitone/brand/react";
+export {
+  brandColors,
+  brandDimensions,
+  brandGeometry,
+  brandProductNames,
+} from "@allfitone/brand";
+export type { BrandProduct } from "@allfitone/brand";

@@ -1,6 +1,13 @@
 import type { ReactNode, SVGProps } from "react";
 
-import { brandColors, brandDimensions, brandGeometry, type BrandLogoVariant, type BrandSurface } from "./index.js";
+import {
+  brandColors,
+  brandDimensions,
+  brandGeometry,
+  type BrandLogoVariant,
+  type BrandProduct,
+  type BrandSurface,
+} from "./index.js";
 
 export type BrandSvgProps = Omit<SVGProps<SVGSVGElement>, "children" | "color"> & {
   title?: string | undefined;
@@ -12,6 +19,10 @@ export type BrandLogoProps = BrandSvgProps & {
 
 export type SurfaceBrandProps = BrandSvgProps & {
   surface?: BrandSurface;
+};
+
+export type ProductSurfaceBrandProps = SurfaceBrandProps & {
+  product: BrandProduct;
 };
 
 type BrandSvgFrameProps = BrandSvgProps & {
@@ -112,6 +123,58 @@ export function BrandLockup({ surface = "dark", title, ...props }: SurfaceBrandP
       </g>
       <g transform="translate(1240 337) scale(.28 -.28)" fill={brandColors.cyan}>
         {brandGeometry.oneLetters.map(([path, x], index) => <path key={index} d={path} transform={`translate(${x - 2600} 0)`} />)}
+      </g>
+    </BrandSvgFrame>
+  );
+}
+
+function ProductDescriptor({ product }: { product: BrandProduct }) {
+  return (
+    <>
+      {brandGeometry.product.descriptorLetters[product].map(([path, x], index) => (
+        <path key={index} d={path} transform={`translate(${x} 0)`} />
+      ))}
+    </>
+  );
+}
+
+export function ProductWordmark({ product, surface = "dark", title, ...props }: ProductSurfaceBrandProps) {
+  const neutral = surface === "dark" ? brandColors.chalk : brandColors.ink;
+
+  return (
+    <BrandSvgFrame
+      {...props}
+      viewBox={brandDimensions.product.wordmark[product].viewBox}
+      title={title}
+    >
+      <g transform="translate(20 728) scale(1 -1)" fill={neutral}>
+        {brandGeometry.allfitLetters.map(([path, x], index) => <path key={index} d={path} transform={`translate(${x} 0)`} />)}
+      </g>
+      <g transform="translate(20 728) scale(1 -1)" fill={brandColors.cyan}>
+        <ProductDescriptor product={product} />
+      </g>
+    </BrandSvgFrame>
+  );
+}
+
+export function ProductLockup({ product, surface = "dark", title, ...props }: ProductSurfaceBrandProps) {
+  const neutral = surface === "dark" ? brandColors.chalk : brandColors.ink;
+
+  return (
+    <BrandSvgFrame
+      {...props}
+      viewBox={brandDimensions.product.lockup[product].viewBox}
+      title={title}
+    >
+      <g transform="translate(44 36)">
+        <path fill={brandColors.cyan} d={brandGeometry.carrierPath} />
+        <path fill={brandColors.ink} d={brandGeometry.logoPath} transform="translate(142 22) scale(.318)" />
+      </g>
+      <g transform="translate(512 337) scale(.28 -.28)" fill={neutral}>
+        {brandGeometry.allfitLetters.map(([path, x], index) => <path key={index} d={path} transform={`translate(${x} 0)`} />)}
+      </g>
+      <g transform="translate(512 337) scale(.28 -.28)" fill={brandColors.cyan}>
+        <ProductDescriptor product={product} />
       </g>
     </BrandSvgFrame>
   );

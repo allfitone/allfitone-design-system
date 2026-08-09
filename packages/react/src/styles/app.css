@@ -1,0 +1,38 @@
+/*
+ * Application baseline for ALLFIT ONE web consumers.
+ *
+ * Product apps own content and composition. This stylesheet keeps the global
+ * canvas, typography bridge, and browser reset inside the Design System.
+ */
+
+:root {
+  --afo-font-family-display: var(--afo-app-font-display, "Barlow Condensed"), "Arial Narrow",
+    sans-serif;
+  --afo-font-family-body: var(--afo-app-font-body, "Manrope"), system-ui, -apple-system,
+    sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--afo-color-background-canvas);
+  color: var(--afo-color-text-primary);
+  font-family: var(--afo-font-family-body);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}

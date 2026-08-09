@@ -1,6 +1,6 @@
 {
   "name": "@allfitone/react",
-  "version": "0.3.0",
+  "version": "0.7.0",
   "description": "React and Next.js adapters for the Allfit One design system.",
   "repository": {
     "type": "git",
@@ -18,6 +18,7 @@
   "type": "module",
   "sideEffects": [
     "./dist/tokens.css",
+    "./dist/app.css",
     "./dist/styles.css"
   ],
   "files": [
@@ -42,6 +43,7 @@
       "import": "./dist/tokens.js"
     },
     "./tokens.css": "./dist/tokens.css",
+    "./app.css": "./dist/app.css",
     "./styles.css": "./dist/styles.css",
     "./lib/utils": {
       "types": "./dist/lib/utils.d.ts",
@@ -59,7 +61,7 @@
     "prepack": "npm run check"
   },
   "dependencies": {
-    "@allfitone/brand": "^0.1.0",
+    "@allfitone/brand": "^0.2.0",
     "@allfitone/icons": "^0.2.0",
     "@allfitone/tokens": "^0.1.0",
     "@base-ui/react": "^1.6.0",

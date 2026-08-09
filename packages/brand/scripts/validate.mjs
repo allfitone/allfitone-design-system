@@ -22,12 +22,20 @@ const assetPaths = [
   brandAssetFiles.logoCarrier,
   ...Object.values(brandAssetFiles.wordmark),
   ...Object.values(brandAssetFiles.lockup),
+  ...Object.values(brandAssetFiles.product).flatMap((assets) => [
+    ...Object.values(assets.wordmark),
+    ...Object.values(assets.lockup),
+  ]),
 ];
 const assetSpecifiers = [
   ...Object.values(brandAssetSpecifiers.logo),
   brandAssetSpecifiers.logoCarrier,
   ...Object.values(brandAssetSpecifiers.wordmark),
   ...Object.values(brandAssetSpecifiers.lockup),
+  ...Object.values(brandAssetSpecifiers.product).flatMap((assets) => [
+    ...Object.values(assets.wordmark),
+    ...Object.values(assets.lockup),
+  ]),
 ];
 const uniqueLetterPaths = [
   ...new Set([
@@ -73,6 +81,7 @@ const expectedAssets = new Map([
     viewBox: brandDimensions.logo.viewBox,
     paths: [brandGeometry.logoPath],
     fills: [brandColors.cyan],
+    strokes: [],
     fragments: [],
     xValues: [],
   }],
@@ -82,6 +91,7 @@ const expectedAssets = new Map([
     viewBox: brandDimensions.logo.viewBox,
     paths: [brandGeometry.logoPath],
     fills: [brandColors.ink],
+    strokes: [],
     fragments: [],
     xValues: [],
   }],
@@ -91,6 +101,7 @@ const expectedAssets = new Map([
     viewBox: brandDimensions.logo.viewBox,
     paths: [brandGeometry.logoPath],
     fills: [brandColors.chalk],
+    strokes: [],
     fragments: [],
     xValues: [],
   }],
@@ -100,6 +111,7 @@ const expectedAssets = new Map([
     viewBox: brandDimensions.logoCarrier.viewBox,
     paths: [brandGeometry.carrierPath, brandGeometry.logoPath],
     fills: [brandColors.cyan, brandColors.ink],
+    strokes: [],
     fragments: [
       'transform="translate(32 36)"',
       'transform="translate(142 22) scale(.318)"',
@@ -112,6 +124,7 @@ const expectedAssets = new Map([
     viewBox: brandDimensions.wordmark.viewBox,
     paths: uniqueLetterPaths,
     fills: [brandColors.chalk, brandColors.cyan],
+    strokes: [],
     fragments: ['transform="translate(20 728) scale(1 -1)"'],
     xValues: wordmarkXValues,
   }],
@@ -121,6 +134,7 @@ const expectedAssets = new Map([
     viewBox: brandDimensions.wordmark.viewBox,
     paths: uniqueLetterPaths,
     fills: [brandColors.ink, brandColors.cyan],
+    strokes: [],
     fragments: ['transform="translate(20 728) scale(1 -1)"'],
     xValues: wordmarkXValues,
   }],
@@ -130,6 +144,7 @@ const expectedAssets = new Map([
     viewBox: brandDimensions.lockup.viewBox,
     paths: [brandGeometry.carrierPath, brandGeometry.logoPath, ...uniqueLetterPaths],
     fills: [brandColors.cyan, brandColors.ink, brandColors.chalk],
+    strokes: [],
     fragments: [
       'transform="translate(44 36)"',
       'transform="translate(142 22) scale(.318)"',
@@ -144,6 +159,7 @@ const expectedAssets = new Map([
     viewBox: brandDimensions.lockup.viewBox,
     paths: [brandGeometry.carrierPath, brandGeometry.logoPath, ...uniqueLetterPaths],
     fills: [brandColors.cyan, brandColors.ink],
+    strokes: [],
     fragments: [
       'transform="translate(44 36)"',
       'transform="translate(142 22) scale(.318)"',
@@ -153,6 +169,50 @@ const expectedAssets = new Map([
     xValues: lockupXValues,
   }],
 ]);
+
+for (const [product, files] of Object.entries(brandAssetFiles.product)) {
+  const descriptorLetters = brandGeometry.product.descriptorLetters[product];
+  const productLetterPaths = [
+    ...new Set([
+      ...brandGeometry.allfitLetters.map(([path]) => path),
+      ...descriptorLetters.map(([path]) => path),
+    ]),
+  ];
+  const productXValues = [
+    ...brandGeometry.allfitLetters.map(([, x]) => x.toString()),
+    ...descriptorLetters.map(([, x]) => x.toString()),
+  ];
+  for (const surface of ["dark", "light"]) {
+    const surfaceKey = surface === "dark" ? "onDark" : "onLight";
+    const neutral = surface === "dark" ? brandColors.chalk : brandColors.ink;
+    expectedAssets.set(files.wordmark[surfaceKey], {
+      type: "product-wordmark",
+      product,
+      lettering: "outlined",
+      viewBox: brandDimensions.product.wordmark[product].viewBox,
+      paths: productLetterPaths,
+      fills: [neutral, brandColors.cyan],
+      strokes: [],
+      fragments: ['transform="translate(20 728) scale(1 -1)"'],
+      xValues: productXValues,
+    });
+    expectedAssets.set(files.lockup[surfaceKey], {
+      type: "product-lockup",
+      product,
+      lettering: "outlined",
+      viewBox: brandDimensions.product.lockup[product].viewBox,
+      paths: [brandGeometry.carrierPath, brandGeometry.logoPath, ...productLetterPaths],
+      fills: [...new Set([brandColors.cyan, brandColors.ink, neutral])],
+      strokes: [],
+      fragments: [
+        'transform="translate(44 36)"',
+        'transform="translate(142 22) scale(.318)"',
+        'transform="translate(512 337) scale(.28 -.28)"',
+      ],
+      xValues: productXValues,
+    });
+  }
+}
 
 assert(
   designSystemVersion === packageMetadata.version,
@@ -190,6 +250,7 @@ await Promise.all(manifest.assets.map(async (asset) => {
   const expected = expectedAssets.get(asset.path);
   assert(expected, `Manifest contains an unknown brand asset: ${asset.path}`);
   assert(asset.type === expected.type, `Unexpected asset type for ${asset.path}.`);
+  assert(asset.product === expected.product, `Unexpected product for ${asset.path}.`);
   assert(asset.background === "transparent", `Brand asset must remain transparent: ${asset.path}`);
   assert(asset.lettering === expected.lettering, `Unexpected lettering mode for ${asset.path}.`);
 
@@ -211,6 +272,11 @@ await Promise.all(manifest.assets.map(async (asset) => {
     [...source.matchAll(/\sfill="([^"]+)"/g)].map((match) => match[1]),
   )];
   assertSameValues(fills, expected.fills, `Canonical fills for ${asset.path}`);
+
+  const strokes = [...new Set(
+    [...source.matchAll(/\sstroke="([^"]+)"/g)].map((match) => match[1]),
+  )];
+  assertSameValues(strokes, expected.strokes, `Canonical strokes for ${asset.path}`);
 
   for (const fragment of expected.fragments) {
     assert(source.includes(fragment), `Missing canonical layout fragment in ${asset.path}: ${fragment}`);

@@ -21,6 +21,7 @@ import { BrandLockup } from "@allfitone/react/brand";
 import { FoundationIcon } from "@allfitone/react/icons";
 import { semanticColor } from "@allfitone/react/tokens";
 import "@allfitone/react/tokens.css";
+import "@allfitone/react/app.css";
 import "@allfitone/react/styles.css";
 import { Button } from "@allfitone/react/components/button";
 ```
@@ -28,11 +29,12 @@ import { Button } from "@allfitone/react/components/button";
 Rules:
 
 - Use explicit subpaths; the root export contains metadata only.
-- Import token CSS and component CSS once at the application root, in that order.
+- Import `tokens.css`, `app.css`, and `styles.css` once at the application root, in that order.
+- Map product-loaded fonts to `--afo-app-font-display` and `--afo-app-font-body`; do not recreate global canvas or typography styles in consumers.
 - Import each component from its explicit `/components/{name}` subpath; do not add an all-components barrel.
 - Components render standard accessible SVG and remain compatible with React Server Components unless a consumer adds client behavior.
 - SVG geometry is static module data; it is not recreated during rendering.
-- The package must remain side-effect free except for `tokens.css` and `styles.css`.
+- The package must remain side-effect free except for `tokens.css`, `app.css`, and `styles.css`.
 
 ## React Native
 
@@ -66,6 +68,7 @@ Rules:
 | Typed tokens | `/tokens` | `/tokens` |
 | Theme values | `/tokens` | `/tokens` |
 | CSS variables | `/tokens.css` | Not applicable |
+| Application baseline | `/app.css` | Not applicable |
 | Web component styles | `/styles.css` | Not applicable |
 | Web components | `/components/{name}` | Not applicable |
 | Native touch-target helper | Not applicable | `/tokens` |
@@ -99,7 +102,7 @@ Recommended publish order:
 
 ## Consumer policy
 
-- Allfit OS and the landing should install an exact released `@allfitone/react` version when they adopt the Design System.
+- Allfit Studio, Allfit Backoffice, and the landing should install an exact released `@allfitone/react` version when they adopt the Design System.
 - Allfit Space installs `@allfitone/react-native` when its application scaffold is created.
 - Do not use sibling filesystem dependencies in product repositories.
 - Do not copy source components into product repositories.
