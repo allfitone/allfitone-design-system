@@ -43,6 +43,7 @@ import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Tabl
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@allfitone/react/components/tabs";
 import { Textarea } from "@allfitone/react/components/textarea";
 import { TickRing } from "@allfitone/react/components/tick-ring";
+import { ToggleGroup, ToggleGroupItem } from "@allfitone/react/components/toggle-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@allfitone/react/components/tooltip";
 import { WorkspaceActions, WorkspaceContent, WorkspaceEyebrow, WorkspaceHeader, WorkspaceHeading, WorkspaceMain, WorkspaceShell, WorkspaceTitle } from "@allfitone/react/components/workspace-shell";
 import { FoundationIcon } from "@allfitone/react/icons";
@@ -1449,7 +1450,7 @@ export function ComponentCatalog() {
       </section>
 
       <section className="catalog-category" aria-labelledby="selection-heading">
-        <CategoryHeader id="selection" code="SEL" title="Selection" description="State is visible through shape, position and semantics—not color alone." count={8} />
+        <CategoryHeader id="selection" code="SEL" title="Selection" description="State is visible through shape, position and semantics—not color alone." count={9} />
         <div className="component-grid">
           <ComponentSection id="checkbox" title="Checkbox" description="Checked and indeterminate states retain a 44 px target." importPath="@allfitone/react/components/checkbox" contract={["Checked", "Indeterminate", "Disabled", "44 px target"]}>
             <Field orientation="horizontal"><Checkbox id="consent" defaultChecked /><FieldLabel htmlFor="consent">Share training history with this coach</FieldLabel></Field>
@@ -1461,6 +1462,13 @@ export function ComponentCatalog() {
 
           <ComponentSection id="switch" title="Switch" description="Track and thumb expose state through position as well as color." importPath="@allfitone/react/components/switch" contract={["On / off", "Disabled", "Visible label", "44 px target"]}>
             <Field orientation="horizontal"><Switch id="progress-sharing" defaultChecked /><FieldLabel htmlFor="progress-sharing">Live progress sharing</FieldLabel></Field>
+          </ComponentSection>
+
+          <ComponentSection id="toggle-group" title="ToggleGroup" description="Compact modes and filters share one restrained signal rail without losing their pressed semantics." importPath="@allfitone/react/components/toggle-group" contract={["Single / multiple", "Arrow navigation", "Pressed state", "Disabled"]}>
+            <FieldGroup>
+              <FieldSet><FieldLegend variant="label">Interface language</FieldLegend><ToggleGroup aria-label="Interface language" defaultValue={["es"]}><ToggleGroupItem value="es">ES</ToggleGroupItem><ToggleGroupItem value="en">EN</ToggleGroupItem></ToggleGroup></FieldSet>
+              <FieldSet><FieldLegend variant="label">Training signals</FieldLegend><ToggleGroup aria-label="Training signals" defaultValue={["strength"]} multiple><ToggleGroupItem value="strength">Strength</ToggleGroupItem><ToggleGroupItem value="mobility">Mobility</ToggleGroupItem><ToggleGroupItem value="conditioning" disabled>Conditioning</ToggleGroupItem></ToggleGroup></FieldSet>
+            </FieldGroup>
           </ComponentSection>
 
           <ComponentSection id="select" title="Select" description="Grouped options support keyboard traversal and explicit labels." importPath="@allfitone/react/components/select" contract={["Open / closed", "Arrow navigation", "Grouped options", "Invalid"]}>

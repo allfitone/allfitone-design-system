@@ -46,7 +46,7 @@ The token validator must fail when required text pairs are below `4.5:1` or requ
 - Use native interactive elements first: `button`, `a`, `input`, `select`, `textarea`, and `details`.
 - Focus order must follow reading order and task order, not visual positioning.
 - Do not use a positive `tabIndex`. Use `tabIndex={0}` only for a justified custom interactive element and `tabIndex={-1}` for programmatic focus targets.
-- `Tab` and `Shift+Tab` move between components. Arrow keys operate composite widgets such as tabs, menus, listboxes, radio groups, and grids according to their established pattern.
+- `Tab` and `Shift+Tab` move between components. Arrow keys operate composite widgets such as tabs, toggle groups, menus, listboxes, radio groups, and grids according to their established pattern.
 - `Enter` activates links and primary control actions. `Space` activates buttons and toggles without scrolling the page.
 - `Escape` closes dismissible overlays, menus, and dialogs without committing changes.
 - No component may trap keyboard focus. Modal dialogs are the exception while open and must always expose an operable close or cancel action.

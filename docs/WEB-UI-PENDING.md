@@ -11,7 +11,7 @@ The following areas already have a canonical implementation:
 - actions: Button and IconButton;
 - navigation: Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell, and Command;
 - forms: Field, Label, Input, and Textarea;
-- selection: Checkbox, RadioGroup, Switch, Select, Combobox, DatePicker, Calendar, and Tabs;
+- selection: Checkbox, RadioGroup, Switch, ToggleGroup, Select, Combobox, DatePicker, Calendar, and Tabs;
 - data display: Table, DataTable, Avatar, Badge, Card, Skeleton, and Empty;
 - signature: AccentBlock, StatStrip, TickRing, and PulseMark;
 - overlays: Dialog, AlertDialog, Sheet, Popover, Tooltip, and CommandDialog;
