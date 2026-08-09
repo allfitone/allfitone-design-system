@@ -97,6 +97,11 @@
       "types": "./dist/backdrop.d.ts",
       "react-native": "./dist/backdrop.js",
       "import": "./dist/backdrop.js"
+    },
+    "./shadow-style": {
+      "types": "./dist/shadow-style.d.ts",
+      "react-native": "./dist/shadow-style.js",
+      "import": "./dist/shadow-style.js"
     }
   },
   "scripts": {

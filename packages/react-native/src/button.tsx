@@ -5,16 +5,22 @@
  * from `semanticRadius.action` rather than from the control radius used by
  * fields.
  *
- * The minimum height is the platform touch target, not a design decision:
- * `docs/ACCESSIBILITY.md` makes 44 pt on iOS and 48 dp on Android a launch
- * requirement, and a product cannot shrink it below that. It may grow.
+ * The primary variant is painted with `gradient.signal`, not with a flat
+ * `action.primary`. That is what the token declares it for — "hero cards,
+ * primary CTAs" — and what the web adapter already does through
+ * `--afo-gradient-accent`. A flat fill here made the same button look
+ * measurably cheaper on the phone than in the Explorer.
  *
- * `primary` uses the brand cyan, which the system reserves for action, focus and
- * selection. Since only one visual emphasis is allowed per screen, a screen with
- * two primary buttons is a design error this component cannot catch — worth
- * knowing before reaching for a second one.
+ * The minimum height is the platform touch target, not a design decision:
+ * `docs/ACCESSIBILITY.md` makes 44pt on iOS and 48dp on Android a launch
+ * requirement, so a product may grow it but not shrink it.
+ *
+ * Cyan is reserved for action, focus and selection, and only one visual emphasis
+ * is allowed per screen. A screen with two primary buttons is a design error
+ * this component cannot catch — worth knowing before reaching for a second one.
  */
 
+import { LinearGradient } from "expo-linear-gradient";
 import {
   ActivityIndicator,
   Pressable,
@@ -25,8 +31,11 @@ import {
   type ViewStyle,
 } from "react-native";
 
+import { resolveGradientEndpoints } from "./gradient-geometry.js";
+import { resolveShadowStyle } from "./shadow-style.js";
 import { Text } from "./text.js";
 import { useTheme, type Theme } from "./theme.js";
+import { semanticGradient } from "./tokens.js";
 
 export type ButtonVariant = "primary" | "secondary" | "ghost";
 
@@ -41,6 +50,8 @@ type ButtonPalette = {
   readonly background: string;
   readonly border: string | null;
   readonly foreground: string;
+  /** Only the primary variant carries the accent gradient. */
+  readonly gradient: boolean;
 };
 
 function resolvePalette(theme: Theme, variant: ButtonVariant, disabled: boolean): ButtonPalette {
@@ -49,6 +60,7 @@ function resolvePalette(theme: Theme, variant: ButtonVariant, disabled: boolean)
       background: variant === "ghost" ? "transparent" : theme.color.action.disabled,
       border: null,
       foreground: theme.color.action.onDisabled,
+      gradient: false,
     };
   }
 
@@ -58,15 +70,22 @@ function resolvePalette(theme: Theme, variant: ButtonVariant, disabled: boolean)
         background: theme.color.action.primary,
         border: null,
         foreground: theme.color.action.onPrimary,
+        gradient: true,
       };
     case "secondary":
       return {
         background: theme.color.action.secondary,
         border: theme.color.border.subtle,
         foreground: theme.color.action.onSecondary,
+        gradient: false,
       };
     case "ghost":
-      return { background: "transparent", border: null, foreground: theme.color.text.accent };
+      return {
+        background: "transparent",
+        border: null,
+        foreground: theme.color.text.accent,
+        gradient: false,
+      };
   }
 }
 
@@ -82,6 +101,20 @@ export function Button({
   const inactive = disabled || loading;
   const palette = resolvePalette(theme, variant, inactive);
 
+  const accent = semanticGradient.accent;
+  const { start, end } = resolveGradientEndpoints(accent.angle);
+  const [first, second, ...rest] = accent.stops;
+  const colors: readonly [string, string, ...string[]] = [
+    first.color,
+    second.color,
+    ...rest.map((stop) => stop.color),
+  ];
+  const locations: readonly [number, number, ...number[]] = [
+    first.position / 100,
+    second.position / 100,
+    ...rest.map((stop) => stop.position / 100),
+  ];
+
   return (
     <Pressable
       {...props}
@@ -92,32 +125,50 @@ export function Button({
         styles.base,
         {
           minHeight: theme.touchTarget,
-          paddingHorizontal: theme.spacing[6],
-          paddingVertical: theme.spacing[3],
           borderRadius: theme.semanticRadius.action,
-          backgroundColor: palette.background,
+          backgroundColor: palette.gradient ? "transparent" : palette.background,
           borderWidth: palette.border ? StyleSheet.hairlineWidth * 2 : 0,
           borderColor: palette.border ?? undefined,
         },
+        // Ghost sits inline with text and would look detached with elevation.
+        variant === "ghost" || inactive ? null : resolveShadowStyle("control"),
         // Opacity rather than a hover token: React Native has no hover, and the
         // press state has to read on both themes without a second palette.
         pressed ? styles.pressed : null,
         style,
       ]}
     >
+      {palette.gradient ? (
+        <LinearGradient
+          colors={colors}
+          locations={locations}
+          start={start}
+          end={end}
+          style={StyleSheet.absoluteFill}
+        />
+      ) : null}
+
       {loading ? (
         <View style={styles.loading}>
           <ActivityIndicator color={palette.foreground} />
         </View>
       ) : null}
-      <Text
-        role="control"
-        size="sm"
-        style={{ color: palette.foreground, opacity: loading ? 0 : 1 }}
-        numberOfLines={1}
+
+      <View
+        style={{
+          paddingHorizontal: theme.spacing[6],
+          paddingVertical: theme.spacing[3],
+        }}
       >
-        {label}
-      </Text>
+        <Text
+          role="control"
+          size="sm"
+          style={{ color: palette.foreground, opacity: loading ? 0 : 1 }}
+          numberOfLines={1}
+        >
+          {label}
+        </Text>
+      </View>
     </Pressable>
   );
 }
@@ -127,6 +178,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
+    // The gradient is an absolutely positioned child, so it has to be clipped
+    // to the pill rather than painted over its corners.
+    overflow: "hidden",
   },
   pressed: {
     opacity: 0.82,

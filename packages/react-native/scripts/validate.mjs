@@ -29,6 +29,7 @@ const nativeOnlyOutputs = [
   "text-field.js",
   "inline-alert.js",
   "backdrop.js",
+  "shadow-style.js",
 ];
 const requiredOutputs = [...importableOutputs, ...nativeOnlyOutputs];
 
@@ -131,6 +132,14 @@ if (control.letterSpacing !== 0) {
   throw new Error(
     `Control role tracks at ${control.letterSpacing} instead of 0; sentence-case labels will look spaced out.`,
   );
+}
+
+// The primary action must carry the accent gradient, not a flat fill. The web
+// adapter paints it through `--afo-gradient-accent`, and a flat native button
+// looked measurably cheaper than the same control in the Explorer.
+const buttonSource = await readFile(resolve(packageRoot, "src/button.tsx"), "utf8");
+if (!buttonSource.includes("semanticGradient.accent")) {
+  throw new Error("The primary button must paint semanticGradient.accent, matching the web adapter.");
 }
 
 // A wrong gradient angle still paints a gradient, pointing the wrong way.
