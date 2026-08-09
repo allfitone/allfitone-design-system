@@ -1225,9 +1225,9 @@
   border-bottom: 1px solid var(--afo-color-border-subtle);
 }
 
-.workspace-preview__brand .allfit-os-lockup {
-  transform: scale(0.72);
-  transform-origin: left center;
+.workspace-preview__brand .product-brand-lockup {
+  width: min(100%, 10.5rem);
+  height: auto;
 }
 
 .workspace-preview__metric {

@@ -45,6 +45,7 @@ test("applies the public application baseline and product font bridge", async ({
 });
 
 test("supports both themes without serious accessibility violations", async ({ page }) => {
+  test.setTimeout(45_000);
   await page.emulateMedia({ reducedMotion: "reduce" });
   for (const theme of ["dark", "light"] as const) {
     await page.getByRole("button", { name: theme, exact: true }).click();

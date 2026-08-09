@@ -2,7 +2,7 @@
 
 This document tracks the remaining Web UI work for `@allfitone/react`. It is a component and product-pattern backlog, not a commitment to recreate every component available in shadcn.
 
-Components enter the Design System when they are expected to be reused by Allfit OS or another ALLFIT ONE Web product. Product-specific business flows remain in their product repository until a stable shared pattern emerges.
+Components enter the Design System when they are expected to be reused by Allfit Studio, Allfit Backoffice, or another ALLFIT ONE Web product. Product-specific business flows remain in their product repository until a stable shared pattern emerges.
 
 ## Current baseline
 
@@ -59,7 +59,7 @@ The reusable navigation component layer is complete, but product integration mus
 - mobile information architecture using Drawer or the Sidebar mobile Sheet;
 - deep links, browser back/forward behavior, and focus placement after route changes.
 
-These behaviors belong in Allfit OS first. Only generic routing adapters proven by the product should return to the Design System.
+These behaviors belong in Allfit Studio first. Only generic routing adapters proven by the product should return to the Design System.
 
 ## Validation and release gates still pending
 
@@ -67,7 +67,7 @@ These behaviors belong in Allfit OS first. Only generic routing adapters proven 
 - Complete a manual keyboard pass in the Explorer and in the first consuming OS shell.
 - Complete the required NVDA review on Windows.
 - Complete the required VoiceOver and Safari review before the next public package release.
-- Run a consumer smoke test from Allfit OS using only public `@allfitone/react` subpaths.
+- Run a consumer smoke test from Allfit Studio using only public `@allfitone/react` subpaths.
 - Validate real navigation labels, dense tables, translated content, zoom at 200%, and 320 px layouts with production-like data.
 - Every public navigation contract change requires a Changeset. Documentation-only Explorer changes do not.
 

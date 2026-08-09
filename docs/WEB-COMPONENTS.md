@@ -1,6 +1,6 @@
 # Web components
 
-`@allfitone/react` is the canonical component source for Allfit OS and future ALLFIT ONE Web products. It combines the compositional API expected from shadcn with Base UI behavior and ALLFIT ONE visual and accessibility contracts.
+`@allfitone/react` is the canonical component source for Allfit Studio, Allfit Backoffice, and future ALLFIT ONE Web products. It combines the compositional API expected from shadcn with Base UI behavior and ALLFIT ONE visual and accessibility contracts.
 
 ## Stack and configuration
 
@@ -21,7 +21,7 @@ Ink & Signal v2 uses calm blue-gray ink surfaces so one cyan signal can identify
 - `AccentBlock` owns the single featured surface for a session, class, timer, or next action.
 - Active navigation and Card states use a restrained three-pixel rail plus a tonal wash.
 - `PulseMark`, `TickRing`, condensed tabular numerals, and subtle dot texture carry the athletic signature without turning every container into decoration.
-- `AnimatedBrandLockup` provides the opt-in web entrance for Allfit One. It reveals the canonical carrier and wordmark once; it does not use the Allfit OS pulse motif.
+- `AnimatedBrandLockup` provides the opt-in web entrance for Allfit One. It reveals the canonical carrier and wordmark once; it does not use a product logo or the secondary pulse motif.
 - Glass material is reserved for floating chrome and overlays; content cards remain solid.
 
 Visual hierarchy is intentionally quieter than the brand palette. Cyan is reserved for primary action, current selection, focus, and short semantic accents. Resting controls use neutral semantic boundaries; persistent cyan borders across every surface are not part of the system.

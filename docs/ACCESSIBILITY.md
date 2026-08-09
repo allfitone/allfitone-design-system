@@ -1,6 +1,6 @@
 # Accessibility standard
 
-This document is the accessibility contract for the Allfit One design system and its consumers. It turns accessibility requirements into component rules, implementation expectations, and release checks for Allfit OS on Web and Allfit Space on React Native.
+This document is the accessibility contract for the Allfit One design system and its consumers. It turns accessibility requirements into component rules, implementation expectations, and release checks for Allfit Studio and Backoffice on Web and Allfit Space on React Native.
 
 The words **must**, **should**, and **may** indicate required, recommended, and optional behavior.
 

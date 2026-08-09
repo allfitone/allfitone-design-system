@@ -43,6 +43,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "generate:assets": "npm run build && node scripts/generate-product-assets.mjs",
     "test": "node --test tests/*.test.mjs",
     "check": "npm run build && npm run test && node scripts/validate.mjs",
     "prepack": "npm run check"

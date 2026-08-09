@@ -3,7 +3,7 @@
 React and Next.js adapters for the Allfit One foundations. Import explicit subpaths so applications only include the capabilities they use.
 
 ```tsx
-import { BrandLockup } from "@allfitone/react/brand";
+import { BrandLockup, ProductLockup } from "@allfitone/react/brand";
 import { BackIcon, FoundationIcon } from "@allfitone/react/icons";
 import { semanticColor } from "@allfitone/react/tokens";
 import "@allfitone/react/tokens.css";
@@ -13,11 +13,13 @@ import "@allfitone/react/styles.css";
 import { Button } from "@allfitone/react/components/button";
 import { Dialog } from "@allfitone/react/components/dialog";
 import { AnimatedBrandLockup } from "@allfitone/react/components/animated-brand-lockup";
+
+<ProductLockup product="studio" surface="dark" title="Allfit Studio" />;
 ```
 
 ## Entry points
 
-- `@allfitone/react/brand`: accessible SVG logo, wordmark, and lockup components.
+- `@allfitone/react/brand`: accessible master-brand logo plus Space, Studio, and Backoffice SVG wordmark and shared-logo lockup components.
 - `@allfitone/react/icons`: semantic Lucide icon component and icon metadata.
 - `@allfitone/react/tokens`: typed platform-neutral token values.
 - `@allfitone/react/tokens.css`: generated Web token variables and theme selectors.

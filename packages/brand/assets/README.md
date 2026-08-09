@@ -7,6 +7,7 @@ This directory contains the canonical reusable SVG exports derived from the curr
 - `logo/`: the custom forward-leaning “1” mark, free or inside its cyan carrier.
 - `wordmark/`: the outlined `ALLFIT ONE` wordmark, without the logo.
 - `lockup/`: the logo carrier and outlined wordmark together.
+- `product/`: Space, Studio, and Backoffice outlined wordmarks and lockups built with the shared Allfit One logo.
 
 ## Variants
 
@@ -32,6 +33,9 @@ All files have transparent backgrounds. The wordmark lettering is converted to v
 - Prefer the logo carrier for app entry points, avatars, and placements that need a stronger silhouette.
 - Prefer the wordmark when the symbol is already visible nearby.
 - Prefer the lockup for primary brand identification.
+- Use the exact Allfit One logo for Space, Studio, and Backoffice; there are no product-specific symbols in the current temporary architecture.
+- Keep product descriptors cyan in primary wordmarks and lockups.
+- Do not replace the shared logo with PulseMark, a discipline icon, or an organization logo.
 - Provide “Allfit One” as accessible text when the asset is decorative or its internal title is not exposed by the host platform.
 
 These are the canonical distributable files. `npm run check` enforces parity

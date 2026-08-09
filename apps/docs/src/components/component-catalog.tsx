@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
+import { ProductLockup } from "@allfitone/react/brand";
 import { AccentBlock, AccentBlockLabel, AccentBlockMeta, AccentBlockTitle } from "@allfitone/react/components/accent-block";
 import { Alert, AlertAction, AlertDescription, AlertTitle } from "@allfitone/react/components/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@allfitone/react/components/alert-dialog";
@@ -28,6 +29,7 @@ import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMe
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@allfitone/react/components/pagination";
 import { Popover, PopoverClose, PopoverContent, PopoverDescription, PopoverFooter, PopoverHeader, PopoverTitle, PopoverTrigger } from "@allfitone/react/components/popover";
 import { Progress, ProgressDescription, ProgressHeader, ProgressIndicator, ProgressLabel, ProgressTrack, ProgressValue } from "@allfitone/react/components/progress";
+import { PulseMark } from "@allfitone/react/components/pulse-mark";
 import { RadioGroup, RadioGroupItem } from "@allfitone/react/components/radio-group";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@allfitone/react/components/select";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@allfitone/react/components/sheet";
@@ -44,8 +46,6 @@ import { TickRing } from "@allfitone/react/components/tick-ring";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@allfitone/react/components/tooltip";
 import { WorkspaceActions, WorkspaceContent, WorkspaceEyebrow, WorkspaceHeader, WorkspaceHeading, WorkspaceMain, WorkspaceShell, WorkspaceTitle } from "@allfitone/react/components/workspace-shell";
 import { FoundationIcon } from "@allfitone/react/icons";
-
-import { AllfitOsLockup } from "@/components/allfit-os-brand";
 
 type ComponentSectionProps = {
   id: string;
@@ -1390,7 +1390,7 @@ export function ComponentCatalog() {
                 <Sidebar collapsible="none">
                   <SidebarHeader>
                     <div className="workspace-preview__brand">
-                      <AllfitOsLockup surface="adaptive" />
+                      <ProductLockup className="product-brand-lockup" product="studio" surface="dark" title="Allfit Studio" />
                     </div>
                   </SidebarHeader>
                 <SidebarContent>
@@ -1527,9 +1527,10 @@ export function ComponentCatalog() {
             </div>
           </ComponentSection>
 
-          <ComponentSection id="pulse-mark" title="PulseMark" description="The EKG brand motif composes next to wordmarks and eyebrows." importPath="@allfitone/react/components/pulse-mark" contract={["aria-hidden by default", "Optional label", "currentColor stroke"]}>
+          <ComponentSection id="pulse-mark" title="PulseMark" description="The training signal remains a secondary interface motif, separate from the canonical product logos." importPath="@allfitone/react/components/pulse-mark" contract={["aria-hidden by default", "Optional label", "currentColor stroke"]}>
             <div className="demo-row signature-wordmark">
-              <AllfitOsLockup surface="adaptive" />
+              <PulseMark width={48} label="Training signal" />
+              <strong>Live training signal</strong>
             </div>
           </ComponentSection>
 

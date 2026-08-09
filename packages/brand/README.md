@@ -7,12 +7,21 @@ This is a foundational source package. Product applications should normally impo
 ## React
 
 ```tsx
-import { BrandLockup, BrandLogo, BrandLogoCarrier, BrandWordmark } from "@allfitone/brand/react";
+import {
+  BrandLockup,
+  BrandLogo,
+  BrandLogoCarrier,
+  BrandWordmark,
+  ProductLockup,
+  ProductWordmark,
+} from "@allfitone/brand/react";
 
 <BrandLockup surface="dark" title="Allfit One" />
 <BrandLogo variant="cyan" />
 <BrandLogoCarrier title="Allfit One" />
 <BrandWordmark surface="light" title="Allfit One" />
+<ProductWordmark product="studio" surface="dark" title="Allfit Studio" />
+<ProductLockup product="backoffice" surface="light" title="Allfit Backoffice" />
 ```
 
 Omit `title` only when the asset is decorative and the surrounding control already has an accessible name.
@@ -42,6 +51,12 @@ through `react-native-svg`; product applications must not build a competing
 brand renderer.
 
 Never redraw, stretch, recolor, or rearrange these assets in a consuming product.
+
+## Product family
+
+Space, Studio, and Backoffice temporarily reuse the exact Allfit One logo and carrier. Their product name is the only visual difference: `ALLFIT SPACE`, `ALLFIT STUDIO`, or `ALLFIT BACKOFFICE`.
+
+Product descriptors are outlined vectors and do not require a font at runtime. Use `BrandLogo` or `BrandLogoCarrier` when only the shared symbol is needed, and use `ProductWordmark` or `ProductLockup` when the product name must be explicit. Product-specific symbols are not part of the current canonical asset set.
 
 For public files required by framework metadata or export tooling:
 

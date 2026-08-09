@@ -1,6 +1,6 @@
 # Allfit One Design System
 
-The shared visual foundation for Allfit One, Allfit Space, Allfit OS, and the public landing experience.
+The shared visual foundation for Allfit One, Allfit Space, Allfit Studio, Allfit Backoffice, and the public landing experience.
 
 > **Beta:** Every `0.x.y` release belongs to the beta maturity line. The first
 > official Design System release will be `1.0.0`, after both products have been
