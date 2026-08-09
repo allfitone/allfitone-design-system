@@ -80,6 +80,18 @@ export const typographyRole = {
     letterSpacing: "eyebrow",
   },
   /**
+   * Sentence-case controls: buttons, links, tabs. Deliberately normal tracking —
+   * `label` exists for uppercase micro-labels and its 0.16em is unreadable on a
+   * phrase. The web adapter already set its button this way without a role, so
+   * this closes a divergence rather than opening one.
+   */
+  control: {
+    family: "body",
+    weight: "extrabold",
+    lineHeight: "compact",
+    letterSpacing: "normal",
+  },
+  /**
    * Ink & Signal v2: large data numerals (metrics, timers, KPIs) render in
    * the condensed display face with tabular figures for athletic character.
    */
