@@ -42,6 +42,66 @@
       "types": "./dist/tokens.d.ts",
       "react-native": "./dist/tokens.js",
       "import": "./dist/tokens.js"
+    },
+    "./fonts": {
+      "types": "./dist/fonts.d.ts",
+      "react-native": "./dist/fonts.js",
+      "import": "./dist/fonts.js"
+    },
+    "./theme": {
+      "types": "./dist/theme.d.ts",
+      "react-native": "./dist/theme.js",
+      "import": "./dist/theme.js"
+    },
+    "./text": {
+      "types": "./dist/text.d.ts",
+      "react-native": "./dist/text.js",
+      "import": "./dist/text.js"
+    },
+    "./button": {
+      "types": "./dist/button.d.ts",
+      "react-native": "./dist/button.js",
+      "import": "./dist/button.js"
+    },
+    "./screen": {
+      "types": "./dist/screen.d.ts",
+      "react-native": "./dist/screen.js",
+      "import": "./dist/screen.js"
+    },
+    "./gradient": {
+      "types": "./dist/gradient.d.ts",
+      "react-native": "./dist/gradient.js",
+      "import": "./dist/gradient.js"
+    },
+    "./brand-entrance": {
+      "types": "./dist/brand-entrance.d.ts",
+      "react-native": "./dist/brand-entrance.js",
+      "import": "./dist/brand-entrance.js"
+    },
+    "./glass": {
+      "types": "./dist/glass.d.ts",
+      "react-native": "./dist/glass.js",
+      "import": "./dist/glass.js"
+    },
+    "./text-field": {
+      "types": "./dist/text-field.d.ts",
+      "react-native": "./dist/text-field.js",
+      "import": "./dist/text-field.js"
+    },
+    "./inline-alert": {
+      "types": "./dist/inline-alert.d.ts",
+      "react-native": "./dist/inline-alert.js",
+      "import": "./dist/inline-alert.js"
+    },
+    "./backdrop": {
+      "types": "./dist/backdrop.d.ts",
+      "react-native": "./dist/backdrop.js",
+      "import": "./dist/backdrop.js"
+    },
+    "./shadow-style": {
+      "types": "./dist/shadow-style.d.ts",
+      "react-native": "./dist/shadow-style.js",
+      "import": "./dist/shadow-style.js"
     }
   },
   "scripts": {
@@ -53,17 +113,27 @@
     "@allfitone/brand": "^0.2.0",
     "@allfitone/icons": "^0.2.0",
     "@allfitone/tokens": "^0.1.0",
+    "@expo-google-fonts/barlow-condensed": "^0.4.0",
+    "@expo-google-fonts/manrope": "^0.4.0",
     "lucide-react-native": "^1.25.0"
   },
   "peerDependencies": {
+    "expo-blur": ">=57",
+    "expo-font": ">=57",
+    "expo-linear-gradient": ">=57",
     "react": ">=19",
     "react-native": ">=0.86",
+    "react-native-safe-area-context": ">=5",
     "react-native-svg": ">=15.15.5"
   },
   "devDependencies": {
     "@types/react": "^19",
+    "expo-blur": "57.0.2",
+    "expo-font": "57.0.1",
+    "expo-linear-gradient": "57.0.1",
     "react": "19.2.4",
     "react-native": "0.86.0",
+    "react-native-safe-area-context": "5.8.1",
     "react-native-svg": "15.15.5"
   },
   "engines": {
