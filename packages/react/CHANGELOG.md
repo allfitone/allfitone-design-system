@@ -1,5 +1,17 @@
 # @allfitone/react
 
+## 0.7.0
+
+### Minor Changes
+
+- 11b2e87: Add an accessible Base UI-backed ToggleGroup with single and multiple pressed states, arrow-key navigation, disabled behavior, and the Ink & Signal active treatment.
+- 760c84e: Add outlined Allfit Space, Studio, and Backoffice wordmarks plus Web, React Native, and static SVG lockups that temporarily reuse the exact canonical Allfit One logo.
+
+### Patch Changes
+
+- Updated dependencies [760c84e]
+  - @allfitone/brand@0.2.0
+
 ## 0.6.1
 
 ### Patch Changes
