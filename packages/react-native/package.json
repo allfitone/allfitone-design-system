@@ -88,6 +88,11 @@
       "react-native": "./dist/text-field.js",
       "import": "./dist/text-field.js"
     },
+    "./code-field": {
+      "types": "./dist/code-field.d.ts",
+      "react-native": "./dist/code-field.js",
+      "import": "./dist/code-field.js"
+    },
     "./inline-alert": {
       "types": "./dist/inline-alert.d.ts",
       "react-native": "./dist/inline-alert.js",

@@ -62,6 +62,7 @@ Expo projects should install the native peers through `npx expo install` so the 
 - `@allfitone/react-native/backdrop`: `AmbientBackdrop`, the soft blooms and dot grid.
 - `@allfitone/react-native/brand-entrance`: the mark filling with liquid, for app launch.
 - `@allfitone/react-native/text-field`: labelled text entry with a state-carrying border.
+- `@allfitone/react-native/code-field`: segmented entry for a short numeric code.
 - `@allfitone/react-native/inline-alert`: status message that sits with its control.
 
 ## Notes that are easy to get wrong
@@ -71,6 +72,10 @@ Expo projects should install the native peers through `npx expo install` so the 
 **`Text` omits the underlying `role` prop.** React Native has its own for accessibility, and its value set intersects the typographic roles at exactly `"heading"`, which silently narrows every other role away. Screen-reader semantics stay available through `accessibilityRole`.
 
 **`Scrim` needs image beneath it.** `coverage` is where the fade *completes*, not where the image ends. If the image stops at that point, the last percent of the fade still shows image and leaves a visible seam — obvious on a light canvas, where the dark edge of a photograph meets a near-white background.
+
+**`CodeField` is one input, not one per digit.** A field per digit has to simulate backspace across fields, and only one of them receives the platform's one-time-code autofill. The boxes are drawn beneath a single transparent input and hidden from assistive technology.
+
+**`CodeField` sets no `returnKeyType` and does not accept one.** The iOS number pad has no return key, so requesting one makes the platform float a loose button over the layout.
 
 **One `SignalBlock` per screen.** Ink & Signal allows a single accent surface; a second one is a design error this component cannot catch.
 
