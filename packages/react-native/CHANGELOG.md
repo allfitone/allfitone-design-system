@@ -1,5 +1,16 @@
 # @allfitone/react-native
 
+## 0.3.0
+
+### Minor Changes
+
+- 760c84e: Add outlined Allfit Space, Studio, and Backoffice wordmarks plus Web, React Native, and static SVG lockups that temporarily reuse the exact canonical Allfit One logo.
+
+### Patch Changes
+
+- Updated dependencies [760c84e]
+  - @allfitone/brand@0.2.0
+
 ## 0.2.0
 
 ### Minor Changes
