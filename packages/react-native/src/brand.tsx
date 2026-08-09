@@ -31,20 +31,63 @@ const accessibilityProps = (label: string | undefined, decorative: boolean | und
     ? { accessible: true, accessibilityLabel: label, accessibilityRole: "image" as const }
     : { accessible: false };
 
+/**
+ * Both resolved, never optional: the repository runs `exactOptionalPropertyTypes`,
+ * so a possibly-undefined dimension cannot be spread onto `Svg`.
+ */
+type Size = {
+  width: NonNullable<SvgProps["width"]>;
+  height: NonNullable<SvgProps["height"]>;
+};
+
+/**
+ * Derives the missing dimension from the artwork, so asking for one is enough.
+ *
+ * Every mark here had an independent default for each dimension. Passing only
+ * `height` therefore left `width` at a default sized for a different height, and
+ * the box came out a different shape from the `viewBox`. SVG does not stretch to
+ * fill it — the default `preserveAspectRatio` scales the art to fit and centres
+ * it in what is left over, so the mark renders at the right size, inset by half
+ * the slack, and stops lining up with the text beside it.
+ *
+ * That failure survives review because nothing looks broken: the mark is not
+ * squashed, only nudged. It was found by eye on the welcome screen.
+ *
+ * A percentage or other string dimension cannot be resolved here, so it keeps
+ * the paired default and the caller stays responsible for the ratio.
+ */
+function resolveSize(
+  artwork: { readonly width: number; readonly height: number },
+  width: SvgProps["width"],
+  height: SvgProps["height"],
+  fallback: { width: number; height: number },
+): Size {
+  if (width !== undefined && height !== undefined) return { width, height };
+  const aspectRatio = artwork.width / artwork.height;
+  if (width === undefined && typeof height === "number") {
+    return { width: height * aspectRatio, height };
+  }
+  if (height === undefined && typeof width === "number") {
+    return { width, height: width / aspectRatio };
+  }
+  return { width: width ?? fallback.width, height: height ?? fallback.height };
+}
+
 export function BrandLogo({
   variant = "cyan",
   accessibilityLabel,
   decorative,
-  width = 18,
-  height = 48,
+  width,
+  height,
   ...props
 }: NativeBrandLogoProps) {
+  const size = resolveSize(brandDimensions.logo, width, height, { width: 18, height: 48 });
+
   return (
     <Svg
       {...props}
       {...accessibilityProps(accessibilityLabel, decorative)}
-      width={width}
-      height={height}
+      {...size}
       viewBox={brandDimensions.logo.viewBox}
     >
       <Path fill={brandColors[variant]} d={brandGeometry.logoPath} />
@@ -55,16 +98,17 @@ export function BrandLogo({
 export function BrandLogoCarrier({
   accessibilityLabel,
   decorative,
-  width = 46,
-  height = 48,
+  width,
+  height,
   ...props
 }: Omit<SvgProps, "color"> & NativeBrandAccessibilityProps) {
+  const size = resolveSize(brandDimensions.logoCarrier, width, height, { width: 46, height: 48 });
+
   return (
     <Svg
       {...props}
       {...accessibilityProps(accessibilityLabel, decorative)}
-      width={width}
-      height={height}
+      {...size}
       viewBox={brandDimensions.logoCarrier.viewBox}
     >
       <G transform="translate(32 36)">
@@ -79,18 +123,18 @@ export function BrandWordmark({
   surface = "dark",
   accessibilityLabel,
   decorative,
-  width = 220,
-  height = 41,
+  width,
+  height,
   ...props
 }: NativeSurfaceBrandProps) {
   const neutral = surface === "dark" ? brandColors.chalk : brandColors.ink;
+  const size = resolveSize(brandDimensions.wordmark, width, height, { width: 220, height: 41 });
 
   return (
     <Svg
       {...props}
       {...accessibilityProps(accessibilityLabel, decorative)}
-      width={width}
-      height={height}
+      {...size}
       viewBox={brandDimensions.wordmark.viewBox}
     >
       <G transform="translate(20 728) scale(1 -1)" fill={neutral}>
@@ -107,18 +151,18 @@ export function BrandLockup({
   surface = "dark",
   accessibilityLabel,
   decorative,
-  width = 140,
-  height = 40,
+  width,
+  height,
   ...props
 }: NativeSurfaceBrandProps) {
   const neutral = surface === "dark" ? brandColors.chalk : brandColors.ink;
+  const size = resolveSize(brandDimensions.lockup, width, height, { width: 140, height: 40 });
 
   return (
     <Svg
       {...props}
       {...accessibilityProps(accessibilityLabel, decorative)}
-      width={width}
-      height={height}
+      {...size}
       viewBox={brandDimensions.lockup.viewBox}
     >
       <G transform="translate(44 36)">
@@ -150,18 +194,21 @@ export function ProductWordmark({
   surface = "dark",
   accessibilityLabel,
   decorative,
-  width = product === "backoffice" ? 300 : 224,
-  height = product === "backoffice" ? 31 : product === "studio" ? 31 : 33,
+  width,
+  height,
   ...props
 }: NativeProductSurfaceBrandProps) {
   const neutral = surface === "dark" ? brandColors.chalk : brandColors.ink;
+  const size = resolveSize(brandDimensions.product.wordmark[product], width, height, {
+    width: product === "backoffice" ? 300 : 224,
+    height: product === "backoffice" ? 31 : product === "studio" ? 31 : 33,
+  });
 
   return (
     <Svg
       {...props}
       {...accessibilityProps(accessibilityLabel, decorative)}
-      width={width}
-      height={height}
+      {...size}
       viewBox={brandDimensions.product.wordmark[product].viewBox}
     >
       <G transform="translate(20 728) scale(1 -1)" fill={neutral}>
@@ -179,18 +226,21 @@ export function ProductLockup({
   surface = "dark",
   accessibilityLabel,
   decorative,
-  width = product === "backoffice" ? 215 : product === "studio" ? 169 : 163,
-  height = 40,
+  width,
+  height,
   ...props
 }: NativeProductSurfaceBrandProps) {
   const neutral = surface === "dark" ? brandColors.chalk : brandColors.ink;
+  const size = resolveSize(brandDimensions.product.lockup[product], width, height, {
+    width: product === "backoffice" ? 215 : product === "studio" ? 169 : 163,
+    height: 40,
+  });
 
   return (
     <Svg
       {...props}
       {...accessibilityProps(accessibilityLabel, decorative)}
-      width={width}
-      height={height}
+      {...size}
       viewBox={brandDimensions.product.lockup[product].viewBox}
     >
       <G transform="translate(44 36)">
