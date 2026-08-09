@@ -3,7 +3,7 @@
 React and Next.js adapters for the Allfit One foundations. Import explicit subpaths so applications only include the capabilities they use.
 
 ```tsx
-import { BrandLockup } from "@allfitone/react/brand";
+import { BrandLockup, ProductLockup } from "@allfitone/react/brand";
 import { BackIcon, FoundationIcon } from "@allfitone/react/icons";
 import { semanticColor } from "@allfitone/react/tokens";
 import "@allfitone/react/tokens.css";
@@ -13,11 +13,13 @@ import "@allfitone/react/styles.css";
 import { Button } from "@allfitone/react/components/button";
 import { Dialog } from "@allfitone/react/components/dialog";
 import { AnimatedBrandLockup } from "@allfitone/react/components/animated-brand-lockup";
+
+<ProductLockup product="studio" surface="dark" title="Allfit Studio" />;
 ```
 
 ## Entry points
 
-- `@allfitone/react/brand`: accessible SVG logo, wordmark, and lockup components.
+- `@allfitone/react/brand`: accessible master-brand logo plus Space, Studio, and Backoffice SVG wordmark and shared-logo lockup components.
 - `@allfitone/react/icons`: semantic Lucide icon component and icon metadata.
 - `@allfitone/react/tokens`: typed platform-neutral token values.
 - `@allfitone/react/tokens.css`: generated Web token variables and theme selectors.
@@ -53,7 +55,7 @@ Available public component subpaths are:
 - navigation: `breadcrumb`, `navigation-menu`, `dropdown-menu`, `pagination`, `drawer`, `sidebar`, `workspace-shell`, and `command`;
 - entry: `access-shell` for responsive, brand-led authentication and product-entry pages, and `device-gate` for replacing compact-phone workspaces with device guidance;
 - forms: `field`, `label`, `input`, and `textarea`;
-- selection: `checkbox`, `radio-group`, `switch`, `select`, `combobox`, `date-picker`, `calendar`, and `tabs`;
+- selection: `checkbox`, `radio-group`, `switch`, `toggle-group`, `select`, `combobox`, `date-picker`, `calendar`, and `tabs`;
 - data display: `table`, `data-table`, `avatar`, `badge`, `card`, `skeleton`, and `empty`;
 - signature: `accent-block`, `stat-strip`, `tick-ring`, `pulse-mark`, and `animated-brand-lockup`;
 - overlays: `dialog`, `alert-dialog`, `sheet`, `popover`, `tooltip`, and the `CommandDialog` composition from `command`;
@@ -91,6 +93,14 @@ uses the same command children inside the public Dialog focus contract rather
 than introducing a separate global-search API. When a controlled global
 shortcut opens the dialog without `DialogTrigger`, retain the invoking element
 in a ref and pass it to `finalFocus`.
+
+`ToggleGroup` composes two to seven compact pressed buttons for mode, locale,
+or filter choices. Its `value`, `defaultValue`, and `onValueChange` contracts
+always use arrays in both single and `multiple` modes. Give each group an
+accessible name. A single group can return an empty array when its active item
+is pressed again; consumers such as locale switchers that require one value
+must reject that empty change. Use `Tabs` when the choice controls panels and
+`RadioGroup` when exactly one form value must be submitted.
 
 `Combobox` filters a predefined item collection and supports single or multiple
 selection, grouped rich options, removable chips, and async loading, empty, and

@@ -55,6 +55,90 @@
       "type": "lockup",
       "background": "transparent",
       "lettering": "outlined"
+    },
+    {
+      "path": "assets/product/space/allfit-space-wordmark-on-dark.svg",
+      "type": "product-wordmark",
+      "product": "space",
+      "background": "transparent",
+      "lettering": "outlined"
+    },
+    {
+      "path": "assets/product/space/allfit-space-lockup-on-dark.svg",
+      "type": "product-lockup",
+      "product": "space",
+      "background": "transparent",
+      "lettering": "outlined"
+    },
+    {
+      "path": "assets/product/space/allfit-space-wordmark-on-light.svg",
+      "type": "product-wordmark",
+      "product": "space",
+      "background": "transparent",
+      "lettering": "outlined"
+    },
+    {
+      "path": "assets/product/space/allfit-space-lockup-on-light.svg",
+      "type": "product-lockup",
+      "product": "space",
+      "background": "transparent",
+      "lettering": "outlined"
+    },
+    {
+      "path": "assets/product/studio/allfit-studio-wordmark-on-dark.svg",
+      "type": "product-wordmark",
+      "product": "studio",
+      "background": "transparent",
+      "lettering": "outlined"
+    },
+    {
+      "path": "assets/product/studio/allfit-studio-lockup-on-dark.svg",
+      "type": "product-lockup",
+      "product": "studio",
+      "background": "transparent",
+      "lettering": "outlined"
+    },
+    {
+      "path": "assets/product/studio/allfit-studio-wordmark-on-light.svg",
+      "type": "product-wordmark",
+      "product": "studio",
+      "background": "transparent",
+      "lettering": "outlined"
+    },
+    {
+      "path": "assets/product/studio/allfit-studio-lockup-on-light.svg",
+      "type": "product-lockup",
+      "product": "studio",
+      "background": "transparent",
+      "lettering": "outlined"
+    },
+    {
+      "path": "assets/product/backoffice/allfit-backoffice-wordmark-on-dark.svg",
+      "type": "product-wordmark",
+      "product": "backoffice",
+      "background": "transparent",
+      "lettering": "outlined"
+    },
+    {
+      "path": "assets/product/backoffice/allfit-backoffice-lockup-on-dark.svg",
+      "type": "product-lockup",
+      "product": "backoffice",
+      "background": "transparent",
+      "lettering": "outlined"
+    },
+    {
+      "path": "assets/product/backoffice/allfit-backoffice-wordmark-on-light.svg",
+      "type": "product-wordmark",
+      "product": "backoffice",
+      "background": "transparent",
+      "lettering": "outlined"
+    },
+    {
+      "path": "assets/product/backoffice/allfit-backoffice-lockup-on-light.svg",
+      "type": "product-lockup",
+      "product": "backoffice",
+      "background": "transparent",
+      "lettering": "outlined"
     }
   ]
 }

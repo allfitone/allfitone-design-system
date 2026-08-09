@@ -1,6 +1,6 @@
 # Web components
 
-`@allfitone/react` is the canonical component source for Allfit OS and future ALLFIT ONE Web products. It combines the compositional API expected from shadcn with Base UI behavior and ALLFIT ONE visual and accessibility contracts.
+`@allfitone/react` is the canonical component source for Allfit Studio, Allfit Backoffice, and future ALLFIT ONE Web products. It combines the compositional API expected from shadcn with Base UI behavior and ALLFIT ONE visual and accessibility contracts.
 
 ## Stack and configuration
 
@@ -21,7 +21,7 @@ Ink & Signal v2 uses calm blue-gray ink surfaces so one cyan signal can identify
 - `AccentBlock` owns the single featured surface for a session, class, timer, or next action.
 - Active navigation and Card states use a restrained three-pixel rail plus a tonal wash.
 - `PulseMark`, `TickRing`, condensed tabular numerals, and subtle dot texture carry the athletic signature without turning every container into decoration.
-- `AnimatedBrandLockup` provides the opt-in web entrance for Allfit One. It reveals the canonical carrier and wordmark once; it does not use the Allfit OS pulse motif.
+- `AnimatedBrandLockup` provides the opt-in web entrance for Allfit One. It reveals the canonical carrier and wordmark once; it does not use a product logo or the secondary pulse motif.
 - Glass material is reserved for floating chrome and overlays; content cards remain solid.
 
 Visual hierarchy is intentionally quieter than the brand palette. Cyan is reserved for primary action, current selection, focus, and short semantic accents. Resting controls use neutral semantic boundaries; persistent cyan borders across every surface are not part of the system.
@@ -61,7 +61,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | Navigation | Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell, Command |
 | Entry | AccessShell, DeviceGate |
 | Forms | Field, Label, Input, Textarea |
-| Selection | Checkbox, RadioGroup, Switch, Select, Combobox, DatePicker, Calendar, Tabs |
+| Selection | Checkbox, RadioGroup, Switch, ToggleGroup, Select, Combobox, DatePicker, Calendar, Tabs |
 | Data display | Table, DataTable, Avatar, Badge, Card, Skeleton, Empty |
 | Signature | AccentBlock, StatStrip, TickRing, PulseMark, AnimatedBrandLockup |
 | Overlays | Dialog, AlertDialog, Sheet, Popover, Tooltip, CommandDialog |
@@ -107,6 +107,14 @@ The package root remains metadata-only. There is no component barrel because exp
 - `AvatarPresence` pairs each status color with a distinct icon and requires a
   full text label. Use `AvatarGroup` for assigned teams and name both the group
   and any `AvatarGroupCount` so hidden members remain understandable.
+- ToggleGroup represents a compact set of pressed buttons for modes, locales,
+  or filters. Name the group, keep the set between two and seven items, and use
+  `multiple` only when simultaneous pressed values are meaningful. Values are
+  arrays in both modes. If a product requires one value at all times, reject an
+  empty `onValueChange` result instead of treating ToggleGroup like RadioGroup.
+- ToggleGroup is not panel navigation. Use Tabs when each choice reveals a
+  corresponding panel, and RadioGroup when the control submits exactly one
+  form value.
 - Combobox filters a known collection; it does not accept arbitrary free-form
   values. Compose `ComboboxInputGroup`, `ComboboxInput`, actions, content,
   list, and items for a single value. Add `ComboboxChips`, `ComboboxValue`,

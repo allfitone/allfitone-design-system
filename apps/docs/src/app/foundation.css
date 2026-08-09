@@ -660,7 +660,7 @@
   border-bottom: 2px solid var(--afo-color-border-strong);
 }
 
-.brand-product--os .brand-product__header {
+.brand-product--product .brand-product__header {
   border-bottom-color: var(--afo-color-border-accent);
 }
 
@@ -904,43 +904,16 @@
   line-height: 1.35;
 }
 
-.allfit-os-wordmark {
-  display: block;
-  width: 7.2rem;
-  height: auto;
-  flex: 0 0 auto;
-  overflow: visible;
+.brand-asset-card--product-logo .brand-asset-preview__surface > svg {
+  width: min(46%, 5.5rem);
 }
 
-.allfit-os-mark {
-  width: 2.5rem;
-  height: auto;
-  overflow: visible;
-  fill: none;
-  stroke: #55effb;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 2.2;
+.brand-asset-card--product-wordmark .brand-asset-preview__surface > .product-brand-wordmark {
+  width: min(88%, 14rem);
 }
 
-.allfit-os-mark path {
-  stroke-width: 2.2;
-}
-
-.brand-asset-card--os-mark .brand-asset-preview__surface > .allfit-os-mark {
-  width: 3.25rem;
-}
-
-.allfit-os-lockup {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
-  white-space: nowrap;
-}
-
-.allfit-os-lockup > .allfit-os-mark {
-  width: 2.25rem;
-  flex: 0 0 auto;
+.brand-asset-card--product-lockup .brand-asset-preview__surface > .product-brand-lockup {
+  width: min(92%, 16rem);
 }
 
 .brand-usage-rules {

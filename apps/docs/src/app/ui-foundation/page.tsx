@@ -7,6 +7,9 @@ import {
   BrandLogo,
   BrandLogoCarrier,
   BrandWordmark,
+  ProductLockup,
+  ProductWordmark,
+  type BrandProduct,
 } from "@allfitone/react/brand";
 import { Badge } from "@allfitone/react/components/badge";
 import { Button } from "@allfitone/react/components/button";
@@ -53,11 +56,6 @@ import {
   DesignSystemLayout,
 } from "@/components/design-system-shell";
 import { BrandMotionSpecimen } from "@/components/brand-motion-specimen";
-import {
-  AllfitOsLockup,
-  AllfitOsMark,
-  AllfitOsWordmark,
-} from "@/components/allfit-os-brand";
 import { explorerReleaseLabel } from "@/lib/release";
 
 export const metadata: Metadata = {
@@ -77,6 +75,31 @@ const trainingGoals = [
   { label: "Performance", value: "performance" },
   { label: "General fitness", value: "general-fitness" },
   { label: "Recovery", value: "recovery" },
+];
+const productBrands: ReadonlyArray<{
+  product: BrandProduct;
+  name: string;
+  description: string;
+  useFor: string;
+}> = [
+  {
+    product: "space",
+    name: "Allfit Space",
+    description: "The personal space for Fitness ID, training activity, and progress across connected relationships.",
+    useFor: "Allfit Space app entry and personal fitness surfaces",
+  },
+  {
+    product: "studio",
+    name: "Allfit Studio",
+    description: "The professional workspace for planning, coaching, and following real training execution.",
+    useFor: "Allfit Studio shell and professional workspace entry",
+  },
+  {
+    product: "backoffice",
+    name: "Allfit Backoffice",
+    description: "The restricted workspace for governed, auditable platform operations.",
+    useFor: "Restricted internal platform operations",
+  },
 ];
 const foundationAreas = [
   { code: "BRD", label: "Brand assets", hash: "brand-assets" },
@@ -170,7 +193,7 @@ export default function Home() {
             <h1>UI Foundation</h1>
             <p className="foundation-overview__thesis">Define once. Resolve everywhere.</p>
             <p>
-              Trace every visual decision from primitive value to semantic role and production output across Allfit Space and Allfit OS.
+              Trace every visual decision from primitive value to semantic role and production output across Allfit Space, Studio, and Backoffice.
             </p>
             <div className="guide-overview__links">
               <a href="#foundation-index">Open the index</a>
@@ -354,103 +377,90 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="brand-product brand-product--os" aria-labelledby="allfit-os-assets">
-            <header className="brand-product__header">
-              <span className="brand-product__code">Product brand</span>
-              <div>
-                <h3 id="allfit-os-assets">Allfit OS</h3>
-                <p>The professional workspace identity. Keep it inside Allfit OS product surfaces.</p>
+          {productBrands.map(({ product, name, description, useFor }) => (
+            <section className="brand-product brand-product--product" aria-labelledby={`allfit-${product}-assets`} key={product}>
+              <header className="brand-product__header">
+                <span className="brand-product__code">Product brand / Shared master logo</span>
+                <div>
+                  <h3 id={`allfit-${product}-assets`}>{name}</h3>
+                  <p>{description}</p>
+                </div>
+                <span className="brand-asset-status brand-asset-status--provisional">Temporary</span>
+              </header>
+
+              <div className="brand-asset-grid brand-asset-grid--product">
+                <article className="brand-asset-card brand-asset-card--product-logo">
+                  <header><div><span className="brand-asset-card__index">Master identity</span><h4>Shared logo</h4></div></header>
+                  <div className="brand-asset-preview brand-asset-preview--paired">
+                    <div className="brand-asset-preview__surface" data-surface="dark">
+                      <BrandLogoCarrier title="Allfit One" />
+                      <small>On dark</small>
+                    </div>
+                    <div className="brand-asset-preview__surface" data-surface="light">
+                      <BrandLogoCarrier title="Allfit One" />
+                      <small>On light</small>
+                    </div>
+                  </div>
+                  <dl className="brand-asset-specs">
+                    <div><dt>Identity</dt><dd>Allfit One</dd></div>
+                    <div><dt>Shared by</dt><dd>Space, Studio, Backoffice</dd></div>
+                    <div><dt>Minimum</dt><dd>32 px high</dd></div>
+                    <div><dt>Status</dt><dd>Temporary master logo</dd></div>
+                  </dl>
+                </article>
+
+                <article className="brand-asset-card brand-asset-card--product-wordmark">
+                  <header><div><span className="brand-asset-card__index">Name</span><h4>Wordmark</h4></div></header>
+                  <div className="brand-asset-preview brand-asset-preview--paired">
+                    <div className="brand-asset-preview__surface" data-surface="dark">
+                      <ProductWordmark className="product-brand-wordmark" product={product} surface="dark" title={name} />
+                      <small>On dark</small>
+                    </div>
+                    <div className="brand-asset-preview__surface" data-surface="light">
+                      <ProductWordmark className="product-brand-wordmark" product={product} surface="light" title={name} />
+                      <small>On light</small>
+                    </div>
+                  </div>
+                  <dl className="brand-asset-specs">
+                    <div><dt>Use for</dt><dd>Product-name identification</dd></div>
+                    <div><dt>Minimum</dt><dd>20 px high</dd></div>
+                    <div><dt>Standard</dt><dd>20 / 24 / 32 px high</dd></div>
+                    <div><dt>Type</dt><dd>Outlined vectors</dd></div>
+                  </dl>
+                </article>
+
+                <article className="brand-asset-card brand-asset-card--product-lockup">
+                  <header><div><span className="brand-asset-card__index">Primary signature</span><h4>Logo + wordmark</h4></div></header>
+                  <div className="brand-asset-preview brand-asset-preview--paired">
+                    <div className="brand-asset-preview__surface" data-surface="dark">
+                      <ProductLockup className="product-brand-lockup" product={product} surface="dark" title={name} />
+                      <small>On dark</small>
+                    </div>
+                    <div className="brand-asset-preview__surface" data-surface="light">
+                      <ProductLockup className="product-brand-lockup" product={product} surface="light" title={name} />
+                      <small>On light</small>
+                    </div>
+                  </div>
+                  <dl className="brand-asset-specs">
+                    <div><dt>Use for</dt><dd>{useFor}</dd></div>
+                    <div><dt>Minimum</dt><dd>32 px high</dd></div>
+                    <div><dt>Standard</dt><dd>32 / 40 / 48 px high</dd></div>
+                    <div><dt>Status</dt><dd>Temporary shared-logo lockup</dd></div>
+                  </dl>
+                </article>
               </div>
-              <span className="brand-asset-status brand-asset-status--provisional">Provisional</span>
-            </header>
-
-            <div className="brand-asset-grid brand-asset-grid--allfit-os">
-              <article className="brand-asset-card brand-asset-card--os-mark">
-                <header>
-                  <div>
-                    <span className="brand-asset-card__index">Symbol</span>
-                    <h4>Logo</h4>
-                  </div>
-                </header>
-                <div className="brand-asset-preview brand-asset-preview--paired">
-                  <div className="brand-asset-preview__surface" data-surface="dark">
-                    <AllfitOsMark title="Allfit OS" />
-                    <small>On dark</small>
-                  </div>
-                  <div className="brand-asset-preview__surface" data-surface="light">
-                    <AllfitOsMark title="Allfit OS" />
-                    <small>On light</small>
-                  </div>
-                </div>
-                <dl className="brand-asset-specs">
-                  <div><dt>Use for</dt><dd>Compact product identification</dd></div>
-                  <div><dt>Minimum</dt><dd>24 px wide</dd></div>
-                  <div><dt>Standard</dt><dd>24 / 32 / 40 px wide</dd></div>
-                  <div><dt>Color</dt><dd>Allfit cyan only</dd></div>
-                </dl>
-              </article>
-
-              <article className="brand-asset-card brand-asset-card--os-wordmark">
-                <header>
-                  <div>
-                    <span className="brand-asset-card__index">Name</span>
-                    <h4>Wordmark</h4>
-                  </div>
-                </header>
-                <div className="brand-asset-preview brand-asset-preview--paired">
-                  <div className="brand-asset-preview__surface" data-surface="dark">
-                    <AllfitOsWordmark surface="dark" />
-                    <small>On dark</small>
-                  </div>
-                  <div className="brand-asset-preview__surface" data-surface="light">
-                    <AllfitOsWordmark surface="light" />
-                    <small>On light</small>
-                  </div>
-                </div>
-                <dl className="brand-asset-specs">
-                  <div><dt>Use for</dt><dd>When the signal is already visible</dd></div>
-                  <div><dt>Minimum</dt><dd>20 px high</dd></div>
-                  <div><dt>Standard</dt><dd>20 / 24 / 32 px high</dd></div>
-                  <div><dt>Alignment</dt><dd>Equal optical cap height</dd></div>
-                </dl>
-              </article>
-
-              <article className="brand-asset-card brand-asset-card--os-lockup">
-                <header>
-                  <div>
-                    <span className="brand-asset-card__index">Primary signature</span>
-                    <h4>Logo + wordmark</h4>
-                  </div>
-                </header>
-                <div className="brand-asset-preview brand-asset-preview--paired">
-                  <div className="brand-asset-preview__surface" data-surface="dark">
-                    <AllfitOsLockup surface="dark" />
-                    <small>On dark</small>
-                  </div>
-                  <div className="brand-asset-preview__surface" data-surface="light">
-                    <AllfitOsLockup surface="light" />
-                    <small>On light</small>
-                  </div>
-                </div>
-                <dl className="brand-asset-specs">
-                  <div><dt>Use for</dt><dd>Allfit OS shell and product entry</dd></div>
-                  <div><dt>Minimum</dt><dd>24 px high</dd></div>
-                  <div><dt>Standard</dt><dd>24 / 32 / 40 px high</dd></div>
-                  <div><dt>Status</dt><dd>Canonical SVG pending</dd></div>
-                </dl>
-              </article>
-            </div>
-          </section>
+            </section>
+          ))}
         </div>
 
         <div className="brand-usage-rules" aria-label="Brand asset rules">
           <p><strong>Keep proportions</strong><small>Never stretch, skew, or redraw.</small></p>
           <p><strong>Match the surface</strong><small>Use the on-light or on-dark export.</small></p>
-          <p><strong>Preserve emphasis</strong><small>Keep ONE and OS in Allfit cyan.</small></p>
+          <p><strong>Preserve emphasis</strong><small>Keep ONE and product descriptors in Allfit cyan.</small></p>
           <p><strong>Name accessibly</strong><small>Expose the matching product name.</small></p>
         </div>
         <p className="token-note brand-assets-note">
-          Source of truth: <code>@allfitone/brand</code>. The Allfit OS reference is documented for review but must not be exported as canonical artwork yet.
+          Source of truth: <code>@allfitone/brand</code>. Space, Studio, and Backoffice temporarily reuse the exact Allfit One logo; only their wordmarks change.
         </p>
       </section>
 

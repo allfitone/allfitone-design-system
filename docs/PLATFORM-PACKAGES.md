@@ -102,7 +102,7 @@ Recommended publish order:
 
 ## Consumer policy
 
-- Allfit OS and the landing should install an exact released `@allfitone/react` version when they adopt the Design System.
+- Allfit Studio, Allfit Backoffice, and the landing should install an exact released `@allfitone/react` version when they adopt the Design System.
 - Allfit Space installs `@allfitone/react-native` when its application scaffold is created.
 - Do not use sibling filesystem dependencies in product repositories.
 - Do not copy source components into product repositories.

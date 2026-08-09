@@ -9,19 +9,23 @@ import {
   BrandLogo,
   BrandLogoCarrier,
   BrandWordmark,
+  ProductLockup,
+  ProductWordmark,
 } from "../dist/react.js";
 
 const renderers = [
-  ["BrandLogo", BrandLogo],
-  ["BrandLogoCarrier", BrandLogoCarrier],
-  ["BrandWordmark", BrandWordmark],
-  ["BrandLockup", BrandLockup],
+  ["BrandLogo", BrandLogo, {}],
+  ["BrandLogoCarrier", BrandLogoCarrier, {}],
+  ["BrandWordmark", BrandWordmark, {}],
+  ["BrandLockup", BrandLockup, {}],
+  ["ProductWordmark", ProductWordmark, { product: "studio" }],
+  ["ProductLockup", ProductLockup, { product: "backoffice" }],
 ];
 
-for (const [name, Renderer] of renderers) {
+for (const [name, Renderer, requiredProps] of renderers) {
   test(`${name} uses title as its accessible name`, () => {
     const markup = renderToStaticMarkup(
-      React.createElement(Renderer, { title: "Allfit One" }),
+      React.createElement(Renderer, { ...requiredProps, title: "Allfit One" }),
     );
 
     assert.match(markup, /role="img"/);
@@ -32,7 +36,7 @@ for (const [name, Renderer] of renderers) {
 
   test(`${name} honors a standard aria-label`, () => {
     const markup = renderToStaticMarkup(
-      React.createElement(Renderer, { "aria-label": "Allfit One" }),
+      React.createElement(Renderer, { ...requiredProps, "aria-label": "Allfit One" }),
     );
 
     assert.match(markup, /role="img"/);
@@ -42,7 +46,7 @@ for (const [name, Renderer] of renderers) {
 
   test(`${name} honors external labelling`, () => {
     const markup = renderToStaticMarkup(
-      React.createElement(Renderer, { "aria-labelledby": "brand-name" }),
+      React.createElement(Renderer, { ...requiredProps, "aria-labelledby": "brand-name" }),
     );
 
     assert.match(markup, /role="img"/);
@@ -51,9 +55,21 @@ for (const [name, Renderer] of renderers) {
   });
 
   test(`${name} is decorative by default`, () => {
-    const markup = renderToStaticMarkup(React.createElement(Renderer));
+    const markup = renderToStaticMarkup(React.createElement(Renderer, requiredProps));
 
     assert.match(markup, /role="presentation"/);
     assert.match(markup, /aria-hidden="true"/);
+  });
+}
+
+for (const product of ["space", "studio", "backoffice"]) {
+  test(`ProductLockup reuses the canonical Allfit One logo for ${product}`, () => {
+    const markup = renderToStaticMarkup(
+      React.createElement(ProductLockup, { product, title: `Allfit ${product}` }),
+    );
+
+    assert.match(markup, /transform="translate\(44 36\)"/);
+    assert.match(markup, /transform="translate\(142 22\) scale\(\.318\)"/);
+    assert.doesNotMatch(markup, /stroke=/);
   });
 }

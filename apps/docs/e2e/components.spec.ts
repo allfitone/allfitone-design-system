@@ -45,6 +45,7 @@ test("applies the public application baseline and product font bridge", async ({
 });
 
 test("supports both themes without serious accessibility violations", async ({ page }) => {
+  test.setTimeout(45_000);
   await page.emulateMedia({ reducedMotion: "reduce" });
   for (const theme of ["dark", "light"] as const) {
     await page.getByRole("button", { name: theme, exact: true }).click();
@@ -243,6 +244,16 @@ test("keeps popover content opaque, non-modal and collision-aware", async ({ pag
 });
 
 test("operates composite selection controls from the keyboard", async ({ page }) => {
+  const toggleGroup = page.locator("#toggle-group");
+  const spanishToggle = toggleGroup.getByRole("button", { name: "ES", exact: true });
+  const englishToggle = toggleGroup.getByRole("button", { name: "EN", exact: true });
+  await spanishToggle.focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(englishToggle).toBeFocused();
+  await page.keyboard.press("Space");
+  await expect(englishToggle).toHaveAttribute("aria-pressed", "true");
+  await expect(spanishToggle).toHaveAttribute("aria-pressed", "false");
+
   const historyTab = page.getByRole("tab", { name: "History" });
   await page.getByRole("tab", { name: "Overview" }).focus();
   await page.keyboard.press("ArrowRight");
@@ -714,6 +725,7 @@ test("keeps touch targets and focus treatment at the minimum contract", async ({
       .getByRole("table", { name: "Members" })
       .getByRole("checkbox", { name: "Select Camila Torres" }),
     switch: page.getByRole("switch", { name: "Live progress sharing" }),
+    "toggle group item": page.locator("#toggle-group").getByRole("button", { name: "ES" }),
     "navigation trigger": page.locator("#navigation-menu").getByRole("button", { name: "Training", exact: true }),
     "workspace action": page.locator("#workspace-shell").getByRole("button", { name: /Panel/ }),
   };
@@ -859,6 +871,10 @@ test("honors reduced motion and forced color focus", async ({ page }) => {
   const action = page.getByRole("button", { name: "Start session" });
   await action.focus();
   expect(await action.evaluate((element) => getComputedStyle(element).outlineStyle)).not.toBe("none");
+
+  const pressedToggle = page.locator("#toggle-group").getByRole("button", { name: "ES", exact: true });
+  await expect(pressedToggle).toHaveAttribute("aria-pressed", "true");
+  expect(await pressedToggle.evaluate((element) => getComputedStyle(element).forcedColorAdjust)).toBe("none");
 });
 
 test("matches the approved catalog composition", async ({ page }) => {

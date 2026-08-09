@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
+import { ProductLockup } from "@allfitone/react/brand";
 import { AccentBlock, AccentBlockLabel, AccentBlockMeta, AccentBlockTitle } from "@allfitone/react/components/accent-block";
 import { Alert, AlertAction, AlertDescription, AlertTitle } from "@allfitone/react/components/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@allfitone/react/components/alert-dialog";
@@ -28,6 +29,7 @@ import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMe
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@allfitone/react/components/pagination";
 import { Popover, PopoverClose, PopoverContent, PopoverDescription, PopoverFooter, PopoverHeader, PopoverTitle, PopoverTrigger } from "@allfitone/react/components/popover";
 import { Progress, ProgressDescription, ProgressHeader, ProgressIndicator, ProgressLabel, ProgressTrack, ProgressValue } from "@allfitone/react/components/progress";
+import { PulseMark } from "@allfitone/react/components/pulse-mark";
 import { RadioGroup, RadioGroupItem } from "@allfitone/react/components/radio-group";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@allfitone/react/components/select";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@allfitone/react/components/sheet";
@@ -41,11 +43,10 @@ import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Tabl
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@allfitone/react/components/tabs";
 import { Textarea } from "@allfitone/react/components/textarea";
 import { TickRing } from "@allfitone/react/components/tick-ring";
+import { ToggleGroup, ToggleGroupItem } from "@allfitone/react/components/toggle-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@allfitone/react/components/tooltip";
 import { WorkspaceActions, WorkspaceContent, WorkspaceEyebrow, WorkspaceHeader, WorkspaceHeading, WorkspaceMain, WorkspaceShell, WorkspaceTitle } from "@allfitone/react/components/workspace-shell";
 import { FoundationIcon } from "@allfitone/react/icons";
-
-import { AllfitOsLockup } from "@/components/allfit-os-brand";
 
 type ComponentSectionProps = {
   id: string;
@@ -1390,7 +1391,7 @@ export function ComponentCatalog() {
                 <Sidebar collapsible="none">
                   <SidebarHeader>
                     <div className="workspace-preview__brand">
-                      <AllfitOsLockup surface="adaptive" />
+                      <ProductLockup className="product-brand-lockup" product="studio" surface="dark" title="Allfit Studio" />
                     </div>
                   </SidebarHeader>
                 <SidebarContent>
@@ -1449,7 +1450,7 @@ export function ComponentCatalog() {
       </section>
 
       <section className="catalog-category" aria-labelledby="selection-heading">
-        <CategoryHeader id="selection" code="SEL" title="Selection" description="State is visible through shape, position and semantics—not color alone." count={8} />
+        <CategoryHeader id="selection" code="SEL" title="Selection" description="State is visible through shape, position and semantics—not color alone." count={9} />
         <div className="component-grid">
           <ComponentSection id="checkbox" title="Checkbox" description="Checked and indeterminate states retain a 44 px target." importPath="@allfitone/react/components/checkbox" contract={["Checked", "Indeterminate", "Disabled", "44 px target"]}>
             <Field orientation="horizontal"><Checkbox id="consent" defaultChecked /><FieldLabel htmlFor="consent">Share training history with this coach</FieldLabel></Field>
@@ -1461,6 +1462,13 @@ export function ComponentCatalog() {
 
           <ComponentSection id="switch" title="Switch" description="Track and thumb expose state through position as well as color." importPath="@allfitone/react/components/switch" contract={["On / off", "Disabled", "Visible label", "44 px target"]}>
             <Field orientation="horizontal"><Switch id="progress-sharing" defaultChecked /><FieldLabel htmlFor="progress-sharing">Live progress sharing</FieldLabel></Field>
+          </ComponentSection>
+
+          <ComponentSection id="toggle-group" title="ToggleGroup" description="Compact modes and filters share one restrained signal rail without losing their pressed semantics." importPath="@allfitone/react/components/toggle-group" contract={["Single / multiple", "Arrow navigation", "Pressed state", "Disabled"]}>
+            <FieldGroup>
+              <FieldSet><FieldLegend variant="label">Interface language</FieldLegend><ToggleGroup aria-label="Interface language" defaultValue={["es"]}><ToggleGroupItem value="es">ES</ToggleGroupItem><ToggleGroupItem value="en">EN</ToggleGroupItem></ToggleGroup></FieldSet>
+              <FieldSet><FieldLegend variant="label">Training signals</FieldLegend><ToggleGroup aria-label="Training signals" defaultValue={["strength"]} multiple><ToggleGroupItem value="strength">Strength</ToggleGroupItem><ToggleGroupItem value="mobility">Mobility</ToggleGroupItem><ToggleGroupItem value="conditioning" disabled>Conditioning</ToggleGroupItem></ToggleGroup></FieldSet>
+            </FieldGroup>
           </ComponentSection>
 
           <ComponentSection id="select" title="Select" description="Grouped options support keyboard traversal and explicit labels." importPath="@allfitone/react/components/select" contract={["Open / closed", "Arrow navigation", "Grouped options", "Invalid"]}>
@@ -1527,9 +1535,10 @@ export function ComponentCatalog() {
             </div>
           </ComponentSection>
 
-          <ComponentSection id="pulse-mark" title="PulseMark" description="The EKG brand motif composes next to wordmarks and eyebrows." importPath="@allfitone/react/components/pulse-mark" contract={["aria-hidden by default", "Optional label", "currentColor stroke"]}>
+          <ComponentSection id="pulse-mark" title="PulseMark" description="The training signal remains a secondary interface motif, separate from the canonical product logos." importPath="@allfitone/react/components/pulse-mark" contract={["aria-hidden by default", "Optional label", "currentColor stroke"]}>
             <div className="demo-row signature-wordmark">
-              <AllfitOsLockup surface="adaptive" />
+              <PulseMark width={48} label="Training signal" />
+              <strong>Live training signal</strong>
             </div>
           </ComponentSection>
 
