@@ -28,6 +28,8 @@ test("asset synchronization removes only obsolete managed files", async () => {
     const sentinel = JSON.parse(await readFile(sentinelPath, "utf8"));
     assert.equal(sentinel.format, "allfitone-brand-assets");
     assert.ok(sentinel.managedFiles.includes("logo/allfit-one-logo-cyan.svg"));
+    assert.ok(sentinel.managedFiles.includes("favicon/allfit-one-favicon-ink.svg"));
+    assert.ok(sentinel.managedFiles.includes("favicon/allfit-one-favicon-cyan.svg"));
 
     const stalePath = join(target, "logo", "obsolete-logo.svg");
     const unrelatedPath = join(target, "consumer-note.txt");

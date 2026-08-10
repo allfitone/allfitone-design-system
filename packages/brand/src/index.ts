@@ -7,6 +7,10 @@ export const brandColors = {
 } as const;
 
 export const brandDimensions = {
+  favicon: {
+    ink: { width: 512, height: 512, viewBox: "0 0 512 512" },
+    cyan: { width: 64, height: 64, viewBox: "0 0 64 64" },
+  },
   logo: { width: 405, height: 1149, viewBox: "0 0 405 1149" },
   logoCarrier: { width: 460, height: 480, viewBox: "0 0 460 480" },
   wordmark: { width: 4047, height: 756, viewBox: "0 0 4047 756" },
@@ -36,6 +40,10 @@ export const brandProductNames = {
  * Use `brandAssetSpecifiers` when resolving an asset through a package loader.
  */
 export const brandAssetFiles = {
+  favicon: {
+    ink: "assets/favicon/allfit-one-favicon-ink.svg",
+    cyan: "assets/favicon/allfit-one-favicon-cyan.svg",
+  },
   logo: {
     cyan: "assets/logo/allfit-one-logo-cyan.svg",
     ink: "assets/logo/allfit-one-logo-ink.svg",
@@ -89,6 +97,10 @@ const toBrandAssetSpecifier = <Path extends string>(path: Path) =>
 
 /** Public module specifiers accepted by package-aware resolvers and bundlers. */
 export const brandAssetSpecifiers = {
+  favicon: {
+    ink: toBrandAssetSpecifier(brandAssetFiles.favicon.ink),
+    cyan: toBrandAssetSpecifier(brandAssetFiles.favicon.cyan),
+  },
   logo: {
     cyan: toBrandAssetSpecifier(brandAssetFiles.logo.cyan),
     ink: toBrandAssetSpecifier(brandAssetFiles.logo.ink),
@@ -132,6 +144,7 @@ export const brandAssetSpecifiers = {
 } as const;
 
 export type BrandSurface = "dark" | "light";
+export type BrandFaviconVariant = keyof typeof brandAssetFiles.favicon;
 export type BrandLogoVariant = keyof typeof brandAssetFiles.logo;
 export type BrandProduct = keyof typeof brandProductNames;
 

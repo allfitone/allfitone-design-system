@@ -15,6 +15,11 @@ resolve through the same `iconCatalog` source mapping.
 
 Web React projects should render brand assets from `@allfitone/react/brand` and interface icons from `@allfitone/react/icons`. Physical SVG files remain available through the underlying brand package for metadata, favicons, and export pipelines.
 
+The canonical favicon set has two semantic variants: `ink` (ink tile with cyan
+symbol, established by the landing page) and `cyan` (cyan tile with ink symbol,
+established by the Design System Explorer). Consumers must use these packaged
+assets instead of adapting the logo carrier or maintaining local redraws.
+
 React Native projects should consume `@allfitone/react-native/brand`, `@allfitone/react-native/icons`, and `@allfitone/react-native/tokens`. The adapter renders canonical geometry through `react-native-svg` and preserves the same semantic Lucide names used on Web.
 
 ## Distribution rule

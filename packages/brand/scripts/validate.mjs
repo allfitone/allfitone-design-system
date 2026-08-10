@@ -18,6 +18,7 @@ const packageMetadata = JSON.parse(
 );
 
 const assetPaths = [
+  ...Object.values(brandAssetFiles.favicon),
   ...Object.values(brandAssetFiles.logo),
   brandAssetFiles.logoCarrier,
   ...Object.values(brandAssetFiles.wordmark),
@@ -28,6 +29,7 @@ const assetPaths = [
   ]),
 ];
 const assetSpecifiers = [
+  ...Object.values(brandAssetSpecifiers.favicon),
   ...Object.values(brandAssetSpecifiers.logo),
   brandAssetSpecifiers.logoCarrier,
   ...Object.values(brandAssetSpecifiers.wordmark),
@@ -75,6 +77,36 @@ const lockupXValues = [
 ];
 
 const expectedAssets = new Map([
+  [brandAssetFiles.favicon.ink, {
+    type: "favicon",
+    variant: "ink",
+    background: "ink",
+    lettering: null,
+    viewBox: brandDimensions.favicon.ink.viewBox,
+    paths: [brandGeometry.logoPath],
+    fills: [brandColors.ink, brandColors.cyan],
+    strokes: [],
+    fragments: [
+      `<rect width="${brandDimensions.favicon.ink.width}" height="${brandDimensions.favicon.ink.height}" rx="${brandGeometry.favicon.ink.borderRadius}"`,
+      `transform="${brandGeometry.favicon.ink.logoTransform}"`,
+    ],
+    xValues: [],
+  }],
+  [brandAssetFiles.favicon.cyan, {
+    type: "favicon",
+    variant: "cyan",
+    background: "cyan",
+    lettering: null,
+    viewBox: brandDimensions.favicon.cyan.viewBox,
+    paths: [brandGeometry.logoPath],
+    fills: [brandColors.cyan, brandColors.ink],
+    strokes: [],
+    fragments: [
+      `<rect width="${brandDimensions.favicon.cyan.width}" height="${brandDimensions.favicon.cyan.height}" rx="${brandGeometry.favicon.cyan.borderRadius}"`,
+      `transform="${brandGeometry.favicon.cyan.logoTransform}"`,
+    ],
+    xValues: [],
+  }],
   [brandAssetFiles.logo.cyan, {
     type: "logo",
     lettering: null,
@@ -251,7 +283,8 @@ await Promise.all(manifest.assets.map(async (asset) => {
   assert(expected, `Manifest contains an unknown brand asset: ${asset.path}`);
   assert(asset.type === expected.type, `Unexpected asset type for ${asset.path}.`);
   assert(asset.product === expected.product, `Unexpected product for ${asset.path}.`);
-  assert(asset.background === "transparent", `Brand asset must remain transparent: ${asset.path}`);
+  assert(asset.variant === expected.variant, `Unexpected variant for ${asset.path}.`);
+  assert(asset.background === (expected.background ?? "transparent"), `Unexpected background for ${asset.path}.`);
   assert(asset.lettering === expected.lettering, `Unexpected lettering mode for ${asset.path}.`);
 
   const absolutePath = resolve(packageRoot, asset.path);

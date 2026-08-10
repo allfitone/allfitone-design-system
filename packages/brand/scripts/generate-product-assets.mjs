@@ -15,6 +15,17 @@ import {
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const assetsRoot = resolve(packageRoot, "assets");
 const products = Object.keys(brandProductNames);
+const faviconVariants = Object.keys(brandAssetFiles.favicon);
+
+function faviconMarkup(variant) {
+  const background = brandColors[variant];
+  const foreground = variant === "ink" ? brandColors.cyan : brandColors.ink;
+  const dimensions = brandDimensions.favicon[variant];
+  const geometry = brandGeometry.favicon[variant];
+
+  return `  <rect width="${dimensions.width}" height="${dimensions.height}" rx="${geometry.borderRadius}" fill="${background}"/>
+  <path fill="${foreground}" d="${brandGeometry.logoPath}" transform="${geometry.logoTransform}"/>`;
+}
 
 function carrierMarkup() {
   return `  <g transform="translate(44 36)">
@@ -67,7 +78,28 @@ async function writeAsset(path, source) {
   await writeFile(absolutePath, source, "utf8");
 }
 
-const manifestAssets = [];
+const faviconAssets = [];
+const productAssets = [];
+
+for (const variant of faviconVariants) {
+  const path = brandAssetFiles.favicon[variant];
+  const foreground = variant === "ink" ? "electric cyan" : "ink";
+  const background = variant === "ink" ? "an ink" : "a cyan";
+
+  await writeAsset(path, svgDocument({
+    title: `Allfit One favicon ${variant}`,
+    description: `Allfit One ${foreground} logo on ${background} rounded tile`,
+    viewBox: brandDimensions.favicon[variant].viewBox,
+    content: faviconMarkup(variant),
+  }));
+  faviconAssets.push({
+    path,
+    type: "favicon",
+    variant,
+    background: variant,
+    lettering: null,
+  });
+}
 
 for (const product of products) {
   const name = brandProductNames[product];
@@ -84,7 +116,7 @@ for (const product of products) {
       viewBox: brandDimensions.product.wordmark[product].viewBox,
       content: wordmarkContent(product, surface, `${product}-wordmark-${surface}`),
     }));
-    manifestAssets.push({ path: wordmarkPath, type: "product-wordmark", product, background: "transparent", lettering: "outlined" });
+    productAssets.push({ path: wordmarkPath, type: "product-wordmark", product, background: "transparent", lettering: "outlined" });
 
     await writeAsset(lockupPath, svgDocument({
       title: `${name} lockup`,
@@ -92,16 +124,17 @@ for (const product of products) {
       viewBox: brandDimensions.product.lockup[product].viewBox,
       content: `${carrierMarkup()}\n${wordmarkContent(product, surface, `${product}-lockup-${surface}`, "translate(512 337) scale(.28 -.28)")}`,
     }));
-    manifestAssets.push({ path: lockupPath, type: "product-lockup", product, background: "transparent", lettering: "outlined" });
+    productAssets.push({ path: lockupPath, type: "product-lockup", product, background: "transparent", lettering: "outlined" });
   }
 }
 
 const manifestPath = resolve(assetsRoot, "manifest.json");
 const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
 manifest.assets = [
-  ...manifest.assets.filter(({ product }) => !product),
-  ...manifestAssets,
+  ...manifest.assets.filter(({ type }) => type !== "favicon" && !type.startsWith("product-")),
+  ...faviconAssets,
+  ...productAssets,
 ];
 await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
 
-console.log(`Generated ${manifestAssets.length} product wordmarks and shared-logo lockups.`);
+console.log(`Generated ${faviconAssets.length} favicons and ${productAssets.length} product wordmarks and shared-logo lockups.`);

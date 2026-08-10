@@ -39,11 +39,23 @@ ship under `@allfitone/brand/assets/*`.
 import { brandAssetFiles, brandAssetSpecifiers } from "@allfitone/brand";
 
 brandAssetFiles.logo.cyan;
-// "assets/logo/allfit-one-logo-cyan.svg" — for package filesystem tooling
+// "assets/logo/allfit-one-logo-cyan.svg"
+
+brandAssetFiles.favicon.ink;
+// "assets/favicon/allfit-one-favicon-ink.svg"
+
+brandAssetFiles.favicon.cyan;
+// "assets/favicon/allfit-one-favicon-cyan.svg"
 
 import.meta.resolve(brandAssetSpecifiers.logo.cyan);
 // file:///.../@allfitone/brand/assets/logo/allfit-one-logo-cyan.svg
 ```
+
+Use `favicon.ink` for the dark Allfit One application tile established by the
+landing page, and `favicon.cyan` for the high-visibility cyan tile established
+by the Design System Explorer. Both variants preserve their existing
+proportions and are intended for browser metadata, manifests, bookmarks, and
+install surfaces.
 
 React Native applications should use the existing
 `@allfitone/react-native/brand` adapter, which renders the canonical geometry

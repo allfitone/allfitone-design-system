@@ -57,6 +57,20 @@
       "lettering": "outlined"
     },
     {
+      "path": "assets/favicon/allfit-one-favicon-ink.svg",
+      "type": "favicon",
+      "variant": "ink",
+      "background": "ink",
+      "lettering": null
+    },
+    {
+      "path": "assets/favicon/allfit-one-favicon-cyan.svg",
+      "type": "favicon",
+      "variant": "cyan",
+      "background": "cyan",
+      "lettering": null
+    },
+    {
       "path": "assets/product/space/allfit-space-wordmark-on-dark.svg",
       "type": "product-wordmark",
       "product": "space",
