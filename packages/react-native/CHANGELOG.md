@@ -1,5 +1,12 @@
 # @allfitone/react-native
 
+## 0.5.1
+
+### Patch Changes
+
+- Updated dependencies [36f5bf4]
+  - @allfitone/brand@0.3.0
+
 ## 0.5.0
 
 ### Minor Changes
