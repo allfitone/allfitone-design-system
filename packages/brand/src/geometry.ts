@@ -56,6 +56,16 @@ const productDescriptorLetters = {
 } as const;
 
 export const brandGeometry = {
+  favicon: {
+    ink: {
+      borderRadius: 112,
+      logoTransform: "translate(187.15 60) scale(.34)",
+    },
+    cyan: {
+      borderRadius: 12,
+      logoTransform: "translate(22.13 4) scale(0.048738)",
+    },
+  },
   carrierPath: "M65 0h330l-65 408H0L65 0Z",
   logoPath: "M405 0 0 211l120 1L11 1149l324-490L405 0Z",
   allfitLetters: [

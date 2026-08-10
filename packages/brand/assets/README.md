@@ -4,6 +4,7 @@ This directory contains the canonical reusable SVG exports derived from the curr
 
 ## Asset families
 
+- `favicon/`: rounded browser and install tiles in the established ink and cyan variants.
 - `logo/`: the custom forward-leaning “1” mark, free or inside its cyan carrier.
 - `wordmark/`: the outlined `ALLFIT ONE` wordmark, without the logo.
 - `lockup/`: the logo carrier and outlined wordmark together.
@@ -15,8 +16,9 @@ This directory contains the canonical reusable SVG exports derived from the curr
 - Use `on-dark` when the surrounding surface is dark.
 - Use the cyan logo by default. The ink and chalk logos are monochrome alternatives for constrained contexts.
 - Use the carrier variant when the mark needs a compact, self-contained brand tile.
+- Use the ink favicon for the dark landing treatment; use the cyan favicon for the high-visibility Design System treatment.
 
-All files have transparent backgrounds. The wordmark lettering is converted to vector outlines, so these SVGs do not depend on an installed or embedded font and can be reused across Next.js, React Native, design tools, and export pipelines.
+All logo, wordmark, lockup, and product files have transparent backgrounds; favicons use their named solid tile. The wordmark lettering is converted to vector outlines, so these SVGs do not depend on an installed or embedded font and can be reused across Next.js, React Native, design tools, and export pipelines.
 
 ## Brand colors
 
