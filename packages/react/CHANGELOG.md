@@ -1,5 +1,12 @@
 # @allfitone/react
 
+## 0.7.2
+
+### Patch Changes
+
+- Updated dependencies [36f5bf4]
+  - @allfitone/brand@0.3.0
+
 ## 0.7.1
 
 ### Patch Changes
