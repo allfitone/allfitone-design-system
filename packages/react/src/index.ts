@@ -1,4 +1,4 @@
-export const designSystemVersion = "0.7.2" as const;
+export const designSystemVersion = "0.8.0" as const;
 
 export const allfitoneReact = {
   platform: "react",
