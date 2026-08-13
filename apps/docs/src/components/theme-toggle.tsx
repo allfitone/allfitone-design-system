@@ -1,19 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-type Theme = "dark" | "light";
+import { useExplorerTheme } from "@/components/theme-provider";
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("dark");
-
-  useEffect(() => {
-    document.documentElement.dataset.afoTheme = theme;
-    document.documentElement.style.colorScheme = theme;
-  }, [theme]);
+  const { theme, setTheme } = useExplorerTheme();
 
   return (
-    <div className="theme-toggle" aria-label="Preview theme">
+    <div className="theme-toggle" role="group" aria-label="Preview theme">
       {(["dark", "light"] as const).map((item) => (
         <button
           key={item}

@@ -1,38 +1,25 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { Badge } from "@allfitone/react/components/badge";
 import { PulseMark } from "@allfitone/react/components/pulse-mark";
-import { FoundationIcon, type IconName } from "@allfitone/react/icons";
+import { FoundationIcon } from "@allfitone/react/icons";
 
-import { ComponentCatalog } from "@/components/component-catalog";
+import {
+  ComponentIndex,
+  LegacyCatalogHashRedirect,
+} from "@/components/component-explorer-tools";
 import {
   DesignSystemFooter,
   DesignSystemLayout,
 } from "@/components/design-system-shell";
 import { MovementSequence } from "@/components/movement-sequence";
-import { explorerReleaseLabel } from "@/lib/release";
 
 export const metadata: Metadata = {
   title: "Components | Allfit One Design System",
   description: "Accessible React components for the Allfit One web ecosystem.",
 };
-
-const componentCategories = [
-  { code: "ACT", label: "Actions", hash: "actions", icon: "add" },
-  { code: "NAV", label: "Navigation", hash: "navigation", icon: "menu" },
-  { code: "FRM", label: "Forms", hash: "forms", icon: "edit" },
-  { code: "SEL", label: "Selection", hash: "selection", icon: "check" },
-  { code: "DAT", label: "Data display", hash: "data-display", icon: "business" },
-  { code: "SIG", label: "Signature", hash: "signature", icon: "activity" },
-  { code: "OVR", label: "Overlays", hash: "overlays", icon: "panel" },
-  { code: "FDB", label: "Feedback", hash: "feedback", icon: "info" },
-] as const satisfies ReadonlyArray<{
-  code: string;
-  label: string;
-  hash: string;
-  icon: IconName;
-}>;
 
 export default function ComponentsPage() {
   return (
@@ -46,6 +33,7 @@ export default function ComponentsPage() {
       skipHref="#catalog-content"
       skipLabel="Skip to component catalog"
     >
+      <LegacyCatalogHashRedirect />
       <div id="catalog-content" className="design-system-content component-guide__content">
         <section className="component-overview">
           <div className="component-overview__copy">
@@ -64,30 +52,9 @@ export default function ComponentsPage() {
             </div>
           </div>
 
-          <nav className="component-manifest" aria-label="Component categories">
-            <header className="component-manifest__header">
-              <div>
-                <span className="component-manifest__pulse" aria-hidden="true" />
-                <span>Library manifest</span>
-              </div>
-              <Badge variant="outline">{explorerReleaseLabel}</Badge>
-            </header>
-            <div className="component-manifest__list">
-              {componentCategories.map((category) => (
-                <a key={category.code} href={`#${category.hash}`}>
-                  <FoundationIcon name={category.icon} decorative />
-                  <span className="component-manifest__code">{category.code}</span>
-                  <strong>{category.label}</strong>
-                  <FoundationIcon name="forward" decorative />
-                </a>
-              ))}
-            </div>
-            <dl className="component-manifest__contract">
-              <div><dt>Target</dt><dd>44 px</dd></div>
-              <div><dt>Baseline</dt><dd>WCAG 2.2 AA</dd></div>
-              <div><dt>Runtime</dt><dd>React 19</dd></div>
-            </dl>
-          </nav>
+          <Suspense fallback={<div className="component-manifest component-index" aria-hidden="true" />}>
+            <ComponentIndex />
+          </Suspense>
         </section>
 
         <section className="component-guide__contract" aria-labelledby="contract-preview-title">
@@ -104,8 +71,6 @@ export default function ComponentsPage() {
           </div>
           <MovementSequence />
         </section>
-
-        <ComponentCatalog />
 
         <DesignSystemFooter label="React components" />
       </div>

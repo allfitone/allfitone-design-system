@@ -53,6 +53,12 @@ test("replaces the workspace with guidance on compact screens", async ({
   );
   expect(blocking).toEqual([]);
 
+  const landmarks = await new AxeBuilder({ page })
+    .include('[data-slot="device-gate-fallback"]')
+    .withRules(["landmark-unique", "region", "landmark-main-is-top-level"])
+    .analyze();
+  expect(landmarks.violations).toEqual([]);
+
   await expect(page).toHaveScreenshot(
     "device-gate-light-mobile.png",
     fullPageScreenshotOptions
@@ -66,6 +72,33 @@ test("replaces the workspace with guidance on compact screens", async ({
         document.documentElement.clientWidth
     )
   ).toBeLessThanOrEqual(0);
+});
+
+test("copies the workspace link and announces the recovery outcome", async ({ page, context }) => {
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/patterns/device-gate");
+
+  await page.getByRole("button", { name: "Copiar enlace" }).click();
+  await expect(page.getByRole("status")).toHaveText("Enlace copiado.");
+});
+
+test("offers a selectable manual link when Clipboard API fails", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: { writeText: () => Promise.reject(new Error("Clipboard unavailable")) },
+    });
+  });
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/patterns/device-gate");
+
+  await page.getByRole("button", { name: "Copiar enlace" }).click();
+  await expect(page.getByRole("status")).toHaveText("Copia este enlace manualmente.");
+  const manualLink = page.getByRole("textbox", { name: "Enlace del espacio de trabajo" });
+  await expect(manualLink).toBeVisible();
+  await expect(manualLink).toBeFocused();
+  await expect(manualLink).toHaveValue(/\/patterns\/device-gate$/);
 });
 
 test("preserves the compact guidance in the dark theme", async ({ page }) => {

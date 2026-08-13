@@ -109,6 +109,10 @@ function AdaptiveBrandLockup() {
 }
 
 function chapterSectionHref(chapter: Chapter, hash: string, current: GuideSection) {
+  if (chapter.id === "components") {
+    return hash === "overview" ? "/components" : `/components/${hash}`;
+  }
+
   return chapter.id === current ? `#${hash}` : `${chapter.href}#${hash}`;
 }
 
@@ -120,12 +124,12 @@ function DesignSystemSidebar({ current }: { current: GuideSection }) {
       setOpenMobile(false);
     }
   };
-  const overviewHref = "#overview";
+  const overviewHref = current === "components" ? "/components" : "#overview";
 
   return (
-    <Sidebar className="design-system-sidebar" aria-label="Design system navigation">
+    <Sidebar className="design-system-sidebar" role="navigation" aria-label="Design system navigation">
       <div className="design-system-sidebar__signal" aria-hidden="true">
-        <span /><span /><span /><span /><span />
+        <span />
       </div>
 
       <SidebarHeader className="design-system-sidebar__header">
