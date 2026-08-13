@@ -136,6 +136,10 @@ using `BrandLockup` from `@allfitone/react/brand`.
 
 `DeviceGate` is a CSS-first composition for products that require tablet or
 desktop workspace. Compose the compact fallback before `DeviceGateContent`.
+Use `DeviceGateActions` for product-owned recovery actions such as copying a
+workspace link; the slot provides responsive layout but does not own clipboard,
+email, QR, or navigation behavior. Put the fallback accessible name on
+`DeviceGateMain` so its visible `main` remains the top-level landmark.
 The fallback replaces product content below `600px` wide and on coarse-pointer
 landscape viewports below `600px` high; no user-agent detection or client-side
 hydration is required. At `600px` wide and above, tablet content remains

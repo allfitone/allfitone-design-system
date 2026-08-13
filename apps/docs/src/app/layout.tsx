@@ -3,6 +3,9 @@ import { Barlow_Condensed, Manrope } from "next/font/google";
 import { Toaster } from "@allfitone/react/components/sonner";
 import { TooltipProvider } from "@allfitone/react/components/tooltip";
 
+import { ThemeProvider } from "@/components/theme-provider";
+import { explorerThemeInitScript } from "@/lib/theme";
+
 import "@allfitone/react/tokens.css";
 import "@allfitone/react/app.css";
 import "@allfitone/react/styles.css";
@@ -37,14 +40,19 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       className={`${display.variable} ${body.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: explorerThemeInitScript }} />
+      </head>
       {/* suppressHydrationWarning: extensiones de navegador inyectan
           atributos en <body> (bis_register, __processed_*) antes de
           hidratar — falso positivo, no es código nuestro. */}
       <body suppressHydrationWarning>
-        <TooltipProvider>
-          {children}
-          <Toaster position="bottom-right" closeButton />
-        </TooltipProvider>
+        <ThemeProvider>
+          <TooltipProvider>
+            {children}
+            <Toaster position="bottom-right" closeButton />
+          </TooltipProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

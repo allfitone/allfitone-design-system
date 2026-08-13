@@ -133,8 +133,25 @@ function DeviceGateDescription({
   );
 }
 
+function DeviceGateActions({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="device-gate-actions"
+      className={cn(
+        "mt-8 flex w-full max-w-lg flex-col items-stretch gap-3 sm:flex-row sm:items-center",
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
 export {
   DeviceGate,
+  DeviceGateActions,
   DeviceGateContent,
   DeviceGateDescription,
   DeviceGateEyebrow,

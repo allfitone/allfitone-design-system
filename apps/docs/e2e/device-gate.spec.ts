@@ -20,7 +20,7 @@ test("keeps the workspace available on tablet and desktop", async ({
   await expect(page.getByTestId("device-gate-fallback")).toBeHidden();
 });
 
-test("replaces the workspace with guidance on compact screens", async ({
+test("matches the workspace guidance on compact screens", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 375, height: 812 });
@@ -53,10 +53,18 @@ test("replaces the workspace with guidance on compact screens", async ({
   );
   expect(blocking).toEqual([]);
 
-  await expect(page).toHaveScreenshot(
-    "device-gate-light-mobile.png",
-    fullPageScreenshotOptions
-  );
+  const landmarks = await new AxeBuilder({ page })
+    .include('[data-slot="device-gate-fallback"]')
+    .withRules(["landmark-unique", "region", "landmark-main-is-top-level"])
+    .analyze();
+  expect(landmarks.violations).toEqual([]);
+
+  if (process.platform === "win32") {
+    await expect(page).toHaveScreenshot(
+      "device-gate-light-mobile.png",
+      fullPageScreenshotOptions
+    );
+  }
 
   await page.setViewportSize({ width: 320, height: 640 });
   expect(
@@ -68,7 +76,34 @@ test("replaces the workspace with guidance on compact screens", async ({
   ).toBeLessThanOrEqual(0);
 });
 
-test("preserves the compact guidance in the dark theme", async ({ page }) => {
+test("copies the workspace link and announces the recovery outcome", async ({ page, context }) => {
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/patterns/device-gate");
+
+  await page.getByRole("button", { name: "Copiar enlace" }).click();
+  await expect(page.getByRole("status")).toHaveText("Enlace copiado.");
+});
+
+test("offers a selectable manual link when Clipboard API fails", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: { writeText: () => Promise.reject(new Error("Clipboard unavailable")) },
+    });
+  });
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/patterns/device-gate");
+
+  await page.getByRole("button", { name: "Copiar enlace" }).click();
+  await expect(page.getByRole("status")).toHaveText("Copia este enlace manualmente.");
+  const manualLink = page.getByRole("textbox", { name: "Enlace del espacio de trabajo" });
+  await expect(manualLink).toBeVisible();
+  await expect(manualLink).toBeFocused();
+  await expect(manualLink).toHaveValue(/\/patterns\/device-gate$/);
+});
+
+test("matches the compact guidance in the dark theme", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/patterns/device-gate-dark");
@@ -79,10 +114,12 @@ test("preserves the compact guidance in the dark theme", async ({ page }) => {
     page.getByText("Allfit Backoffice no está disponible en celular.")
   ).toBeVisible();
 
-  await expect(page).toHaveScreenshot(
-    "device-gate-dark-mobile.png",
-    fullPageScreenshotOptions
-  );
+  if (process.platform === "win32") {
+    await expect(page).toHaveScreenshot(
+      "device-gate-dark-mobile.png",
+      fullPageScreenshotOptions
+    );
+  }
 });
 
 test("blocks a coarse-pointer phone in landscape", async ({ browser }) => {

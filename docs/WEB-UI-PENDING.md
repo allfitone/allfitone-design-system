@@ -63,6 +63,26 @@ These behaviors belong in Allfit Studio first. Only generic routing adapters pro
 
 ## Validation and release gates still pending
 
+### Explorer remediation evidence — 2026-08-13
+
+Automated coverage completed for the component Explorer remediation:
+
+- `npm run check --workspace @allfitone/react`: 58 unit tests pass, including `DeviceGateActions`, semantic composition, native prop forwarding, and Axe;
+- `npm run check --workspace @allfitone/docs` and `npm run build --workspace @allfitone/docs`: lint, types, and all eight static component-category routes pass;
+- `npm run test:e2e --workspace @allfitone/docs`: 50 Playwright scenarios pass across Chromium and the WebKit font bridge, including initial scroll, stable and legacy hashes, local search/filter URLs, sticky navigation, focus, history, theme persistence, 320 px reflow, reduced motion, Axe, and visual regressions;
+- `npm run check:pack`: the public package surface and publishable artifacts pass validation.
+
+`npm run check:release` was attempted on 2026-08-13. It passed package-version validation and the Web React package gate, then stopped in the pre-existing `@allfitone/react-native` build because the local installation is missing its Expo font, blur, gradient, and safe-area modules. Resolve that workspace installation before using the aggregate command as release evidence.
+
+The following checks still require dated evidence from the named platform or assistive technology and are intentionally **not** marked complete:
+
+- NVDA with Chrome on Windows;
+- VoiceOver with Safari on macOS;
+- browser zoom at 200% and 400%;
+- WCAG text-spacing overrides on the component index, Data display, and DeviceGate.
+
+Record the date, operating system, browser version, assistive technology and version when applicable, tested route, and outcome before clearing any of these items.
+
 - Keep Windows Chromium as the canonical visual-regression platform; Linux CI continues to run behavior, reflow, keyboard, reduced-motion, and Axe checks.
 - Complete a manual keyboard pass in the Explorer and in the first consuming OS shell.
 - Complete the required NVDA review on Windows.

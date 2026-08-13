@@ -14,6 +14,11 @@ async function verifyExplorerVersion(page: Page, expectedLabels: readonly string
   await expect(page.locator("body")).not.toContainText(/\bv\d+\.\d+\.\d+\b/);
 }
 
+async function openCategory(page: Page, category: string, heading: string) {
+  await page.goto(`/components/${category}`);
+  await expect(page.getByRole("heading", { level: 1, name: heading })).toBeVisible();
+}
+
 test.beforeEach(async ({ page }) => {
   await page.goto("/components");
   await expect(page.getByRole("heading", { level: 1, name: "Components" })).toBeVisible();
@@ -115,11 +120,16 @@ test("keeps visible Explorer text at the 12 px minimum", async ({ page }) => {
   }
 });
 
-test("keeps the component manifest free of category counts", async ({ page }) => {
-  await expect(page.locator(".component-manifest__count")).toHaveCount(0);
+test("keeps the index searchable without mounting live specimens", async ({ page }) => {
+  await expect(page.getByRole("search")).toBeVisible();
+  await expect(page.locator(".component-entry")).toHaveCount(0);
+  await page.getByRole("searchbox", { name: "Search by name, contract or import" }).fill("calendar");
+  await expect(page.getByRole("link", { name: /Calendar/ })).toHaveAttribute("href", "/components/selection#calendar");
 });
 
 test("contains dialog focus and returns it to the trigger", async ({ page }) => {
+  await openCategory(page, "overlays", "Overlays");
+  await page.getByRole("button", { name: "dark", exact: true }).click();
   const trigger = page.getByRole("button", { name: "Edit member" });
   await trigger.focus();
   await page.keyboard.press("Enter");
@@ -137,6 +147,7 @@ test("contains dialog focus and returns it to the trigger", async ({ page }) => 
 });
 
 test("filters shared commands and composes the global dialog shortcut", async ({ page }) => {
+  await openCategory(page, "navigation", "Navigation");
   const specimen = page.locator("#command");
   const inlineCommand = specimen.locator('[data-slot="command"]').first();
   const input = inlineCommand.getByRole("combobox", {
@@ -203,6 +214,8 @@ test("filters shared commands and composes the global dialog shortcut", async ({
 });
 
 test("keeps popover content opaque, non-modal and collision-aware", async ({ page }) => {
+  await openCategory(page, "overlays", "Overlays");
+  await page.getByRole("button", { name: "dark", exact: true }).click();
   const specimen = page.locator("#popover");
   const trigger = specimen.getByRole("button", { name: "View member context" });
   await trigger.focus();
@@ -244,6 +257,7 @@ test("keeps popover content opaque, non-modal and collision-aware", async ({ pag
 });
 
 test("operates composite selection controls from the keyboard", async ({ page }) => {
+  await openCategory(page, "selection", "Selection");
   const toggleGroup = page.locator("#toggle-group");
   const spanishToggle = toggleGroup.getByRole("button", { name: "ES", exact: true });
   const englishToggle = toggleGroup.getByRole("button", { name: "EN", exact: true });
@@ -270,6 +284,7 @@ test("operates composite selection controls from the keyboard", async ({ page })
 });
 
 test("parses date picker input and keeps its calendar bounded", async ({ page }) => {
+  await openCategory(page, "selection", "Selection");
   const specimen = page.locator("#date-picker");
   const field = specimen.locator('[data-slot="date-picker"]').first();
   const input = field.getByLabel("Session date");
@@ -318,6 +333,7 @@ test("parses date picker input and keeps its calendar bounded", async ({ page })
 });
 
 test("selects calendar dates and ranges with 44 px keyboard targets", async ({ page }) => {
+  await openCategory(page, "selection", "Selection");
   const specimen = page.locator("#calendar");
   const single = specimen.locator(
     '[data-slot="calendar"][aria-label="Session calendar"]',
@@ -398,6 +414,8 @@ test("selects calendar dates and ranges with 44 px keyboard targets", async ({ p
 });
 
 test("filters rich combobox options and exposes multiple and remote states", async ({ page }) => {
+  await openCategory(page, "selection", "Selection");
+  await page.getByRole("button", { name: "dark", exact: true }).click();
   const specimen = page.locator("#combobox");
   const leadCoach = specimen.locator("#lead-coach-combobox");
 
@@ -465,6 +483,7 @@ test("filters rich combobox options and exposes multiple and remote states", asy
 });
 
 test("keeps table sorting, selection and result states explicit", async ({ page }) => {
+  await openCategory(page, "data-display", "Data display");
   const table = page.getByRole("table", { name: "Members" });
   const region = page.getByRole("region", { name: "Scrollable member directory" });
   const memberHeader = table.locator('th[aria-sort]');
@@ -530,6 +549,7 @@ test("keeps table sorting, selection and result states explicit", async ({ page 
 });
 
 test("composes data-table controls without restyling sortable headers", async ({ page }) => {
+  await openCategory(page, "data-display", "Data display");
   const specimen = page.locator("#data-table");
   const table = specimen.getByRole("table", { name: "Member results" });
   const sortButton = table.getByRole("button", {
@@ -575,6 +595,7 @@ test("composes data-table controls without restyling sortable headers", async ({
 });
 
 test("keeps avatar identity and presence explicit without a profile image", async ({ page }) => {
+  await openCategory(page, "data-display", "Data display");
   const specimen = page.locator("#avatar");
   const profile = specimen.locator(
     '[data-slot="avatar"][aria-label="Camila Torres"]',
@@ -603,6 +624,7 @@ test("keeps avatar identity and presence explicit without a profile image", asyn
 });
 
 test("operates workspace navigation and returns focus from mobile overlays", async ({ page }) => {
+  await openCategory(page, "navigation", "Navigation");
   const navigationMenu = page.locator("#navigation-menu");
   const trainingTrigger = navigationMenu.getByRole("button", { name: "Training", exact: true });
   await trainingTrigger.focus();
@@ -644,6 +666,7 @@ test("demonstrates the interaction sequence from the keyboard", async ({ page })
 });
 
 test("keeps alert meaning explicit beyond color", async ({ page }) => {
+  await openCategory(page, "feedback", "Feedback");
   const specimen = page.locator("#alert");
   const alerts = specimen.locator('[data-slot="alert"]');
 
@@ -679,6 +702,7 @@ test("keeps alert meaning explicit beyond color", async ({ page }) => {
 });
 
 test("keeps progress named, textual and still with reduced motion", async ({ page }) => {
+  await openCategory(page, "feedback", "Feedback");
   const specimen = page.locator("#progress");
   const published = specimen.getByRole("progressbar", {
     name: "Published sessions",
@@ -708,6 +732,7 @@ test("keeps progress named, textual and still with reduced motion", async ({ pag
 });
 
 test("announces toast feedback without stealing focus", async ({ page }) => {
+  await openCategory(page, "feedback", "Feedback");
   const trigger = page.getByRole("button", { name: "Show success" });
   await trigger.focus();
   await page.keyboard.press("Enter");
@@ -717,20 +742,11 @@ test("announces toast feedback without stealing focus", async ({ page }) => {
 });
 
 test("keeps touch targets and focus treatment at the minimum contract", async ({ page }) => {
-  const targets = {
-    "primary button": page.getByRole("button", { name: "Start session" }),
-    "icon button": page.getByRole("button", { name: "Add movement" }),
-    checkbox: page.getByRole("checkbox", { name: "Share training history with this coach" }),
-    "table checkbox": page
-      .getByRole("table", { name: "Members" })
-      .getByRole("checkbox", { name: "Select Camila Torres" }),
-    switch: page.getByRole("switch", { name: "Live progress sharing" }),
-    "toggle group item": page.locator("#toggle-group").getByRole("button", { name: "ES" }),
-    "navigation trigger": page.locator("#navigation-menu").getByRole("button", { name: "Training", exact: true }),
-    "workspace action": page.locator("#workspace-shell").getByRole("button", { name: /Panel/ }),
-  };
-
-  for (const [name, locator] of Object.entries(targets)) {
+  await openCategory(page, "actions", "Actions");
+  for (const [name, locator] of [
+    ["primary button", page.getByRole("button", { name: "Start session" })],
+    ["icon button", page.getByRole("button", { name: "Add movement" })],
+  ] as const) {
     const box = await locator.boundingBox();
     expect(box?.width, `${name} width`).toBeGreaterThanOrEqual(44);
     expect(box?.height, `${name} height`).toBeGreaterThanOrEqual(44);
@@ -740,6 +756,33 @@ test("keeps touch targets and focus treatment at the minimum contract", async ({
   await action.focus();
   const focusShadow = await action.evaluate((element) => getComputedStyle(element).boxShadow);
   expect(focusShadow).not.toBe("none");
+
+  await openCategory(page, "selection", "Selection");
+  for (const [name, locator] of [
+    ["checkbox", page.getByRole("checkbox", { name: "Share training history with this coach" })],
+    ["switch", page.getByRole("switch", { name: "Live progress sharing" })],
+    ["toggle group item", page.locator("#toggle-group").getByRole("button", { name: "ES" })],
+  ] as const) {
+    const box = await locator.boundingBox();
+    expect(box?.width, `${name} width`).toBeGreaterThanOrEqual(44);
+    expect(box?.height, `${name} height`).toBeGreaterThanOrEqual(44);
+  }
+
+  await openCategory(page, "navigation", "Navigation");
+  for (const [name, locator] of [
+    ["navigation trigger", page.locator("#navigation-menu").getByRole("button", { name: "Training", exact: true })],
+    ["workspace action", page.locator("#workspace-shell").getByRole("button", { name: /Panel/ })],
+  ] as const) {
+    const box = await locator.boundingBox();
+    expect(box?.width, `${name} width`).toBeGreaterThanOrEqual(44);
+    expect(box?.height, `${name} height`).toBeGreaterThanOrEqual(44);
+  }
+
+  await openCategory(page, "data-display", "Data display");
+  const tableCheckbox = page.getByRole("table", { name: "Members" }).getByRole("checkbox", { name: "Select Camila Torres" });
+  const tableCheckboxBox = await tableCheckbox.boundingBox();
+  expect(tableCheckboxBox?.width, "table checkbox width").toBeGreaterThanOrEqual(44);
+  expect(tableCheckboxBox?.height, "table checkbox height").toBeGreaterThanOrEqual(44);
 });
 
 test("does not overflow at 320 px or with long text", async ({ page }) => {
@@ -750,8 +793,10 @@ test("does not overflow at 320 px or with long text", async ({ page }) => {
     viewport: document.documentElement.clientWidth,
   }));
   expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport);
+  await page.goto("/components/actions");
   await expect(page.getByRole("button", { name: "Large action with long text" })).toBeVisible();
 
+  await page.goto("/components/navigation");
   for (const name of ["Go to previous page", "Go to next page"]) {
     const box = await page.getByRole("link", { name }).boundingBox();
     expect(box?.width, `${name} width`).toBeGreaterThanOrEqual(44);
@@ -775,8 +820,8 @@ test("provides responsive navigation for components and foundations", async ({ p
 
   await menuTrigger.click();
   await expect(menuTrigger).toHaveAttribute("aria-expanded", "true");
-  await page.getByRole("link", { name: /Overlays/ }).click();
-  await expect(page).toHaveURL(/#overlays$/);
+  await page.getByRole("link", { name: "OVR Overlays", exact: true }).click();
+  await expect(page).toHaveURL(/\/components\/overlays$/);
 
   await page.goto("/ui-foundation");
   await page.getByRole("button", { name: "Open design system navigation" }).click();
@@ -839,6 +884,7 @@ test("composes foundation samples from canonical public components", async ({ pa
 });
 
 test("keeps the Ink & Signal signature stable in both themes", async ({ page }) => {
+  await openCategory(page, "signature", "Signature");
   const accent = page.locator('[data-slot="accent-block"]').first();
   const pulse = page.locator('[data-slot="pulse-mark"]').first();
 
@@ -864,41 +910,45 @@ test("renders the brand entrance as a static final frame for reduced motion", as
 
 test("honors reduced motion and forced color focus", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
+  await openCategory(page, "feedback", "Feedback");
   const spinner = page.getByRole("status", { name: "Loading" }).first();
   expect(await spinner.evaluate((element) => getComputedStyle(element).animationDuration)).toBe("0s");
 
   await page.emulateMedia({ forcedColors: "active", reducedMotion: "reduce" });
+  await openCategory(page, "actions", "Actions");
   const action = page.getByRole("button", { name: "Start session" });
   await action.focus();
   expect(await action.evaluate((element) => getComputedStyle(element).outlineStyle)).not.toBe("none");
 
+  await openCategory(page, "selection", "Selection");
   const pressedToggle = page.locator("#toggle-group").getByRole("button", { name: "ES", exact: true });
   await expect(pressedToggle).toHaveAttribute("aria-pressed", "true");
   expect(await pressedToggle.evaluate((element) => getComputedStyle(element).forcedColorAdjust)).toBe("none");
 });
 
-test("matches the approved catalog composition", async ({ page }) => {
+test("matches the approved component index and category composition", async ({ page }) => {
   test.skip(process.platform !== "win32", "Visual baselines are canonical on Windows.");
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("button", { name: "dark", exact: true }).click();
   await verifyExplorerVersion(page, [
     "React \u00b7 v0",
-    "v0",
     "React components / v0",
   ]);
   await expect(page).toHaveScreenshot(
-    "components-dark-desktop.png",
+    "components-index-dark-desktop.png",
     fullPageScreenshotOptions,
   );
+  await page.goto("/components/navigation#command");
   await expect(page.locator("#command")).toHaveScreenshot(
     "command-inline-dark-desktop.png",
   );
 
   await page.getByRole("button", { name: "light", exact: true }).click();
   await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto("/components");
   await expect(page).toHaveScreenshot(
-    "components-light-mobile.png",
+    "components-index-light-mobile.png",
     fullPageScreenshotOptions,
   );
 });
@@ -931,6 +981,7 @@ test("matches key overlay states in both themes", async ({ page }) => {
   test.skip(process.platform !== "win32", "Visual baselines are canonical on Windows.");
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.getByRole("button", { name: "dark", exact: true }).click();
+  await openCategory(page, "navigation", "Navigation");
   const commandTrigger = page.locator("#command").getByRole("button", {
     name: /Open commands/,
   });
@@ -941,6 +992,7 @@ test("matches key overlay states in both themes", async ({ page }) => {
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toBeHidden();
 
+  await openCategory(page, "overlays", "Overlays");
   const editMemberTrigger = page.getByRole("button", { name: "Edit member" });
   await editMemberTrigger.scrollIntoViewIfNeeded();
   await editMemberTrigger.click();
@@ -957,13 +1009,18 @@ test("matches key overlay states in both themes", async ({ page }) => {
 
   await page.getByRole("button", { name: "light", exact: true }).click();
   await page.setViewportSize({ width: 320, height: 800 });
-  await commandTrigger.scrollIntoViewIfNeeded();
-  await commandTrigger.click();
+  await openCategory(page, "navigation", "Navigation");
+  const mobileCommandTrigger = page.locator("#command").getByRole("button", {
+    name: /Open commands/,
+  });
+  await mobileCommandTrigger.scrollIntoViewIfNeeded();
+  await mobileCommandTrigger.click();
   await expect(page).toHaveScreenshot("command-dialog-light-mobile.png", {
     fullPage: false,
   });
   await page.keyboard.press("Escape");
 
+  await openCategory(page, "overlays", "Overlays");
   await page.getByRole("button", { name: "Open filters" }).click();
   await expect(page).toHaveScreenshot("sheet-light-mobile.png", { fullPage: false });
 });
