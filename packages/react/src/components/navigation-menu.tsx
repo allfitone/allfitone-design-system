@@ -129,7 +129,7 @@ function NavigationMenuLink({
     <NavigationMenuPrimitive.Link
       data-slot="navigation-menu-link"
       className={cn(
-        "flex min-h-11 items-center gap-2 rounded-full px-3 py-2 text-sm text-muted-foreground transition-colors outline-none hover:text-foreground focus-visible:text-foreground in-data-[slot=navigation-menu-content]:rounded-md in-data-[slot=navigation-menu-content]:text-foreground in-data-[slot=navigation-menu-content]:hover:bg-muted in-data-[slot=navigation-menu-content]:focus:bg-muted data-active:bg-[var(--afo-color-accent-tonal)] data-active:font-semibold data-active:text-[var(--afo-color-text-accent)]",
+        "flex min-h-11 items-center gap-2 rounded-full px-3 py-2 text-sm text-muted-foreground no-underline transition-colors outline-none hover:text-foreground focus-visible:text-foreground in-data-[slot=navigation-menu-content]:rounded-md in-data-[slot=navigation-menu-content]:text-foreground in-data-[slot=navigation-menu-content]:hover:bg-muted in-data-[slot=navigation-menu-content]:focus:bg-muted data-active:bg-[var(--afo-color-accent-tonal)] data-active:font-semibold data-active:text-[var(--afo-color-text-accent)]",
         className
       )}
       {...props}

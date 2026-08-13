@@ -6,7 +6,7 @@ import { useRender } from "@base-ui/react/use-render"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { FoundationIcon, type IconName } from "../icons.js"
-import { useIsMobile } from "../hooks/use-mobile.js"
+import { useIsMobile, useIsNarrowerThan } from "../hooks/use-mobile.js"
 import { cn } from "../lib/utils.js"
 import { Button } from "./button.js"
 import { Input } from "./input.js"
@@ -57,6 +57,7 @@ function SidebarProvider({
   defaultOpen = true,
   open: openProp,
   onOpenChange: setOpenProp,
+  collapseBelow,
   className,
   style,
   children,
@@ -65,8 +66,10 @@ function SidebarProvider({
   defaultOpen?: boolean
   open?: boolean
   onOpenChange?: (open: boolean) => void
+  collapseBelow?: number
 }) {
   const isMobile = useIsMobile()
+  const isCompact = useIsNarrowerThan(collapseBelow)
   const [openMobile, setOpenMobile] = React.useState(false)
 
   // This is the internal state of the sidebar.
@@ -87,6 +90,27 @@ function SidebarProvider({
     },
     [setOpenProp, open]
   )
+
+  // Collapse once on entering a compact viewport and restore the previous
+  // preference on leaving it. The ref guard is what lets someone re-open the
+  // sidebar while still compact without it snapping shut again.
+  const preCompactOpen = React.useRef<boolean | null>(null)
+  React.useEffect(() => {
+    if (openProp !== undefined || collapseBelow === undefined) return
+
+    if (isCompact) {
+      if (preCompactOpen.current === null) {
+        preCompactOpen.current = _open
+        _setOpen(false)
+      }
+      return
+    }
+
+    if (preCompactOpen.current !== null) {
+      _setOpen(preCompactOpen.current)
+      preCompactOpen.current = null
+    }
+  }, [isCompact, collapseBelow, openProp, _open])
 
   // Helper to toggle the sidebar.
   const toggleSidebar = React.useCallback(() => {
@@ -491,7 +515,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 
 const sidebarMenuButtonVariants = cva(
   // Reference .nav-it: gap 10px, tx3 + 600; activo tonal + accent + 800.
-  "peer/menu-button group/menu-button relative flex min-h-11 w-full appearance-none items-center gap-2.5 overflow-hidden rounded-lg border-0 bg-transparent px-3 py-2 text-left text-sm font-semibold text-[var(--afo-color-text-muted)] ring-sidebar-ring outline-hidden transition-[width,height,padding,color,background-color] group-has-data-[sidebar=menu-action]/menu-item:pr-12 group-data-[collapsible=icon]:size-11! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-2! hover:bg-muted hover:text-sidebar-foreground active:bg-muted active:text-sidebar-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-muted data-open:hover:text-sidebar-foreground data-active:bg-sidebar-accent data-active:font-extrabold data-active:text-sidebar-accent-foreground [&_svg]:shrink-0 [&>span:last-child]:truncate",
+  "peer/menu-button group/menu-button relative flex min-h-11 w-full appearance-none items-center gap-2.5 overflow-hidden rounded-lg border-0 bg-transparent px-3 py-2 text-left text-sm font-semibold text-[var(--afo-color-text-muted)] no-underline ring-sidebar-ring outline-hidden transition-[width,height,padding,color,background-color] group-has-data-[sidebar=menu-action]/menu-item:pr-12 group-data-[collapsible=icon]:size-11! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-2! hover:bg-muted hover:text-sidebar-foreground active:bg-muted active:text-sidebar-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-muted data-open:hover:text-sidebar-foreground data-active:bg-sidebar-accent data-active:font-extrabold data-active:text-sidebar-accent-foreground [&_svg]:shrink-0 [&>span:last-child]:truncate",
   {
     variants: {
       variant: {

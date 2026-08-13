@@ -4,7 +4,9 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../lib/utils.js"
 
 const buttonVariants = cva(
-  "group/button inline-flex min-h-11 shrink-0 items-center justify-center rounded-[var(--afo-radius-action)] border border-transparent bg-clip-padding text-sm font-extrabold whitespace-nowrap shadow-[var(--afo-control-shadow)] outline-none select-none transition-[color,background-color,border-color,box-shadow,transform] duration-[var(--afo-motion-feedback-duration)] ease-[var(--afo-motion-feedback-easing)] hover:-translate-y-px hover:shadow-[var(--afo-control-shadow-hover)] active:translate-y-px active:shadow-[var(--afo-control-shadow)] disabled:pointer-events-none disabled:translate-y-0 disabled:opacity-45 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  // no-underline: the published stylesheet carries no preflight, so an anchor
+  // rendered with these classes would keep the user agent's link underline.
+  "group/button inline-flex min-h-11 shrink-0 items-center justify-center rounded-[var(--afo-radius-action)] border border-transparent bg-clip-padding text-sm font-extrabold whitespace-nowrap no-underline shadow-[var(--afo-control-shadow)] outline-none select-none transition-[color,background-color,border-color,box-shadow,transform] duration-[var(--afo-motion-feedback-duration)] ease-[var(--afo-motion-feedback-easing)] hover:-translate-y-px hover:shadow-[var(--afo-control-shadow-hover)] active:translate-y-px active:shadow-[var(--afo-control-shadow)] disabled:pointer-events-none disabled:translate-y-0 disabled:opacity-45 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
