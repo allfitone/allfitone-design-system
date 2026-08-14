@@ -162,7 +162,7 @@
     transform: translateY(1px);
   }
 
-  [data-slot="button"][data-variant="default"] {
+  :where([data-slot="button"], [data-slot="icon-button"])[data-variant="default"] {
     border-color: transparent;
     background: var(--afo-gradient-accent);
     color: var(--afo-color-accent-on-accent);
@@ -171,7 +171,7 @@
   /* Dentro de un AccentBlock el CTA invierte a ink-on-signal (.pill-ink
      del reference): cyan sobre cyan se camufla. Debe vivir en esta capa
      para ganarle a la regla del degradado de arriba. */
-  [data-slot="accent-block"] [data-slot="button"] {
+  [data-slot="accent-block"] :where([data-slot="button"], [data-slot="icon-button"]) {
     background: var(--afo-color-ink-on-signal);
     color: var(--afo-color-brand-light);
     box-shadow: none;
@@ -292,6 +292,14 @@
     border-radius: var(--afo-radius-pill);
     background: var(--afo-color-action-primary);
     content: "";
+  }
+
+  /* En modo colapsado (icon) el SidebarContent recorta con overflow-hidden;
+     la barra activa se reposiciona al borde interno para seguir visible. */
+  [data-collapsible="icon"] [data-slot="sidebar-menu-item"]:has(> [data-slot="sidebar-menu-button"][data-active])::before {
+    top: 20%;
+    bottom: 20%;
+    left: 0;
   }
 
   [data-slot="navigation-menu-link"][data-active],
