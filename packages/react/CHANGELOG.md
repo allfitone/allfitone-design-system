@@ -1,5 +1,13 @@
 # @allfitone/react
 
+## 0.9.0
+
+### Minor Changes
+
+- 70e8490: Add `DeviceGateActions`, a responsive composition slot for product-owned
+  recovery controls in compact-screen fallbacks. Clipboard, email, QR, and
+  navigation behavior remain controlled by the consuming product.
+
 ## 0.8.0
 
 ### Minor Changes
