@@ -12,7 +12,9 @@ function readTheme(): AfoTheme {
 }
 
 function Toaster(props: ToasterProps) {
-  const [theme, setTheme] = useState<AfoTheme>("dark")
+  const [theme, setTheme] = useState<AfoTheme>(() =>
+    typeof document === "undefined" ? "dark" : readTheme()
+  )
 
   useEffect(() => {
     const root = document.documentElement
@@ -33,7 +35,7 @@ function Toaster(props: ToasterProps) {
         info: <FoundationIcon name="info" size="sm" decorative />,
         warning: <FoundationIcon name="warning" size="sm" decorative />,
         error: <FoundationIcon name="error" size="sm" decorative />,
-        loading: <FoundationIcon name="loading" size="sm" decorative className="animate-spin" />,
+        loading: <FoundationIcon name="loading" size="sm" decorative className="motion-safe:animate-spin" />,
       }}
       style={
         {

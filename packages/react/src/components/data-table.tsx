@@ -133,12 +133,14 @@ function DataTable<TData>({
             {headerGroup.headers.map((header) => {
               const sorted = header.column.getIsSorted()
               const meta = header.column.columnDef.meta
+              const headAlign =
+                meta?.align ?? (meta?.numeric ? "end" : undefined)
 
               return (
                 <TableHead
                   key={header.id}
                   colSpan={header.colSpan}
-                  {...(meta?.align ? { align: meta.align } : {})}
+                  {...(headAlign ? { align: headAlign } : {})}
                   aria-sort={
                     sorted === "asc"
                       ? "ascending"
@@ -521,7 +523,7 @@ function DataTablePagination<TData>({
           disabled={!table.getCanPreviousPage()}
           onClick={() => table.previousPage()}
         >
-          <FoundationIcon name="back" size="sm" decorative />
+          <FoundationIcon name="back" size="sm" decorative className="rtl:rotate-180" />
         </IconButton>
         <IconButton
           aria-label={copy.nextPage}
@@ -530,7 +532,7 @@ function DataTablePagination<TData>({
           disabled={!table.getCanNextPage()}
           onClick={() => table.nextPage()}
         >
-          <FoundationIcon name="forward" size="sm" decorative />
+          <FoundationIcon name="forward" size="sm" decorative className="rtl:rotate-180" />
         </IconButton>
       </div>
     </div>

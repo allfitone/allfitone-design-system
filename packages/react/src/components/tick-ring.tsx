@@ -23,16 +23,17 @@ function TickRing({
   ...props
 }: TickRingProps) {
   const progress = Math.min(100, Math.max(0, value))
+  const announced = Math.round(progress)
   const radius = 18 - strokeWidth - 0.5
 
   return (
     <div
       data-slot="tick-ring"
       role="meter"
-      aria-valuenow={progress}
+      aria-valuenow={announced}
       aria-valuemin={0}
       aria-valuemax={100}
-      aria-valuetext={`${progress}%`}
+      aria-valuetext={`${announced}%`}
       className={cn(
         "relative inline-flex shrink-0 items-center justify-center align-middle text-[var(--afo-color-text-accent)]",
         className

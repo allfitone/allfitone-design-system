@@ -75,7 +75,7 @@ function PaginationPrevious({
       className={cn("min-w-11 pl-1.5!", className)}
       {...props}
     >
-      <FoundationIcon name="back" data-icon="inline-start" decorative />
+      <FoundationIcon name="back" data-icon="inline-start" decorative className="rtl:rotate-180" />
       <span className="hidden sm:block">{text}</span>
     </PaginationLink>
   )
@@ -94,7 +94,7 @@ function PaginationNext({
       {...props}
     >
       <span className="hidden sm:block">{text}</span>
-      <FoundationIcon name="forward" data-icon="inline-end" decorative />
+      <FoundationIcon name="forward" data-icon="inline-end" decorative className="rtl:rotate-180" />
     </PaginationLink>
   )
 }

@@ -66,8 +66,6 @@ function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
       data-slot="breadcrumb-page"
-      role="link"
-      aria-disabled="true"
       aria-current="page"
       className={cn("inline-flex min-h-11 items-center rounded-full border-0 bg-[var(--afo-color-accent-tonal)] px-3 font-bold text-[var(--afo-color-text-accent)]", className)}
       {...props}
@@ -88,7 +86,14 @@ function BreadcrumbSeparator({
       className={cn("text-muted-foreground [&>svg]:size-3.5", className)}
       {...props}
     >
-      {children ?? <FoundationIcon name="forward" size="xs" decorative />}
+      {children ?? (
+        <FoundationIcon
+          name="forward"
+          size="xs"
+          decorative
+          className="rtl:rotate-180"
+        />
+      )}
     </li>
   )
 }

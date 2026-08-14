@@ -97,7 +97,7 @@ function TableRow({
       data-slot="table-row"
       data-state={selected ? "selected" : undefined}
       className={cn(
-        "border-b border-border transition-colors duration-[var(--afo-motion-feedback-duration)] hover:bg-muted/50 data-[state=selected]:bg-[var(--afo-accent-soft)] data-[state=selected]:[&>td:first-child]:shadow-[inset_3px_0_0_var(--primary)]",
+        "border-b border-border transition-colors duration-[var(--afo-motion-feedback-duration)] hover:bg-muted/50 data-[state=selected]:bg-[var(--afo-accent-soft)] data-[state=selected]:hover:bg-[var(--afo-color-accent-tonal)] data-[state=selected]:[&>td:first-child]:shadow-[inset_3px_0_0_var(--primary)]",
         className
       )}
       {...props}
@@ -189,7 +189,7 @@ function TableCell({
       data-align={align}
       data-numeric={numeric || undefined}
       className={cn(
-        "px-4 py-3 align-middle whitespace-nowrap group-data-[density=compact]/table:px-3 group-data-[density=compact]/table:py-2 data-[align=center]:text-center data-[align=end]:text-right data-[numeric=true]:font-display data-[numeric=true]:text-base data-[numeric=true]:leading-none data-[numeric=true]:font-semibold data-[numeric=true]:tracking-[var(--afo-letter-spacing-athletic)] data-[numeric=true]:tabular-nums [&:has([data-slot=checkbox])]:w-14 [&:has([data-slot=checkbox])]:px-1.5",
+        "px-4 py-3 align-middle whitespace-nowrap group-data-[density=compact]/table:px-3 group-data-[density=compact]/table:py-2 data-[numeric=true]:text-right data-[align=center]:text-center data-[align=end]:text-right data-[numeric=true]:font-display data-[numeric=true]:text-base data-[numeric=true]:leading-none data-[numeric=true]:font-semibold data-[numeric=true]:tracking-[var(--afo-letter-spacing-athletic)] data-[numeric=true]:tabular-nums [&:has([data-slot=checkbox])]:w-14 [&:has([data-slot=checkbox])]:px-1.5",
         className
       )}
       {...props}
