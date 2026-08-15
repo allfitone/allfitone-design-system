@@ -48,7 +48,13 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@allfitone/react/compon
 import { WorkspaceActions, WorkspaceContent, WorkspaceEyebrow, WorkspaceHeader, WorkspaceHeading, WorkspaceMain, WorkspaceShell, WorkspaceTitle } from "@allfitone/react/components/workspace-shell";
 import { FoundationIcon } from "@allfitone/react/icons";
 
-import { getComponentById, getComponentCategory, type ComponentCategorySlug } from "@/lib/component-catalog";
+import {
+  getCategoryNumeral,
+  getComponentById,
+  getComponentCategory,
+  getComponentNumeral,
+  type ComponentCategorySlug,
+} from "@/lib/component-catalog";
 
 type ComponentSectionProps = {
   id: string;
@@ -66,13 +72,19 @@ function ComponentSection({ id, children }: ComponentSectionProps) {
 
   return (
     <article className="component-entry" id={id}>
-      <header className="component-entry__header">
+      <header className="component-entry__header" data-index={getComponentNumeral(id)}>
         <div>
           <p className="component-entry__eyebrow">{importPath}</p>
           <h3 tabIndex={-1}>{title}</h3>
           <p>{description}</p>
         </div>
-        <a href={`#${id}`} aria-label={`Link to ${title}`}>#</a>
+        <a
+          className="component-entry__anchor"
+          href={`#${id}`}
+          aria-label={`Link to ${title}`}
+        >
+          #
+        </a>
       </header>
       <div className="component-demo">{children}</div>
       <footer className="component-entry__contract">
@@ -93,7 +105,7 @@ function CategoryHeader({ id }: { id: ComponentCategorySlug }) {
   }
 
   return (
-    <header className="catalog-category__header" id={id}>
+    <header className="catalog-category__header" id={id} data-index={getCategoryNumeral(id)}>
       <Badge variant="code" className="catalog-category__code">{category.code}</Badge>
       <div>
         <div className="catalog-category__title-row">
@@ -109,6 +121,15 @@ function CategoryHeader({ id }: { id: ComponentCategorySlug }) {
 const programs = ["Strength", "Conditioning", "Mobility"];
 
 type MemberTableState = "ready" | "loading" | "empty" | "error";
+
+/** Select renders raw values unless the trigger formats them, so preview
+    states keep their human label in one place. */
+const stateLabels: Record<MemberTableState, string> = {
+  ready: "Ready",
+  loading: "Loading",
+  empty: "Empty",
+  error: "Error",
+};
 
 const memberRows = [
   { id: "AF-1042", name: "Camila Torres", plan: "Strength", status: "Active", adherence: 92, lastSession: "Today, 06:30" },
@@ -156,15 +177,14 @@ function TableSpecimen() {
             onValueChange={(value) => setPreviewState(value as MemberTableState)}
           >
             <SelectTrigger id="table-preview-state" aria-label="Preview table state">
-              <SelectValue />
+              <SelectValue>{(value: MemberTableState) => stateLabels[value]}</SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Table state</SelectLabel>
-                <SelectItem value="ready">Ready</SelectItem>
-                <SelectItem value="loading">Loading</SelectItem>
-                <SelectItem value="empty">Empty</SelectItem>
-                <SelectItem value="error">Error</SelectItem>
+                {Object.entries(stateLabels).map(([value, label]) => (
+                  <SelectItem key={value} value={value}>{label}</SelectItem>
+                ))}
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -553,15 +573,14 @@ function ComboboxSpecimen() {
             onValueChange={(value) => setRemoteState(value as ComboboxPreviewState)}
           >
             <SelectTrigger id="combobox-preview-state" aria-label="Preview combobox remote state">
-              <SelectValue />
+              <SelectValue>{(value: ComboboxPreviewState) => stateLabels[value]}</SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Directory state</SelectLabel>
-                <SelectItem value="ready">Ready</SelectItem>
-                <SelectItem value="loading">Loading</SelectItem>
-                <SelectItem value="empty">Empty</SelectItem>
-                <SelectItem value="error">Error</SelectItem>
+                {Object.entries(stateLabels).map(([value, label]) => (
+                  <SelectItem key={value} value={value}>{label}</SelectItem>
+                ))}
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -1491,7 +1510,7 @@ export function ComponentCatalog({
           </ComponentSection>
 
           <ComponentSection id="select">
-            <Field><FieldLabel htmlFor="program-select">Program</FieldLabel><Select defaultValue="strength"><SelectTrigger id="program-select"><SelectValue placeholder="Choose a program" /></SelectTrigger><SelectContent><SelectGroup><SelectLabel>Program</SelectLabel>{programs.map((program) => <SelectItem key={program} value={program.toLowerCase()}>{program}</SelectItem>)}</SelectGroup></SelectContent></Select></Field>
+            <Field><FieldLabel htmlFor="program-select">Program</FieldLabel><Select defaultValue="strength"><SelectTrigger id="program-select"><SelectValue placeholder="Choose a program">{(value: string | null) => programs.find((program) => program.toLowerCase() === value) ?? value}</SelectValue></SelectTrigger><SelectContent><SelectGroup><SelectLabel>Program</SelectLabel>{programs.map((program) => <SelectItem key={program} value={program.toLowerCase()}>{program}</SelectItem>)}</SelectGroup></SelectContent></Select></Field>
           </ComponentSection>
 
           <ComponentSection id="combobox">

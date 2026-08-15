@@ -169,6 +169,28 @@ export const componentCatalogItems = componentCategories.flatMap((category) => c
 const categoriesBySlug = new Map(componentCategories.map((category) => [category.slug, category]));
 const itemsById = new Map(componentCatalogItems.map((component) => [component.id, component]));
 
+function pad(value: number) {
+  return String(value).padStart(2, "0");
+}
+
+/**
+ * Catalog numerals are derived from the canonical category order so a numeral
+ * identifies the same entry on every route. Category pages render one section
+ * at a time, so they cannot be produced by a per-page CSS counter.
+ */
+const categoryNumerals = new Map(
+  componentCategories.map((category, index) => [category.slug, pad(index + 1)] as const),
+);
+
+const componentNumerals = new Map(
+  componentCategories.flatMap((category, categoryIndex) =>
+    category.components.map(
+      (component, componentIndex) =>
+        [component.id, `${pad(categoryIndex + 1)}.${pad(componentIndex + 1)}`] as const,
+    ),
+  ),
+);
+
 export function isComponentCategorySlug(value: string): value is ComponentCategorySlug {
   return categoriesBySlug.has(value as ComponentCategorySlug);
 }
@@ -183,4 +205,14 @@ export function getComponentById(id: string) {
 
 export function getComponentHref(component: ComponentCatalogItem) {
   return `/components/${component.category}#${component.id}`;
+}
+
+/** Two-digit category numeral, e.g. `03` for Forms. */
+export function getCategoryNumeral(slug: ComponentCategorySlug) {
+  return categoryNumerals.get(slug)!;
+}
+
+/** Composite `category.component` numeral, e.g. `03.02` for Input. */
+export function getComponentNumeral(id: string) {
+  return componentNumerals.get(id) ?? "";
 }
