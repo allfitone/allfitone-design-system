@@ -41,6 +41,22 @@ test("loads the index and category routes at the intended position", async ({ pa
   expect(mobileDimensions.scrollWidth).toBeLessThanOrEqual(mobileDimensions.clientWidth);
 });
 
+test("numbers every category and component from the canonical catalog order", async ({ page }) => {
+  for (const [index, route] of categoryRoutes.entries()) {
+    const numeral = String(index + 1).padStart(2, "0");
+    await page.goto(route);
+
+    await expect(page.locator(".catalog-category__header")).toHaveAttribute("data-index", numeral);
+
+    const entries = await page.locator(".component-entry__header").evaluateAll((headers) =>
+      headers.map((header) => header.getAttribute("data-index")),
+    );
+    expect(entries).toEqual(
+      entries.map((_, entryIndex) => `${numeral}.${String(entryIndex + 1).padStart(2, "0")}`),
+    );
+  }
+});
+
 test("preserves legacy hashes and canonical component deep links", async ({ page }) => {
   await page.goto("/components#calendar");
   await expect(page).toHaveURL(/\/components\/selection#calendar$/);
@@ -58,7 +74,8 @@ test("searches and filters the static registry through shareable URLs", async ({
   await expect(page.getByRole("link", { name: /Command \+ CommandDialog/ })).toBeVisible();
 
   await search.fill("");
-  await page.getByRole("button", { name: "DAT", exact: true }).click();
+  await page.getByRole("combobox", { name: "Category" }).click();
+  await page.getByRole("option", { name: "Data display", exact: true }).click();
   await expect(page).toHaveURL(/\?category=data-display$/);
   await expect(page.getByRole("link", { name: /DataTable/ })).toBeVisible();
   await expect(page.getByRole("link", { name: /Calendar/ })).toHaveCount(0);
@@ -82,13 +99,15 @@ test("keeps category search, sequence and focus usable on compact screens", asyn
   await expect(page).toHaveURL(/#tabs$/);
   await expect(page.locator("#tabs h3")).toBeFocused();
 
-  const categorySearch = navigator.getByRole("searchbox", { name: "Search Selection components" });
-  await categorySearch.fill("combobox");
-  await navigator.getByRole("link", { name: /Combobox/ }).click();
+  await navigator.getByRole("button", { name: "Search components" }).click();
+  const commandSearch = page.getByRole("combobox", { name: "Search components" });
+  await commandSearch.fill("combobox");
+  await page.getByRole("option", { name: "Combobox" }).click();
   await expect(page).toHaveURL(/#combobox$/);
   await expect(page.locator("#combobox h3")).toBeFocused();
 
-  await navigator.getByRole("combobox", { name: "Component category" }).selectOption("navigation");
+  await navigator.getByRole("combobox", { name: "Component category" }).click();
+  await page.getByRole("option", { name: "Navigation", exact: true }).click();
   await expect(page).toHaveURL(/\/components\/navigation$/);
   const overflow = await page.evaluate(() => ({
     scroll: document.documentElement.scrollWidth,

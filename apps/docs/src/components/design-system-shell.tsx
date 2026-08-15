@@ -32,6 +32,7 @@ import {
 import { FoundationIcon, type IconName } from "@allfitone/react/icons";
 
 import { ThemeToggle } from "@/components/theme-toggle";
+import { componentCategories } from "@/lib/component-catalog";
 import { explorerReleaseLabel } from "@/lib/release";
 
 type GuideSection = "foundations" | "components";
@@ -72,16 +73,15 @@ const chapters: readonly Chapter[] = [
     label: "Components",
     href: "/components",
     icon: "operation",
+    // Derived from the catalog so the sidebar can never drift from the
+    // categories, their order or their codes.
     sections: [
-      { code: "OVR", label: "Overview", hash: "overview" },
-      { code: "ACT", label: "Actions", hash: "actions" },
-      { code: "NAV", label: "Navigation", hash: "navigation" },
-      { code: "FRM", label: "Forms", hash: "forms" },
-      { code: "SEL", label: "Selection", hash: "selection" },
-      { code: "DAT", label: "Data display", hash: "data-display" },
-      { code: "SIG", label: "Signature", hash: "signature" },
-      { code: "OVR", label: "Overlays", hash: "overlays" },
-      { code: "FDB", label: "Feedback", hash: "feedback" },
+      { code: "ALL", label: "Overview", hash: "overview" },
+      ...componentCategories.map((category) => ({
+        code: category.code,
+        label: category.label,
+        hash: category.slug,
+      })),
     ],
   },
 ];
