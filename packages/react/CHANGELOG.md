@@ -1,5 +1,11 @@
 # @allfitone/react
 
+## 0.10.0
+
+### Minor Changes
+
+- ee99734: Add canonical setup-shell and choice-card compositions, and preserve Sidebar element props and nested themes in the mobile portal.
+
 ## 0.9.1
 
 ### Patch Changes
