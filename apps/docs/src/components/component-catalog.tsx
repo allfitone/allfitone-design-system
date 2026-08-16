@@ -13,6 +13,7 @@ import { Button, buttonVariants } from "@allfitone/react/components/button";
 import { Calendar, type DateRange, type Matcher } from "@allfitone/react/components/calendar";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@allfitone/react/components/card";
 import { Checkbox } from "@allfitone/react/components/checkbox";
+import { ChoiceCard, ChoiceCardAction, ChoiceCardDescription, ChoiceCardEyebrow, ChoiceCardTitle } from "@allfitone/react/components/choice-card";
 import { Combobox, ComboboxActions, ComboboxChip, ComboboxChipRemove, ComboboxChips, ComboboxChipsInput, ComboboxClear, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxInput, ComboboxInputGroup, ComboboxItem, ComboboxLabel, ComboboxList, ComboboxStatus, ComboboxTrigger, ComboboxValue } from "@allfitone/react/components/combobox";
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from "@allfitone/react/components/command";
 import { DataTable, DataTableColumnHeader, DataTableFilterInput, DataTablePagination, DataTableSelectionBar, DataTableToolbar, DataTableViewOptions, useDataTable, type ColumnDef } from "@allfitone/react/components/data-table";
@@ -35,6 +36,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@allfitone/react/components/sheet";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem } from "@allfitone/react/components/sidebar";
 import { Skeleton } from "@allfitone/react/components/skeleton";
+import { SetupHeader, SetupMain, SetupPanel, SetupPanelActions, SetupPanelContent, SetupPanelDescription, SetupPanelEyebrow, SetupPanelIntro, SetupPanelTitle, SetupProgress, SetupProgressStep, SetupShell, SetupStage } from "@allfitone/react/components/setup-shell";
 import { toast } from "@allfitone/react/components/sonner";
 import { Spinner } from "@allfitone/react/components/spinner";
 import { StatStrip, StatStripItem } from "@allfitone/react/components/stat-strip";
@@ -1451,6 +1453,34 @@ export function ComponentCatalog({
             </WorkspaceShell>
           </ComponentSection>
 
+          <ComponentSection id="setup-shell">
+            <SetupShell className="min-h-0">
+              <SetupHeader>
+                <ProductLockup product="studio" surface="light" title="Allfit Studio" />
+              </SetupHeader>
+              <SetupMain as="div">
+                <SetupProgress aria-label="Setup progress">
+                  <SetupProgressStep status="complete" index={1} label="Identity" />
+                  <SetupProgressStep status="current" index={2} label="Workspace" />
+                  <SetupProgressStep status="pending" index={3} label="Ready" />
+                </SetupProgress>
+                <SetupStage>
+                  <SetupPanel>
+                    <SetupPanelIntro>
+                      <SetupPanelEyebrow>Workspace setup</SetupPanelEyebrow>
+                      <SetupPanelTitle as="h3">Create your space.</SetupPanelTitle>
+                      <SetupPanelDescription>Choose the structure that fits your work today.</SetupPanelDescription>
+                    </SetupPanelIntro>
+                    <SetupPanelContent>
+                      <p>Your organization remains private until setup is complete.</p>
+                      <SetupPanelActions><Button>Continue</Button><Button variant="ghost">Back</Button></SetupPanelActions>
+                    </SetupPanelContent>
+                  </SetupPanel>
+                </SetupStage>
+              </SetupMain>
+            </SetupShell>
+          </ComponentSection>
+
           <ComponentSection id="command">
             <CommandSpecimen />
           </ComponentSection>
@@ -1527,6 +1557,22 @@ export function ComponentCatalog({
 
           <ComponentSection id="tabs">
             <Tabs defaultValue="overview"><TabsList variant="line"><TabsTrigger value="overview">Overview</TabsTrigger><TabsTrigger value="history">History</TabsTrigger><TabsTrigger value="permissions">Permissions</TabsTrigger></TabsList><TabsContent value="overview">Current training summary and active plan.</TabsContent><TabsContent value="history">Completed sessions remain attached to the person.</TabsContent><TabsContent value="permissions">The person controls organizational access.</TabsContent></Tabs>
+          </ComponentSection>
+
+          <ComponentSection id="choice-card">
+            <div className="demo-grid">
+              <ChoiceCard>
+                <ChoiceCardEyebrow>For me</ChoiceCardEyebrow>
+                <ChoiceCardTitle>Independent practice</ChoiceCardTitle>
+                <ChoiceCardDescription>Create a workspace owned by you.</ChoiceCardDescription>
+                <ChoiceCardAction>Create workspace</ChoiceCardAction>
+              </ChoiceCard>
+              <ChoiceCard variant="muted" disabled>
+                <ChoiceCardEyebrow>Later</ChoiceCardEyebrow>
+                <ChoiceCardTitle>Wait for an invitation</ChoiceCardTitle>
+                <ChoiceCardDescription>Join when an organization invites you.</ChoiceCardDescription>
+              </ChoiceCard>
+            </div>
           </ComponentSection>
         </div>
       </section>

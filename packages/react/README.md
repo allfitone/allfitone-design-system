@@ -52,10 +52,10 @@ const body = Manrope({
 Available public component subpaths are:
 
 - actions: `button` and `icon-button`;
-- navigation: `breadcrumb`, `navigation-menu`, `dropdown-menu`, `pagination`, `drawer`, `sidebar`, `workspace-shell`, and `command`;
-- entry: `access-shell` for responsive, brand-led authentication and product-entry pages, and `device-gate` for replacing compact-phone workspaces with device guidance;
+- navigation: `breadcrumb`, `navigation-menu`, `dropdown-menu`, `pagination`, `drawer`, `sidebar`, `workspace-shell`, `setup-shell`, and `command`;
+- entry: `access-shell` for responsive, brand-led authentication and product-entry pages, `setup-shell` for multi-step activation and onboarding, and `device-gate` for replacing compact-phone workspaces with device guidance;
 - forms: `field`, `label`, `input`, and `textarea`;
-- selection: `checkbox`, `radio-group`, `switch`, `toggle-group`, `select`, `combobox`, `date-picker`, `calendar`, and `tabs`;
+- selection: `checkbox`, `radio-group`, `switch`, `toggle-group`, `select`, `combobox`, `date-picker`, `calendar`, `tabs`, and `choice-card`;
 - data display: `table`, `data-table`, `avatar`, `badge`, `card`, `skeleton`, and `empty`;
 - signature: `accent-block`, `stat-strip`, `tick-ring`, `pulse-mark`, and `animated-brand-lockup`;
 - overlays: `dialog`, `alert-dialog`, `sheet`, `popover`, `tooltip`, and the `CommandDialog` composition from `command`;
@@ -63,6 +63,17 @@ Available public component subpaths are:
 - composition: `collapsible` and `separator`.
 
 There is no all-components barrel. Import each component from its explicit `@allfitone/react/components/{name}` subpath.
+
+`SetupShell` owns the responsive header, progress list, stage and split-panel
+hierarchy used by activation and setup flows. `SetupProgressStep` derives its
+completed icon and `aria-current` state from `status`; products provide only
+the index and label. Use `SetupPanelTitle as="h2"` when the panel sits below an
+existing page title.
+
+`ChoiceCard` is one interactive surface, rendered as a button by default or
+through `render` for navigation. Compose its eyebrow, title, description and
+action slots inside it; do not place another interactive control inside the
+card.
 
 Loading actions compose a named `Spinner` inside a disabled `Button`; components do not expose an `isLoading` prop. Icon-only actions use `IconButton`, whose TypeScript contract requires `aria-label`.
 

@@ -88,6 +88,8 @@ const sourceFiles = await Promise.all(
 
 const forbiddenPatterns = [
   { label: "raw hexadecimal color", pattern: /#[0-9a-f]{3,8}\b/i },
+  { label: "raw rgb color", pattern: /\brgba?\(/i },
+  { label: "raw hsl color", pattern: /\bhsla?\(/i },
   { label: "manual dark-mode utility", pattern: /\bdark:/ },
   { label: "direct Lucide import", pattern: /from ["']lucide-react["']/ },
   { label: "workspace-internal alias", pattern: /from ["']@\// },

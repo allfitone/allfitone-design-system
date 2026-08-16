@@ -24,6 +24,28 @@ test.beforeEach(async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1, name: "Components" })).toBeVisible();
 });
 
+test("documents responsive setup and choice contracts", async ({ page }) => {
+  await openCategory(page, "navigation", "Navigation");
+  const setup = page.locator("#setup-shell");
+  await expect(setup.getByRole("list", { name: "Setup progress" })).toBeVisible();
+  await expect(setup.locator('[data-slot="setup-progress-step"][data-status="current"]')).toHaveAttribute("aria-current", "step");
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(setup.locator('[data-slot="setup-panel"]')).toBeVisible();
+  expect(await setup.evaluate((element) => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(0);
+
+  await openCategory(page, "selection", "Selection");
+  const choice = page.getByRole("button", { name: /Independent practice/ });
+  const box = await choice.boundingBox();
+  expect(box?.height).toBeGreaterThanOrEqual(44);
+  await choice.focus();
+  await expect(choice).toBeFocused();
+
+  await page.emulateMedia({ reducedMotion: "reduce", forcedColors: "active" });
+  await choice.focus();
+  expect(await choice.evaluate((element) => getComputedStyle(element).outlineStyle)).not.toBe("none");
+});
+
 test("applies the public application baseline and product font bridge", async ({ page }) => {
   const baseline = await page.evaluate(() => {
     const root = getComputedStyle(document.documentElement);
