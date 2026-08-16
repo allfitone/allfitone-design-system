@@ -10,6 +10,7 @@
  * of the viewport away from the content it frames.
  */
 import { cleanup, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { Button, buttonVariants } from "../src/components/button.js";
@@ -19,6 +20,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
+  SidebarTrigger,
   useSidebar,
 } from "../src/components/sidebar.js";
 import {
@@ -77,6 +79,7 @@ describe("controls rendered as anchors", () => {
     const classes = buttonVariants({ variant: "link" });
 
     expect(classes).toContain("hover:underline");
+    expect(classes).toContain("text-[var(--afo-color-text-accent)]");
   });
 
   it("does not underline a sidebar destination", () => {
@@ -111,6 +114,33 @@ describe("controls rendered as anchors", () => {
 });
 
 describe("sidebar collapse below a comfortable width", () => {
+  it("forwards mobile element props and theme to the portaled panel", async () => {
+    setViewportWidth(390);
+    const user = userEvent.setup();
+
+    render(
+      <SidebarProvider>
+        <SidebarTrigger aria-label="Open navigation" />
+        <Sidebar
+          className="product-sidebar"
+          data-afo-theme="dark"
+          data-product="studio"
+          style={{ opacity: 0.9 }}
+        >
+          Navigation
+        </Sidebar>
+      </SidebarProvider>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Open navigation" }));
+    const panel = document.querySelector('[data-slot="sidebar"][data-mobile="true"]');
+
+    expect(panel).toHaveClass("product-sidebar");
+    expect(panel).toHaveAttribute("data-afo-theme", "dark");
+    expect(panel).toHaveAttribute("data-product", "studio");
+    expect(panel).toHaveStyle({ opacity: "0.9" });
+  });
+
   it("starts collapsed when the viewport is narrower than collapseBelow", () => {
     setViewportWidth(1024);
 

@@ -19,7 +19,7 @@ const buttonVariants = cva(
           "text-foreground shadow-none hover:bg-muted hover:shadow-none aria-expanded:bg-muted aria-expanded:text-foreground",
         destructive:
           "border-destructive bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklch,var(--destructive),var(--foreground)_8%)]",
-        link: "text-primary shadow-none hover:translate-y-0 hover:shadow-none active:translate-y-0 underline-offset-4 hover:underline",
+        link: "text-[var(--afo-color-text-accent)] shadow-none hover:translate-y-0 hover:shadow-none active:translate-y-0 underline-offset-4 hover:underline",
       },
       size: {
         default:

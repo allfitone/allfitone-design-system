@@ -69,6 +69,7 @@ export const componentCategories = [
       item("navigation", "pagination", "Pagination", "Large operational lists expose position, direction and the active page.", "@allfitone/react/components/pagination", ["Current page", "Previous / next", "Accessible labels", "Mobile collapse"]),
       item("navigation", "drawer", "Drawer", "Mobile navigation enters from the physical edge and preserves the workspace beneath it.", "@allfitone/react/components/drawer", ["Required title", "Swipe / Escape", "Focus return", "Mobile navigation"]),
       item("navigation", "workspace-shell", "Sidebar + WorkspaceShell", "The application frame keeps organization, product area and current task in one disciplined hierarchy.", "@allfitone/react/components/workspace-shell", ["Desktop sidebar", "Mobile sheet", "Collapsed state", "Landmark order"]),
+      item("navigation", "setup-shell", "SetupShell", "A responsive setup frame owns product header, progress, panel hierarchy and actions.", "@allfitone/react/components/setup-shell", ["One page title", "Responsive progress", "Panel hierarchy", "Reduced motion"]),
       item("navigation", "command", "Command + CommandDialog", "A shared keyboard-first command model moves through the workspace inline or inside a focused global Dialog.", "@allfitone/react/components/command", ["Filtering / groups", "Arrow keys / Enter", "Empty / disabled", "Dialog focus return"]),
     ],
   },
@@ -101,6 +102,7 @@ export const componentCategories = [
       item("selection", "date-picker", "DatePicker", "Typed dates and the calendar share one controlled value, visible format guidance and explicit unavailable or invalid states.", "@allfitone/react/components/date-picker", ["Typed parsing", "Controlled / uncontrolled", "Unavailable dates", "Visible format and error"]),
       item("selection", "calendar", "Calendar", "Session dates and training blocks preserve a 44 px grid, explicit unavailable days and keyboard navigation across months.", "@allfitone/react/components/calendar", ["Single / range", "Disabled modifiers", "Locale / timezone ready", "Arrow and page keys"]),
       item("selection", "tabs", "Tabs", "The selected state combines exposed state, weight and trajectory.", "@allfitone/react/components/tabs", ["Arrow navigation", "Selected trajectory", "Disabled", "Long labels"]),
+      item("selection", "choice-card", "ChoiceCard", "A large single-action choice keeps its complete surface keyboard and pointer operable.", "@allfitone/react/components/choice-card", ["44 px target", "Button or link", "Default / muted", "Disabled"]),
     ],
   },
   {
