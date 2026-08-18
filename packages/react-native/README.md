@@ -56,12 +56,14 @@ Expo projects should install the native peers through `npx expo install` so the 
 - `@allfitone/react-native/theme`: `ThemeProvider`, `useTheme`, and a resolved theme.
 - `@allfitone/react-native/text`: typographic component driven by `typographyRole`.
 - `@allfitone/react-native/button`: pill action with the platform touch target.
+- `@allfitone/react-native/sheet`: bottom panel for exchanges that are not screens.
 - `@allfitone/react-native/screen`: safe-area container that paints the canvas.
 - `@allfitone/react-native/gradient`: `SignalBlock` and `Scrim`.
 - `@allfitone/react-native/glass`: `GlassPanel`, the translucent chrome material.
 - `@allfitone/react-native/backdrop`: `AmbientBackdrop`, the soft blooms and dot grid.
 - `@allfitone/react-native/brand-entrance`: the mark filling with liquid, for app launch.
 - `@allfitone/react-native/text-field`: labelled text entry with a state-carrying border.
+- `@allfitone/react-native/checkbox`: a statement the person affirms, with its mark.
 - `@allfitone/react-native/code-field`: segmented entry for a short numeric code.
 - `@allfitone/react-native/inline-alert`: status message that sits with its control.
 
@@ -72,6 +74,8 @@ Expo projects should install the native peers through `npx expo install` so the 
 **`Text` omits the underlying `role` prop.** React Native has its own for accessibility, and its value set intersects the typographic roles at exactly `"heading"`, which silently narrows every other role away. Screen-reader semantics stay available through `accessibilityRole`.
 
 **`Scrim` needs image beneath it.** `coverage` is where the fade *completes*, not where the image ends. If the image stops at that point, the last percent of the fade still shows image and leaves a visible seam — obvious on a light canvas, where the dark edge of a photograph meets a near-white background.
+
+**`Checkbox` is a checkbox, never a switch.** A switch announces "on/off" and promises an effect the moment it moves; these affirmations land on submit, so a switch would move and do nothing. An affirmation is also an act rather than a preference, and preferences are what people flip without reading. The platform checkbox was rejected on looks, not on semantics — the mark fills with the accent colour, the same language as a filled `CodeField` box.
 
 **`CodeField` is one input, not one per digit.** A field per digit has to simulate backspace across fields, and only one of them receives the platform's one-time-code autofill. The boxes are drawn beneath a single transparent input and hidden from assistive technology.
 
