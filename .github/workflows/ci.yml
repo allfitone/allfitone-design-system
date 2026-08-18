@@ -8,9 +8,14 @@ on:
 permissions:
   contents: read
 
+# Superseding only makes sense on a pull request, where just the newest commit
+# matters. On main every commit is a candidate to publish from, and `Publish to
+# npm` refuses to run without a successful CI run for that exact commit — so
+# cancelling there destroys the evidence the release depends on. Two merges in
+# quick succession did exactly that.
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 # The version pull request only edits manifests and changelogs; the feature
 # pull request and the main branch have both already validated that tree.
