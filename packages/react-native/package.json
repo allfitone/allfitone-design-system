@@ -63,6 +63,11 @@
       "react-native": "./dist/button.js",
       "import": "./dist/button.js"
     },
+    "./sheet": {
+      "types": "./dist/sheet.d.ts",
+      "react-native": "./dist/sheet.js",
+      "import": "./dist/sheet.js"
+    },
     "./screen": {
       "types": "./dist/screen.d.ts",
       "react-native": "./dist/screen.js",
@@ -87,6 +92,11 @@
       "types": "./dist/text-field.d.ts",
       "react-native": "./dist/text-field.js",
       "import": "./dist/text-field.js"
+    },
+    "./checkbox": {
+      "types": "./dist/checkbox.d.ts",
+      "react-native": "./dist/checkbox.js",
+      "import": "./dist/checkbox.js"
     },
     "./code-field": {
       "types": "./dist/code-field.d.ts",
