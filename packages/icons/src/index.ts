@@ -47,6 +47,9 @@ export const iconCatalog = {
   permissions: { source: "ShieldCheck", category: "object" },
   settings: { source: "Settings", category: "object" },
   activity: { source: "Activity", category: "object" },
+  weight: { source: "Weight", category: "object" },
+  race: { source: "Flag", category: "object" },
+  heart: { source: "Heart", category: "object" },
 } as const;
 
 export type IconName = keyof typeof iconCatalog;

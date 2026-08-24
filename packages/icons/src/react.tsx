@@ -21,6 +21,8 @@ import {
   Clock3,
   Dumbbell,
   Ellipsis,
+  Flag,
+  Heart,
   Info,
   LayoutDashboard,
   LoaderCircle,
@@ -36,6 +38,7 @@ import {
   TriangleAlert,
   UserRound,
   UsersRound,
+  Weight,
   X,
   type LucideIcon,
   type LucideProps,
@@ -68,6 +71,8 @@ const sourceComponents = {
   Clock3,
   Dumbbell,
   Ellipsis,
+  Flag,
+  Heart,
   Info,
   LayoutDashboard,
   LoaderCircle,
@@ -83,6 +88,7 @@ const sourceComponents = {
   TriangleAlert,
   UserRound,
   UsersRound,
+  Weight,
   X,
 } satisfies Record<IconSource, LucideIcon>;
 
@@ -208,3 +214,6 @@ export const BusinessIcon = /* @__PURE__ */ createSemanticIcon("BusinessIcon", C
 export const PermissionsIcon = /* @__PURE__ */ createSemanticIcon("PermissionsIcon", ShieldCheck);
 export const SettingsIcon = /* @__PURE__ */ createSemanticIcon("SettingsIcon", Settings);
 export const ActivityIcon = /* @__PURE__ */ createSemanticIcon("ActivityIcon", Activity);
+export const WeightIcon = /* @__PURE__ */ createSemanticIcon("WeightIcon", Weight);
+export const RaceIcon = /* @__PURE__ */ createSemanticIcon("RaceIcon", Flag);
+export const HeartIcon = /* @__PURE__ */ createSemanticIcon("HeartIcon", Heart);

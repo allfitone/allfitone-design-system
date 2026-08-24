@@ -16,6 +16,8 @@ import {
   Clock3,
   Dumbbell,
   Ellipsis,
+  Flag,
+  Heart,
   Info,
   LayoutDashboard,
   LoaderCircle,
@@ -31,6 +33,7 @@ import {
   TriangleAlert,
   UserRound,
   UsersRound,
+  Weight,
   X,
   type LucideProps,
 } from "lucide-react-native";
@@ -62,6 +65,8 @@ const sourceComponents = {
   Clock3,
   Dumbbell,
   Ellipsis,
+  Flag,
+  Heart,
   Info,
   LayoutDashboard,
   LoaderCircle,
@@ -77,6 +82,7 @@ const sourceComponents = {
   TriangleAlert,
   UserRound,
   UsersRound,
+  Weight,
   X,
 } satisfies Record<IconSource, ComponentType<LucideProps>>;
 
