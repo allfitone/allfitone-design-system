@@ -1,3 +1,4 @@
+export { transparent, withAlpha } from "./alpha.js";
 export { color, semanticColor } from "./color.js";
 export { createCssVariables } from "./css.js";
 export { gradient, semanticGradient } from "./gradient.js";

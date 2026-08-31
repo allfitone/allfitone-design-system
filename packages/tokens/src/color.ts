@@ -71,6 +71,7 @@ export const semanticColor = {
       inverse: color.ink.carbon,
       accent: color.brand.primary,
       danger: color.feedback.dangerSoft,
+      success: color.feedback.success,
     },
     icon: {
       primary: color.neutral.salt,
@@ -128,6 +129,7 @@ export const semanticColor = {
       inverse: color.neutral.salt,
       accent: "#0E6E76",
       danger: color.feedback.dangerStrong,
+      success: color.feedback.successDeep,
     },
     icon: {
       primary: color.neutral.inkText,

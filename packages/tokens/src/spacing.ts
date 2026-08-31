@@ -23,6 +23,12 @@ export const semanticSpacing = {
   controlInsetY: spacing[3],
   cardInset: spacing[4],
   panelInset: spacing[6],
+  /**
+   * Air between the safe area and the first thing on a screen. The safe area only
+   * clears the hardware; content that starts the instant it ends reads as pinned to
+   * the notch.
+   */
+  screenTop: spacing[3],
   sectionGap: spacing[16],
   touchTarget: spacing[11],
   touchTargetWeb: spacing[11],
