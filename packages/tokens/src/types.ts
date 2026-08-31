@@ -13,6 +13,8 @@ export type Gradient = Readonly<{
 export type GlassMaterial = Readonly<{
   fill: HexColor;
   border: HexColor;
+  /** The specular edge along the top. Without it the panel reads as a flat block. */
+  shine: HexColor;
   blur: number;
   saturate: number;
 }>;
