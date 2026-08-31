@@ -22,7 +22,7 @@ import { StyleSheet, type StyleProp, type ViewStyle } from "react-native";
 
 import { resolveGradientEndpoints } from "./gradient-geometry.js";
 import { useTheme } from "./theme.js";
-import { semanticGradient } from "./tokens.js";
+import { semanticGradient, transparent } from "./tokens.js";
 
 export type SignalBlockProps = {
   readonly children?: React.ReactNode;
@@ -72,11 +72,19 @@ export type ScrimProps = {
   readonly height: number;
   /** Where the fade reaches the canvas colour, as a fraction of its own height. */
   readonly coverage?: number;
+  /** Where it stops being fully clear. Below this the image is untouched. */
+  readonly onset?: number;
   readonly background?: "canvas" | "surface";
   readonly style?: StyleProp<ViewStyle>;
 };
 
-export function Scrim({ height, coverage = 0.86, background = "canvas", style }: ScrimProps) {
+export function Scrim({
+  height,
+  coverage = 0.86,
+  onset = 0.32,
+  background = "canvas",
+  style,
+}: ScrimProps) {
   const theme = useTheme();
   const target = theme.color.background[background];
 
@@ -84,7 +92,16 @@ export function Scrim({ height, coverage = 0.86, background = "canvas", style }:
   // `transparent`. That keyword is transparent *black*, so on a light canvas the
   // fade runs through grey and lands as a dirty band across the image — the
   // exact artefact this component exists to avoid.
-  const clear = `${target}00`;
+  const clear = transparent(target);
+  const full = Math.min(coverage, 0.999);
+  const start = Math.min(onset, full);
+
+  // Two stops inside the ramp rather than a straight line to opaque. A linear
+  // fade reads as a band with an edge you can point at; alpha ramping ahead of
+  // the geometry is what makes it read as light leaving the photograph.
+  const span = full - start;
+  const rise = `${target}4D`;
+  const fall = `${target}B3`;
 
   // Positioned rather than filled. `StyleSheet.absoluteFill` pins all four
   // edges, and a consumer cannot undo that by passing `bottom: undefined` — a
@@ -93,8 +110,8 @@ export function Scrim({ height, coverage = 0.86, background = "canvas", style }:
   return (
     <LinearGradient
       pointerEvents="none"
-      colors={[clear, clear, target, target]}
-      locations={[0, 0.32, Math.min(coverage, 0.999), 1]}
+      colors={[clear, rise, fall, target, target]}
+      locations={[start, start + span * 0.35, start + span * 0.65, full, 1]}
       style={[styles.scrim, { height }, style]}
     />
   );

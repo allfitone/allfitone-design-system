@@ -22,6 +22,7 @@ const nativeOnlyOutputs = [
   "theme.js",
   "text.js",
   "button.js",
+  "icon-button.js",
   "screen.js",
   "gradient.js",
   "brand-entrance.js",

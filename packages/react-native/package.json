@@ -63,6 +63,11 @@
       "react-native": "./dist/button.js",
       "import": "./dist/button.js"
     },
+    "./icon-button": {
+      "types": "./dist/icon-button.d.ts",
+      "react-native": "./dist/icon-button.js",
+      "import": "./dist/icon-button.js"
+    },
     "./sheet": {
       "types": "./dist/sheet.d.ts",
       "react-native": "./dist/sheet.js",

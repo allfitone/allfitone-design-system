@@ -8,6 +8,11 @@
  * Safe-area edges are opt-in per screen rather than always-on: a screen with
  * imagery bleeding under the status bar needs the top edge unpadded, and forcing
  * it would make full-bleed layouts impossible to build with this component.
+ *
+ * The top edge also buys a little air beyond the safe area. The inset only clears
+ * the hardware, and content that starts the instant it ends reads as pinned to the
+ * notch — the same complaint on every screen at once, which is why it is fixed here
+ * rather than per product.
  */
 
 import { StyleSheet, type StyleProp, type ViewStyle } from "react-native";
@@ -41,6 +46,7 @@ export function Screen({
         styles.base,
         { backgroundColor: theme.color.background[background] },
         padded ? { paddingHorizontal: theme.semanticSpacing.panelInset } : null,
+        edges.includes("top") ? { paddingTop: theme.semanticSpacing.screenTop } : null,
         style,
       ]}
     >

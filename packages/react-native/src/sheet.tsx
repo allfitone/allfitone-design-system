@@ -24,9 +24,19 @@
  * Motion honours reduced motion: the tokens define a `reduced` step at zero
  * duration, and a panel that slides anyway is the thing that setting exists to
  * stop.
+ *
+ * Two details keep the motion from reading as a jump.
+ *
+ * **The modal outlives `visible`.** Handing `visible` straight to `Modal` unmounts the
+ * tree on the same frame the sheet is dismissed, so the exit animation never runs and
+ * the panel vanishes. It stays mounted until the animation reports it finished.
+ *
+ * **The panel travels its own height, not the screen's.** Sliding a short sheet from
+ * 85% of the display means covering several hundred points in a fraction of a second,
+ * which arrives like a slam. Its height is measured and that is the distance.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Animated,
   Easing,
@@ -75,8 +85,12 @@ export function Sheet({
   const insets = useSafeAreaInsets();
   const { height } = useWindowDimensions();
   const progress = useRef(new Animated.Value(0)).current;
+  const [mounted, setMounted] = useState(visible);
+  // Until the panel has been laid out, the screen is the only distance there is.
+  const [travel, setTravel] = useState(height * MAX_HEIGHT_RATIO);
 
   useEffect(() => {
+    if (visible) setMounted(true);
     const step = reduceMotion
       ? semanticMotion.reduced
       : visible
@@ -87,12 +101,16 @@ export function Sheet({
       duration: step.duration,
       easing: Easing.bezier(...(step.easing as [number, number, number, number])),
       useNativeDriver: true,
-    }).start();
+    }).start(({ finished }) => {
+      // Only once it has actually left. Unmounting on `visible` alone is what made
+      // the sheet disappear instead of closing.
+      if (finished && !visible) setMounted(false);
+    });
   }, [visible, reduceMotion, progress]);
 
   return (
     <Modal
-      visible={visible}
+      visible={mounted}
       transparent
       animationType="none"
       onRequestClose={onDismiss}
@@ -110,10 +128,15 @@ export function Sheet({
 
       <Animated.View
         accessibilityViewIsModal
+        onLayout={(event) => {
+          const measured = event.nativeEvent.layout.height;
+          if (measured > 0) setTravel(measured);
+        }}
         style={[
           styles.panel,
           {
             maxHeight: height * MAX_HEIGHT_RATIO,
+            opacity: progress,
             paddingBottom: insets.bottom + theme.spacing[4],
             paddingHorizontal: theme.spacing[6],
             paddingTop: theme.spacing[5],
@@ -125,7 +148,7 @@ export function Sheet({
               {
                 translateY: progress.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [height * MAX_HEIGHT_RATIO, 0],
+                  outputRange: [travel, 0],
                 }),
               },
             ],

@@ -41,7 +41,8 @@ export type TextColorName =
   | "disabled"
   | "inverse"
   | "accent"
-  | "danger";
+  | "danger"
+  | "success";
 
 export type { TextSizeName };
 

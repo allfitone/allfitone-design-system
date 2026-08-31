@@ -33,6 +33,7 @@ import {
 
 import { resolveGradientEndpoints } from "./gradient-geometry.js";
 import { resolveShadowStyle } from "./shadow-style.js";
+import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme, type Theme } from "./theme.js";
 import { semanticGradient } from "./tokens.js";
@@ -41,6 +42,12 @@ export type ButtonVariant = "primary" | "secondary" | "ghost";
 
 export type ButtonProps = Omit<PressableProps, "style" | "children"> & {
   readonly label: string;
+  /**
+   * A glyph before the label, for actions whose meaning is carried by both. It is
+   * always decorative: the label already names the action, and a second
+   * announcement would make every button read twice to a screen reader.
+   */
+  readonly icon?: IconName | undefined;
   readonly variant?: ButtonVariant;
   readonly loading?: boolean;
   readonly style?: StyleProp<ViewStyle>;
@@ -91,6 +98,7 @@ function resolvePalette(theme: Theme, variant: ButtonVariant, disabled: boolean)
 
 export function Button({
   label,
+  icon,
   variant = "primary",
   loading = false,
   disabled = false,
@@ -155,17 +163,19 @@ export function Button({
       ) : null}
 
       <View
-        style={{
-          paddingHorizontal: theme.spacing[6],
-          paddingVertical: theme.spacing[3],
-        }}
+        style={[
+          styles.content,
+          {
+            paddingHorizontal: theme.spacing[6],
+            paddingVertical: theme.spacing[3],
+            opacity: loading ? 0 : 1,
+          },
+        ]}
       >
-        <Text
-          role="control"
-          size="sm"
-          style={{ color: palette.foreground, opacity: loading ? 0 : 1 }}
-          numberOfLines={1}
-        >
+        {icon ? (
+          <FoundationIcon name={icon} size="sm" color={palette.foreground} decorative />
+        ) : null}
+        <Text role="control" size="sm" style={{ color: palette.foreground }} numberOfLines={1}>
           {label}
         </Text>
       </View>
@@ -174,6 +184,7 @@ export function Button({
 }
 
 const styles = StyleSheet.create({
+  content: { flexDirection: "row", alignItems: "center", gap: 8 },
   base: {
     alignItems: "center",
     justifyContent: "center",
