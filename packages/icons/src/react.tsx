@@ -34,13 +34,17 @@ import {
   LayoutDashboard,
   ListChecks,
   LoaderCircle,
+  Medal,
   Menu,
   Minus,
   Pencil,
+  Play,
   Plus,
   PanelLeft,
+  Repeat,
   Search,
   Settings,
+  Target,
   ShieldCheck,
   Trash2,
   TriangleAlert,
@@ -94,14 +98,18 @@ const sourceComponents = {
   LayoutDashboard,
   ListChecks,
   LoaderCircle,
+  Medal,
   Menu,
   Minus,
   PanelLeft,
   Pencil,
+  Play,
   Plus,
+  Repeat,
   Search,
   Settings,
   ShieldCheck,
+  Target,
   Trash2,
   TriangleAlert,
   Utensils,
@@ -233,6 +241,7 @@ export const OperationIcon = /* @__PURE__ */ createSemanticIcon("OperationIcon",
 export const BusinessIcon = /* @__PURE__ */ createSemanticIcon("BusinessIcon", ChartNoAxesCombined);
 export const PermissionsIcon = /* @__PURE__ */ createSemanticIcon("PermissionsIcon", ShieldCheck);
 export const SettingsIcon = /* @__PURE__ */ createSemanticIcon("SettingsIcon", Settings);
+export const TargetIcon = /* @__PURE__ */ createSemanticIcon("TargetIcon", Target);
 export const ActivityIcon = /* @__PURE__ */ createSemanticIcon("ActivityIcon", Activity);
 export const WeightIcon = /* @__PURE__ */ createSemanticIcon("WeightIcon", Weight);
 export const RaceIcon = /* @__PURE__ */ createSemanticIcon("RaceIcon", Flag);
@@ -247,3 +256,6 @@ export const FreestyleIcon = /* @__PURE__ */ createSemanticIcon("FreestyleIcon",
 export const ChecklistIcon = /* @__PURE__ */ createSemanticIcon("ChecklistIcon", ListChecks);
 export const NutritionIcon = /* @__PURE__ */ createSemanticIcon("NutritionIcon", Utensils);
 export const ProgressIcon = /* @__PURE__ */ createSemanticIcon("ProgressIcon", ChartLine);
+export const FrequencyIcon = /* @__PURE__ */ createSemanticIcon("FrequencyIcon", Repeat);
+export const LevelIcon = /* @__PURE__ */ createSemanticIcon("LevelIcon", Medal);
+export const StartIcon = /* @__PURE__ */ createSemanticIcon("StartIcon", Play);

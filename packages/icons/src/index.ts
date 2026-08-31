@@ -60,6 +60,10 @@ export const iconCatalog = {
   checklist: { source: "ListChecks", category: "object" },
   nutrition: { source: "Utensils", category: "object" },
   progress: { source: "ChartLine", category: "object" },
+  frequency: { source: "Repeat", category: "object" },
+  level: { source: "Medal", category: "object" },
+  start: { source: "Play", category: "action" },
+  target: { source: "Target", category: "object" },
 } as const;
 
 export type IconName = keyof typeof iconCatalog;
