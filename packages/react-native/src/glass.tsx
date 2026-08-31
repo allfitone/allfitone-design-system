@@ -24,9 +24,9 @@ import { material } from "./tokens.js";
 /**
  * The token carries a CSS blur radius in pixels; `BlurView` takes an abstract
  * 0–100 intensity. There is no conversion between the two, so this is a
- * calibration matched by eye against the web adapter at the token's 20px.
+ * calibration matched by eye against the web adapter at the token's 26px.
  */
-const BLUR_INTENSITY = 56;
+const BLUR_INTENSITY = 70;
 
 export type GlassPanelProps = {
   readonly children?: React.ReactNode;

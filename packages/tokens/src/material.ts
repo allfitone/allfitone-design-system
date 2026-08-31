@@ -12,17 +12,17 @@ import type { GlassMaterial } from "./types.js";
 export const material = {
   dark: {
     glass: {
-      fill: "#0B141DB8",
-      border: "#86BEC829",
-      blur: 20,
+      fill: "#0B141DA8",
+      border: "#F2FBFC2E",
+      blur: 26,
       saturate: 1.3,
     },
   },
   light: {
     glass: {
-      fill: "#FFFFFFBD",
-      border: "#0A28321F",
-      blur: 20,
+      fill: "#FFFFFFA8",
+      border: "#0A283226",
+      blur: 26,
       saturate: 1.3,
     },
   },
