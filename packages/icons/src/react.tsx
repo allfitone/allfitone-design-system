@@ -9,22 +9,30 @@ import {
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
+  Bell,
   Building2,
   CalendarDays,
   ChartNoAxesCombined,
+  ChartLine,
   Check,
+  Camera,
   ChevronDown,
   ChevronUp,
+  ChevronRight,
   CircleCheck,
   CircleX,
+  CirclePlus,
   ClipboardList,
   Clock3,
   Dumbbell,
   Ellipsis,
   Flag,
   Heart,
+  History,
+  House,
   Info,
   LayoutDashboard,
+  ListChecks,
   LoaderCircle,
   Menu,
   Minus,
@@ -36,10 +44,12 @@ import {
   ShieldCheck,
   Trash2,
   TriangleAlert,
+  Utensils,
   UserRound,
   UsersRound,
   Weight,
   X,
+  Zap,
   type LucideIcon,
   type LucideProps,
 } from "lucide-react";
@@ -59,22 +69,30 @@ const sourceComponents = {
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
+  Bell,
   Building2,
   CalendarDays,
   ChartNoAxesCombined,
+  ChartLine,
   Check,
+  Camera,
   ChevronDown,
   ChevronUp,
+  ChevronRight,
   CircleCheck,
   CircleX,
+  CirclePlus,
   ClipboardList,
   Clock3,
   Dumbbell,
   Ellipsis,
   Flag,
   Heart,
+  History,
+  House,
   Info,
   LayoutDashboard,
+  ListChecks,
   LoaderCircle,
   Menu,
   Minus,
@@ -86,10 +104,12 @@ const sourceComponents = {
   ShieldCheck,
   Trash2,
   TriangleAlert,
+  Utensils,
   UserRound,
   UsersRound,
   Weight,
   X,
+  Zap,
 } satisfies Record<IconSource, LucideIcon>;
 
 type IconSizeProps =
@@ -217,3 +237,13 @@ export const ActivityIcon = /* @__PURE__ */ createSemanticIcon("ActivityIcon", A
 export const WeightIcon = /* @__PURE__ */ createSemanticIcon("WeightIcon", Weight);
 export const RaceIcon = /* @__PURE__ */ createSemanticIcon("RaceIcon", Flag);
 export const HeartIcon = /* @__PURE__ */ createSemanticIcon("HeartIcon", Heart);
+export const HomeIcon = /* @__PURE__ */ createSemanticIcon("HomeIcon", House);
+export const HistoryIcon = /* @__PURE__ */ createSemanticIcon("HistoryIcon", History);
+export const NextIcon = /* @__PURE__ */ createSemanticIcon("NextIcon", ChevronRight);
+export const NotificationIcon = /* @__PURE__ */ createSemanticIcon("NotificationIcon", Bell);
+export const CreateIcon = /* @__PURE__ */ createSemanticIcon("CreateIcon", CirclePlus);
+export const CameraIcon = /* @__PURE__ */ createSemanticIcon("CameraIcon", Camera);
+export const FreestyleIcon = /* @__PURE__ */ createSemanticIcon("FreestyleIcon", Zap);
+export const ChecklistIcon = /* @__PURE__ */ createSemanticIcon("ChecklistIcon", ListChecks);
+export const NutritionIcon = /* @__PURE__ */ createSemanticIcon("NutritionIcon", Utensils);
+export const ProgressIcon = /* @__PURE__ */ createSemanticIcon("ProgressIcon", ChartLine);

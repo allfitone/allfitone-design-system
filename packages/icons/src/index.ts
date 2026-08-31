@@ -50,6 +50,16 @@ export const iconCatalog = {
   weight: { source: "Weight", category: "object" },
   race: { source: "Flag", category: "object" },
   heart: { source: "Heart", category: "object" },
+  home: { source: "House", category: "navigation" },
+  history: { source: "History", category: "navigation" },
+  next: { source: "ChevronRight", category: "navigation" },
+  notification: { source: "Bell", category: "status" },
+  create: { source: "CirclePlus", category: "action" },
+  camera: { source: "Camera", category: "action" },
+  freestyle: { source: "Zap", category: "object" },
+  checklist: { source: "ListChecks", category: "object" },
+  nutrition: { source: "Utensils", category: "object" },
+  progress: { source: "ChartLine", category: "object" },
 } as const;
 
 export type IconName = keyof typeof iconCatalog;
