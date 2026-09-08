@@ -64,6 +64,12 @@ export const iconCatalog = {
   level: { source: "Medal", category: "object" },
   start: { source: "Play", category: "action" },
   target: { source: "Target", category: "object" },
+  rest: { source: "Moon", category: "object" },
+  locked: { source: "Lock", category: "object" },
+  explore: { source: "Compass", category: "navigation" },
+  // `remove` is a trash can: it deletes a thing. A stepper takes one away from a
+  // number, which is a different act and needs a different glyph.
+  subtract: { source: "Minus", category: "action" },
 } as const;
 
 export type IconName = keyof typeof iconCatalog;

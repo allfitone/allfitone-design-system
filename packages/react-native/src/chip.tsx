@@ -1,0 +1,123 @@
+/**
+ * A short choice among a few, drawn as a pill.
+ *
+ * The control a filter row and an option sheet are both made of: a word, a state,
+ * and a target big enough to hit while walking. Selection is carried by the accent
+ * — border and tonal fill — because Ink & Signal already reserves it for exactly
+ * that, so a selected chip and a focused field say "this one" the same way.
+ *
+ * **It is not a button and not a checkbox.** A button performs; a chip declares
+ * which of several things is meant, and the answer stays visible afterwards. The
+ * accessibility role is `button` with `selected` state, which is what both
+ * platforms read out for a segmented choice — `radio` would promise a group that a
+ * single chip cannot guarantee it belongs to.
+ *
+ * `count` is drawn after the label for the case a filter has to say how much is
+ * behind it. It is deliberately not a badge: a badge floats and reads as an alert,
+ * and this is part of the same sentence as the word beside it.
+ */
+
+import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
+
+import { FoundationIcon, type IconName } from "./icons.js";
+import { Text } from "./text.js";
+import { useTheme } from "./theme.js";
+
+/** 44 px is the touch floor; a chip sits just under it and is never alone in a row. */
+const HEIGHT = 40;
+
+const ICON_SIZE = "sm";
+
+export type ChipProps = {
+  readonly label: string;
+  readonly selected: boolean;
+  readonly onPress: () => void;
+  readonly icon?: IconName;
+  readonly count?: number;
+  readonly disabled?: boolean;
+  /** Fills the row it is in. Off by default: a chip is as wide as its word. */
+  readonly grow?: boolean;
+  readonly accessibilityLabel?: string;
+  readonly testID?: string;
+  readonly style?: StyleProp<ViewStyle>;
+};
+
+export function Chip({
+  label,
+  selected,
+  onPress,
+  icon,
+  count,
+  disabled,
+  grow,
+  accessibilityLabel,
+  testID,
+  style,
+}: ChipProps) {
+  const theme = useTheme();
+
+  const border = () => {
+    if (disabled) return theme.color.action.disabled;
+    return selected ? theme.color.border.accent : theme.color.border.subtle;
+  };
+
+  const background = () => {
+    if (disabled) return theme.color.background.surfaceSubtle;
+    return selected ? theme.color.accent.tonal : theme.color.background.surface;
+  };
+
+  const ink = () => {
+    if (disabled) return theme.color.text.disabled;
+    return selected ? theme.color.text.accent : theme.color.text.secondary;
+  };
+
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel ?? label}
+      accessibilityState={{ selected, disabled: disabled === true }}
+      disabled={disabled}
+      onPress={onPress}
+      testID={testID}
+      style={({ pressed }) => [
+        styles.base,
+        {
+          borderColor: border(),
+          backgroundColor: background(),
+          // The selected ring is thicker so selection survives a glance, and the
+          // padding compensates so the label does not shift when it changes.
+          borderWidth: selected ? 1.5 : 1,
+          paddingHorizontal: selected ? 13.5 : 14,
+          opacity: pressed && !disabled ? 0.7 : 1,
+        },
+        grow ? styles.grow : null,
+        style,
+      ]}
+    >
+      {icon ? <FoundationIcon name={icon} size={ICON_SIZE} color={ink()} decorative /> : null}
+      <Text role="control" size="sm" style={{ color: ink() }}>
+        {label}
+      </Text>
+      {count === undefined ? null : (
+        <View style={styles.count}>
+          <Text role="label" size="2xs" style={{ color: ink() }}>
+            {String(count)}
+          </Text>
+        </View>
+      )}
+    </Pressable>
+  );
+}
+
+const styles = StyleSheet.create({
+  base: {
+    minHeight: HEIGHT,
+    borderRadius: HEIGHT / 2,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
+  },
+  grow: { flex: 1 },
+  count: { opacity: 0.75 },
+});

@@ -35,6 +35,9 @@ export const color = {
     ash: "#5A707A",
     graphite: "#5F7680",
     ashDeep: "#536A73",
+    slateSoft: "#6B838C",
+    haze: "#A9BFC4",
+    abyss: "#3A4C55",
     inkText: "#0A1B22",
     inkSoft: "#456069",
     black: "#000000",
@@ -101,6 +104,10 @@ export const semanticColor = {
       onAccent: color.ink.onSignal,
       onAccentMuted: "#06282BA8",
     },
+    wheel: {
+      near: color.neutral.slate,
+      far: color.neutral.abyss,
+    },
     focus: {
       ring: color.brand.light,
     },
@@ -158,6 +165,10 @@ export const semanticColor = {
       tonalBorder: "#0E6E7633",
       onAccent: color.ink.onSignal,
       onAccentMuted: "#06282BA8",
+    },
+    wheel: {
+      near: color.neutral.slateSoft,
+      far: color.neutral.haze,
     },
     focus: {
       ring: "#0E6E76",

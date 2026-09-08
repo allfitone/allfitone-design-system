@@ -24,6 +24,7 @@ import {
   CirclePlus,
   ClipboardList,
   Clock3,
+  Compass,
   Dumbbell,
   Ellipsis,
   Flag,
@@ -34,9 +35,11 @@ import {
   LayoutDashboard,
   ListChecks,
   LoaderCircle,
+  Lock,
   Medal,
   Menu,
   Minus,
+  Moon,
   Pencil,
   Play,
   Plus,
@@ -88,6 +91,7 @@ const sourceComponents = {
   CirclePlus,
   ClipboardList,
   Clock3,
+  Compass,
   Dumbbell,
   Ellipsis,
   Flag,
@@ -98,9 +102,11 @@ const sourceComponents = {
   LayoutDashboard,
   ListChecks,
   LoaderCircle,
+  Lock,
   Medal,
   Menu,
   Minus,
+  Moon,
   PanelLeft,
   Pencil,
   Play,
@@ -242,6 +248,10 @@ export const BusinessIcon = /* @__PURE__ */ createSemanticIcon("BusinessIcon", C
 export const PermissionsIcon = /* @__PURE__ */ createSemanticIcon("PermissionsIcon", ShieldCheck);
 export const SettingsIcon = /* @__PURE__ */ createSemanticIcon("SettingsIcon", Settings);
 export const TargetIcon = /* @__PURE__ */ createSemanticIcon("TargetIcon", Target);
+export const RestIcon = /* @__PURE__ */ createSemanticIcon("RestIcon", Moon);
+export const LockedIcon = /* @__PURE__ */ createSemanticIcon("LockedIcon", Lock);
+export const ExploreIcon = /* @__PURE__ */ createSemanticIcon("ExploreIcon", Compass);
+export const SubtractIcon = /* @__PURE__ */ createSemanticIcon("SubtractIcon", Minus);
 export const ActivityIcon = /* @__PURE__ */ createSemanticIcon("ActivityIcon", Activity);
 export const WeightIcon = /* @__PURE__ */ createSemanticIcon("WeightIcon", Weight);
 export const RaceIcon = /* @__PURE__ */ createSemanticIcon("RaceIcon", Flag);

@@ -48,7 +48,7 @@ const categories = new Set(["navigation", "action", "status", "object"]);
 const sizes = Object.entries(iconSize);
 const strokes = Object.entries(iconStrokeWidth);
 
-assert(names.length === 49, `Expected 49 foundation icons, received ${names.length}.`);
+assert(names.length === 53, `Expected 53 foundation icons, received ${names.length}.`);
 
 for (const [name, definition] of Object.entries(iconCatalog)) {
   assert(/^[a-z][a-z0-9]*$/.test(name), `Icon name must be semantic camelCase: ${name}`);
@@ -76,9 +76,14 @@ assert(nativeSourceBlock, "Could not inspect the React Native icon source map.")
 const nativeSources = [
   ...nativeSourceBlock.matchAll(/^\s{2}([A-Z][A-Za-z0-9]*),$/gm),
 ].map((match) => match[1]);
-const catalogSources = Object.values(iconCatalog).map(({ source }) => source);
+// Unique: two semantic names may legitimately draw the same glyph — `subtract` and
+// `indeterminate` are both a minus and mean different things.
+const catalogSources = [
+  ...new Set(Object.values(iconCatalog).map(({ source }) => source)),
+];
 assert(
-  JSON.stringify(sorted(nativeSources)) === JSON.stringify(sorted(catalogSources)),
+  JSON.stringify(sorted([...new Set(nativeSources)])) ===
+    JSON.stringify(sorted(catalogSources)),
   "React Native must map every catalog source through shorthand source entries.",
 );
 
