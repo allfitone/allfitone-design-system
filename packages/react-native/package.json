@@ -93,6 +93,11 @@
       "react-native": "./dist/inline-alert.js",
       "import": "./dist/inline-alert.js"
     },
+    "./page-dots": {
+      "types": "./dist/page-dots.d.ts",
+      "react-native": "./dist/page-dots.js",
+      "import": "./dist/page-dots.js"
+    },
     "./screen": {
       "types": "./dist/screen.d.ts",
       "react-native": "./dist/screen.js",
