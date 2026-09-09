@@ -121,6 +121,15 @@ for (const [role, size] of [["display", "4xl"], ["heading", "2xl"]]) {
     );
   }
 }
+// A timer that reflows on every tick is the whole reason this role exists.
+const data = resolveTextStyle("data", "3xl");
+if (!data.fontVariant?.includes("tabular-nums")) {
+  throw new Error("The data role must render tabular figures; a timer reflows without them.");
+}
+if (resolveTextStyle("body", "md").fontVariant !== undefined) {
+  throw new Error("Only the data role asks for tabular figures.");
+}
+
 if (resolveTextStyle("body", "md").paddingTop !== 0) {
   throw new Error("Roles that lead at or above their em box must not be padded.");
 }

@@ -8,6 +8,7 @@
  *
  * - `lineHeight` is a unitless ratio in the tokens; React Native wants absolute.
  * - `letterSpacing` is an `em` ratio in the tokens; React Native wants absolute.
+ * - `data` promises tabular figures and nothing was setting them.
  */
 
 import type { TextStyle } from "react-native";
@@ -26,6 +27,11 @@ export function resolveTextStyle(role: TypographyRoleName, size: TextSizeName): 
     fontFamily: getNativeFontFamily(role),
     fontSize,
     lineHeight,
+    // The `data` role exists for metrics, timers and KPIs, and its token says it renders
+    // with tabular figures. Nothing was asking for them, so a running clock reflowed on
+    // every tick — `00:09` to `00:10` is two glyphs of different width in proportional
+    // figures, and the whole row shifts under the eye that is reading it.
+    ...(role === "data" ? { fontVariant: ["tabular-nums" as const] } : {}),
     letterSpacing: resolveNativeLetterSpacing(fontSize, definition.letterSpacing),
     // The display and heading roles lead tighter than their own em box — 0.82
     // for display — which is what gives stacked headlines their density. On the
