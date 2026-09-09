@@ -14,6 +14,7 @@ export const color = {
     turquoise: "#60D1D6",
     turquoiseDark: "#348E94",
     turquoiseDeep: "#176D72",
+    turquoiseInk: "#0E6E76",
   },
   ink: {
     void: "#030713",
@@ -52,6 +53,8 @@ export const color = {
     dangerStrong: "#C72C35",
     info: "#6FA8FF",
     infoDeep: "#2D6FD6",
+    ember: "#FB923C",
+    emberDeep: "#B4520A",
     sport: "#B490F5",
     sportDeep: "#7C5CC9",
   },
@@ -108,6 +111,18 @@ export const semanticColor = {
       near: color.neutral.slate,
       far: color.neutral.abyss,
     },
+    // One per discipline, and they are identity rather than status: the carousel is a
+    // row of things that differ, and a single accent across six cards would say they
+    // are the same thing six times. Five reuse a feedback primitive because the hue is
+    // already in the system — what changes is what it means here.
+    discipline: {
+      strength: color.brand.primary,
+      highIntensity: color.feedback.warning,
+      endurance: color.feedback.ember,
+      combat: color.feedback.dangerSoft,
+      wellbeing: color.feedback.success,
+      rhythm: color.feedback.sport,
+    },
     focus: {
       ring: color.brand.light,
     },
@@ -134,20 +149,20 @@ export const semanticColor = {
       muted: color.neutral.ashDeep,
       disabled: color.neutral.slate,
       inverse: color.neutral.salt,
-      accent: "#0E6E76",
+      accent: color.brand.turquoiseInk,
       danger: color.feedback.dangerStrong,
       success: color.feedback.successDeep,
     },
     icon: {
       primary: color.neutral.inkText,
       secondary: color.neutral.inkSoft,
-      accent: "#0E6E76",
+      accent: color.brand.turquoiseInk,
       inverse: color.neutral.salt,
     },
     border: {
       subtle: "#0A28321F",
       default: color.neutral.graphite,
-      strong: "#0E6E76",
+      strong: color.brand.turquoiseInk,
       accent: color.brand.turquoiseDark,
     },
     action: {
@@ -170,8 +185,16 @@ export const semanticColor = {
       near: color.neutral.slateSoft,
       far: color.neutral.haze,
     },
+    discipline: {
+      strength: color.brand.turquoiseInk,
+      highIntensity: color.feedback.warningDeep,
+      endurance: color.feedback.emberDeep,
+      combat: color.feedback.dangerStrong,
+      wellbeing: color.feedback.successDeep,
+      rhythm: color.feedback.sportDeep,
+    },
     focus: {
-      ring: "#0E6E76",
+      ring: color.brand.turquoiseInk,
     },
     status: {
       success: color.feedback.successDeep,
