@@ -27,8 +27,13 @@ export const semanticSpacing = {
    * Air between the safe area and the first thing on a screen. The safe area only
    * clears the hardware; content that starts the instant it ends reads as pinned to
    * the notch.
+   *
+   * 12 still read as pinned on a device — every screen looked shoved against the top
+   * of the phone at once, which is the tell that this is one number and not a hundred
+   * layouts. The next step of the scale is 16; the one after is 20, and going between
+   * them would put a value on this that the ramp does not have.
    */
-  screenTop: spacing[3],
+  screenTop: spacing[4],
   sectionGap: spacing[16],
   touchTarget: spacing[11],
   touchTargetWeb: spacing[11],
