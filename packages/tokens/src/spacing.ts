@@ -28,12 +28,12 @@ export const semanticSpacing = {
    * clears the hardware; content that starts the instant it ends reads as pinned to
    * the notch.
    *
-   * 12 still read as pinned on a device — every screen looked shoved against the top
-   * of the phone at once, which is the tell that this is one number and not a hundred
-   * layouts. The next step of the scale is 16; the one after is 20, and going between
-   * them would put a value on this that the ramp does not have.
+   * 12 read as pinned on a device and 16 still did — every screen looked shoved
+   * against the top of the phone at once, which is the tell that this is one number
+   * and not a hundred layouts. 20 is where it stopped. Judged on a phone in the hand
+   * rather than on an artboard, which is the only place this reads wrong.
    */
-  screenTop: spacing[4],
+  screenTop: spacing[5],
   sectionGap: spacing[16],
   touchTarget: spacing[11],
   touchTargetWeb: spacing[11],
