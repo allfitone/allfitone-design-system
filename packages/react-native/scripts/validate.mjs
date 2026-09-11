@@ -14,8 +14,10 @@ const importableOutputs = [
   "font-family.js",
   "typography-style.js",
   "gradient-geometry.js",
+  "sheet-geometry.js",
 ];
 const nativeOnlyOutputs = [
+  "sheet.js",
   "brand.js",
   "icons.js",
   "fonts.js",
@@ -164,7 +166,64 @@ if (Math.abs(downward.start.y - 0) > 0.001 || Math.abs(downward.end.y - 1) > 0.0
   throw new Error("A 180deg gradient must run straight down.");
 }
 
+// A sheet is anchored to the bottom edge, which is where the keyboard appears. One
+// that takes typing was covered by the thing it asked for, so the panel lifts by the
+// keyboard's height and its cap shrinks by the same amount — without the second half,
+// a tall sheet lifted by 300 points runs off the top of the screen.
+const { resolveSheetGeometry, MAX_HEIGHT_RATIO } = await import("../dist/sheet-geometry.js");
+
+const resting = resolveSheetGeometry({
+  screenHeight: 800,
+  keyboardHeight: 0,
+  safeAreaBottom: 34,
+  basePadding: 16,
+});
+if (resting.lift !== 0) {
+  throw new Error(`A sheet with no keyboard must not lift; it moved ${resting.lift}.`);
+}
+if (resting.maxHeight !== 800 * MAX_HEIGHT_RATIO) {
+  throw new Error(`Resting cap is ${resting.maxHeight} instead of ${800 * MAX_HEIGHT_RATIO}.`);
+}
+if (resting.paddingBottom !== 50) {
+  throw new Error(`Resting padding must clear the home indicator; it is ${resting.paddingBottom}.`);
+}
+
+const typing = resolveSheetGeometry({
+  screenHeight: 800,
+  keyboardHeight: 300,
+  safeAreaBottom: 34,
+  basePadding: 16,
+});
+if (typing.lift !== 300) {
+  throw new Error(`A sheet must clear the keyboard exactly; it lifted ${typing.lift} of 300.`);
+}
+if (typing.maxHeight !== 500 * MAX_HEIGHT_RATIO) {
+  throw new Error(
+    `Cap with the keyboard up is ${typing.maxHeight}; measured against the whole screen it ` +
+      `would be ${800 * MAX_HEIGHT_RATIO} and the panel would run off the top.`,
+  );
+}
+if (typing.paddingBottom !== 16) {
+  throw new Error(
+    `The home indicator is under the keyboard, so reserving for it leaves the panel ` +
+      `floating; padding is ${typing.paddingBottom} instead of 16.`,
+  );
+}
+
+// A keyboard taller than the screen is nonsense the platform has reported before on
+// rotation; a negative cap would make the panel disappear rather than merely misfit.
+const absurd = resolveSheetGeometry({
+  screenHeight: 400,
+  keyboardHeight: 900,
+  safeAreaBottom: 0,
+  basePadding: 16,
+});
+if (absurd.maxHeight < 0) {
+  throw new Error(`A sheet cap must never go negative; it is ${absurd.maxHeight}.`);
+}
+
 console.log(
   `Validated ${requiredOutputs.length} React Native adapter outputs, ` +
-    `${Object.keys(typographyRole).length} typographic roles and 2 gradient angles.`,
+    `${Object.keys(typographyRole).length} typographic roles, 2 gradient angles ` +
+    `and the sheet's keyboard geometry.`,
 );

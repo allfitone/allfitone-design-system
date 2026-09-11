@@ -34,13 +34,21 @@
  * **The panel travels its own height, not the screen's.** Sliding a short sheet from
  * 85% of the display means covering several hundred points in a fraction of a second,
  * which arrives like a slam. Its height is measured and that is the distance.
+ *
+ * **It rises over the keyboard.** The bottom edge is where a sheet lives and where the
+ * keyboard appears, so a sheet holding a field was covered by the thing it asked for.
+ * The lift is a transform composed with the entrance, and the cap shrinks by the same
+ * amount so a tall sheet does not run off the top. `resolveSheetGeometry` holds the
+ * arithmetic, where it can be asserted.
  */
 
 import { useEffect, useRef, useState } from "react";
 import {
   Animated,
   Easing,
+  Keyboard,
   Modal,
+  Platform,
   Pressable,
   StyleSheet,
   View,
@@ -52,11 +60,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { semanticMotion } from "@allfitone/tokens";
 
+import { MAX_HEIGHT_RATIO, resolveSheetGeometry } from "./sheet-geometry.js";
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
-
-/** Enough of the screen behind stays visible that its context is not lost. */
-const MAX_HEIGHT_RATIO = 0.85;
 
 /** Dark in both themes: a scrim separates planes, it does not follow the canvas. */
 const BACKDROP = "#02060BA6";
@@ -88,6 +94,32 @@ export function Sheet({
   const [mounted, setMounted] = useState(visible);
   // Until the panel has been laid out, the screen is the only distance there is.
   const [travel, setTravel] = useState(height * MAX_HEIGHT_RATIO);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const lift = useRef(new Animated.Value(0)).current;
+
+  // `will` on iOS so the panel moves with the keyboard rather than after it; Android
+  // only emits `did`, and asking for `will` there registers a listener that never fires.
+  useEffect(() => {
+    const rising = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const falling = Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+    const settle = (height_: number, duration: number) => {
+      setKeyboardHeight(height_);
+      Animated.timing(lift, {
+        toValue: height_,
+        duration: duration > 0 ? duration : semanticMotion.enter.duration,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    };
+    const shown = Keyboard.addListener(rising, (event) =>
+      settle(event.endCoordinates.height, event.duration ?? 0),
+    );
+    const hidden = Keyboard.addListener(falling, (event) => settle(0, event.duration ?? 0));
+    return () => {
+      shown.remove();
+      hidden.remove();
+    };
+  }, [lift]);
 
   useEffect(() => {
     if (visible) setMounted(true);
@@ -107,6 +139,13 @@ export function Sheet({
       if (finished && !visible) setMounted(false);
     });
   }, [visible, reduceMotion, progress]);
+
+  const geometry = resolveSheetGeometry({
+    screenHeight: height,
+    keyboardHeight,
+    safeAreaBottom: insets.bottom,
+    basePadding: theme.spacing[4],
+  });
 
   return (
     <Modal
@@ -135,9 +174,9 @@ export function Sheet({
         style={[
           styles.panel,
           {
-            maxHeight: height * MAX_HEIGHT_RATIO,
+            maxHeight: geometry.maxHeight,
             opacity: progress,
-            paddingBottom: insets.bottom + theme.spacing[4],
+            paddingBottom: geometry.paddingBottom,
             paddingHorizontal: theme.spacing[6],
             paddingTop: theme.spacing[5],
             backgroundColor: theme.color.background.surface,
@@ -146,10 +185,12 @@ export function Sheet({
             borderTopRightRadius: theme.semanticRadius.panel,
             transform: [
               {
-                translateY: progress.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [travel, 0],
-                }),
+                // The entrance and the keyboard are one movement, not two competing
+                // transforms: a second `translateY` in the array would overwrite this.
+                translateY: Animated.subtract(
+                  progress.interpolate({ inputRange: [0, 1], outputRange: [travel, 0] }),
+                  lift,
+                ),
               },
             ],
           },
@@ -168,7 +209,11 @@ export function Sheet({
           </Text>
         )}
 
-        <View style={{ marginTop: hideTitle ? 0 : theme.spacing[3] }}>{children}</View>
+        {/* Shrinks rather than overflowing: with the keyboard up the cap can fall
+            below what the content wants, and a rigid child is drawn past the panel. */}
+        <View style={{ marginTop: hideTitle ? 0 : theme.spacing[3], flexShrink: 1 }}>
+          {children}
+        </View>
       </Animated.View>
     </Modal>
   );

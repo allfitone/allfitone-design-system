@@ -113,6 +113,11 @@
       "react-native": "./dist/sheet.js",
       "import": "./dist/sheet.js"
     },
+    "./sheet-geometry": {
+      "types": "./dist/sheet-geometry.d.ts",
+      "react-native": "./dist/sheet-geometry.js",
+      "import": "./dist/sheet-geometry.js"
+    },
     "./stepper": {
       "types": "./dist/stepper.d.ts",
       "react-native": "./dist/stepper.js",
