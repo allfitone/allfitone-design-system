@@ -18,6 +18,9 @@ const importableOutputs = [
 ];
 const nativeOnlyOutputs = [
   "sheet.js",
+  "selectable-row.js",
+  "selectable-tile.js",
+  "disclosure-button.js",
   "brand.js",
   "icons.js",
   "fonts.js",

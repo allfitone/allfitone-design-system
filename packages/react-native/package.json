@@ -103,10 +103,25 @@
       "react-native": "./dist/screen.js",
       "import": "./dist/screen.js"
     },
+    "./disclosure-button": {
+      "types": "./dist/disclosure-button.d.ts",
+      "react-native": "./dist/disclosure-button.js",
+      "import": "./dist/disclosure-button.js"
+    },
     "./shadow-style": {
       "types": "./dist/shadow-style.d.ts",
       "react-native": "./dist/shadow-style.js",
       "import": "./dist/shadow-style.js"
+    },
+    "./selectable-row": {
+      "types": "./dist/selectable-row.d.ts",
+      "react-native": "./dist/selectable-row.js",
+      "import": "./dist/selectable-row.js"
+    },
+    "./selectable-tile": {
+      "types": "./dist/selectable-tile.d.ts",
+      "react-native": "./dist/selectable-tile.js",
+      "import": "./dist/selectable-tile.js"
     },
     "./sheet": {
       "types": "./dist/sheet.d.ts",
