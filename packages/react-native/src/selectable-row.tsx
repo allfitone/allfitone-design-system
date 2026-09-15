@@ -18,11 +18,18 @@
  * Selection is carried by the border and the name's colour rather than by the mark
  * alone, so it survives a glance down a long list — the same reason `Chip`
  * thickens its ring.
+ *
+ * **A secondary action sits outside the row's press area.** Picking an exercise and
+ * reading about it are different intents, and a row that did both on one tap would do
+ * the wrong one half the time. `action` renders its own 44 pt target at the trailing
+ * edge, with its own accessible name, and the row keeps its own. Nothing is nested:
+ * a `checkbox` that contained a second control without naming it would leave a screen
+ * reader announcing one thing and doing another.
  */
 
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
 
-import { FoundationIcon } from "./icons.js";
+import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
 
@@ -34,6 +41,11 @@ const MARK_GLYPH_SIZE = 13;
 /** Two lines of text plus air, and comfortably past the platform touch target. */
 const MIN_HEIGHT = 56;
 
+/** The whole target, not the glyph: DT-010 measures what the finger can hit. */
+const ACTION_SIZE = 44;
+
+const ACTION_GLYPH = "sm";
+
 export type SelectableRowProps = {
   /** What is being chosen. Leads the row and is the accessible name. */
   readonly name: string;
@@ -41,6 +53,12 @@ export type SelectableRowProps = {
   readonly caption?: string;
   readonly selected: boolean;
   readonly onPress: () => void;
+  /** A second, different intent — reading about the thing rather than choosing it. */
+  readonly action?: {
+    readonly icon: IconName;
+    readonly accessibilityLabel: string;
+    readonly onPress: () => void;
+  };
   readonly disabled?: boolean;
   readonly accessibilityLabel?: string;
   readonly testID?: string;
@@ -52,6 +70,7 @@ export function SelectableRow({
   caption,
   selected,
   onPress,
+  action,
   disabled,
   accessibilityLabel,
   testID,
@@ -126,6 +145,23 @@ export function SelectableRow({
           </Text>
         )}
       </View>
+
+      {action === undefined ? null : (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={action.accessibilityLabel}
+          disabled={disabled}
+          onPress={action.onPress}
+          style={({ pressed }) => [styles.action, { opacity: pressed && !disabled ? 0.6 : 1 }]}
+        >
+          <FoundationIcon
+            name={action.icon}
+            size={ACTION_GLYPH}
+            color={disabled ? theme.color.text.disabled : theme.color.icon.secondary}
+            decorative
+          />
+        </Pressable>
+      )}
     </Pressable>
   );
 }
@@ -151,4 +187,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   body: { flex: 1, gap: 3, minWidth: 0 },
+  action: {
+    width: ACTION_SIZE,
+    height: ACTION_SIZE,
+    alignItems: "center",
+    justifyContent: "center",
+    // Eats into the row's padding rather than widening it, so the row keeps its height.
+    marginRight: -10,
+  },
 });

@@ -40,6 +40,7 @@ import {
   Menu,
   Minus,
   Moon,
+  Pause,
   Pencil,
   Play,
   Plus,
@@ -108,6 +109,7 @@ const sourceComponents = {
   Minus,
   Moon,
   PanelLeft,
+  Pause,
   Pencil,
   Play,
   Plus,
@@ -269,3 +271,4 @@ export const ProgressIcon = /* @__PURE__ */ createSemanticIcon("ProgressIcon", C
 export const FrequencyIcon = /* @__PURE__ */ createSemanticIcon("FrequencyIcon", Repeat);
 export const LevelIcon = /* @__PURE__ */ createSemanticIcon("LevelIcon", Medal);
 export const StartIcon = /* @__PURE__ */ createSemanticIcon("StartIcon", Play);
+export const PauseIcon = /* @__PURE__ */ createSemanticIcon("PauseIcon", Pause);

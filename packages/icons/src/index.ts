@@ -63,6 +63,9 @@ export const iconCatalog = {
   frequency: { source: "Repeat", category: "object" },
   level: { source: "Medal", category: "object" },
   start: { source: "Play", category: "action" },
+  // Its own glyph and not a toggled `start`: a control that stops moving content is
+  // a WCAG 2.2.2 obligation, so it has to be nameable on its own.
+  pause: { source: "Pause", category: "action" },
   target: { source: "Target", category: "object" },
   rest: { source: "Moon", category: "object" },
   locked: { source: "Lock", category: "object" },
