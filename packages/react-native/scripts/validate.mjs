@@ -15,8 +15,12 @@ const importableOutputs = [
   "typography-style.js",
   "gradient-geometry.js",
   "sheet-geometry.js",
+  "tab-selection.js",
+  "step-geometry.js",
 ];
 const nativeOnlyOutputs = [
+  "tabs.js",
+  "step-list.js",
   "sheet.js",
   "selectable-row.js",
   "selectable-tile.js",
@@ -155,6 +159,54 @@ if (control.letterSpacing !== 0) {
 const buttonSource = await readFile(resolve(packageRoot, "src/button.tsx"), "utf8");
 if (!buttonSource.includes("semanticGradient.accent")) {
   throw new Error("The primary button must paint semanticGradient.accent, matching the web adapter.");
+}
+
+// A controlled strip whose value matches no tab must mark nothing. Falling back to
+// the first would draw a strip that disagrees with the panel below it, and neither
+// side would raise.
+const { activeTabIndex, INDICATOR_HEIGHT, TAB_MIN_HEIGHT } = await import(
+  "../dist/tab-selection.js"
+);
+
+if (activeTabIndex(["how", "variants"], "variants") !== 1) {
+  throw new Error("A tab strip must mark the value it was given.");
+}
+if (activeTabIndex(["how", "variants"], "nope") !== -1) {
+  throw new Error("An unknown tab value must mark nothing, not the first tab.");
+}
+if (TAB_MIN_HEIGHT < 44) {
+  throw new Error(`A tab is ${TAB_MIN_HEIGHT}px tall and the iOS touch floor is 44.`);
+}
+if (INDICATOR_HEIGHT < 2) {
+  throw new Error("The active mark must be thicker than the hairline it sits on.");
+}
+
+if (activeTabIndex(["how", "variants"], "variants") !== 1) {
+  throw new Error("A tab strip must mark the value it was given.");
+}
+if (activeTabIndex(["how", "variants"], "nope") !== -1) {
+  throw new Error("An unknown tab value must mark nothing, not the first tab.");
+}
+if (TAB_MIN_HEIGHT < 44) {
+  throw new Error();
+}
+if (INDICATOR_HEIGHT < 2) {
+  throw new Error("The active mark must be thicker than the hairline it sits on.");
+}
+
+// The marker meets the ink of the first line, not the top of its box.
+const { stepMarkerOffset, STEP_MARKER_SIZE } = await import("../dist/step-geometry.js");
+
+// Body at 14 in a 21 line box puts its ink centre at 14; a 24 marker centres at 12.
+if (stepMarkerOffset(24, 21, 14) !== 2) {
+  throw new Error("A 24px marker beside a 14/21 line must drop by 2 to meet its ink.");
+}
+// A marker taller than the ink sits low enough already; pulling it up would clip it.
+if (stepMarkerOffset(40, 21, 14) !== 0) {
+  throw new Error("A marker taller than the line it labels must not be dragged upwards.");
+}
+if (STEP_MARKER_SIZE < 20) {
+  throw new Error("A step marker must stay large enough to hold two digits.");
 }
 
 // A wrong gradient angle still paints a gradient, pointing the wrong way.
