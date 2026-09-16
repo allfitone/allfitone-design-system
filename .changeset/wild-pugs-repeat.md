@@ -8,6 +8,6 @@ Tailwind is imported as `theme.css` and `utilities.css` only, so Preflight never
 
 The reset sits in a new `afo-base` layer, and `styles.css` pins the layer order below `utilities`. Unlayered it would have flattened the spacing components set on themselves — `AccessPanelDescription` declares `mt-5` and rendered at 0.
 
-`button`, `input`, `select` and `textarea` now take `font-family`, `font-size` and `line-height` from the page instead of the `font` shorthand. The shorthand also reset `font-weight`, and being unlayered it beat the `font-extrabold` in the button's own base class, so every real button rendered at the body weight while a link styled as one kept 800.
+`button`, `input`, `select` and `textarea` now take `font-family`, `font-size` and `line-height` from the page instead of the `font` shorthand. The shorthand also reset `font-weight`, and being unlayered it beat the `font-extrabold` in the button's own base class: every real button rendered at the body weight, while a link styled with `buttonVariants()` kept 800 because the selector never matched an anchor.
 
-Buttons therefore render at the weight the library specifies. This is a visible change in every consuming application.
+`Button` now specifies `font-normal`, which is what applications have rendered all along. Buttons themselves are unchanged; a link styled as a button stops being heavier than the buttons beside it.
