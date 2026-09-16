@@ -57,13 +57,19 @@ test("keeps the access task focused, semantic and reachable", async ({
 })
 
 /**
- * Split out of the behavioural test above, and named "matches" on purpose: CI
- * validates baselines in a Windows job that greps for that word, while the
- * Linux job runs everything else. A screenshot assertion outside the naming
- * therefore compared Windows baselines against Linux font rendering and passed
- * only while the difference stayed under `maxDiffPixelRatio`.
+ * Split out of the behavioural test above so the platform guard this repository
+ * already uses can sit on the screenshot alone. These two assertions were the
+ * only visual ones without it, and they carried Linux baselines besides — so
+ * the Linux job compared them while every other baseline skipped, and they
+ * passed only while Windows and Linux rendering agreed to within
+ * `maxDiffPixelRatio`. Semantics, focus, the touch target, axe and the mobile
+ * reflow order stay above, where Linux still runs them.
  */
 test("matches the access pattern on desktop", async ({ page }) => {
+  test.skip(
+    process.platform !== "win32",
+    "Visual baselines are canonical on Windows.",
+  )
   await page.emulateMedia({ reducedMotion: "reduce" })
   await page.goto("/patterns/access")
   await expect(
@@ -114,6 +120,10 @@ test("reflows access before the supporting journey on mobile", async ({
 })
 
 test("matches the access pattern on mobile", async ({ page }) => {
+  test.skip(
+    process.platform !== "win32",
+    "Visual baselines are canonical on Windows.",
+  )
   await page.setViewportSize({ width: 375, height: 812 })
   await page.emulateMedia({ reducedMotion: "reduce" })
   await page.goto("/patterns/access")
