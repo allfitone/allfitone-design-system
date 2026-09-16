@@ -1,3 +1,13 @@
+/*
+ * Layer order, pinned here so it cannot depend on the order a consumer happens
+ * to import the stylesheets in. `app.css` puts its browser reset in `afo-base`;
+ * naming the layers up front means a component's own `mt-5` beats that reset
+ * whether `app.css` loads first or second. Registered by first appearance, so
+ * this statement must stay above the imports that create `theme` and
+ * `utilities`.
+ */
+@layer afo-base, theme, utilities;
+
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 @import "tw-animate-css";

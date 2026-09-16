@@ -97,3 +97,43 @@ test("reflows access before the supporting journey on mobile", async ({
     fullPageScreenshotOptions,
   )
 })
+
+/**
+ * `app.css` resets the user-agent margins that a component cannot reach from
+ * inside. Unlayered, that reset also flattened the margins components set on
+ * themselves — `AccessPanelDescription` declares `mt-5` and rendered at 0.
+ *
+ * The reset therefore lives in `afo-base`, and `styles.css` pins that layer
+ * below `utilities` so it cannot depend on a consumer's import order. This
+ * asserts the outcome rather than the mechanism: the browser default is gone
+ * from a bare paragraph, and a component's own spacing survives.
+ */
+test("lets a component's own spacing outrank the baseline reset", async ({
+  page,
+}) => {
+  await page.goto("/patterns/access")
+
+  const spacing = await page.evaluate(() => {
+    const description = document.querySelector<HTMLElement>(
+      '[data-slot="access-panel-description"]',
+    )
+    const probe = document.createElement("p")
+    document.body.append(probe)
+    const probeMargin = getComputedStyle(probe).marginBlockStart
+    probe.remove()
+    return {
+      probeMargin,
+      descriptionMargin: description
+        ? getComputedStyle(description).marginBlockStart
+        : null,
+    }
+  })
+
+  expect(spacing.probeMargin, "the user-agent paragraph margin is reset").toBe(
+    "0px",
+  )
+  expect(
+    spacing.descriptionMargin,
+    "the component's own mt-5 must outrank the reset",
+  ).toBe("20px")
+})
