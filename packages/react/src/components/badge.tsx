@@ -14,8 +14,12 @@ const badgeVariants = cva(
           "bg-muted text-muted-foreground [a]:hover:bg-accent [a]:hover:text-foreground",
         destructive:
           "bg-destructive/12 text-foreground [a]:hover:bg-destructive/20",
+        // The base sets `border border-transparent`, so a variant that colours
+        // nothing draws no outline at all — the name promised the one thing it
+        // did not do, and the badge read as loose text. `border-border` is what
+        // Button's own outline variant uses.
         outline:
-          "bg-transparent text-muted-foreground [a]:hover:bg-muted",
+          "border-border bg-transparent text-muted-foreground [a]:hover:bg-muted",
         code:
           "min-h-6 border-[var(--afo-color-border-accent)] bg-transparent px-[0.55rem] py-0 leading-[1.5] tracking-[var(--afo-letter-spacing-eyebrow)] text-[var(--afo-color-text-accent)]",
         ghost:
