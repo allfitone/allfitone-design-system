@@ -54,6 +54,25 @@ test("keeps the access task focused, semantic and reachable", async ({
   )
   expect(blocking).toEqual([])
 
+})
+
+/**
+ * Split out of the behavioural test above, and named "matches" on purpose: CI
+ * validates baselines in a Windows job that greps for that word, while the
+ * Linux job runs everything else. A screenshot assertion outside the naming
+ * therefore compared Windows baselines against Linux font rendering and passed
+ * only while the difference stayed under `maxDiffPixelRatio`.
+ */
+test("matches the access pattern on desktop", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" })
+  await page.goto("/patterns/access")
+  await expect(
+    page.getByRole("heading", {
+      level: 1,
+      name: "Haz que cada entrenamiento cuente.",
+    }),
+  ).toBeVisible()
+
   await expect(page).toHaveScreenshot(
     "access-shell-light-desktop.png",
     fullPageScreenshotOptions,
@@ -91,6 +110,16 @@ test("reflows access before the supporting journey on mobile", async ({
   expect(layout.overflow).toBeLessThanOrEqual(0)
   expect(layout.actionBottom).toBeLessThanOrEqual(812)
   expect(layout.actionTop).toBeLessThan(layout.journeyTop)
+
+})
+
+test("matches the access pattern on mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 })
+  await page.emulateMedia({ reducedMotion: "reduce" })
+  await page.goto("/patterns/access")
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Entra. El contexto ya está listo." }),
+  ).toBeVisible()
 
   await expect(page).toHaveScreenshot(
     "access-shell-light-mobile.png",
