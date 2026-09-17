@@ -27,12 +27,19 @@ import { FoundationIcon, type IconName } from "./icons.js";
 import { useTheme, type Theme } from "./theme.js";
 
 export type IconButtonVariant = "outline" | "solid" | "plain";
+export type IconButtonSize = "md" | "sm";
+
+/** Matches `Button`'s compact height, so the two sit level in a row of actions. */
+const COMPACT_SIZE = 36;
+const COMPACT_REACH = { top: 4, bottom: 4, left: 4, right: 4 };
 
 export type IconButtonProps = Omit<PressableProps, "style" | "children"> & {
   readonly icon: IconName;
   /** Announced, never drawn. An icon alone says nothing to a screen reader. */
   readonly accessibilityLabel: string;
   readonly variant?: IconButtonVariant;
+  /** `sm` matches `Button`'s compact size, for a row of actions beside content. */
+  readonly size?: IconButtonSize;
   readonly style?: StyleProp<ViewStyle>;
 };
 
@@ -83,6 +90,7 @@ export function IconButton({
   icon,
   accessibilityLabel,
   variant = "outline",
+  size: scale = "md",
   disabled,
   style,
   ...props
@@ -91,7 +99,7 @@ export function IconButton({
   const inactive = disabled === true;
   const palette = resolvePalette(theme, variant, inactive);
   const accent = resolveAccentGradient();
-  const size = theme.touchTarget;
+  const size = scale === "sm" ? COMPACT_SIZE : theme.touchTarget;
 
   return (
     <Pressable
@@ -100,6 +108,8 @@ export function IconButton({
       accessibilityLabel={accessibilityLabel}
       accessibilityState={{ disabled: inactive }}
       disabled={inactive}
+      // Same bargain as `Button`'s compact size: the height goes, the reach stays.
+      {...(scale === "sm" ? { hitSlop: COMPACT_REACH } : {})}
       style={({ pressed }) => [
         styles.base,
         {

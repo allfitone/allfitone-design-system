@@ -48,9 +48,21 @@ export type ButtonProps = Omit<PressableProps, "style" | "children"> & {
    */
   readonly icon?: IconName | undefined;
   readonly variant?: ButtonVariant;
+  /**
+   * `sm` is for a row of actions that sit beside content rather than leading it —
+   * a toolbar under a table, not the confirm of a screen. It gives up height, never
+   * reach: the touch target stays 44 through `hitSlop`.
+   */
+  readonly size?: ButtonSize;
   readonly loading?: boolean;
   readonly style?: StyleProp<ViewStyle>;
 };
+
+export type ButtonSize = "md" | "sm";
+
+/** Visibly lighter, and still a full target once the slop is counted. */
+const COMPACT_HEIGHT = 36;
+const COMPACT_REACH = { top: 4, bottom: 4, left: 4, right: 4 };
 
 type ButtonPalette = {
   readonly background: string;
@@ -99,6 +111,7 @@ export function Button({
   label,
   icon,
   variant = "primary",
+  size = "md",
   loading = false,
   disabled = false,
   style,
@@ -116,10 +129,13 @@ export function Button({
       accessibilityRole="button"
       accessibilityState={{ disabled: inactive, busy: loading }}
       disabled={inactive}
+      // A compact button keeps the full reach it gives up in height. Accessibility is
+      // measured on what the finger can hit, not on what the eye can see.
+      {...(size === "sm" ? { hitSlop: COMPACT_REACH } : {})}
       style={({ pressed }) => [
         styles.base,
         {
-          minHeight: theme.touchTarget,
+          minHeight: size === "sm" ? COMPACT_HEIGHT : theme.touchTarget,
           borderRadius: theme.semanticRadius.action,
           backgroundColor: palette.gradient ? "transparent" : palette.background,
           borderWidth: palette.border ? StyleSheet.hairlineWidth * 2 : 0,
@@ -153,8 +169,8 @@ export function Button({
         style={[
           styles.content,
           {
-            paddingHorizontal: theme.spacing[6],
-            paddingVertical: theme.spacing[3],
+            paddingHorizontal: theme.spacing[size === "sm" ? 4 : 6],
+            paddingVertical: theme.spacing[size === "sm" ? 2 : 3],
             opacity: loading ? 0 : 1,
           },
         ]}
@@ -162,7 +178,12 @@ export function Button({
         {icon ? (
           <FoundationIcon name={icon} size="sm" color={palette.foreground} decorative />
         ) : null}
-        <Text role="control" size="md" style={{ color: palette.foreground }} numberOfLines={1}>
+        <Text
+          role="control"
+          size={size === "sm" ? "sm" : "md"}
+          style={{ color: palette.foreground }}
+          numberOfLines={1}
+        >
           {label}
         </Text>
       </View>
