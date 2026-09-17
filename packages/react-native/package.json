@@ -103,6 +103,11 @@
       "react-native": "./dist/inline-alert.js",
       "import": "./dist/inline-alert.js"
     },
+    "./monogram": {
+      "types": "./dist/monogram.d.ts",
+      "react-native": "./dist/monogram.js",
+      "import": "./dist/monogram.js"
+    },
     "./number-field": {
       "types": "./dist/number-field.d.ts",
       "react-native": "./dist/number-field.js",

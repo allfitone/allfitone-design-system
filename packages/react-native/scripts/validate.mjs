@@ -21,6 +21,7 @@ const importableOutputs = [
 ];
 const nativeOnlyOutputs = [
   "badge.js",
+  "monogram.js",
   "number-field.js",
   "tabs.js",
   "step-list.js",
