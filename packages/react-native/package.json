@@ -33,6 +33,11 @@
       "react-native": "./dist/backdrop.js",
       "import": "./dist/backdrop.js"
     },
+    "./badge": {
+      "types": "./dist/badge.d.ts",
+      "react-native": "./dist/badge.js",
+      "import": "./dist/badge.js"
+    },
     "./brand": {
       "types": "./dist/brand.d.ts",
       "react-native": "./dist/brand.js",
@@ -97,6 +102,11 @@
       "types": "./dist/inline-alert.d.ts",
       "react-native": "./dist/inline-alert.js",
       "import": "./dist/inline-alert.js"
+    },
+    "./number-field": {
+      "types": "./dist/number-field.d.ts",
+      "react-native": "./dist/number-field.js",
+      "import": "./dist/number-field.js"
     },
     "./page-dots": {
       "types": "./dist/page-dots.d.ts",

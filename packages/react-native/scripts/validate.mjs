@@ -20,6 +20,8 @@ const importableOutputs = [
   "step-geometry.js",
 ];
 const nativeOnlyOutputs = [
+  "badge.js",
+  "number-field.js",
   "tabs.js",
   "step-list.js",
   "sheet.js",
@@ -298,6 +300,19 @@ const absurd = resolveSheetGeometry({
 });
 if (absurd.maxHeight < 0) {
   throw new Error(`A sheet cap must never go negative; it is ${absurd.maxHeight}.`);
+}
+
+// A badge that can take a colour stops being a badge and becomes a sticker, which is
+// the DT-009 rule stated as something a build can check.
+const badgeSource = await readFile(resolve(packageRoot, "src", "badge.tsx"), "utf8");
+if (!badgeSource.includes("theme.color.status.onStatus")) {
+  throw new Error(
+    "Badge must take its ink from `status.onStatus`; a hand-picked white or black " +
+      "loses contrast in one of the two themes.",
+  );
+}
+for (const literal of badgeSource.match(/#[0-9A-Fa-f]{3,8}\b/g) ?? []) {
+  throw new Error(`Badge carries the raw colour ${literal}; tones come from the palette.`);
 }
 
 console.log(
