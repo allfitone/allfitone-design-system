@@ -17,6 +17,11 @@
  *
  * The role is `button` and not `checkbox`: nothing is chosen here, a screen is
  * opened. What lands there is that screen's business.
+ *
+ * **The label is set in the control role, not the display one.** Condensed uppercase
+ * belongs to a heading that is read once; this is a control whose label is read
+ * every time the screen is scanned, and at that job it was the thing people disliked
+ * before they could say why.
  */
 
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
@@ -28,7 +33,7 @@ import { useTheme } from "./theme.js";
 const ICON_SIZE = "sm";
 
 /** Two lines of text and air, past the platform touch target. */
-const MIN_HEIGHT = 52;
+const MIN_HEIGHT = 58;
 
 export type DisclosureButtonProps = {
   readonly label: string;
@@ -100,12 +105,12 @@ export function DisclosureButton({
         <FoundationIcon name={icon} size={ICON_SIZE} color={ink()} decorative />
       )}
       <View style={styles.text}>
-        <Text role="display" size="sm" uppercase numberOfLines={1} style={{ color: ink() }}>
+        <Text role="control" size="sm" numberOfLines={1} style={{ color: ink() }}>
           {label}
         </Text>
         <Text
           role="body"
-          size="xs"
+          size="sm"
           color={disabled ? "disabled" : on ? "secondary" : "muted"}
           numberOfLines={1}
         >
