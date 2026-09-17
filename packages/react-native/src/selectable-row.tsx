@@ -19,6 +19,13 @@
  * alone, so it survives a glance down a long list — the same reason `Chip`
  * thickens its ring.
  *
+ * **A preview is a still, and the row owns only its box.** A name is not enough to
+ * place an exercise somebody has never done, so the row can carry a thumbnail of it.
+ * The box, its ground and its place in the row belong here; what goes inside is the
+ * consumer's, because the artwork is remote and animated and neither belongs in a
+ * component library. It is drawn even when empty, so a list where some rows have a
+ * picture and some do not still reads as a column.
+ *
  * **A secondary action sits outside the row's press area.** Picking an exercise and
  * reading about it are different intents, and a row that did both on one tap would do
  * the wrong one half the time. `action` renders its own 44 pt target at the trailing
@@ -27,6 +34,7 @@
  * reader announcing one thing and doing another.
  */
 
+import type { ReactNode } from "react";
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
 
 import { FoundationIcon, type IconName } from "./icons.js";
@@ -35,6 +43,9 @@ import { useTheme } from "./theme.js";
 
 /** Reads as a mark beside a name without competing with it. */
 const MARK_SIZE = 22;
+
+/** Tall enough to recognise a shape in, short enough not to set the row's height. */
+const PREVIEW_SIZE = 44;
 
 const MARK_GLYPH_SIZE = 13;
 
@@ -51,6 +62,8 @@ export type SelectableRowProps = {
   readonly name: string;
   /** What it is, in one line. Absent when there is nothing worth saying. */
   readonly caption?: string;
+  /** A still thumbnail of the thing. The box is this component's; the content is yours. */
+  readonly preview?: ReactNode;
   readonly selected: boolean;
   readonly onPress: () => void;
   /** A second, different intent — reading about the thing rather than choosing it. */
@@ -68,6 +81,7 @@ export type SelectableRowProps = {
 export function SelectableRow({
   name,
   caption,
+  preview,
   selected,
   onPress,
   action,
@@ -129,6 +143,20 @@ export function SelectableRow({
         ) : null}
       </View>
 
+      {preview === undefined ? null : (
+        <View
+          style={[
+            styles.preview,
+            {
+              backgroundColor: theme.color.background.surfaceSubtle,
+              borderColor: theme.color.border.subtle,
+            },
+          ]}
+        >
+          {preview}
+        </View>
+      )}
+
       <View style={styles.body}>
         <Text
           role="display"
@@ -174,6 +202,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 11,
     paddingVertical: 11,
+  },
+  preview: {
+    width: PREVIEW_SIZE,
+    height: PREVIEW_SIZE,
+    borderRadius: 10,
+    borderWidth: 1,
+    overflow: "hidden",
   },
   mark: {
     width: MARK_SIZE,
