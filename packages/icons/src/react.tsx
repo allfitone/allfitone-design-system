@@ -38,6 +38,7 @@ import {
   Lock,
   Medal,
   Menu,
+  GripVertical,
   Minus,
   Moon,
   Pause,
@@ -106,6 +107,7 @@ const sourceComponents = {
   Lock,
   Medal,
   Menu,
+  GripVertical,
   Minus,
   Moon,
   PanelLeft,
@@ -254,6 +256,7 @@ export const RestIcon = /* @__PURE__ */ createSemanticIcon("RestIcon", Moon);
 export const LockedIcon = /* @__PURE__ */ createSemanticIcon("LockedIcon", Lock);
 export const ExploreIcon = /* @__PURE__ */ createSemanticIcon("ExploreIcon", Compass);
 export const SubtractIcon = /* @__PURE__ */ createSemanticIcon("SubtractIcon", Minus);
+export const ReorderIcon = /* @__PURE__ */ createSemanticIcon("ReorderIcon", GripVertical);
 export const ActivityIcon = /* @__PURE__ */ createSemanticIcon("ActivityIcon", Activity);
 export const WeightIcon = /* @__PURE__ */ createSemanticIcon("WeightIcon", Weight);
 export const RaceIcon = /* @__PURE__ */ createSemanticIcon("RaceIcon", Flag);

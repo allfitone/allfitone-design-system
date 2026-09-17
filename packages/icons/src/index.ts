@@ -73,6 +73,9 @@ export const iconCatalog = {
   // `remove` is a trash can: it deletes a thing. A stepper takes one away from a
   // number, which is a different act and needs a different glyph.
   subtract: { source: "Minus", category: "action" },
+  // The grip somebody drags a row by. Not `panel` and not `more`: those open
+  // something, and this one is held rather than pressed.
+  reorder: { source: "GripVertical", category: "action" },
 } as const;
 
 export type IconName = keyof typeof iconCatalog;
