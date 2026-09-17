@@ -162,7 +162,7 @@ export function Button({
         {icon ? (
           <FoundationIcon name={icon} size="sm" color={palette.foreground} decorative />
         ) : null}
-        <Text role="control" size="sm" style={{ color: palette.foreground }} numberOfLines={1}>
+        <Text role="control" size="md" style={{ color: palette.foreground }} numberOfLines={1}>
           {label}
         </Text>
       </View>

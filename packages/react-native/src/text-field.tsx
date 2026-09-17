@@ -12,6 +12,10 @@
  *
  * The label is a real label wired to the input, so screen readers announce it
  * instead of the placeholder, which disappears the moment typing starts.
+ *
+ * It is set in the `control` role, sentence case, like every other name a person
+ * reads while filling something in. `label` is the uppercase micro-label role and
+ * its 0.16em tracking pulls a phrase apart at 12px.
  */
 
 import { useState } from "react";
@@ -51,7 +55,7 @@ export function TextField({ label, error, style, onFocus, onBlur, ...props }: Te
 
   return (
     <View style={[{ gap: theme.spacing[2] }, style]}>
-      <Text role="label" size="xs" color="secondary" uppercase nativeID={`${label}-label`}>
+      <Text role="control" size="sm" color="secondary" nativeID={`${label}-label`}>
         {label}
       </Text>
 
