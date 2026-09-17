@@ -31,12 +31,11 @@ import {
   type ViewStyle,
 } from "react-native";
 
-import { resolveGradientEndpoints } from "./gradient-geometry.js";
+import { resolveAccentGradient } from "./accent-gradient.js";
 import { resolveShadowStyle } from "./shadow-style.js";
 import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme, type Theme } from "./theme.js";
-import { semanticGradient } from "./tokens.js";
 
 export type ButtonVariant = "primary" | "secondary" | "ghost";
 
@@ -109,19 +108,7 @@ export function Button({
   const inactive = disabled || loading;
   const palette = resolvePalette(theme, variant, inactive);
 
-  const accent = semanticGradient.accent;
-  const { start, end } = resolveGradientEndpoints(accent.angle);
-  const [first, second, ...rest] = accent.stops;
-  const colors: readonly [string, string, ...string[]] = [
-    first.color,
-    second.color,
-    ...rest.map((stop) => stop.color),
-  ];
-  const locations: readonly [number, number, ...number[]] = [
-    first.position / 100,
-    second.position / 100,
-    ...rest.map((stop) => stop.position / 100),
-  ];
+  const accent = resolveAccentGradient();
 
   return (
     <Pressable
@@ -148,10 +135,10 @@ export function Button({
     >
       {palette.gradient ? (
         <LinearGradient
-          colors={colors}
-          locations={locations}
-          start={start}
-          end={end}
+          colors={accent.colors}
+          locations={accent.locations}
+          start={accent.start}
+          end={accent.end}
           style={StyleSheet.absoluteFill}
         />
       ) : null}

@@ -14,6 +14,7 @@ const importableOutputs = [
   "font-family.js",
   "typography-style.js",
   "gradient-geometry.js",
+  "accent-gradient.js",
   "sheet-geometry.js",
   "tab-selection.js",
   "step-geometry.js",
@@ -153,12 +154,20 @@ if (control.letterSpacing !== 0) {
   );
 }
 
-// The primary action must carry the accent gradient, not a flat fill. The web
+// An affirmative action must carry the accent gradient, not a flat fill. The web
 // adapter paints it through `--afo-gradient-accent`, and a flat native button
-// looked measurably cheaper than the same control in the Explorer.
-const buttonSource = await readFile(resolve(packageRoot, "src/button.tsx"), "utf8");
-if (!buttonSource.includes("semanticGradient.accent")) {
-  throw new Error("The primary button must paint semanticGradient.accent, matching the web adapter.");
+// looked measurably cheaper than the same control in the Explorer. Both the
+// labelled pill and the round tick are checked, because it was exactly their
+// disagreement — one painted, one flat — that sent this through the library.
+const gradientSource = await readFile(resolve(packageRoot, "src/accent-gradient.ts"), "utf8");
+if (!gradientSource.includes("semanticGradient.accent")) {
+  throw new Error("The accent gradient must resolve semanticGradient.accent, matching the web adapter.");
+}
+for (const component of ["button.tsx", "icon-button.tsx"]) {
+  const source = await readFile(resolve(packageRoot, "src", component), "utf8");
+  if (!source.includes("resolveAccentGradient")) {
+    throw new Error(`${component} must paint the accent through resolveAccentGradient, not its own copy.`);
+  }
 }
 
 // A controlled strip whose value matches no tab must mark nothing. Falling back to
@@ -207,6 +216,20 @@ if (stepMarkerOffset(40, 21, 14) !== 0) {
 }
 if (STEP_MARKER_SIZE < 20) {
   throw new Error("A step marker must stay large enough to hold two digits.");
+}
+
+// Every affirmative action paints the same accent, so a round tick and a labelled
+// pill cannot drift apart. Two stops is the floor `LinearGradient` requires.
+const { resolveAccentGradient } = await import("../dist/accent-gradient.js");
+
+const accent = resolveAccentGradient();
+if (accent.colors.length < 2 || accent.colors.length !== accent.locations.length) {
+  throw new Error("The accent gradient needs a position for every colour, and two of each.");
+}
+for (const position of accent.locations) {
+  if (position < 0 || position > 1) {
+    throw new Error("Gradient stops are fractions here, not the percentages the token declares.");
+  }
 }
 
 // A wrong gradient angle still paints a gradient, pointing the wrong way.
