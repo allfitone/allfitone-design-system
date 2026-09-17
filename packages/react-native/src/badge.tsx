@@ -28,7 +28,52 @@ import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "rea
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
 
-export type BadgeTone = "neutral" | "accent" | "success" | "warning" | "danger" | "info" | "sport";
+export type BadgeTone =
+  | "neutral"
+  | "accent"
+  | "success"
+  | "warning"
+  | "danger"
+  | "info"
+  | "sport"
+  // Identity, not status. The palette keeps these six for telling one thing from
+  // another — which discipline, which superset — where nothing is going wrong and a
+  // status colour would say that it is.
+  | "strength"
+  | "highIntensity"
+  | "endurance"
+  | "combat"
+  | "wellbeing"
+  | "rhythm";
+
+const IDENTITY = [
+  "strength",
+  "highIntensity",
+  "endurance",
+  "combat",
+  "wellbeing",
+  "rhythm",
+] as const;
+
+export type IdentityTone = (typeof IDENTITY)[number];
+
+/**
+ * The colour a tone paints with, for a consumer that has to match something to it —
+ * a rule down the edge of the rows a badge labels, and nothing else it could ask.
+ */
+export function badgeToneColor(theme: ReturnType<typeof useTheme>, tone: BadgeTone): string {
+  if (tone === "neutral") return theme.color.border.default;
+  if (tone === "accent") return theme.color.icon.accent;
+  if ((IDENTITY as readonly string[]).includes(tone)) {
+    return theme.color.discipline[tone as IdentityTone];
+  }
+  return theme.color.status[tone as "success" | "warning" | "danger" | "info" | "sport"];
+}
+
+/** The identity tones in order, for anything that has to hand them out one by one. */
+export function identityTone(index: number): IdentityTone {
+  return IDENTITY[index % IDENTITY.length] as IdentityTone;
+}
 
 export type BadgeProps = {
   readonly label: string;
@@ -45,7 +90,7 @@ export function Badge({ label, tone = "neutral", onPress, accessibilityLabel, st
   // Filled tones carry `onStatus` text; the palette picks that ink so the contrast
   // holds in both themes, which a hand-picked white or black does not.
   const filled = tone !== "neutral";
-  const background = filled ? fillOf(theme, tone) : "transparent";
+  const background = filled ? badgeToneColor(theme, tone) : "transparent";
   const ink = filled ? theme.color.status.onStatus : theme.color.text.secondary;
 
   const body = (
@@ -81,11 +126,6 @@ export function Badge({ label, tone = "neutral", onPress, accessibilityLabel, st
       {body}
     </Pressable>
   );
-}
-
-function fillOf(theme: ReturnType<typeof useTheme>, tone: Exclude<BadgeTone, "neutral">) {
-  if (tone === "accent") return theme.color.icon.accent;
-  return theme.color.status[tone];
 }
 
 const styles = StyleSheet.create({
