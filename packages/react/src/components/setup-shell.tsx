@@ -105,7 +105,11 @@ function SetupProgressStep({
       data-status={status}
       aria-current={status === "current" ? "step" : undefined}
       className={cn(
-        "group flex min-w-0 flex-1 items-center gap-2 text-muted-foreground after:ml-auto after:hidden after:h-px after:min-w-4 after:flex-1 after:bg-border after:content-[''] last:after:hidden sm:after:block",
+        // `last:flex-none`: every step took an equal share, but the connector
+        // that absorbs a step's slack is hidden on the last one, so the final
+        // third held nothing but a short label and left dead space at the right
+        // edge. Sized to its content, the slack goes to the connectors instead.
+        "group flex min-w-0 flex-1 items-center gap-2 text-muted-foreground after:ml-auto after:hidden after:h-px after:min-w-4 after:flex-1 after:bg-border after:content-[''] last:flex-none last:after:hidden sm:after:block",
         "data-[status=current]:text-foreground data-[status=complete]:text-foreground",
         className
       )}
@@ -121,7 +125,11 @@ function SetupProgressStep({
       >
         {status === "complete" ? <CheckIcon decorative /> : indexLabel}
       </span>
-      <span className="truncate text-xs font-extrabold tracking-[var(--afo-letter-spacing-utility)] uppercase">
+      {/* `sm:truncate`, not `truncate`. Below 640px the connectors are hidden
+          and three steps split a 390px phone: about 90px of label each once the
+          32px index and the gap are gone, which rendered "IDENTIDAD" as
+          "IDENTID…". Wrapping costs a line; truncating costs the word. */}
+      <span className="text-xs font-extrabold tracking-[var(--afo-letter-spacing-utility)] uppercase sm:truncate">
         {label}
       </span>
     </li>
