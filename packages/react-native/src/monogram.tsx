@@ -7,8 +7,9 @@
  * it makes two rows tellable apart at a glance, and it makes the same routine
  * recognisable in the grid and in the list below it.
  *
- * **It is not an avatar and not a `Badge`.** An avatar stands for a person and falls
- * back to initials when a photograph is missing; nothing here ever has a photograph.
+ * **It is not an avatar and not a `Badge`.** It borrows an avatar's circle, but an
+ * avatar stands for a person and falls back to initials when a photograph is missing;
+ * nothing here ever has a photograph.
  * A badge states a fact in words. This is a mark: it carries no meaning of its own,
  * only identity, and its whole job is to be the same mark every time for the same
  * name.
@@ -50,7 +51,7 @@ export function Monogram({ name, tone = "accent", size = "md", style }: Monogram
       importantForAccessibility="no-hide-descendants"
       style={[
         styles.box,
-        { width: side, height: side, borderRadius: side / 4, borderColor: color },
+        { width: side, height: side, borderRadius: side / 2, borderColor: color },
         // Tonal rather than filled: seven of these in a row of days would otherwise be
         // seven solid blocks, and the week is meant to be read as one thing.
         { backgroundColor: theme.color.accent.tonal },

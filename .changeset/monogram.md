@@ -9,7 +9,7 @@ there is no room for a name anyway. The first letter does the work a thumbnail d
 elsewhere: it makes two rows tellable apart at a glance and makes the same routine
 recognisable in the grid and in the list under it.
 
-It is neither an avatar nor a `Badge`. An avatar stands for a person and falls back to
+It is neither an avatar nor a `Badge`. It borrows an avatar's circle, but an avatar stands for a person and falls back to
 initials when a photograph is missing; nothing here ever has a photograph. A badge
 states a fact in words. A monogram carries no meaning at all, only identity — its
 whole job is to be the same mark every time for the same name.
