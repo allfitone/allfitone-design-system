@@ -318,6 +318,24 @@ for (const literal of badgeSource.match(/#[0-9A-Fa-f]{3,8}\b/g) ?? []) {
   throw new Error(`Badge carries the raw colour ${literal}; tones come from the palette.`);
 }
 
+// Touching nothing in particular puts the keyboard away, and does it by observing the
+// touch rather than claiming it. Claiming it would silently eat presses on everything
+// underneath, which is the failure this check exists to catch — it looks identical until
+// somebody tries to drag a row.
+const screenSource = await readFile(resolve(packageRoot, "src", "screen.tsx"), "utf8");
+if (!screenSource.includes("onStartShouldSetResponder")) {
+  throw new Error(
+    "Screen must put the keyboard away when a touch lands on nothing: a form under a " +
+      "header that stays put has no other way to dismiss it.",
+  );
+}
+if (!/function dismissKeyboard\(\): boolean \{[\s\S]*?return false;/.test(screenSource)) {
+  throw new Error(
+    "Screen's keyboard dismissal must answer `false` and never become the responder; " +
+      "claiming the touch would swallow presses and block gestures underneath.",
+  );
+}
+
 console.log(
   `Validated ${requiredOutputs.length} React Native adapter outputs, ` +
     `${Object.keys(typographyRole).length} typographic roles, 2 gradient angles ` +
