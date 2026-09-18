@@ -21,12 +21,14 @@ const importableOutputs = [
 ];
 const nativeOnlyOutputs = [
   "badge.js",
+  "cover-tile.js",
   "monogram.js",
   "number-field.js",
   "tabs.js",
   "step-list.js",
   "sheet.js",
   "selectable-row.js",
+  "segmented-control.js",
   "selectable-tile.js",
   "disclosure-button.js",
   "brand.js",

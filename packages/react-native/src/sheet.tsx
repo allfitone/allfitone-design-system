@@ -204,7 +204,11 @@ export function Sheet({
         />
 
         {hideTitle ? null : (
-          <Text role="display" size="2xl" uppercase accessibilityRole="header">
+          // `control` and sentence case, not the condensed display face in capitals. A
+          // sheet's title is a phrase somebody reads —«Portada de la rutina»— and the
+          // condensed face tracks tightly enough that a phrase in it reads as a sign.
+          // Display stays for the editorial moments that are one or two words.
+          <Text role="control" size="xl" accessibilityRole="header">
             {title}
           </Text>
         )}
