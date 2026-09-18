@@ -59,6 +59,31 @@ import {
   Weight,
   X,
   Zap,
+  WavesHorizontal,
+  WavesLadder,
+  Volleyball,
+  Trophy,
+  Tent,
+  Sunset,
+  Sunrise,
+  Star,
+  Snowflake,
+  Route,
+  Leaf,
+  Infinity,
+  Hourglass,
+  Gauge,
+  Feather,
+  Brain,
+  BicepsFlexed,
+  BatteryFull,
+  Timer,
+  Mountain,
+  HeartPulse,
+  Footprints,
+  Flower,
+  Flame,
+  Bike,
   type LucideIcon,
   type LucideProps,
 } from "lucide-react";
@@ -128,6 +153,31 @@ const sourceComponents = {
   Weight,
   X,
   Zap,
+  Bike,
+  Flame,
+  Flower,
+  Footprints,
+  HeartPulse,
+  Mountain,
+  Timer,
+  WavesHorizontal,
+  BatteryFull,
+  BicepsFlexed,
+  Brain,
+  Feather,
+  Gauge,
+  Hourglass,
+  Infinity,
+  Leaf,
+  Route,
+  Snowflake,
+  Star,
+  Sunrise,
+  Sunset,
+  Tent,
+  Trophy,
+  Volleyball,
+  WavesLadder,
 } satisfies Record<IconSource, LucideIcon>;
 
 type IconSizeProps =
@@ -275,3 +325,28 @@ export const FrequencyIcon = /* @__PURE__ */ createSemanticIcon("FrequencyIcon",
 export const LevelIcon = /* @__PURE__ */ createSemanticIcon("LevelIcon", Medal);
 export const StartIcon = /* @__PURE__ */ createSemanticIcon("StartIcon", Play);
 export const PauseIcon = /* @__PURE__ */ createSemanticIcon("PauseIcon", Pause);
+export const RunIcon = /* @__PURE__ */ createSemanticIcon("RunIcon", Footprints);
+export const CyclingIcon = /* @__PURE__ */ createSemanticIcon("CyclingIcon", Bike);
+export const IntervalIcon = /* @__PURE__ */ createSemanticIcon("IntervalIcon", Timer);
+export const CardioIcon = /* @__PURE__ */ createSemanticIcon("CardioIcon", HeartPulse);
+export const BurnIcon = /* @__PURE__ */ createSemanticIcon("BurnIcon", Flame);
+export const MountainIcon = /* @__PURE__ */ createSemanticIcon("MountainIcon", Mountain);
+export const MobilityIcon = /* @__PURE__ */ createSemanticIcon("MobilityIcon", Flower);
+export const SwimIcon = /* @__PURE__ */ createSemanticIcon("SwimIcon", WavesHorizontal);
+export const ArmsIcon = /* @__PURE__ */ createSemanticIcon("ArmsIcon", BicepsFlexed);
+export const EnduranceIcon = /* @__PURE__ */ createSemanticIcon("EnduranceIcon", Infinity);
+export const PaceIcon = /* @__PURE__ */ createSemanticIcon("PaceIcon", Gauge);
+export const EnergyIcon = /* @__PURE__ */ createSemanticIcon("EnergyIcon", BatteryFull);
+export const FocusIcon = /* @__PURE__ */ createSemanticIcon("FocusIcon", Brain);
+export const RecoveryIcon = /* @__PURE__ */ createSemanticIcon("RecoveryIcon", Leaf);
+export const MorningIcon = /* @__PURE__ */ createSemanticIcon("MorningIcon", Sunrise);
+export const EveningIcon = /* @__PURE__ */ createSemanticIcon("EveningIcon", Sunset);
+export const ColdIcon = /* @__PURE__ */ createSemanticIcon("ColdIcon", Snowflake);
+export const OutdoorIcon = /* @__PURE__ */ createSemanticIcon("OutdoorIcon", Tent);
+export const RouteIcon = /* @__PURE__ */ createSemanticIcon("RouteIcon", Route);
+export const PoolIcon = /* @__PURE__ */ createSemanticIcon("PoolIcon", WavesLadder);
+export const TeamIcon = /* @__PURE__ */ createSemanticIcon("TeamIcon", Volleyball);
+export const RecordIcon = /* @__PURE__ */ createSemanticIcon("RecordIcon", Trophy);
+export const FavouriteIcon = /* @__PURE__ */ createSemanticIcon("FavouriteIcon", Star);
+export const LightIcon = /* @__PURE__ */ createSemanticIcon("LightIcon", Feather);
+export const CountdownIcon = /* @__PURE__ */ createSemanticIcon("CountdownIcon", Hourglass);

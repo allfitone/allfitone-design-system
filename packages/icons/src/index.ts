@@ -76,6 +76,51 @@ export const iconCatalog = {
   // The grip somebody drags a row by. Not `panel` and not `more`: those open
   // something, and this one is held rather than pressed.
   reorder: { source: "GripVertical", category: "action" },
+  // Las doce portadas de una rutina dicen de qué va, no con qué se hace. Cuatro de
+  // ellas reutilizan glifos que ya existían —`training`, `freestyle`, `level`, `time`—
+  // y estas ocho son las que faltaban.
+  // Correr, y no un cuerpo de pie: la huella dice movimiento y el
+  // cuerpo dice anatomía, que es otra cosa y ya tiene su dibujo.
+  run: { source: "Footprints", category: "object" },
+  cycling: { source: "Bike", category: "object" },
+  // Trabajo por tiempo. `time` es un reloj que dice qué hora es;
+  // esto es una cuenta que alguien puso en marcha.
+  interval: { source: "Timer", category: "object" },
+  // El corazón trabajando. `heart` es el órgano y este es el
+  // esfuerzo, que son dos cosas distintas en la misma pantalla.
+  cardio: { source: "HeartPulse", category: "object" },
+  burn: { source: "Flame", category: "object" },
+  mountain: { source: "Mountain", category: "object" },
+  // Movilidad y calma. El prototipo dibuja un yin-yang que Lucide
+  // no tiene; la flor dice lo mismo sin pedir prestado un símbolo ajeno.
+  mobility: { source: "Flower", category: "object" },
+  swim: { source: "WavesHorizontal", category: "object" },
+  // La segunda tanda de portadas. Siguen diciendo de qué va una rutina, no con qué
+  // se hace, y varias reutilizan glifos que ya existían: `target`, `rest`, `weight`.
+  // El brazo trabajando, no un músculo del atlas: la figura anatómica
+  // ya dice qué entrena una rutina y esto dice de qué va.
+  arms: { source: "BicepsFlexed", category: "object" },
+  endurance: { source: "Infinity", category: "object" },
+  pace: { source: "Gauge", category: "object" },
+  energy: { source: "BatteryFull", category: "object" },
+  focus: { source: "Brain", category: "object" },
+  // Recuperar. `rest` es una noche y esto es el día suave que la sigue.
+  recovery: { source: "Leaf", category: "object" },
+  morning: { source: "Sunrise", category: "object" },
+  evening: { source: "Sunset", category: "object" },
+  cold: { source: "Snowflake", category: "object" },
+  outdoor: { source: "Tent", category: "object" },
+  route: { source: "Route", category: "object" },
+  // La escalera de una piscina. `swim` son las olas: nadar en cualquier
+  // parte frente a nadar en una.
+  pool: { source: "WavesLadder", category: "object" },
+  team: { source: "Volleyball", category: "object" },
+  record: { source: "Trophy", category: "object" },
+  favourite: { source: "Star", category: "object" },
+  light: { source: "Feather", category: "object" },
+  // Tiempo que se acaba. `time` es un reloj y `interval` una cuenta que
+  // alguien puso en marcha; esto es el final acercándose.
+  countdown: { source: "Hourglass", category: "object" },
 } as const;
 
 export type IconName = keyof typeof iconCatalog;
