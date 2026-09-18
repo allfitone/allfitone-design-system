@@ -30,9 +30,72 @@ body {
   font-family: var(--afo-font-family-body);
 }
 
+/*
+ * The rest of the reset this file's docblock promises.
+ *
+ * Tailwind is imported as `theme.css` and `utilities.css` only, so Preflight
+ * never lands and every heading, paragraph and list keeps its user-agent
+ * margins. A component cannot patch that from inside: margins do not collapse
+ * in flex or grid, so they add to whatever `gap` a header declares — a dialog's
+ * designed 10px title-to-description gap measured 41px. Consuming apps had been
+ * resetting it by hand, eleven times in Studio alone.
+ *
+ * It sits in a layer, and that is the whole point. Everything else in this file
+ * is unlayered, which in the cascade beats every layered rule — including the
+ * `mt-5` that `AccessPanelDescription` sets on itself. Unlayered, this reset
+ * silently flattened the spacing components had declared, which is the same
+ * fault as the `font` shorthand below, one level up. `afo-base` sorts before
+ * `utilities`, so a component's own margin wins.
+ *
+ * `styles.css` pins that order with a `@layer` statement rather than leaving it
+ * to whichever stylesheet a consumer imports first.
+ *
+ * Lists lose their padding and markers together. Zeroing the padding on its own
+ * would leave the marker outside the content box, and components here already
+ * assume unmarked lists — `NavigationMenuList` sets `list-none` itself and was
+ * left with a 40px indent no application rule could reach.
+ */
+@layer afo-base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  figure,
+  blockquote,
+  dl,
+  dd,
+  ol,
+  ul,
+  menu {
+    margin: 0;
+  }
+
+  ol,
+  ul,
+  menu {
+    padding: 0;
+    list-style: none;
+  }
+}
+
+/*
+ * Controls take the page's family and size instead of the browser's UI font.
+ *
+ * Not the `font` shorthand: it also resets `font-weight`, and this stylesheet is
+ * unlayered while Tailwind's utilities sit in `layer(utilities)` — unlayered
+ * wins — so `font: inherit` silently defeated the `font-extrabold` that
+ * `buttonVariants` puts on every button. Real buttons rendered at the body
+ * weight while a link styled as one kept 800, because the selector never
+ * matched an anchor. Weight belongs to the component, not to this reset.
+ */
 button,
 input,
 select,
 textarea {
-  font: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
 }

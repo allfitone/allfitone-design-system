@@ -1088,3 +1088,40 @@ test("keeps the outline badge, the setup steps and their labels honest", async (
   );
   expect(border, "an outline badge draws an outline").not.toBe("rgba(0, 0, 0, 0)");
 })
+
+/**
+ * A select pinned to its trigger's width cannot display its own options. At
+ * 272px Studio's sidebar gave the popup 166px, where no real organization name
+ * fits, and shortening the labels helps a short name and cannot help a long
+ * one. The trigger's width is the floor now; `--available-width` is the ceiling.
+ */
+test("lets the select popup outgrow its trigger", async ({ page }) => {
+  await openCategory(page, "selection", "Selection");
+
+  const select = page.getByRole("combobox", { name: "Program" });
+  const triggerWidth = Math.round((await select.boundingBox())!.width);
+
+  await select.focus();
+  await page.keyboard.press("Enter");
+  const popup = page.locator('[data-slot="select-content"]');
+  await expect(popup).toBeVisible();
+
+  expect(
+    Math.round((await popup.boundingBox())!.width),
+    "the popup is at least as wide as the trigger",
+  ).toBeGreaterThanOrEqual(triggerWidth);
+
+  // A name the width of a real organization's, injected so the Explorer does
+  // not have to carry one just for this.
+  await page.evaluate(() => {
+    const item = document.querySelector('[data-slot="select-item"]');
+    if (item) item.textContent = "Centro de Alto Rendimiento Metropolitano Norte";
+  });
+
+  await expect
+    .poll(
+      async () => Math.round((await popup.boundingBox())!.width),
+      { message: "the popup grows past its trigger to fit a long option" },
+    )
+    .toBeGreaterThan(triggerWidth);
+});
