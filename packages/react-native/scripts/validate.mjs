@@ -389,6 +389,22 @@ if (!/useEffect\([\s\S]*?\[message, autoDismissMs/.test(alertSource)) {
   );
 }
 
+// Un campo sin etiqueta dibujada sigue teniendo nombre. Es el único punto donde
+// `hideLabel` puede convertirse en un campo mudo para quien lo oye.
+const fieldSource = await readFile(resolve(packageRoot, "src", "text-field.tsx"), "utf8");
+if (!/accessibilityLabel=\{label\}/.test(fieldSource)) {
+  throw new Error(
+    "TextField must keep `accessibilityLabel={label}`: `hideLabel` hides the drawn " +
+      "label, and without the spoken one the field has no name at all.",
+  );
+}
+if (!/aria-labelledby=\{hideLabel \? undefined :/.test(fieldSource)) {
+  throw new Error(
+    "TextField must drop `aria-labelledby` when the label is hidden: it would point at " +
+      "an element that is not rendered, which leaves the field unnamed rather than named twice.",
+  );
+}
+
 console.log(
   `Validated ${requiredOutputs.length} React Native adapter outputs, ` +
     `${Object.keys(typographyRole).length} typographic roles, 2 gradient angles ` +

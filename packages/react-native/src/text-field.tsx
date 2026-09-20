@@ -16,6 +16,12 @@
  * It is set in the `control` role, sentence case, like every other name a person
  * reads while filling something in. `label` is the uppercase micro-label role and
  * its 0.16em tracking pulls a phrase apart at 12px.
+ *
+ * **`hideLabel` drops the drawn label and keeps the spoken one**, the same bargain
+ * `Sheet` makes with `hideTitle`. It is for the field whose placeholder already says
+ * what it is — a search box above the list it filters — where the label repeats the
+ * placeholder and costs a line on a panel that is short of them. The name a screen
+ * reader announces does not change, because nothing about the field changed.
  */
 
 import { useState } from "react";
@@ -33,11 +39,21 @@ import { resolveTextStyle } from "./typography-style.js";
 
 export type TextFieldProps = Omit<TextInputProps, "style" | "placeholderTextColor"> & {
   readonly label: string;
+  /** Draws no label. It is still announced, so this is a layout choice, not a cut. */
+  readonly hideLabel?: boolean;
   readonly error?: string;
   readonly style?: StyleProp<ViewStyle>;
 };
 
-export function TextField({ label, error, style, onFocus, onBlur, ...props }: TextFieldProps) {
+export function TextField({
+  label,
+  hideLabel = false,
+  error,
+  style,
+  onFocus,
+  onBlur,
+  ...props
+}: TextFieldProps) {
   const theme = useTheme();
   const [focused, setFocused] = useState(false);
 
@@ -55,14 +71,18 @@ export function TextField({ label, error, style, onFocus, onBlur, ...props }: Te
 
   return (
     <View style={[{ gap: theme.spacing[2] }, style]}>
-      <Text role="control" size="sm" color="secondary" nativeID={`${label}-label`}>
-        {label}
-      </Text>
+      {hideLabel ? null : (
+        <Text role="control" size="sm" color="secondary" nativeID={`${label}-label`}>
+          {label}
+        </Text>
+      )}
 
       <TextInput
         {...props}
         accessibilityLabel={label}
-        aria-labelledby={`${label}-label`}
+        // Sin etiqueta dibujada no hay nada a lo que apuntar, y un `aria-labelledby`
+        // colgando deja el campo sin nombre en lugar de con dos.
+        aria-labelledby={hideLabel ? undefined : `${label}-label`}
         placeholderTextColor={theme.color.text.muted}
         onFocus={(event) => {
           setFocused(true);
