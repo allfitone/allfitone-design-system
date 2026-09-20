@@ -104,6 +104,11 @@ export const semanticColor = {
     accent: {
       tonal: "#55EFFB17",
       tonalBorder: "#55EFFB38",
+      // El filo de una tarjeta que **es** la pantalla, no una fila dentro de ella. Al
+      // 22 % de `tonalBorder` una tarjeta de trescientos puntos se deshace contra el
+      // lienzo; al 100 % de `border.accent` se convierte en un botón. Éste es el único
+      // borde que se ve desde lejos sin pedir la vez.
+      edge: "#55EFFB73",
       onAccent: color.ink.onSignal,
       onAccentMuted: "#06282BA8",
     },
@@ -178,6 +183,9 @@ export const semanticColor = {
     accent: {
       tonal: "#0E6E7614",
       tonalBorder: "#0E6E7633",
+      // Más opaco que en oscuro: sobre blanco, un cian translúcido se lava, y lo que
+      // en el tema oscuro separa por brillo aquí tiene que separar por densidad.
+      edge: "#0E6E767A",
       onAccent: color.ink.onSignal,
       onAccentMuted: "#06282BA8",
     },

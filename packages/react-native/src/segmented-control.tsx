@@ -37,8 +37,15 @@ export type SegmentedControlProps<Value extends string = string> = {
   readonly style?: StyleProp<ViewStyle>;
 };
 
-/** Tall enough for the label plus the track's own padding to reach the 44pt target. */
-const HEIGHT = 40;
+/**
+ * Por encima del suelo de 44 puntos, no justo debajo.
+ *
+ * Estaba en 40 porque la pista pone cuatro de relleno y 40 + nada llegaba «casi». Casi no
+ * es el suelo: este control parte una pantalla en dos mitades y se toca de pie, así que
+ * cada segmento tiene que ser un blanco cómodo por sí mismo, sin contar con que el dedo
+ * acierte el centro.
+ */
+const HEIGHT = 48;
 
 const INSET = 4;
 

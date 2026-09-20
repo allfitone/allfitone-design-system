@@ -68,6 +68,16 @@
       "react-native": "./dist/code-field.js",
       "import": "./dist/code-field.js"
     },
+    "./content-row": {
+      "types": "./dist/content-row.d.ts",
+      "react-native": "./dist/content-row.js",
+      "import": "./dist/content-row.js"
+    },
+    "./cover-tile": {
+      "types": "./dist/cover-tile.d.ts",
+      "react-native": "./dist/cover-tile.js",
+      "import": "./dist/cover-tile.js"
+    },
     "./disclosure-button": {
       "types": "./dist/disclosure-button.d.ts",
       "react-native": "./dist/disclosure-button.js",
@@ -103,11 +113,6 @@
       "react-native": "./dist/inline-alert.js",
       "import": "./dist/inline-alert.js"
     },
-    "./cover-tile": {
-      "types": "./dist/cover-tile.d.ts",
-      "react-native": "./dist/cover-tile.js",
-      "import": "./dist/cover-tile.js"
-    },
     "./monogram": {
       "types": "./dist/monogram.d.ts",
       "react-native": "./dist/monogram.js",
@@ -128,15 +133,15 @@
       "react-native": "./dist/screen.js",
       "import": "./dist/screen.js"
     },
-    "./selectable-row": {
-      "types": "./dist/selectable-row.d.ts",
-      "react-native": "./dist/selectable-row.js",
-      "import": "./dist/selectable-row.js"
-    },
     "./segmented-control": {
       "types": "./dist/segmented-control.d.ts",
       "react-native": "./dist/segmented-control.js",
       "import": "./dist/segmented-control.js"
+    },
+    "./selectable-row": {
+      "types": "./dist/selectable-row.d.ts",
+      "react-native": "./dist/selectable-row.js",
+      "import": "./dist/selectable-row.js"
     },
     "./selectable-tile": {
       "types": "./dist/selectable-tile.d.ts",

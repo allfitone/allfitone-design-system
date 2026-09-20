@@ -3,8 +3,11 @@
  *
  * Two things live here and they are not the same thing.
  *
- * `SignalBlock` paints `gradient.signal`, the single accent surface Ink & Signal
- * allows per screen. A second one on the same screen is a design error.
+ * `SignalBlock` paints a semantic gradient. Its default, `accent`, is the single
+ * accent surface Ink & Signal allows per screen, and a second one on the same screen is
+ * a design error. That budget belongs to the **accent** gradients and not to the
+ * component: `surfaceDeep` is ink, several may share a screen, and a carousel of cards
+ * is exactly that case.
  *
  * `Scrim` fades imagery into the canvas so text stays legible over it. The
  * detail that matters and is easy to get wrong: **the image must extend past the

@@ -27,6 +27,7 @@ import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "rea
 
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
+import { material } from "./tokens.js";
 
 export type BadgeTone =
   | "neutral"
@@ -77,6 +78,13 @@ export function identityTone(index: number): IdentityTone {
 
 export type BadgeProps = {
   readonly label: string;
+  /**
+   * `solid` rellena con el color del estado y es el que se escanea en una tabla.
+   * `quiet` es para lo que va **encima de una fotografía**: toma el material `chip`,
+   * que el sistema reserva exactamente para eso, y se lee como una frase en caja baja
+   * en vez de como una etiqueta a gritos.
+   */
+  readonly variant?: "solid" | "quiet";
   readonly tone?: BadgeTone;
   /** Makes it a target. The badge reports the fact; pressing opens where it is set. */
   readonly onPress?: () => void;
@@ -84,14 +92,30 @@ export type BadgeProps = {
   readonly style?: StyleProp<ViewStyle>;
 };
 
-export function Badge({ label, tone = "neutral", onPress, accessibilityLabel, style }: BadgeProps) {
+export function Badge({
+  label,
+  tone = "neutral",
+  variant = "solid",
+  onPress,
+  accessibilityLabel,
+  style,
+}: BadgeProps) {
   const theme = useTheme();
 
   // Filled tones carry `onStatus` text; the palette picks that ink so the contrast
   // holds in both themes, which a hand-picked white or black does not.
-  const filled = tone !== "neutral";
-  const background = filled ? badgeToneColor(theme, tone) : "transparent";
-  const ink = filled ? theme.color.status.onStatus : theme.color.text.secondary;
+  const filled = variant === "solid" && tone !== "neutral";
+  const chip = material[theme.name].chip;
+  const quiet = variant === "quiet";
+  const background = quiet ? chip.fill : filled ? badgeToneColor(theme, tone) : "transparent";
+  const edge = quiet ? chip.border : filled ? background : theme.color.border.default;
+  const ink = quiet
+    ? tone === "neutral"
+      ? theme.color.text.primary
+      : badgeToneColor(theme, tone)
+    : filled
+      ? theme.color.status.onStatus
+      : theme.color.text.secondary;
 
   const body = (
     <View
@@ -99,16 +123,22 @@ export function Badge({ label, tone = "neutral", onPress, accessibilityLabel, st
         styles.pill,
         {
           backgroundColor: background,
-          borderColor: filled ? background : theme.color.border.default,
+          borderColor: edge,
         },
         style,
       ]}
     >
       {/* One line, always: a badge is one or two words by definition, and a wrapped
           one turns the row it labels into two rows. */}
-      <Text role="eyebrow" size="2xs" uppercase numberOfLines={1} style={{ color: ink }}>
-        {label}
-      </Text>
+      {quiet ? (
+        <Text role="control" size="xs" numberOfLines={1} style={{ color: ink }}>
+          {label}
+        </Text>
+      ) : (
+        <Text role="eyebrow" size="2xs" uppercase numberOfLines={1} style={{ color: ink }}>
+          {label}
+        </Text>
+      )}
     </View>
   );
 

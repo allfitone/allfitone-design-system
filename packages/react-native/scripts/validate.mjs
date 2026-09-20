@@ -22,6 +22,7 @@ const importableOutputs = [
 const nativeOnlyOutputs = [
   "badge.js",
   "cover-tile.js",
+  "content-row.js",
   "monogram.js",
   "number-field.js",
   "tabs.js",
@@ -333,6 +334,23 @@ if (!/function dismissKeyboard\(\): boolean \{[\s\S]*?return false;/.test(screen
   throw new Error(
     "Screen's keyboard dismissal must answer `false` and never become the responder; " +
       "claiming the touch would swallow presses and block gestures underneath.",
+  );
+}
+
+// Un aviso que se puede quitar tiene que poder quitarse de las dos maneras, y el
+// temporizador tiene que colgar del mensaje: atado a otra cosa, un aviso nuevo heredaría
+// lo que le quedaba al anterior y se iría a mitad de leerlo.
+const alertSource = await readFile(resolve(packageRoot, "src", "inline-alert.tsx"), "utf8");
+if (!alertSource.includes("accessibilityLabel={`Quitar aviso:")) {
+  throw new Error(
+    "InlineAlert's dismissable form must name what it removes: «quitar» alone on nine " +
+      "screens tells a screen reader nothing about which notice it is.",
+  );
+}
+if (!/useEffect\([\s\S]*?\[message, autoDismissMs/.test(alertSource)) {
+  throw new Error(
+    "InlineAlert's timer must depend on the message: a new notice has to start counting " +
+      "from zero instead of inheriting what was left of the last one.",
   );
 }
 
