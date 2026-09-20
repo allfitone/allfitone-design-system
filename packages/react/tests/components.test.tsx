@@ -5,7 +5,7 @@ import { useState } from "react";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
-import { Button } from "../src/components/button.js";
+import { Button, buttonVariants } from "../src/components/button.js";
 import { AnimatedBrandLockup } from "../src/components/animated-brand-lockup.js";
 import { AccentBlock, AccentBlockLabel, AccentBlockTitle } from "../src/components/accent-block.js";
 import { Badge } from "../src/components/badge.js";
@@ -159,6 +159,16 @@ describe("ALLFIT ONE React components", () => {
     await user.click(screen.getByRole("button", { name: "Start session" }));
     expect(onClick).toHaveBeenCalledOnce();
     expect(screen.getByRole("button", { name: "Open settings" })).toBeInTheDocument();
+  });
+
+  // The native adapter names it `danger` and the web `destructive`; both paint a flat
+  // `status.danger` and neither spends the one accent gradient a screen is allowed.
+  it("fills the destructive action with the danger status and no accent gradient", () => {
+    const classes = buttonVariants({ variant: "destructive" });
+
+    expect(classes).toContain("bg-destructive");
+    expect(classes).toContain("text-destructive-foreground");
+    expect(classes).not.toContain("afo-gradient-accent");
   });
 
   it("relates field labels, help and textual errors", async () => {

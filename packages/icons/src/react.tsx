@@ -25,6 +25,7 @@ import {
   ClipboardList,
   Clock3,
   Compass,
+  Copy,
   Dumbbell,
   Ellipsis,
   Flag,
@@ -119,6 +120,7 @@ const sourceComponents = {
   ClipboardList,
   Clock3,
   Compass,
+  Copy,
   Dumbbell,
   Ellipsis,
   Flag,
@@ -307,6 +309,7 @@ export const LockedIcon = /* @__PURE__ */ createSemanticIcon("LockedIcon", Lock)
 export const ExploreIcon = /* @__PURE__ */ createSemanticIcon("ExploreIcon", Compass);
 export const SubtractIcon = /* @__PURE__ */ createSemanticIcon("SubtractIcon", Minus);
 export const ReorderIcon = /* @__PURE__ */ createSemanticIcon("ReorderIcon", GripVertical);
+export const DuplicateIcon = /* @__PURE__ */ createSemanticIcon("DuplicateIcon", Copy);
 export const ActivityIcon = /* @__PURE__ */ createSemanticIcon("ActivityIcon", Activity);
 export const WeightIcon = /* @__PURE__ */ createSemanticIcon("WeightIcon", Weight);
 export const RaceIcon = /* @__PURE__ */ createSemanticIcon("RaceIcon", Flag);

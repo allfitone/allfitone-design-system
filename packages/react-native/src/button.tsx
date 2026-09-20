@@ -11,6 +11,11 @@
  * `--afo-gradient-accent`. A flat fill here made the same button look
  * measurably cheaper on the phone than in the Explorer.
  *
+ * The `danger` variant is a flat `status.danger` fill and deliberately not a
+ * gradient. `gradient.tsx` spends the one accent surface a screen is allowed on a
+ * signal, and a destructive action is not a signal: it is a plain filled control
+ * that happens to be red, so it stays a fill and leaves that budget alone.
+ *
  * The minimum height is the platform touch target, not a design decision:
  * `docs/ACCESSIBILITY.md` makes 44pt on iOS and 48dp on Android a launch
  * requirement, so a product may grow it but not shrink it.
@@ -37,7 +42,7 @@ import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme, type Theme } from "./theme.js";
 
-export type ButtonVariant = "primary" | "secondary" | "ghost";
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 
 export type ButtonProps = Omit<PressableProps, "style" | "children"> & {
   readonly label: string;
@@ -102,6 +107,15 @@ function resolvePalette(theme: Theme, variant: ButtonVariant, disabled: boolean)
         background: "transparent",
         border: null,
         foreground: theme.color.text.accent,
+        gradient: false,
+      };
+    // The system had the colour and not the control, so deleting was drawn as a
+    // ghost and read like every other secondary choice on the screen.
+    case "danger":
+      return {
+        background: theme.color.status.danger,
+        border: null,
+        foreground: theme.color.status.onStatus,
         gradient: false,
       };
   }

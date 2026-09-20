@@ -76,6 +76,9 @@ export const iconCatalog = {
   // The grip somebody drags a row by. Not `panel` and not `more`: those open
   // something, and this one is held rather than pressed.
   reorder: { source: "GripVertical", category: "action" },
+  // Copying a thing to start from it. `add` begins on a blank, and `edit` changes
+  // the one that is already there; this one makes a second out of the first.
+  duplicate: { source: "Copy", category: "action" },
   // Las doce portadas de una rutina dicen de qué va, no con qué se hace. Cuatro de
   // ellas reutilizan glifos que ya existían —`training`, `freestyle`, `level`, `time`—
   // y estas ocho son las que faltaban.

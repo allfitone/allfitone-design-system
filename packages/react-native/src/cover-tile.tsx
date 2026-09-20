@@ -30,7 +30,7 @@ import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "rea
 
 import { useTheme } from "./theme.js";
 
-export type CoverTileSize = "sm" | "md";
+export type CoverTileSize = "xs" | "sm" | "md";
 
 export type CoverTileProps = {
   readonly size?: CoverTileSize;
@@ -48,10 +48,12 @@ export type CoverTileProps = {
 };
 
 /** Small enough for a list row, large enough for a field to sit beside. */
-const BOX = { sm: 56, md: 72 } as const;
+// `xs` is for a row whose height is the tile's own: at 56 the list stood taller
+// than what it held ever asked for.
+const BOX = { xs: 44, sm: 56, md: 72 } as const;
 
-/** The corner follows the box, so the two sizes read as the same shape. */
-const RADIUS = { sm: 18, md: 20 } as const;
+/** The corner follows the box, so the three sizes read as the same shape. */
+const RADIUS = { xs: 14, sm: 18, md: 20 } as const;
 
 export function CoverTile({
   size = "md",

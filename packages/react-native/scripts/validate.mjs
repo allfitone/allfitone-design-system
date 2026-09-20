@@ -176,6 +176,23 @@ for (const component of ["button.tsx", "icon-button.tsx"]) {
   }
 }
 
+// The destructive action is the other side of that rule. It is a flat `status.danger`
+// fill, because a delete is a plain control and not the one signal surface per screen.
+const buttonSource = await readFile(resolve(packageRoot, "src/button.tsx"), "utf8");
+const dangerPalette = buttonSource.match(/case "danger":\s*return \{([\s\S]*?)\};/)?.[1];
+if (!dangerPalette) {
+  throw new Error("Button must resolve a danger palette; destructive actions have no other control.");
+}
+if (!dangerPalette.includes("theme.color.status.danger")) {
+  throw new Error("The danger variant must fill with status.danger rather than a local colour.");
+}
+if (!dangerPalette.includes("theme.color.status.onStatus")) {
+  throw new Error("The danger label must use status.onStatus, the foreground the tokens intend over a status fill.");
+}
+if (!/gradient:\s*false/.test(dangerPalette)) {
+  throw new Error("The danger variant must not spend the one accent gradient a screen is allowed.");
+}
+
 // A controlled strip whose value matches no tab must mark nothing. Falling back to
 // the first would draw a strip that disagrees with the panel below it, and neither
 // side would raise.
@@ -317,6 +334,24 @@ if (!badgeSource.includes("theme.color.status.onStatus")) {
 }
 for (const literal of badgeSource.match(/#[0-9A-Fa-f]{3,8}\b/g) ?? []) {
   throw new Error(`Badge carries the raw colour ${literal}; tones come from the palette.`);
+}
+
+// `cover-tile.js` imports `react-native`, so its geometry is read from the source. A row
+// the height of the tile is why `xs` exists, and the corner has to follow the box.
+const coverTileSource = await readFile(resolve(packageRoot, "src", "cover-tile.tsx"), "utf8");
+const coverTileBox = coverTileSource.match(/const BOX = \{([^}]*)\}/)?.[1];
+if (!/\bxs:\s*44\b/.test(coverTileBox ?? "")) {
+  throw new Error(
+    `CoverTile's \`xs\` box must be 44 square; it is {${coverTileBox?.trim()}} and a row ` +
+      "sized to the tile would stand taller than its content asked for.",
+  );
+}
+const coverTileRadius = coverTileSource.match(/const RADIUS = \{([^}]*)\}/)?.[1];
+if (!/\bxs:\s*14\b/.test(coverTileRadius ?? "")) {
+  throw new Error(
+    `CoverTile's \`xs\` corner must be 14; it is {${coverTileRadius?.trim()}} and a box ` +
+      "that shrinks without its corner reads as a different shape, not a smaller one.",
+  );
 }
 
 // Touching nothing in particular puts the keyboard away, and does it by observing the
