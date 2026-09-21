@@ -12,6 +12,11 @@
  * Round, at the platform touch target, so it stays a target on both platforms rather
  * than the size a particular canvas happened to draw.
  *
+ * **`squircle` is a shape, not a second component.** A control that sits on top of
+ * content — over a photograph, in the corner of a card — reads as part of that card
+ * when it shares its corner, and as a floating bubble when it does not. The size and
+ * the reach do not change with the shape: only the radius does.
+ *
  * **`solid` is the affirmative action, so it carries the accent gradient**, the same
  * as `Button`'s primary variant. A screen whose confirm is a round tick and one whose
  * confirm is a labelled pill were painted differently for no reason anybody could
@@ -28,6 +33,7 @@ import { useTheme, type Theme } from "./theme.js";
 
 export type IconButtonVariant = "outline" | "solid" | "plain";
 export type IconButtonSize = "md" | "sm";
+export type IconButtonShape = "round" | "squircle";
 
 /** Matches `Button`'s compact height, so the two sit level in a row of actions. */
 const COMPACT_SIZE = 36;
@@ -40,6 +46,8 @@ export type IconButtonProps = Omit<PressableProps, "style" | "children"> & {
   readonly variant?: IconButtonVariant;
   /** `sm` matches `Button`'s compact size, for a row of actions beside content. */
   readonly size?: IconButtonSize;
+  /** `squircle` for a control laid over a card, so it shares the card's corner. */
+  readonly shape?: IconButtonShape;
   readonly style?: StyleProp<ViewStyle>;
 };
 
@@ -91,6 +99,7 @@ export function IconButton({
   accessibilityLabel,
   variant = "outline",
   size: scale = "md",
+  shape = "round",
   disabled,
   style,
   ...props
@@ -115,7 +124,7 @@ export function IconButton({
         {
           width: size,
           height: size,
-          borderRadius: size / 2,
+          borderRadius: shape === "squircle" ? theme.radius.lg : size / 2,
           backgroundColor: palette.gradient ? "transparent" : palette.background,
           borderWidth: palette.border ? StyleSheet.hairlineWidth * 3 : 0,
           borderColor: palette.border ?? undefined,

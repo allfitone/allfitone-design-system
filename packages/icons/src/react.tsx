@@ -48,6 +48,7 @@ import {
   Plus,
   PanelLeft,
   Repeat,
+  RefreshCw,
   Search,
   Settings,
   Target,
@@ -143,6 +144,7 @@ const sourceComponents = {
   Play,
   Plus,
   Repeat,
+  RefreshCw,
   Search,
   Settings,
   ShieldCheck,
@@ -327,6 +329,7 @@ export const ProgressIcon = /* @__PURE__ */ createSemanticIcon("ProgressIcon", C
 export const FrequencyIcon = /* @__PURE__ */ createSemanticIcon("FrequencyIcon", Repeat);
 export const LevelIcon = /* @__PURE__ */ createSemanticIcon("LevelIcon", Medal);
 export const StartIcon = /* @__PURE__ */ createSemanticIcon("StartIcon", Play);
+export const FlipIcon = /* @__PURE__ */ createSemanticIcon("FlipIcon", RefreshCw);
 export const PauseIcon = /* @__PURE__ */ createSemanticIcon("PauseIcon", Pause);
 export const RunIcon = /* @__PURE__ */ createSemanticIcon("RunIcon", Footprints);
 export const CyclingIcon = /* @__PURE__ */ createSemanticIcon("CyclingIcon", Bike);

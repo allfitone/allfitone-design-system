@@ -63,6 +63,9 @@ export const iconCatalog = {
   frequency: { source: "Repeat", category: "object" },
   level: { source: "Medal", category: "object" },
   start: { source: "Play", category: "action" },
+  // Turning a card over, not reloading it. Lucide has no two-sided glyph, so the
+  // circling arrows carry it, as Phosphor's `arrows-clockwise` does on the canvas.
+  flip: { source: "RefreshCw", category: "action" },
   // Its own glyph and not a toggled `start`: a control that stops moving content is
   // a WCAG 2.2.2 obligation, so it has to be nameable on its own.
   pause: { source: "Pause", category: "action" },
