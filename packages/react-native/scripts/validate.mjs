@@ -45,6 +45,7 @@ const nativeOnlyOutputs = [
   "glass.js",
   "text-field.js",
   "inline-alert.js",
+  "page-dots.js",
   "backdrop.js",
   "shadow-style.js",
 ];
@@ -403,6 +404,43 @@ if (!/aria-labelledby=\{hideLabel \? undefined :/.test(fieldSource)) {
     "TextField must drop `aria-labelledby` when the label is hidden: it would point at " +
       "an element that is not rendered, which leaves the field unnamed rather than named twice.",
   );
+}
+
+// The pill's geometry is `width`, never a scale. Comments are stripped first because
+// the file argues that decision in prose, naming the very thing it rejects.
+const pageDotsSource = await readFile(resolve(packageRoot, "src", "page-dots.tsx"), "utf8");
+const pageDotsCode = pageDotsSource
+  .replace(/\/\*[\s\S]*?\*\//g, "")
+  .replace(/\/\/.*$/gm, "");
+
+if ((pageDotsCode.match(/\bwidth:/g) ?? []).length < 2) {
+  throw new Error(
+    "Both of PageDots' paths must animate `width`: the stepped one and the one that " +
+      "follows the finger, or the two rows stop being the same component.",
+  );
+}
+if (/\b(transform|scaleX)\b/.test(pageDotsCode)) {
+  throw new Error(
+    "PageDots must not stretch the pill with a transform: scaling a four-point pill " +
+      "along one axis smears its corners into ovals, and only a screenshot catches it.",
+  );
+}
+
+// The continuous path has to stay on the UI thread. One that hops back to React still
+// animates on a simulator and drops frames on a phone, under the finger.
+if (!/useAnimatedStyle\(/.test(pageDotsCode)) {
+  throw new Error(
+    "PageDots must read its fractional index inside `useAnimatedStyle`; computed " +
+      "anywhere else it costs a render per frame of the drag.",
+  );
+}
+for (const hop of ["runOnJS", "scheduleOnRN", "useState"]) {
+  if (pageDotsCode.includes(hop)) {
+    throw new Error(
+      `PageDots reaches for \`${hop}\`: following the finger must never schedule work ` +
+        "back to the React runtime, which is the whole reason the shared value exists.",
+    );
+  }
 }
 
 console.log(

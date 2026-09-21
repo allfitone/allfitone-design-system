@@ -233,6 +233,7 @@
     "expo-linear-gradient": ">=57",
     "react": ">=19",
     "react-native": ">=0.86",
+    "react-native-reanimated": ">=4",
     "react-native-safe-area-context": ">=5",
     "react-native-svg": ">=15.15.5"
   },
@@ -243,6 +244,7 @@
     "expo-linear-gradient": "57.0.1",
     "react": "19.2.4",
     "react-native": "0.86.0",
+    "react-native-reanimated": "4.5.1",
     "react-native-safe-area-context": "5.8.1",
     "react-native-svg": "15.15.5"
   },

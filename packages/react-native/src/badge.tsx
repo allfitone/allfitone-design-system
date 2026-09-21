@@ -107,7 +107,14 @@ export function Badge({
   const filled = variant === "solid" && tone !== "neutral";
   const chip = material[theme.name].chip;
   const quiet = variant === "quiet";
-  const background = quiet ? chip.fill : filled ? badgeToneColor(theme, tone) : "transparent";
+  // El fondo del lienzo y no el del cristal. La `chip` de vidrio cuenta con el desenfoque
+  // que hay detrás, y un badge no lo tiene: al cuarenta por ciento sobre una fotografía
+  // clara la píldora desaparece y deja el rótulo flotando.
+  const background = quiet
+    ? theme.color.background.canvas
+    : filled
+      ? badgeToneColor(theme, tone)
+      : "transparent";
   const edge = quiet ? chip.border : filled ? background : theme.color.border.default;
   const ink = quiet
     ? tone === "neutral"
