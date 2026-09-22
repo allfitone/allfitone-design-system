@@ -18,6 +18,14 @@
  *
  * `coverage` therefore describes where the fade *completes*, not where the image
  * ends. Leave real image below it.
+ *
+ * `Veil` is the third, and it is **not** a `Scrim` turned sideways. A scrim fades an
+ * image into the canvas at the seam where the image ends, so it is clear at the edge
+ * it hangs from and opaque at the far end. A veil is the opposite polarity: a band of
+ * surface laid **over** imagery so words stay legible on top of it, opaque at its own
+ * edge and dissolving outwards into the picture. One hides a seam; the other buys
+ * contrast. Giving the scrim a direction would have made the polarity depend on which
+ * way you pointed it, which is how a component ends up meaning two things.
  */
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -120,6 +128,51 @@ export function Scrim({
   );
 }
 
+export type VeilProps = {
+  /** Which edge it hangs from, and therefore which side stays opaque. */
+  readonly edge: "top" | "bottom" | "left" | "right";
+  /** How far it reaches into the surface before it is gone. */
+  readonly extent: number;
+  /** The share of that reach that stays fully opaque. Beyond it, the fade. */
+  readonly hold?: number;
+  readonly background?: "canvas" | "surface";
+  readonly style?: StyleProp<ViewStyle>;
+};
+
+/** Where the gradient runs, from the opaque edge towards the clear far end. */
+const VEIL_AXIS = {
+  top: { start: { x: 0.5, y: 0 }, end: { x: 0.5, y: 1 } },
+  bottom: { start: { x: 0.5, y: 1 }, end: { x: 0.5, y: 0 } },
+  left: { start: { x: 0, y: 0.5 }, end: { x: 1, y: 0.5 } },
+  right: { start: { x: 1, y: 0.5 }, end: { x: 0, y: 0.5 } },
+} as const;
+
+export function Veil({ edge, extent, hold = 0.26, background = "surface", style }: VeilProps) {
+  const theme = useTheme();
+  const target = theme.color.background[background];
+  // Same rule as the scrim: the clear end is this colour at zero alpha and never
+  // the keyword, which is transparent black and greys the picture on the way out.
+  const clear = transparent(target);
+  const solid = Math.min(Math.max(hold, 0), 0.999);
+
+  const { start, end } = VEIL_AXIS[edge];
+  const vertical = edge === "top" || edge === "bottom";
+  const band: ViewStyle = vertical
+    ? { left: 0, right: 0, height: extent, [edge]: 0 }
+    : { top: 0, bottom: 0, width: extent, [edge]: 0 };
+
+  return (
+    <LinearGradient
+      pointerEvents="none"
+      colors={[target, target, `${target}B3`, `${target}4D`, clear]}
+      locations={[0, solid, solid + (1 - solid) * 0.35, solid + (1 - solid) * 0.7, 1]}
+      start={start}
+      end={end}
+      style={[styles.veil, band, style]}
+    />
+  );
+}
+
 const styles = StyleSheet.create({
   scrim: {
     position: "absolute",
@@ -127,4 +180,5 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
+  veil: { position: "absolute" },
 });
