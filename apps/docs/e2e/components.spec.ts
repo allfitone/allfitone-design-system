@@ -1145,12 +1145,20 @@ test("wraps a tab strip that does not fit instead of hiding tabs behind a scroll
     const box = element.getBoundingClientRect();
     const tabs = [...element.querySelectorAll('[data-slot="tabs-trigger"]')].map((tab) => {
       const rect = tab.getBoundingClientRect();
-      return { top: Math.round(rect.top), past: Math.round(rect.right - box.right) };
+      return {
+        top: Math.round(rect.top),
+        left: Math.round(rect.left),
+        past: Math.round(rect.right - box.right),
+      };
     });
+    const tops = [...new Set(tabs.map((tab) => tab.top))].sort((first, second) => first - second);
     return {
       hidden,
-      rows: new Set(tabs.map((tab) => tab.top)).size,
+      rows: tops.length,
       outside: tabs.filter((tab) => tab.past > 0).length,
+      rowStarts: tops.map((top) =>
+        Math.min(...tabs.filter((tab) => tab.top === top).map((tab) => tab.left)),
+      ),
     };
   });
 
@@ -1159,4 +1167,7 @@ test("wraps a tab strip that does not fit instead of hiding tabs behind a scroll
   expect(layout.rows, "three long labels should share more than one row at 390px").toBeGreaterThan(
     1,
   );
+  // A wrapped row reads as the strip continuing, which it does not when a lone
+  // tab stretches across the row and centers its label.
+  expect(new Set(layout.rowStarts).size, "every row starts at the same edge").toBe(1);
 });
