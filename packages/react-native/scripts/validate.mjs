@@ -373,6 +373,23 @@ if (!/function dismissKeyboard\(\): boolean \{[\s\S]*?return false;/.test(screen
   );
 }
 
+// El fondo ambiental es del lienzo, así que tiene que dibujarse **fuera** de la caja
+// con relleno y fuera del área segura. Dentro queda metido por el `paddingHorizontal` y
+// deja dos franjas sin pintar a los costados y otra bajo la muesca: se ve idéntico en
+// un mockup y sólo salta en el aparato, que es justo lo que esta comprobación busca.
+if (!screenSource.includes("<AmbientBackdrop ")) {
+  throw new Error(
+    "Screen must draw the ambient backdrop: the ground is the canvas's, and a product " +
+      "mounting it screen by screen is how two grounds appear in one app.",
+  );
+}
+if (screenSource.indexOf("<AmbientBackdrop ") > screenSource.indexOf("<SafeAreaView")) {
+  throw new Error(
+    "Screen's ambient backdrop must sit outside the SafeAreaView; inside it is inset by " +
+      "the padding and leaves unpainted strips down the sides and under the notch.",
+  );
+}
+
 // Un aviso que se puede quitar tiene que poder quitarse de las dos maneras, y el
 // temporizador tiene que colgar del mensaje: atado a otra cosa, un aviso nuevo heredaría
 // lo que le quedaba al anterior y se iría a mitad de leerlo.
