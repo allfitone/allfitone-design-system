@@ -1,5 +1,40 @@
 # @allfitone/react
 
+## 0.12.1
+
+### Patch Changes
+
+- 414f2f3: A `reorder` glyph, for the grip a row is dragged by.
+
+  Neither `panel` nor `more` could stand in: both open something, and this one is held
+  rather than pressed. It is the affordance a list needs before it can be reordered at
+  all — without it the only way to move an exercise is a menu item that moves it one
+  place at a time.
+
+- Updated dependencies [0490a4a]
+- Updated dependencies [da9fb5c]
+- Updated dependencies [46ac88e]
+- Updated dependencies [7369f98]
+- Updated dependencies [5ff339c]
+- Updated dependencies [c6c935c]
+- Updated dependencies [af31fdd]
+- Updated dependencies [3322feb]
+- Updated dependencies [bd7b7b7]
+- Updated dependencies [a19c9c8]
+- Updated dependencies [85360e3]
+- Updated dependencies [e990493]
+- Updated dependencies [414f2f3]
+- Updated dependencies [a19c9c8]
+- Updated dependencies [01108c0]
+- Updated dependencies [e990493]
+- Updated dependencies [e990493]
+- Updated dependencies [01108c0]
+- Updated dependencies [b9d168c]
+- Updated dependencies [01108c0]
+- Updated dependencies [bd7b7b7]
+  - @allfitone/tokens@0.3.0
+  - @allfitone/icons@0.3.0
+
 ## 0.12.0
 
 ### Minor Changes
