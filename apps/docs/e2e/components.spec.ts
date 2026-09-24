@@ -1171,3 +1171,26 @@ test("wraps a tab strip that does not fit instead of hiding tabs behind a scroll
   // tab stretches across the row and centers its label.
   expect(new Set(layout.rowStarts).size, "every row starts at the same edge").toBe(1);
 });
+
+// The dialog audit above runs in dark only, which is how a light-theme contrast
+// failure survived in a shipped product: muted text on the translucent modal
+// surface composites against whatever sits behind it, and lands under AA.
+for (const theme of ["light", "dark"] as const) {
+  test(`keeps text on a modal surface readable in ${theme}`, async ({ page }) => {
+    await openCategory(page, "overlays", "Overlays");
+    await page.getByRole("button", { name: theme, exact: true }).click();
+    await page.getByRole("button", { name: "Edit member" }).click();
+    await expect(page.getByRole("dialog", { name: "Edit member" })).toBeVisible();
+
+    const results = await new AxeBuilder({ page }).include("[role=dialog]").withTags(["wcag2aa"]).analyze();
+    const failures = results.violations
+      .filter((violation) => violation.id === "color-contrast")
+      .flatMap((violation) => violation.nodes)
+      .map((node) => {
+        const data = (node.any[0]?.data ?? {}) as Record<string, unknown>;
+        return `${data.fgColor} on ${data.bgColor} is ${data.contrastRatio}:1, under ${data.expectedContrastRatio}`;
+      });
+
+    expect(failures, `contrast inside the dialog in ${theme}`).toEqual([]);
+  });
+}
