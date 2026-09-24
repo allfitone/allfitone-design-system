@@ -23,8 +23,12 @@ function Tabs({
   )
 }
 
+// A horizontal strip wraps onto a second row rather than scrolling. Scrolling
+// puts a tab out of sight, and a tab out of sight is a section the person never
+// learns exists. `w-fit` resolves to the space available once wrapping is
+// allowed, so a strip that already fits is laid out exactly as before.
 const tabsListVariants = cva(
-  "group/tabs-list inline-flex min-h-11 w-fit max-w-full items-center justify-center bg-transparent p-0 text-muted-foreground group-data-horizontal/tabs:overflow-x-auto group-data-horizontal/tabs:border-b group-data-horizontal/tabs:border-border group-data-vertical/tabs:h-fit group-data-vertical/tabs:flex-col group-data-vertical/tabs:border-r group-data-vertical/tabs:border-border",
+  "group/tabs-list inline-flex min-h-11 w-fit max-w-full items-center justify-center bg-transparent p-0 text-muted-foreground group-data-horizontal/tabs:flex-wrap group-data-horizontal/tabs:border-b group-data-horizontal/tabs:border-border group-data-vertical/tabs:h-fit group-data-vertical/tabs:flex-col group-data-vertical/tabs:border-r group-data-vertical/tabs:border-border",
   {
     variants: {
       variant: {

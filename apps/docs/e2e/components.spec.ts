@@ -290,8 +290,8 @@ test("operates composite selection controls from the keyboard", async ({ page })
   await expect(englishToggle).toHaveAttribute("aria-pressed", "true");
   await expect(spanishToggle).toHaveAttribute("aria-pressed", "false");
 
-  const historyTab = page.getByRole("tab", { name: "History" });
-  await page.getByRole("tab", { name: "Overview" }).focus();
+  const historyTab = page.getByRole("tab", { name: "Completed sessions" });
+  await page.getByRole("tab", { name: "Training overview" }).focus();
   await page.keyboard.press("ArrowRight");
   await expect(historyTab).toBeFocused();
   await page.keyboard.press("Enter");
@@ -1124,4 +1124,39 @@ test("lets the select popup outgrow its trigger", async ({ page }) => {
       { message: "the popup grows past its trigger to fit a long option" },
     )
     .toBeGreaterThan(triggerWidth);
+});
+
+// The catalogue lists "Long labels" as a behaviour of Tabs, and the sample it
+// showed had three short ones, so nothing here ever exercised the claim. A
+// horizontal strip used to scroll: a tab off the edge is a section the person
+// never learns exists, and Studio shipped exactly that on a phone.
+test("wraps a tab strip that does not fit instead of hiding tabs behind a scroll", async ({
+  page,
+}) => {
+  await openCategory(page, "selection", "Selection");
+  await page.setViewportSize({ width: 390, height: 844 });
+  const list = page.locator('#tabs [data-slot="tabs-list"]');
+  await expect(list).toBeVisible();
+
+  const layout = await list.evaluate((element) => {
+    element.scrollLeft = element.scrollWidth;
+    const hidden = element.scrollLeft;
+    element.scrollLeft = 0;
+    const box = element.getBoundingClientRect();
+    const tabs = [...element.querySelectorAll('[data-slot="tabs-trigger"]')].map((tab) => {
+      const rect = tab.getBoundingClientRect();
+      return { top: Math.round(rect.top), past: Math.round(rect.right - box.right) };
+    });
+    return {
+      hidden,
+      rows: new Set(tabs.map((tab) => tab.top)).size,
+      outside: tabs.filter((tab) => tab.past > 0).length,
+    };
+  });
+
+  expect(layout.hidden, "the strip scrolls, so a tab is out of sight").toBe(0);
+  expect(layout.outside, "a tab sits past the edge of the strip").toBe(0);
+  expect(layout.rows, "three long labels should share more than one row at 390px").toBeGreaterThan(
+    1,
+  );
 });
