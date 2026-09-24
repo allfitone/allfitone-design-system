@@ -505,8 +505,10 @@ export default function Home() {
           </article>
         </div>
         <div className="type-scale">
+          {/* Clamped both ways; the label keeps the true size. `2xs` is chrome-only and
+              below the Explorer's own 12 px floor for visible text. */}
           {Object.entries(typography.size).map(([name, value]) => (
-            <div key={name}><code>{name} / {value}px</code><span style={{ fontSize: `${Math.min(value, 80)}px` }}>Ag</span></div>
+            <div key={name}><code>{name} / {value}px</code><span style={{ fontSize: `${Math.min(Math.max(value, 12), 80)}px` }}>Ag</span></div>
           ))}
         </div>
       </section>
