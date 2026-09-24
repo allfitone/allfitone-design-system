@@ -276,12 +276,15 @@
     box-shadow: inset 2px 0 0 var(--primary);
   }
 
+  /* A modal is a content surface, so it is solid — the rule the material itself
+     states. As glass it composited against whatever sat behind it, and muted
+     text landed at 4.27:1 in light, under the 4.5:1 minimum. Translucency
+     cannot promise contrast: the ratio moves with the page underneath. Glass
+     stays on floating chrome above, where the text is a short label. */
   :where([data-slot="dialog-content"], [data-slot="alert-dialog-content"], [data-slot="sheet-content"], [data-slot="drawer-popup"]) {
-    border: 1px solid var(--afo-material-glass-border);
-    background: var(--afo-material-glass-fill);
+    border: 1px solid var(--afo-color-border-strong);
+    background: var(--popover);
     box-shadow: var(--afo-shadow-overlay);
-    -webkit-backdrop-filter: blur(var(--afo-material-glass-blur)) saturate(var(--afo-material-glass-saturate));
-    backdrop-filter: blur(var(--afo-material-glass-blur)) saturate(var(--afo-material-glass-saturate));
   }
 
   [data-slot="skeleton"] {
