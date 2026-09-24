@@ -116,7 +116,12 @@ function AccessJourneyStep({
     <li
       data-slot="access-journey-step"
       className={cn(
-        "grid grid-cols-[auto_1fr] items-center gap-3 border-t border-border py-4 first:border-t-0 sm:block sm:border-t-0 sm:border-l sm:px-5 sm:first:border-l-0 sm:first:pl-0",
+        // No `sm:first:pl-0`. The list carries `border-y`, so this is a bordered
+        // band: dropping the padding on the first cell alone sat it against the
+        // wall while the other two stayed inset 20px. Content inset from a
+        // container's edge is what the container is for — a table's first cell
+        // does not align with the paragraph above the table either.
+        "grid grid-cols-[auto_1fr] items-center gap-3 border-t border-border py-4 first:border-t-0 sm:block sm:border-t-0 sm:border-l sm:px-5 sm:first:border-l-0",
         className,
       )}
       {...props}
@@ -251,7 +256,11 @@ function AccessPanelAction({
     <div
       data-slot="access-panel-action"
       className={cn(
-        "flex flex-col [&_[data-slot=button]]:w-full [&_[data-slot=button]]:no-underline",
+        // `gap-3`: a column with no gap is invisible while it holds the single
+        // action it was built around, and puts two edge to edge the moment a
+        // screen offers a choice — measured at 0px between "Completar cierre"
+        // and "Reintentar" on Studio's session recovery.
+        "flex flex-col gap-3 [&_[data-slot=button]]:w-full [&_[data-slot=button]]:no-underline",
         className,
       )}
       {...props}

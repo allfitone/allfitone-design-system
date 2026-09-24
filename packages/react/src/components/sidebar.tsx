@@ -381,7 +381,14 @@ function SidebarHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="sidebar-header"
       data-sidebar="header"
-      className={cn("flex flex-col gap-2 p-2", className)}
+      className={cn(
+        // Clips in icon mode the way `SidebarContent` already does. The rail's
+        // width animates but `data-collapsible` flips at once, so anything sized
+        // for the open sidebar is still at full size while the container is
+        // 56px, and spilled out of the rail for the length of the transition.
+        "flex flex-col gap-2 p-2 group-data-[collapsible=icon]:overflow-hidden",
+        className,
+      )}
       {...props}
     />
   )
@@ -431,7 +438,16 @@ function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="sidebar-group"
       data-sidebar="group"
-      className={cn("relative flex w-full min-w-0 flex-col p-2", className)}
+      className={cn(
+        // In icon mode the arithmetic did not close: the rail is 56px, `p-2`
+        // took 16 of them, and `SidebarMenuButton` is forced to `size-11!` —
+        // 44px into a 40px box. It overflowed by 4px and, anchored left, sat
+        // off-centre in the rail. 6px a side leaves exactly 44, so the target
+        // fits and is centred by construction; the 44px contract is what must
+        // not move.
+        "relative flex w-full min-w-0 flex-col p-2 group-data-[collapsible=icon]:px-1.5",
+        className,
+      )}
       {...props}
     />
   )
