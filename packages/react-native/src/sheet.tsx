@@ -24,13 +24,31 @@
  * Motion honours reduced motion: the tokens define a `reduced` step at zero
  * duration, and a panel that slides anyway is the thing that setting exists to
  * stop.
+ *
+ * Two details keep the motion from reading as a jump.
+ *
+ * **The modal outlives `visible`.** Handing `visible` straight to `Modal` unmounts the
+ * tree on the same frame the sheet is dismissed, so the exit animation never runs and
+ * the panel vanishes. It stays mounted until the animation reports it finished.
+ *
+ * **The panel travels its own height, not the screen's.** Sliding a short sheet from
+ * 85% of the display means covering several hundred points in a fraction of a second,
+ * which arrives like a slam. Its height is measured and that is the distance.
+ *
+ * **It rises over the keyboard.** The bottom edge is where a sheet lives and where the
+ * keyboard appears, so a sheet holding a field was covered by the thing it asked for.
+ * The lift is a transform composed with the entrance, and the cap shrinks by the same
+ * amount so a tall sheet does not run off the top. `resolveSheetGeometry` holds the
+ * arithmetic, where it can be asserted.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Animated,
   Easing,
+  Keyboard,
   Modal,
+  Platform,
   Pressable,
   StyleSheet,
   View,
@@ -42,11 +60,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { semanticMotion } from "@allfitone/tokens";
 
+import { MAX_HEIGHT_RATIO, resolveSheetGeometry } from "./sheet-geometry.js";
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
-
-/** Enough of the screen behind stays visible that its context is not lost. */
-const MAX_HEIGHT_RATIO = 0.85;
 
 /** Dark in both themes: a scrim separates planes, it does not follow the canvas. */
 const BACKDROP = "#02060BA6";
@@ -75,8 +91,38 @@ export function Sheet({
   const insets = useSafeAreaInsets();
   const { height } = useWindowDimensions();
   const progress = useRef(new Animated.Value(0)).current;
+  const [mounted, setMounted] = useState(visible);
+  // Until the panel has been laid out, the screen is the only distance there is.
+  const [travel, setTravel] = useState(height * MAX_HEIGHT_RATIO);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const lift = useRef(new Animated.Value(0)).current;
+
+  // `will` on iOS so the panel moves with the keyboard rather than after it; Android
+  // only emits `did`, and asking for `will` there registers a listener that never fires.
+  useEffect(() => {
+    const rising = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const falling = Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+    const settle = (height_: number, duration: number) => {
+      setKeyboardHeight(height_);
+      Animated.timing(lift, {
+        toValue: height_,
+        duration: duration > 0 ? duration : semanticMotion.enter.duration,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    };
+    const shown = Keyboard.addListener(rising, (event) =>
+      settle(event.endCoordinates.height, event.duration ?? 0),
+    );
+    const hidden = Keyboard.addListener(falling, (event) => settle(0, event.duration ?? 0));
+    return () => {
+      shown.remove();
+      hidden.remove();
+    };
+  }, [lift]);
 
   useEffect(() => {
+    if (visible) setMounted(true);
     const step = reduceMotion
       ? semanticMotion.reduced
       : visible
@@ -87,12 +133,23 @@ export function Sheet({
       duration: step.duration,
       easing: Easing.bezier(...(step.easing as [number, number, number, number])),
       useNativeDriver: true,
-    }).start();
+    }).start(({ finished }) => {
+      // Only once it has actually left. Unmounting on `visible` alone is what made
+      // the sheet disappear instead of closing.
+      if (finished && !visible) setMounted(false);
+    });
   }, [visible, reduceMotion, progress]);
+
+  const geometry = resolveSheetGeometry({
+    screenHeight: height,
+    keyboardHeight,
+    safeAreaBottom: insets.bottom,
+    basePadding: theme.spacing[4],
+  });
 
   return (
     <Modal
-      visible={visible}
+      visible={mounted}
       transparent
       animationType="none"
       onRequestClose={onDismiss}
@@ -110,11 +167,16 @@ export function Sheet({
 
       <Animated.View
         accessibilityViewIsModal
+        onLayout={(event) => {
+          const measured = event.nativeEvent.layout.height;
+          if (measured > 0) setTravel(measured);
+        }}
         style={[
           styles.panel,
           {
-            maxHeight: height * MAX_HEIGHT_RATIO,
-            paddingBottom: insets.bottom + theme.spacing[4],
+            maxHeight: geometry.maxHeight,
+            opacity: progress,
+            paddingBottom: geometry.paddingBottom,
             paddingHorizontal: theme.spacing[6],
             paddingTop: theme.spacing[5],
             backgroundColor: theme.color.background.surface,
@@ -123,10 +185,12 @@ export function Sheet({
             borderTopRightRadius: theme.semanticRadius.panel,
             transform: [
               {
-                translateY: progress.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [height * MAX_HEIGHT_RATIO, 0],
-                }),
+                // The entrance and the keyboard are one movement, not two competing
+                // transforms: a second `translateY` in the array would overwrite this.
+                translateY: Animated.subtract(
+                  progress.interpolate({ inputRange: [0, 1], outputRange: [travel, 0] }),
+                  lift,
+                ),
               },
             ],
           },
@@ -140,12 +204,20 @@ export function Sheet({
         />
 
         {hideTitle ? null : (
-          <Text role="display" size="2xl" uppercase accessibilityRole="header">
+          // `control` and sentence case, not the condensed display face in capitals. A
+          // sheet's title is a phrase somebody reads —«Portada de la rutina»— and the
+          // condensed face tracks tightly enough that a phrase in it reads as a sign.
+          // Display stays for the editorial moments that are one or two words.
+          <Text role="control" size="xl" accessibilityRole="header">
             {title}
           </Text>
         )}
 
-        <View style={{ marginTop: hideTitle ? 0 : theme.spacing[3] }}>{children}</View>
+        {/* Shrinks rather than overflowing: with the keyboard up the cap can fall
+            below what the content wants, and a rigid child is drawn past the panel. */}
+        <View style={{ marginTop: hideTitle ? 0 : theme.spacing[3], flexShrink: 1 }}>
+          {children}
+        </View>
       </Animated.View>
     </Modal>
   );

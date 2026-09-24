@@ -28,95 +28,190 @@
       "react-native": "./dist/index.js",
       "import": "./dist/index.js"
     },
+    "./backdrop": {
+      "types": "./dist/backdrop.d.ts",
+      "react-native": "./dist/backdrop.js",
+      "import": "./dist/backdrop.js"
+    },
+    "./badge": {
+      "types": "./dist/badge.d.ts",
+      "react-native": "./dist/badge.js",
+      "import": "./dist/badge.js"
+    },
     "./brand": {
       "types": "./dist/brand.d.ts",
       "react-native": "./dist/brand.js",
       "import": "./dist/brand.js"
-    },
-    "./icons": {
-      "types": "./dist/icons.d.ts",
-      "react-native": "./dist/icons.js",
-      "import": "./dist/icons.js"
-    },
-    "./tokens": {
-      "types": "./dist/tokens.d.ts",
-      "react-native": "./dist/tokens.js",
-      "import": "./dist/tokens.js"
-    },
-    "./fonts": {
-      "types": "./dist/fonts.d.ts",
-      "react-native": "./dist/fonts.js",
-      "import": "./dist/fonts.js"
-    },
-    "./theme": {
-      "types": "./dist/theme.d.ts",
-      "react-native": "./dist/theme.js",
-      "import": "./dist/theme.js"
-    },
-    "./text": {
-      "types": "./dist/text.d.ts",
-      "react-native": "./dist/text.js",
-      "import": "./dist/text.js"
-    },
-    "./button": {
-      "types": "./dist/button.d.ts",
-      "react-native": "./dist/button.js",
-      "import": "./dist/button.js"
-    },
-    "./sheet": {
-      "types": "./dist/sheet.d.ts",
-      "react-native": "./dist/sheet.js",
-      "import": "./dist/sheet.js"
-    },
-    "./screen": {
-      "types": "./dist/screen.d.ts",
-      "react-native": "./dist/screen.js",
-      "import": "./dist/screen.js"
-    },
-    "./gradient": {
-      "types": "./dist/gradient.d.ts",
-      "react-native": "./dist/gradient.js",
-      "import": "./dist/gradient.js"
     },
     "./brand-entrance": {
       "types": "./dist/brand-entrance.d.ts",
       "react-native": "./dist/brand-entrance.js",
       "import": "./dist/brand-entrance.js"
     },
-    "./glass": {
-      "types": "./dist/glass.d.ts",
-      "react-native": "./dist/glass.js",
-      "import": "./dist/glass.js"
-    },
-    "./text-field": {
-      "types": "./dist/text-field.d.ts",
-      "react-native": "./dist/text-field.js",
-      "import": "./dist/text-field.js"
+    "./button": {
+      "types": "./dist/button.d.ts",
+      "react-native": "./dist/button.js",
+      "import": "./dist/button.js"
     },
     "./checkbox": {
       "types": "./dist/checkbox.d.ts",
       "react-native": "./dist/checkbox.js",
       "import": "./dist/checkbox.js"
     },
+    "./chip": {
+      "types": "./dist/chip.d.ts",
+      "react-native": "./dist/chip.js",
+      "import": "./dist/chip.js"
+    },
     "./code-field": {
       "types": "./dist/code-field.d.ts",
       "react-native": "./dist/code-field.js",
       "import": "./dist/code-field.js"
+    },
+    "./content-row": {
+      "types": "./dist/content-row.d.ts",
+      "react-native": "./dist/content-row.js",
+      "import": "./dist/content-row.js"
+    },
+    "./cover-tile": {
+      "types": "./dist/cover-tile.d.ts",
+      "react-native": "./dist/cover-tile.js",
+      "import": "./dist/cover-tile.js"
+    },
+    "./disclosure-button": {
+      "types": "./dist/disclosure-button.d.ts",
+      "react-native": "./dist/disclosure-button.js",
+      "import": "./dist/disclosure-button.js"
+    },
+    "./fonts": {
+      "types": "./dist/fonts.d.ts",
+      "react-native": "./dist/fonts.js",
+      "import": "./dist/fonts.js"
+    },
+    "./glass": {
+      "types": "./dist/glass.d.ts",
+      "react-native": "./dist/glass.js",
+      "import": "./dist/glass.js"
+    },
+    "./gradient": {
+      "types": "./dist/gradient.d.ts",
+      "react-native": "./dist/gradient.js",
+      "import": "./dist/gradient.js"
+    },
+    "./icon-button": {
+      "types": "./dist/icon-button.d.ts",
+      "react-native": "./dist/icon-button.js",
+      "import": "./dist/icon-button.js"
+    },
+    "./icons": {
+      "types": "./dist/icons.d.ts",
+      "react-native": "./dist/icons.js",
+      "import": "./dist/icons.js"
     },
     "./inline-alert": {
       "types": "./dist/inline-alert.d.ts",
       "react-native": "./dist/inline-alert.js",
       "import": "./dist/inline-alert.js"
     },
-    "./backdrop": {
-      "types": "./dist/backdrop.d.ts",
-      "react-native": "./dist/backdrop.js",
-      "import": "./dist/backdrop.js"
+    "./monogram": {
+      "types": "./dist/monogram.d.ts",
+      "react-native": "./dist/monogram.js",
+      "import": "./dist/monogram.js"
+    },
+    "./number-field": {
+      "types": "./dist/number-field.d.ts",
+      "react-native": "./dist/number-field.js",
+      "import": "./dist/number-field.js"
+    },
+    "./page-dots": {
+      "types": "./dist/page-dots.d.ts",
+      "react-native": "./dist/page-dots.js",
+      "import": "./dist/page-dots.js"
+    },
+    "./screen": {
+      "types": "./dist/screen.d.ts",
+      "react-native": "./dist/screen.js",
+      "import": "./dist/screen.js"
+    },
+    "./segmented-control": {
+      "types": "./dist/segmented-control.d.ts",
+      "react-native": "./dist/segmented-control.js",
+      "import": "./dist/segmented-control.js"
+    },
+    "./selectable-row": {
+      "types": "./dist/selectable-row.d.ts",
+      "react-native": "./dist/selectable-row.js",
+      "import": "./dist/selectable-row.js"
+    },
+    "./selectable-tile": {
+      "types": "./dist/selectable-tile.d.ts",
+      "react-native": "./dist/selectable-tile.js",
+      "import": "./dist/selectable-tile.js"
     },
     "./shadow-style": {
       "types": "./dist/shadow-style.d.ts",
       "react-native": "./dist/shadow-style.js",
       "import": "./dist/shadow-style.js"
+    },
+    "./sheet": {
+      "types": "./dist/sheet.d.ts",
+      "react-native": "./dist/sheet.js",
+      "import": "./dist/sheet.js"
+    },
+    "./sheet-geometry": {
+      "types": "./dist/sheet-geometry.d.ts",
+      "react-native": "./dist/sheet-geometry.js",
+      "import": "./dist/sheet-geometry.js"
+    },
+    "./step-geometry": {
+      "types": "./dist/step-geometry.d.ts",
+      "react-native": "./dist/step-geometry.js",
+      "import": "./dist/step-geometry.js"
+    },
+    "./step-list": {
+      "types": "./dist/step-list.d.ts",
+      "react-native": "./dist/step-list.js",
+      "import": "./dist/step-list.js"
+    },
+    "./stepper": {
+      "types": "./dist/stepper.d.ts",
+      "react-native": "./dist/stepper.js",
+      "import": "./dist/stepper.js"
+    },
+    "./tab-selection": {
+      "types": "./dist/tab-selection.d.ts",
+      "react-native": "./dist/tab-selection.js",
+      "import": "./dist/tab-selection.js"
+    },
+    "./tabs": {
+      "types": "./dist/tabs.d.ts",
+      "react-native": "./dist/tabs.js",
+      "import": "./dist/tabs.js"
+    },
+    "./text": {
+      "types": "./dist/text.d.ts",
+      "react-native": "./dist/text.js",
+      "import": "./dist/text.js"
+    },
+    "./text-field": {
+      "types": "./dist/text-field.d.ts",
+      "react-native": "./dist/text-field.js",
+      "import": "./dist/text-field.js"
+    },
+    "./theme": {
+      "types": "./dist/theme.d.ts",
+      "react-native": "./dist/theme.js",
+      "import": "./dist/theme.js"
+    },
+    "./tokens": {
+      "types": "./dist/tokens.d.ts",
+      "react-native": "./dist/tokens.js",
+      "import": "./dist/tokens.js"
+    },
+    "./wheel-picker": {
+      "types": "./dist/wheel-picker.d.ts",
+      "react-native": "./dist/wheel-picker.js",
+      "import": "./dist/wheel-picker.js"
     }
   },
   "scripts": {
@@ -138,6 +233,7 @@
     "expo-linear-gradient": ">=57",
     "react": ">=19",
     "react-native": ">=0.86",
+    "react-native-reanimated": ">=4",
     "react-native-safe-area-context": ">=5",
     "react-native-svg": ">=15.15.5"
   },
@@ -148,6 +244,7 @@
     "expo-linear-gradient": "57.0.1",
     "react": "19.2.4",
     "react-native": "0.86.0",
+    "react-native-reanimated": "4.5.1",
     "react-native-safe-area-context": "5.8.1",
     "react-native-svg": "15.15.5"
   },

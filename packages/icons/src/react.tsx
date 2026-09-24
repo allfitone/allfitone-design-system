@@ -9,34 +9,83 @@ import {
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
+  Bell,
   Building2,
   CalendarDays,
   ChartNoAxesCombined,
+  ChartLine,
   Check,
+  Camera,
   ChevronDown,
   ChevronUp,
+  ChevronRight,
   CircleCheck,
   CircleX,
+  CirclePlus,
   ClipboardList,
   Clock3,
+  Compass,
+  Copy,
   Dumbbell,
   Ellipsis,
+  Flag,
+  Heart,
+  History,
+  House,
   Info,
   LayoutDashboard,
+  ListChecks,
   LoaderCircle,
+  Lock,
+  Medal,
   Menu,
+  GripVertical,
   Minus,
+  Moon,
+  Pause,
   Pencil,
+  Play,
   Plus,
   PanelLeft,
+  Repeat,
+  RefreshCw,
   Search,
   Settings,
+  Target,
   ShieldCheck,
   Trash2,
   TriangleAlert,
+  Utensils,
   UserRound,
   UsersRound,
+  Weight,
   X,
+  Zap,
+  WavesHorizontal,
+  WavesLadder,
+  Volleyball,
+  Trophy,
+  Tent,
+  Sunset,
+  Sunrise,
+  Star,
+  Snowflake,
+  Route,
+  Leaf,
+  Infinity,
+  Hourglass,
+  Gauge,
+  Feather,
+  Brain,
+  BicepsFlexed,
+  BatteryFull,
+  Timer,
+  Mountain,
+  HeartPulse,
+  Footprints,
+  Flower,
+  Flame,
+  Bike,
   type LucideIcon,
   type LucideProps,
 } from "lucide-react";
@@ -56,34 +105,83 @@ const sourceComponents = {
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
+  Bell,
   Building2,
   CalendarDays,
   ChartNoAxesCombined,
+  ChartLine,
   Check,
+  Camera,
   ChevronDown,
   ChevronUp,
+  ChevronRight,
   CircleCheck,
   CircleX,
+  CirclePlus,
   ClipboardList,
   Clock3,
+  Compass,
+  Copy,
   Dumbbell,
   Ellipsis,
+  Flag,
+  Heart,
+  History,
+  House,
   Info,
   LayoutDashboard,
+  ListChecks,
   LoaderCircle,
+  Lock,
+  Medal,
   Menu,
+  GripVertical,
   Minus,
+  Moon,
   PanelLeft,
+  Pause,
   Pencil,
+  Play,
   Plus,
+  Repeat,
+  RefreshCw,
   Search,
   Settings,
   ShieldCheck,
+  Target,
   Trash2,
   TriangleAlert,
+  Utensils,
   UserRound,
   UsersRound,
+  Weight,
   X,
+  Zap,
+  Bike,
+  Flame,
+  Flower,
+  Footprints,
+  HeartPulse,
+  Mountain,
+  Timer,
+  WavesHorizontal,
+  BatteryFull,
+  BicepsFlexed,
+  Brain,
+  Feather,
+  Gauge,
+  Hourglass,
+  Infinity,
+  Leaf,
+  Route,
+  Snowflake,
+  Star,
+  Sunrise,
+  Sunset,
+  Tent,
+  Trophy,
+  Volleyball,
+  WavesLadder,
 } satisfies Record<IconSource, LucideIcon>;
 
 type IconSizeProps =
@@ -207,4 +305,54 @@ export const OperationIcon = /* @__PURE__ */ createSemanticIcon("OperationIcon",
 export const BusinessIcon = /* @__PURE__ */ createSemanticIcon("BusinessIcon", ChartNoAxesCombined);
 export const PermissionsIcon = /* @__PURE__ */ createSemanticIcon("PermissionsIcon", ShieldCheck);
 export const SettingsIcon = /* @__PURE__ */ createSemanticIcon("SettingsIcon", Settings);
+export const TargetIcon = /* @__PURE__ */ createSemanticIcon("TargetIcon", Target);
+export const RestIcon = /* @__PURE__ */ createSemanticIcon("RestIcon", Moon);
+export const LockedIcon = /* @__PURE__ */ createSemanticIcon("LockedIcon", Lock);
+export const ExploreIcon = /* @__PURE__ */ createSemanticIcon("ExploreIcon", Compass);
+export const SubtractIcon = /* @__PURE__ */ createSemanticIcon("SubtractIcon", Minus);
+export const ReorderIcon = /* @__PURE__ */ createSemanticIcon("ReorderIcon", GripVertical);
+export const DuplicateIcon = /* @__PURE__ */ createSemanticIcon("DuplicateIcon", Copy);
 export const ActivityIcon = /* @__PURE__ */ createSemanticIcon("ActivityIcon", Activity);
+export const WeightIcon = /* @__PURE__ */ createSemanticIcon("WeightIcon", Weight);
+export const RaceIcon = /* @__PURE__ */ createSemanticIcon("RaceIcon", Flag);
+export const HeartIcon = /* @__PURE__ */ createSemanticIcon("HeartIcon", Heart);
+export const HomeIcon = /* @__PURE__ */ createSemanticIcon("HomeIcon", House);
+export const HistoryIcon = /* @__PURE__ */ createSemanticIcon("HistoryIcon", History);
+export const NextIcon = /* @__PURE__ */ createSemanticIcon("NextIcon", ChevronRight);
+export const NotificationIcon = /* @__PURE__ */ createSemanticIcon("NotificationIcon", Bell);
+export const CreateIcon = /* @__PURE__ */ createSemanticIcon("CreateIcon", CirclePlus);
+export const CameraIcon = /* @__PURE__ */ createSemanticIcon("CameraIcon", Camera);
+export const FreestyleIcon = /* @__PURE__ */ createSemanticIcon("FreestyleIcon", Zap);
+export const ChecklistIcon = /* @__PURE__ */ createSemanticIcon("ChecklistIcon", ListChecks);
+export const NutritionIcon = /* @__PURE__ */ createSemanticIcon("NutritionIcon", Utensils);
+export const ProgressIcon = /* @__PURE__ */ createSemanticIcon("ProgressIcon", ChartLine);
+export const FrequencyIcon = /* @__PURE__ */ createSemanticIcon("FrequencyIcon", Repeat);
+export const LevelIcon = /* @__PURE__ */ createSemanticIcon("LevelIcon", Medal);
+export const StartIcon = /* @__PURE__ */ createSemanticIcon("StartIcon", Play);
+export const FlipIcon = /* @__PURE__ */ createSemanticIcon("FlipIcon", RefreshCw);
+export const PauseIcon = /* @__PURE__ */ createSemanticIcon("PauseIcon", Pause);
+export const RunIcon = /* @__PURE__ */ createSemanticIcon("RunIcon", Footprints);
+export const CyclingIcon = /* @__PURE__ */ createSemanticIcon("CyclingIcon", Bike);
+export const IntervalIcon = /* @__PURE__ */ createSemanticIcon("IntervalIcon", Timer);
+export const CardioIcon = /* @__PURE__ */ createSemanticIcon("CardioIcon", HeartPulse);
+export const BurnIcon = /* @__PURE__ */ createSemanticIcon("BurnIcon", Flame);
+export const MountainIcon = /* @__PURE__ */ createSemanticIcon("MountainIcon", Mountain);
+export const MobilityIcon = /* @__PURE__ */ createSemanticIcon("MobilityIcon", Flower);
+export const SwimIcon = /* @__PURE__ */ createSemanticIcon("SwimIcon", WavesHorizontal);
+export const ArmsIcon = /* @__PURE__ */ createSemanticIcon("ArmsIcon", BicepsFlexed);
+export const EnduranceIcon = /* @__PURE__ */ createSemanticIcon("EnduranceIcon", Infinity);
+export const PaceIcon = /* @__PURE__ */ createSemanticIcon("PaceIcon", Gauge);
+export const EnergyIcon = /* @__PURE__ */ createSemanticIcon("EnergyIcon", BatteryFull);
+export const FocusIcon = /* @__PURE__ */ createSemanticIcon("FocusIcon", Brain);
+export const RecoveryIcon = /* @__PURE__ */ createSemanticIcon("RecoveryIcon", Leaf);
+export const MorningIcon = /* @__PURE__ */ createSemanticIcon("MorningIcon", Sunrise);
+export const EveningIcon = /* @__PURE__ */ createSemanticIcon("EveningIcon", Sunset);
+export const ColdIcon = /* @__PURE__ */ createSemanticIcon("ColdIcon", Snowflake);
+export const OutdoorIcon = /* @__PURE__ */ createSemanticIcon("OutdoorIcon", Tent);
+export const RouteIcon = /* @__PURE__ */ createSemanticIcon("RouteIcon", Route);
+export const PoolIcon = /* @__PURE__ */ createSemanticIcon("PoolIcon", WavesLadder);
+export const TeamIcon = /* @__PURE__ */ createSemanticIcon("TeamIcon", Volleyball);
+export const RecordIcon = /* @__PURE__ */ createSemanticIcon("RecordIcon", Trophy);
+export const FavouriteIcon = /* @__PURE__ */ createSemanticIcon("FavouriteIcon", Star);
+export const LightIcon = /* @__PURE__ */ createSemanticIcon("LightIcon", Feather);
+export const CountdownIcon = /* @__PURE__ */ createSemanticIcon("CountdownIcon", Hourglass);

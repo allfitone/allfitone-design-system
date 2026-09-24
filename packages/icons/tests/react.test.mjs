@@ -50,6 +50,19 @@ test("every semantic icon has a matching static export", () => {
   }
 });
 
+// Named here as well as covered by the loops above: `duplicate` is the glyph a
+// destructive-and-copy row asks for, and a product may not draw its own.
+test("duplicate is catalogued and resolves to a component", () => {
+  assert.equal(iconCatalog.duplicate.source, "Copy");
+  assert.equal(iconCatalog.duplicate.category, "action");
+  assert.ok(iconReact.DuplicateIcon, "Missing static export DuplicateIcon");
+
+  const markup = renderToStaticMarkup(
+    React.createElement(FoundationIcon, { name: "duplicate" }),
+  );
+  assert.match(markup, /class="[^"]*lucide-copy(?:\s|")/);
+});
+
 test("standard ARIA naming mechanisms remain accessible", () => {
   const labelled = render({ "aria-label": "Synced" });
   assert.match(labelled, /aria-label="Synced"/);

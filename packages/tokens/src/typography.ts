@@ -15,6 +15,12 @@ export const typography = {
     extrabold: 800,
   },
   size: {
+    /**
+     * Tab labels, badges and the smallest eyebrows — chrome, never prose.
+     * Below `xs` the scale is no longer readable as body text, which is why this
+     * is the floor and why nothing narrative may use it.
+     */
+    "2xs": 10,
     xs: 12,
     sm: 14,
     md: 16,

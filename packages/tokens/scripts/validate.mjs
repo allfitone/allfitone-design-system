@@ -9,6 +9,8 @@ import {
   semanticSpacing,
   spacing,
   tokenBundle,
+  transparent,
+  withAlpha,
 } from "../dist/index.js";
 
 const fail = (message) => {
@@ -135,6 +137,17 @@ assert(semanticSpacing.touchTargetWeb >= 44, "Web touch targets must be at least
 assert(semanticSpacing.touchTargetIos >= 44, "iOS touch targets must be at least 44 pt.");
 assert(semanticSpacing.touchTargetAndroid >= 48, "Android touch targets must be at least 48 dp.");
 assert(radius.full === 9999, "Full radius must remain platform-safe.");
+
+// A fade must end on the colour itself. `transparent` is transparent black, and a
+// ramp through it lands on a darkness that is in no palette.
+assert(withAlpha("#0B141D", 0.5) === "#0B141D80", "withAlpha must append the alpha channel.");
+assert(withAlpha("#55EFFB38", 0) === "#55EFFB00", "withAlpha must replace an alpha the colour already carries.");
+assert(transparent("#0F1720") === "#0F172000", "transparent must keep the colour and drop only its opacity.");
+for (const bad of ["transparent", "#FFF", "rgba(0,0,0,0)"]) {
+  let threw = false;
+  try { withAlpha(bad, 0); } catch { threw = true; }
+  assert(threw, `withAlpha must refuse ${bad}.`);
+}
 
 const durationValues = Object.values(motion.duration);
 assert(durationValues.every((value, index) => index === 0 || value >= durationValues[index - 1]), "Motion durations must be ordered.");

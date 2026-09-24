@@ -22,6 +22,7 @@ import {
   getNativeTheme,
   getNativeTouchTarget,
   radius,
+  semanticMotion,
   semanticGradient,
   semanticRadius,
   semanticSpacing,
@@ -39,6 +40,12 @@ export type Theme = {
   readonly radius: typeof radius;
   readonly semanticRadius: typeof semanticRadius;
   readonly gradient: typeof semanticGradient;
+  /**
+   * How long things take and how they ease. A product that hardcodes a duration is
+   * a product whose motion drifts from every other surface, which is the same drift
+   * DT-008 stops for colour.
+   */
+  readonly motion: typeof semanticMotion;
   readonly touchTarget: number;
 };
 
@@ -55,6 +62,7 @@ export function createTheme(name: ThemeName): Theme {
     radius,
     semanticRadius,
     gradient: semanticGradient,
+    motion: semanticMotion,
     touchTarget: resolveTouchTarget(),
   };
 }

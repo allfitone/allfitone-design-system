@@ -11,6 +11,11 @@
  * `--afo-gradient-accent`. A flat fill here made the same button look
  * measurably cheaper on the phone than in the Explorer.
  *
+ * The `danger` variant is a flat `status.danger` fill and deliberately not a
+ * gradient. `gradient.tsx` spends the one accent surface a screen is allowed on a
+ * signal, and a destructive action is not a signal: it is a plain filled control
+ * that happens to be red, so it stays a fill and leaves that budget alone.
+ *
  * The minimum height is the platform touch target, not a design decision:
  * `docs/ACCESSIBILITY.md` makes 44pt on iOS and 48dp on Android a launch
  * requirement, so a product may grow it but not shrink it.
@@ -31,20 +36,38 @@ import {
   type ViewStyle,
 } from "react-native";
 
-import { resolveGradientEndpoints } from "./gradient-geometry.js";
+import { resolveAccentGradient } from "./accent-gradient.js";
 import { resolveShadowStyle } from "./shadow-style.js";
+import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme, type Theme } from "./theme.js";
-import { semanticGradient } from "./tokens.js";
 
-export type ButtonVariant = "primary" | "secondary" | "ghost";
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 
 export type ButtonProps = Omit<PressableProps, "style" | "children"> & {
   readonly label: string;
+  /**
+   * A glyph before the label, for actions whose meaning is carried by both. It is
+   * always decorative: the label already names the action, and a second
+   * announcement would make every button read twice to a screen reader.
+   */
+  readonly icon?: IconName | undefined;
   readonly variant?: ButtonVariant;
+  /**
+   * `sm` is for a row of actions that sit beside content rather than leading it —
+   * a toolbar under a table, not the confirm of a screen. It gives up height, never
+   * reach: the touch target stays 44 through `hitSlop`.
+   */
+  readonly size?: ButtonSize;
   readonly loading?: boolean;
   readonly style?: StyleProp<ViewStyle>;
 };
+
+export type ButtonSize = "md" | "sm";
+
+/** Visibly lighter, and still a full target once the slop is counted. */
+const COMPACT_HEIGHT = 36;
+const COMPACT_REACH = { top: 4, bottom: 4, left: 4, right: 4 };
 
 type ButtonPalette = {
   readonly background: string;
@@ -86,12 +109,23 @@ function resolvePalette(theme: Theme, variant: ButtonVariant, disabled: boolean)
         foreground: theme.color.text.accent,
         gradient: false,
       };
+    // The system had the colour and not the control, so deleting was drawn as a
+    // ghost and read like every other secondary choice on the screen.
+    case "danger":
+      return {
+        background: theme.color.status.danger,
+        border: null,
+        foreground: theme.color.status.onStatus,
+        gradient: false,
+      };
   }
 }
 
 export function Button({
   label,
+  icon,
   variant = "primary",
+  size = "md",
   loading = false,
   disabled = false,
   style,
@@ -101,19 +135,7 @@ export function Button({
   const inactive = disabled || loading;
   const palette = resolvePalette(theme, variant, inactive);
 
-  const accent = semanticGradient.accent;
-  const { start, end } = resolveGradientEndpoints(accent.angle);
-  const [first, second, ...rest] = accent.stops;
-  const colors: readonly [string, string, ...string[]] = [
-    first.color,
-    second.color,
-    ...rest.map((stop) => stop.color),
-  ];
-  const locations: readonly [number, number, ...number[]] = [
-    first.position / 100,
-    second.position / 100,
-    ...rest.map((stop) => stop.position / 100),
-  ];
+  const accent = resolveAccentGradient();
 
   return (
     <Pressable
@@ -121,10 +143,13 @@ export function Button({
       accessibilityRole="button"
       accessibilityState={{ disabled: inactive, busy: loading }}
       disabled={inactive}
+      // A compact button keeps the full reach it gives up in height. Accessibility is
+      // measured on what the finger can hit, not on what the eye can see.
+      {...(size === "sm" ? { hitSlop: COMPACT_REACH } : {})}
       style={({ pressed }) => [
         styles.base,
         {
-          minHeight: theme.touchTarget,
+          minHeight: size === "sm" ? COMPACT_HEIGHT : theme.touchTarget,
           borderRadius: theme.semanticRadius.action,
           backgroundColor: palette.gradient ? "transparent" : palette.background,
           borderWidth: palette.border ? StyleSheet.hairlineWidth * 2 : 0,
@@ -140,10 +165,10 @@ export function Button({
     >
       {palette.gradient ? (
         <LinearGradient
-          colors={colors}
-          locations={locations}
-          start={start}
-          end={end}
+          colors={accent.colors}
+          locations={accent.locations}
+          start={accent.start}
+          end={accent.end}
           style={StyleSheet.absoluteFill}
         />
       ) : null}
@@ -155,15 +180,22 @@ export function Button({
       ) : null}
 
       <View
-        style={{
-          paddingHorizontal: theme.spacing[6],
-          paddingVertical: theme.spacing[3],
-        }}
+        style={[
+          styles.content,
+          {
+            paddingHorizontal: theme.spacing[size === "sm" ? 4 : 6],
+            paddingVertical: theme.spacing[size === "sm" ? 2 : 3],
+            opacity: loading ? 0 : 1,
+          },
+        ]}
       >
+        {icon ? (
+          <FoundationIcon name={icon} size="sm" color={palette.foreground} decorative />
+        ) : null}
         <Text
           role="control"
-          size="sm"
-          style={{ color: palette.foreground, opacity: loading ? 0 : 1 }}
+          size={size === "sm" ? "sm" : "md"}
+          style={{ color: palette.foreground }}
           numberOfLines={1}
         >
           {label}
@@ -174,6 +206,7 @@ export function Button({
 }
 
 const styles = StyleSheet.create({
+  content: { flexDirection: "row", alignItems: "center", gap: 8 },
   base: {
     alignItems: "center",
     justifyContent: "center",

@@ -14,6 +14,7 @@ export const color = {
     turquoise: "#60D1D6",
     turquoiseDark: "#348E94",
     turquoiseDeep: "#176D72",
+    turquoiseInk: "#0E6E76",
   },
   ink: {
     void: "#030713",
@@ -35,6 +36,9 @@ export const color = {
     ash: "#5A707A",
     graphite: "#5F7680",
     ashDeep: "#536A73",
+    slateSoft: "#6B838C",
+    haze: "#A9BFC4",
+    abyss: "#3A4C55",
     inkText: "#0A1B22",
     inkSoft: "#456069",
     black: "#000000",
@@ -49,6 +53,8 @@ export const color = {
     dangerStrong: "#C72C35",
     info: "#6FA8FF",
     infoDeep: "#2D6FD6",
+    ember: "#FB923C",
+    emberDeep: "#B4520A",
     sport: "#B490F5",
     sportDeep: "#7C5CC9",
   },
@@ -71,6 +77,7 @@ export const semanticColor = {
       inverse: color.ink.carbon,
       accent: color.brand.primary,
       danger: color.feedback.dangerSoft,
+      success: color.feedback.success,
     },
     icon: {
       primary: color.neutral.salt,
@@ -97,8 +104,29 @@ export const semanticColor = {
     accent: {
       tonal: "#55EFFB17",
       tonalBorder: "#55EFFB38",
+      // El filo de una tarjeta que **es** la pantalla, no una fila dentro de ella. Al
+      // 22 % de `tonalBorder` una tarjeta de trescientos puntos se deshace contra el
+      // lienzo; al 100 % de `border.accent` se convierte en un botón. Éste es el único
+      // borde que se ve desde lejos sin pedir la vez.
+      edge: "#55EFFB73",
       onAccent: color.ink.onSignal,
       onAccentMuted: "#06282BA8",
+    },
+    wheel: {
+      near: color.neutral.slate,
+      far: color.neutral.abyss,
+    },
+    // One per discipline, and they are identity rather than status: the carousel is a
+    // row of things that differ, and a single accent across six cards would say they
+    // are the same thing six times. Five reuse a feedback primitive because the hue is
+    // already in the system — what changes is what it means here.
+    discipline: {
+      strength: color.brand.primary,
+      highIntensity: color.feedback.warning,
+      endurance: color.feedback.ember,
+      combat: color.feedback.dangerSoft,
+      wellbeing: color.feedback.success,
+      rhythm: color.feedback.sport,
     },
     focus: {
       ring: color.brand.light,
@@ -126,19 +154,20 @@ export const semanticColor = {
       muted: color.neutral.ashDeep,
       disabled: color.neutral.slate,
       inverse: color.neutral.salt,
-      accent: "#0E6E76",
+      accent: color.brand.turquoiseInk,
       danger: color.feedback.dangerStrong,
+      success: color.feedback.successDeep,
     },
     icon: {
       primary: color.neutral.inkText,
       secondary: color.neutral.inkSoft,
-      accent: "#0E6E76",
+      accent: color.brand.turquoiseInk,
       inverse: color.neutral.salt,
     },
     border: {
       subtle: "#0A28321F",
       default: color.neutral.graphite,
-      strong: "#0E6E76",
+      strong: color.brand.turquoiseInk,
       accent: color.brand.turquoiseDark,
     },
     action: {
@@ -154,11 +183,26 @@ export const semanticColor = {
     accent: {
       tonal: "#0E6E7614",
       tonalBorder: "#0E6E7633",
+      // Más opaco que en oscuro: sobre blanco, un cian translúcido se lava, y lo que
+      // en el tema oscuro separa por brillo aquí tiene que separar por densidad.
+      edge: "#0E6E767A",
       onAccent: color.ink.onSignal,
       onAccentMuted: "#06282BA8",
     },
+    wheel: {
+      near: color.neutral.slateSoft,
+      far: color.neutral.haze,
+    },
+    discipline: {
+      strength: color.brand.turquoiseInk,
+      highIntensity: color.feedback.warningDeep,
+      endurance: color.feedback.emberDeep,
+      combat: color.feedback.dangerStrong,
+      wellbeing: color.feedback.successDeep,
+      rhythm: color.feedback.sportDeep,
+    },
     focus: {
-      ring: "#0E6E76",
+      ring: color.brand.turquoiseInk,
     },
     status: {
       success: color.feedback.successDeep,
