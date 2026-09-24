@@ -1556,7 +1556,7 @@ export function ComponentCatalog({
           </ComponentSection>
 
           <ComponentSection id="tabs">
-            <Tabs defaultValue="overview"><TabsList variant="line"><TabsTrigger value="overview">Overview</TabsTrigger><TabsTrigger value="history">History</TabsTrigger><TabsTrigger value="permissions">Permissions</TabsTrigger></TabsList><TabsContent value="overview">Current training summary and active plan.</TabsContent><TabsContent value="history">Completed sessions remain attached to the person.</TabsContent><TabsContent value="permissions">The person controls organizational access.</TabsContent></Tabs>
+            <Tabs defaultValue="overview"><TabsList variant="line"><TabsTrigger value="overview">Training overview</TabsTrigger><TabsTrigger value="history">Completed sessions</TabsTrigger><TabsTrigger value="permissions">Access permissions</TabsTrigger></TabsList><TabsContent value="overview">Current training summary and active plan.</TabsContent><TabsContent value="history">Completed sessions remain attached to the person.</TabsContent><TabsContent value="permissions">The person controls organizational access.</TabsContent></Tabs>
           </ComponentSection>
 
           <ComponentSection id="choice-card">
