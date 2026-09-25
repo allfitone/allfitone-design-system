@@ -1194,3 +1194,34 @@ for (const theme of ["light", "dark"] as const) {
     expect(failures, `contrast inside the dialog in ${theme}`).toEqual([]);
   });
 }
+
+// Two dialogs in the same product separated a title from its description by
+// different amounts — 10px and 6px — which only became visible once 0.11.0
+// removed the user-agent margins that had swamped both. One relationship, one
+// value: a confirmation and a form are still the same pairing.
+test("spaces a dialog title from its description the same way in both dialogs", async ({ page }) => {
+  await openCategory(page, "overlays", "Overlays");
+
+  const gapOf = async (slot: string) =>
+    page.locator(`[data-slot="${slot}"]`).evaluate((header) => {
+      const title = header.querySelector('[data-slot$="-title"]');
+      const description = header.querySelector('[data-slot$="-description"]');
+      if (!title || !description) return "title or description missing";
+      const gap = Math.round(
+        description.getBoundingClientRect().top - title.getBoundingClientRect().bottom,
+      );
+      return `${gap}px`;
+    });
+
+  await page.getByRole("button", { name: "Edit member" }).click();
+  await expect(page.getByRole("dialog", { name: "Edit member" })).toBeVisible();
+  const dialogGap = await gapOf("dialog-header");
+  await page.keyboard.press("Escape");
+
+  await page.getByRole("button", { name: "Remove access" }).click();
+  await expect(page.getByRole("alertdialog")).toBeVisible();
+  const alertGap = await gapOf("alert-dialog-header");
+  await page.keyboard.press("Escape");
+
+  expect({ dialogGap, alertGap }).toEqual({ dialogGap: alertGap, alertGap });
+});
