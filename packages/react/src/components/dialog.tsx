@@ -83,7 +83,9 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-header"
-      className={cn("flex flex-col gap-2.5 pr-10", className)}
+      // 6px, the same as `AlertDialogHeader`: a title and its description are
+      // one relationship, and a form dialog does not make it a different one.
+      className={cn("flex flex-col gap-1.5 pr-10", className)}
       {...props}
     />
   )
