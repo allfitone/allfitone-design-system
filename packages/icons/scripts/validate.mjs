@@ -48,7 +48,7 @@ const categories = new Set(["navigation", "action", "status", "object"]);
 const sizes = Object.entries(iconSize);
 const strokes = Object.entries(iconStrokeWidth);
 
-assert(names.length === 82, `Expected 82 foundation icons, received ${names.length}.`);
+assert(names.length === 85, `Expected 85 foundation icons, received ${names.length}.`);
 
 for (const [name, definition] of Object.entries(iconCatalog)) {
   assert(/^[a-z][a-z0-9]*$/.test(name), `Icon name must be semantic camelCase: ${name}`);

@@ -82,6 +82,12 @@ export const iconCatalog = {
   // Copying a thing to start from it. `add` begins on a blank, and `edit` changes
   // the one that is already there; this one makes a second out of the first.
   duplicate: { source: "Copy", category: "action" },
+  // A picture to choose, as a background or an attachment. `camera` takes a new one;
+  // this one is picked from those already there.
+  image: { source: "Image", category: "action" },
+  // Keep a copy on the device. `share` hands it to someone else.
+  download: { source: "Download", category: "action" },
+  share: { source: "Share", category: "action" },
   // Las doce portadas de una rutina dicen de qué va, no con qué se hace. Cuatro de
   // ellas reutilizan glifos que ya existían —`training`, `freestyle`, `level`, `time`—
   // y estas ocho son las que faltaban.

@@ -26,6 +26,9 @@ import {
   Clock3,
   Compass,
   Copy,
+  Download,
+  Image,
+  Share,
   Dumbbell,
   Ellipsis,
   Flag,
@@ -122,6 +125,9 @@ const sourceComponents = {
   Clock3,
   Compass,
   Copy,
+  Download,
+  Image,
+  Share,
   Dumbbell,
   Ellipsis,
   Flag,
@@ -312,6 +318,9 @@ export const ExploreIcon = /* @__PURE__ */ createSemanticIcon("ExploreIcon", Com
 export const SubtractIcon = /* @__PURE__ */ createSemanticIcon("SubtractIcon", Minus);
 export const ReorderIcon = /* @__PURE__ */ createSemanticIcon("ReorderIcon", GripVertical);
 export const DuplicateIcon = /* @__PURE__ */ createSemanticIcon("DuplicateIcon", Copy);
+export const ImageIcon = /* @__PURE__ */ createSemanticIcon("ImageIcon", Image);
+export const DownloadIcon = /* @__PURE__ */ createSemanticIcon("DownloadIcon", Download);
+export const ShareIcon = /* @__PURE__ */ createSemanticIcon("ShareIcon", Share);
 export const ActivityIcon = /* @__PURE__ */ createSemanticIcon("ActivityIcon", Activity);
 export const WeightIcon = /* @__PURE__ */ createSemanticIcon("WeightIcon", Weight);
 export const RaceIcon = /* @__PURE__ */ createSemanticIcon("RaceIcon", Flag);
