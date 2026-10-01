@@ -1,5 +1,29 @@
 # @allfitone/react-native
 
+## 0.8.0
+
+### Minor Changes
+
+- 8662ad8: Add `InstagramGlyph` and `instagramGradient` at `@allfitone/react-native/third-party`:
+  Instagram's own mark, from Simple Icons (CC0-1.0), so a product can share to Instagram
+  with the glyph people recognise. It is shown in white, black or Meta's gradient, never
+  in the Allfit palette.
+- 8662ad8: Add `Toast` at `@allfitone/react-native/toast`: a transient confirmation such as
+  "Guardada en Fotos." that floats over the screen and hides itself. `InlineAlert`
+  stays with its control; a toast acknowledges an outcome nothing depends on afterwards.
+  It announces politely, never as an alert, and honours reduced motion.
+- 8662ad8: Add the shareable-artwork typography role `poster` (Barlow Condensed ExtraBold Italic) and a `font-style` variable per role. `useAllfitFonts` now also loads Barlow Condensed ExtraBold Italic.
+- 50d45da: Add `image`, `download` and `share` to the icon catalogue. A share screen picks a
+  picture, keeps the image on the device and hands it on; none of the three existed, so
+  a product would have had to draw its own.
+
+### Patch Changes
+
+- Updated dependencies [8662ad8]
+- Updated dependencies [50d45da]
+  - @allfitone/tokens@0.4.0
+  - @allfitone/icons@0.4.0
+
 ## 0.7.0
 
 ### Minor Changes
