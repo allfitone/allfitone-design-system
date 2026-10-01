@@ -45,6 +45,8 @@ const nativeOnlyOutputs = [
   "glass.js",
   "text-field.js",
   "inline-alert.js",
+  "toast.js",
+  "third-party.js",
   "page-dots.js",
   "backdrop.js",
   "shadow-style.js",
@@ -119,6 +121,13 @@ if (Math.abs(display.lineHeight - 29.52) > 0.001) {
 // 36 x letterSpacing.display (-0.055) = -1.98, absolute rather than an em ratio.
 if (Math.abs(display.letterSpacing - -1.98) > 0.001) {
   throw new Error(`Display letter spacing resolved to ${display.letterSpacing} instead of -1.98.`);
+}
+// The card face: italic comes from its own drawn face, never from a synthesised slant.
+if (resolveTextStyle("poster", "4xl").fontFamily !== nativeFontFamily.displayExtraboldItalic) {
+  throw new Error("The poster role must resolve to the drawn extrabold italic face.");
+}
+if (resolveTextStyle("poster", "4xl").fontStyle !== undefined) {
+  throw new Error("The poster role must not set fontStyle; Android would synthesise the slant.");
 }
 if (resolveTextStyle("body", "md").fontFamily !== nativeFontFamily.bodyRegular) {
   throw new Error("Body role does not resolve to the registered body family.");
@@ -405,6 +414,32 @@ if (!/useEffect\([\s\S]*?\[message, autoDismissMs/.test(alertSource)) {
     "InlineAlert's timer must depend on the message: a new notice has to start counting " +
       "from zero instead of inheriting what was left of the last one.",
   );
+}
+
+// A toast confirms; it does not interrupt. `alert` would cut off whatever the screen
+// reader was saying, and a timer tied to anything but the message would cut a new one short.
+const toastSource = await readFile(resolve(packageRoot, "src", "toast.tsx"), "utf8");
+const toastCode = toastSource.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+if (/accessibilityRole=\{?"alert"/.test(toastCode)) {
+  throw new Error("Toast must not use accessibilityRole=\"alert\"; a confirmation is not an error.");
+}
+if (!toastCode.includes('accessibilityLiveRegion="polite"')) {
+  throw new Error("Toast must be a polite live region, or Android never speaks it.");
+}
+if (!toastCode.includes("AccessibilityInfo.announceForAccessibility(message)")) {
+  throw new Error("Toast must announce on iOS, which ignores live regions.");
+}
+if (!/useEffect\([\s\S]*?\[message, duration/.test(toastCode)) {
+  throw new Error("Toast's timer must depend on the message so a new one restarts the clock.");
+}
+if (!toastCode.includes("semanticMotion.reduced")) {
+  throw new Error("Toast must fall back to the reduced motion step.");
+}
+
+// The Instagram glyph is Meta's geometry verbatim; a redraw would no longer be their mark.
+const thirdPartyOutput = await readFile(resolve(packageRoot, "dist", "third-party.js"), "utf8");
+if (!thirdPartyOutput.includes("M7.0301.084c-1.2768.")) {
+  throw new Error("third-party.js must carry the Simple Icons Instagram path unchanged.");
 }
 
 // Un campo sin etiqueta dibujada sigue teniendo nombre. Es el único punto donde

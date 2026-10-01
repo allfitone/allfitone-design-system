@@ -203,6 +203,16 @@
       "react-native": "./dist/theme.js",
       "import": "./dist/theme.js"
     },
+    "./third-party": {
+      "types": "./dist/third-party.d.ts",
+      "react-native": "./dist/third-party.js",
+      "import": "./dist/third-party.js"
+    },
+    "./toast": {
+      "types": "./dist/toast.d.ts",
+      "react-native": "./dist/toast.js",
+      "import": "./dist/toast.js"
+    },
     "./tokens": {
       "types": "./dist/tokens.d.ts",
       "react-native": "./dist/tokens.js",

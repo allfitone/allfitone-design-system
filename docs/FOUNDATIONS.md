@@ -38,6 +38,10 @@ Rules:
 - Compact utility text must not render below `typography.size.xs`; status badges and control labels use `xs` or larger.
 - Web adapters expose each semantic role as `--afo-typography-{role}-*` variables.
 
+### Shareable artwork
+
+`poster` — Barlow Condensed ExtraBold Italic — exists only for artwork that leaves the product as an image, such as a card shared after a workout: names and figures, sporty without tipping into informal. It is never interface text. A brush face and a handwritten one were tried for those cards and taken out; on a phone they read as informal rather than as an achievement.
+
 Letter spacing tokens are unitless `em` ratios. React Native adapters must multiply the ratio by the active font size to produce its numeric `letterSpacing` value.
 
 ## Spacing

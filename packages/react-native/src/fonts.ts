@@ -11,7 +11,7 @@
  * two surfaces loading different weights of the same family is a divergence
  * nobody notices until the screens sit side by side.
  *
- * Only the five faces `typographyRole` actually resolves to are loaded. Every
+ * Only the seven faces `typographyRole` actually resolves to are loaded. Every
  * additional face is bundle weight paid on every cold start, so a role that
  * needs a new weight adds it here deliberately.
  */
@@ -19,6 +19,7 @@
 import {
   BarlowCondensed_600SemiBold,
   BarlowCondensed_700Bold,
+  BarlowCondensed_800ExtraBold_Italic,
 } from "@expo-google-fonts/barlow-condensed";
 import { Manrope_400Regular, Manrope_700Bold, Manrope_800ExtraBold } from "@expo-google-fonts/manrope";
 import { useFonts } from "expo-font";
@@ -34,6 +35,7 @@ export {
 const fontAssets = {
   BarlowCondensed_600SemiBold,
   BarlowCondensed_700Bold,
+  BarlowCondensed_800ExtraBold_Italic,
   Manrope_400Regular,
   Manrope_700Bold,
   Manrope_800ExtraBold,

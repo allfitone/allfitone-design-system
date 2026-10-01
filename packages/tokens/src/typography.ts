@@ -107,5 +107,16 @@ export const typographyRole = {
     lineHeight: "tight",
     letterSpacing: "normal",
   },
+  /**
+   * Names and figures on a shareable card: the condensed face at its heaviest,
+   * leaning. Sporty without tipping into informal.
+   */
+  poster: {
+    family: "display",
+    weight: "extrabold",
+    style: "italic",
+    lineHeight: "displayTight",
+    letterSpacing: "tight",
+  },
 } as const;
 

@@ -63,6 +63,20 @@ test("duplicate is catalogued and resolves to a component", () => {
   assert.match(markup, /class="[^"]*lucide-copy(?:\s|")/);
 });
 
+// The three a share screen asks for: pick a picture, keep the image, hand it on.
+test("image, download and share are catalogued and resolve to components", () => {
+  for (const [name, source, lucide] of [
+    ["image", "Image", "image"],
+    ["download", "Download", "download"],
+    ["share", "Share", "share"],
+  ]) {
+    assert.equal(iconCatalog[name]?.source, source);
+    assert.equal(iconCatalog[name]?.category, "action");
+    const markup = renderToStaticMarkup(React.createElement(FoundationIcon, { name }));
+    assert.match(markup, new RegExp(`class="[^"]*lucide-${lucide}(?:\\s|")`));
+  }
+});
+
 test("standard ARIA naming mechanisms remain accessible", () => {
   const labelled = render({ "aria-label": "Synced" });
   assert.match(labelled, /aria-label="Synced"/);
