@@ -30,7 +30,7 @@ Rules:
 
 - Use explicit subpaths; the root export contains metadata only.
 - Import `tokens.css`, `app.css`, and `styles.css` once at the application root, in that order.
-- Map product-loaded fonts to `--afo-app-font-display` and `--afo-app-font-body`; do not recreate global canvas or typography styles in consumers. The artwork roles `poster`, `exclaim` and `scrawl` additionally expose `--afo-typography-{role}-font-style` and need Barlow Condensed ExtraBold Italic, Knewave and Permanent Marker loaded where a product renders them.
+- Map product-loaded fonts to `--afo-app-font-display` and `--afo-app-font-body`; do not recreate global canvas or typography styles in consumers. The artwork role `poster` additionally exposes `--afo-typography-poster-font-style` and needs Barlow Condensed ExtraBold Italic loaded where a product renders it.
 - Import each component from its explicit `/components/{name}` subpath; do not add an all-components barrel.
 - Components render standard accessible SVG and remain compatible with React Server Components unless a consumer adds client behavior.
 - SVG geometry is static module data; it is not recreated during rendering.

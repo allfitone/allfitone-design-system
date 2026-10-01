@@ -17,8 +17,6 @@ export const nativeFontFamily = {
   // Italic lives in its own face: `fontStyle` on a custom family makes Android
   // synthesise a slant instead of using the drawn one.
   displayExtraboldItalic: "BarlowCondensed_800ExtraBold_Italic",
-  brush: "Knewave_400Regular",
-  marker: "PermanentMarker_400Regular",
   bodyRegular: "Manrope_400Regular",
   bodyBold: "Manrope_700Bold",
   bodyExtrabold: "Manrope_800ExtraBold",
@@ -35,8 +33,6 @@ const roleFamily: Record<TypographyRoleName, NativeFontFamily> = {
   control: nativeFontFamily.bodyExtrabold,
   eyebrow: nativeFontFamily.bodyExtrabold,
   poster: nativeFontFamily.displayExtraboldItalic,
-  exclaim: nativeFontFamily.brush,
-  scrawl: nativeFontFamily.marker,
 };
 
 /**

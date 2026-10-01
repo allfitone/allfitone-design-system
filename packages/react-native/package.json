@@ -234,9 +234,7 @@
     "@allfitone/icons": "^0.3.0",
     "@allfitone/tokens": "^0.3.0",
     "@expo-google-fonts/barlow-condensed": "^0.4.0",
-    "@expo-google-fonts/knewave": "^0.4.1",
     "@expo-google-fonts/manrope": "^0.4.0",
-    "@expo-google-fonts/permanent-marker": "^0.4.0",
     "lucide-react-native": "^1.25.0"
   },
   "peerDependencies": {

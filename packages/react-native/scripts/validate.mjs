@@ -122,18 +122,12 @@ if (Math.abs(display.lineHeight - 29.52) > 0.001) {
 if (Math.abs(display.letterSpacing - -1.98) > 0.001) {
   throw new Error(`Display letter spacing resolved to ${display.letterSpacing} instead of -1.98.`);
 }
-// The card faces: italic comes from its own drawn face, never from a synthesised slant.
+// The card face: italic comes from its own drawn face, never from a synthesised slant.
 if (resolveTextStyle("poster", "4xl").fontFamily !== nativeFontFamily.displayExtraboldItalic) {
   throw new Error("The poster role must resolve to the drawn extrabold italic face.");
 }
 if (resolveTextStyle("poster", "4xl").fontStyle !== undefined) {
   throw new Error("The poster role must not set fontStyle; Android would synthesise the slant.");
-}
-if (resolveTextStyle("exclaim", "5xl").fontFamily !== nativeFontFamily.brush) {
-  throw new Error("The exclaim role must resolve to the brush face.");
-}
-if (resolveTextStyle("scrawl", "sm").fontFamily !== nativeFontFamily.marker) {
-  throw new Error("The scrawl role must resolve to the marker face.");
 }
 if (resolveTextStyle("body", "md").fontFamily !== nativeFontFamily.bodyRegular) {
   throw new Error("Body role does not resolve to the registered body family.");

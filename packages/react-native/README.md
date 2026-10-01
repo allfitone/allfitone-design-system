@@ -34,9 +34,9 @@ The token package names Barlow Condensed and Manrope but ships no font files. Re
 
 Render nothing meaningful until `loaded` is true. Text drawn before the faces register lays out in the platform font and reflows when they arrive.
 
-Only the eight faces `typographyRole` resolves to are loaded: Barlow Condensed SemiBold, Bold and ExtraBold Italic; Manrope Regular, Bold and ExtraBold; Knewave and Permanent Marker. A role that needs a new weight adds it deliberately — every extra face is bundle weight paid on each cold start.
+Only the seven faces `typographyRole` resolves to are loaded: Barlow Condensed SemiBold, Bold and ExtraBold Italic; Manrope Regular, Bold and ExtraBold. A role that needs a new weight adds it deliberately — every extra face is bundle weight paid on each cold start.
 
-The italic of `poster` is its own drawn face rather than `fontStyle: "italic"`: on a custom family Android synthesises a slant instead. Knewave (`exclaim`) and Permanent Marker (`scrawl`) are for shareable artwork only; see the Typography section of `docs/FOUNDATIONS.md`.
+The italic of `poster` is its own drawn face rather than `fontStyle: "italic"`: on a custom family Android synthesises a slant instead. `poster` is for shareable artwork only; see the Typography section of `docs/FOUNDATIONS.md`.
 
 ## Peer requirements
 
