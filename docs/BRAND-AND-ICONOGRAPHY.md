@@ -11,6 +11,10 @@ Static interfaces should prefer named semantic exports such as `BackIcon` or
 the dynamic renderer for catalogs and data-driven icon names. Both renderers
 resolve through the same `iconCatalog` source mapping.
 
+## Third-party marks
+
+A third-party mark is someone else's identity, not part of the Allfit icon vocabulary. `@allfitone/react-native/third-party` ships Instagram's glyph so a product can share to Instagram with the mark people recognise. Its geometry comes from Simple Icons under CC0-1.0, sourced from Meta's brand resources (https://about.meta.com/brand/resources/instagram). Meta's brand guidelines govern it: shown in white, black or Instagram's gradient, never recoloured into the Allfit palette and never redrawn. Allfit's own icons stay in `@allfitone/icons`.
+
 ## Consumption
 
 Web React projects should render brand assets from `@allfitone/react/brand` and interface icons from `@allfitone/react/icons`. Physical SVG files remain available through the underlying brand package for metadata, favicons, and export pipelines.

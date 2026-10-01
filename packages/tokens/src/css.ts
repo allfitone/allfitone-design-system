@@ -50,6 +50,7 @@ const typographyRoleEntries = Object.entries(typographyRole).flatMap(([role, val
   [`typography-${kebab(role)}-font-weight`, `var(--afo-font-weight-${kebab(value.weight)})`] as [string, string],
   [`typography-${kebab(role)}-line-height`, `var(--afo-line-height-${kebab(value.lineHeight)})`] as [string, string],
   [`typography-${kebab(role)}-letter-spacing`, `var(--afo-letter-spacing-${kebab(value.letterSpacing)})`] as [string, string],
+  [`typography-${kebab(role)}-font-style`, "style" in value ? value.style : "normal"] as [string, string],
 ]);
 
 export function createCssVariables() {

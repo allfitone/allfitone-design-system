@@ -34,7 +34,9 @@ The token package names Barlow Condensed and Manrope but ships no font files. Re
 
 Render nothing meaningful until `loaded` is true. Text drawn before the faces register lays out in the platform font and reflows when they arrive.
 
-Only the five faces `typographyRole` resolves to are loaded. A role that needs a new weight adds it deliberately — every extra face is bundle weight paid on each cold start.
+Only the eight faces `typographyRole` resolves to are loaded: Barlow Condensed SemiBold, Bold and ExtraBold Italic; Manrope Regular, Bold and ExtraBold; Knewave and Permanent Marker. A role that needs a new weight adds it deliberately — every extra face is bundle weight paid on each cold start.
+
+The italic of `poster` is its own drawn face rather than `fontStyle: "italic"`: on a custom family Android synthesises a slant instead. Knewave (`exclaim`) and Permanent Marker (`scrawl`) are for shareable artwork only; see the Typography section of `docs/FOUNDATIONS.md`.
 
 ## Peer requirements
 
@@ -66,6 +68,8 @@ Expo projects should install the native peers through `npx expo install` so the 
 - `@allfitone/react-native/checkbox`: a statement the person affirms, with its mark.
 - `@allfitone/react-native/code-field`: segmented entry for a short numeric code.
 - `@allfitone/react-native/inline-alert`: status message that sits with its control.
+- `@allfitone/react-native/toast`: transient confirmation that floats and then leaves.
+- `@allfitone/react-native/third-party`: `InstagramGlyph` and `instagramGradient`, Instagram's own mark for sharing to it. Never recolour it into the Allfit palette; white, black or the gradient only.
 
 ## Notes that are easy to get wrong
 

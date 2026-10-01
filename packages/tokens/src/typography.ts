@@ -2,10 +2,19 @@ export const typography = {
   family: {
     display: "Barlow Condensed",
     body: "Manrope",
+    /**
+     * Expressive faces for shareable artwork only, never for interface text.
+     * Knewave (SIL OFL 1.1) is a brush exclamation; Permanent Marker (Apache 2.0)
+     * is a short handwritten aside.
+     */
+    brush: "Knewave",
+    marker: "Permanent Marker",
   },
   stack: {
     display: '"Barlow Condensed", "Arial Narrow", sans-serif',
     body: '"Manrope", system-ui, -apple-system, sans-serif',
+    brush: '"Knewave", Impact, cursive',
+    marker: '"Permanent Marker", "Comic Sans MS", cursive',
   },
   weight: {
     regular: 400,
@@ -105,6 +114,34 @@ export const typographyRole = {
     family: "display",
     weight: "semibold",
     lineHeight: "tight",
+    letterSpacing: "normal",
+  },
+  /**
+   * Names and figures on a shareable card: the condensed face at its heaviest,
+   * leaning. Sporty without tipping into informal, which is where the brush goes.
+   */
+  poster: {
+    family: "display",
+    weight: "extrabold",
+    style: "italic",
+    lineHeight: "displayTight",
+    letterSpacing: "tight",
+  },
+  /**
+   * The brush, and only for an emotional exclamation — «NUEVO RÉCORD». A name or
+   * a number set in it stops being read and starts being decoded.
+   */
+  exclaim: {
+    family: "brush",
+    weight: "regular",
+    lineHeight: "displayTight",
+    letterSpacing: "normal",
+  },
+  /** A short handwritten aside on a card — a sign-off, never a sentence of content. */
+  scrawl: {
+    family: "marker",
+    weight: "regular",
+    lineHeight: "compact",
     letterSpacing: "normal",
   },
 } as const;

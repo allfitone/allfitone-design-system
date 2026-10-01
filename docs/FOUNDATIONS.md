@@ -38,6 +38,16 @@ Rules:
 - Compact utility text must not render below `typography.size.xs`; status badges and control labels use `xs` or larger.
 - Web adapters expose each semantic role as `--afo-typography-{role}-*` variables.
 
+### Shareable artwork
+
+Three roles exist only for artwork that leaves the product as an image — a card shared after a workout. They are never interface text:
+
+- `poster` — Barlow Condensed ExtraBold Italic, for names and figures on a card. Sporty without tipping into informal.
+- `exclaim` — Knewave, a brush face, **only** for an emotional exclamation such as «NUEVO RÉCORD». A name or a number set in it stops being read and starts being decoded.
+- `scrawl` — Permanent Marker, for a short handwritten sign-off, never for content.
+
+Knewave is licensed under the SIL Open Font License 1.1 and Permanent Marker under the Apache License 2.0; both allow embedding in a shipped app and in generated images.
+
 Letter spacing tokens are unitless `em` ratios. React Native adapters must multiply the ratio by the active font size to produce its numeric `letterSpacing` value.
 
 ## Spacing
