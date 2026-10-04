@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   BrandLockup,
   BrandLogo,
-  BrandLogoCarrier,
   BrandWordmark,
   ProductLockup,
   ProductWordmark,
@@ -271,7 +270,7 @@ export default function Home() {
               <span className="brand-asset-status">Canonical</span>
             </header>
 
-            <div className="brand-asset-grid brand-asset-grid--allfit-one">
+            <div className="brand-asset-grid">
               <article className="brand-asset-card brand-asset-card--logo">
                 <header>
                   <div>
@@ -297,31 +296,6 @@ export default function Home() {
                   <div><dt>Minimum</dt><dd>32 px high</dd></div>
                   <div><dt>Standard</dt><dd>32 / 48 / 64 px high</dd></div>
                   <div><dt>Ratio</dt><dd>405 : 1149</dd></div>
-                </dl>
-              </article>
-
-              <article className="brand-asset-card brand-asset-card--carrier">
-                <header>
-                  <div>
-                    <span className="brand-asset-card__index">Contained symbol</span>
-                    <h4>Logo with carrier</h4>
-                  </div>
-                </header>
-                <div className="brand-asset-preview brand-asset-preview--paired">
-                  <div className="brand-asset-preview__surface" data-surface="dark">
-                    <BrandLogoCarrier title="Allfit One" />
-                    <small>On dark</small>
-                  </div>
-                  <div className="brand-asset-preview__surface" data-surface="light">
-                    <BrandLogoCarrier title="Allfit One" />
-                    <small>On light</small>
-                  </div>
-                </div>
-                <dl className="brand-asset-specs">
-                  <div><dt>Use for</dt><dd>App entry points and avatars</dd></div>
-                  <div><dt>Minimum</dt><dd>32 px high</dd></div>
-                  <div><dt>Standard</dt><dd>32 / 48 / 64 px high</dd></div>
-                  <div><dt>Ratio</dt><dd>23 : 24</dd></div>
                 </dl>
               </article>
 
@@ -371,7 +345,7 @@ export default function Home() {
                   <div><dt>Use for</dt><dd>Primary brand identification</dd></div>
                   <div><dt>Minimum</dt><dd>32 px high</dd></div>
                   <div><dt>Standard</dt><dd>32 / 40 / 48 px high</dd></div>
-                  <div><dt>Ratio</dt><dd>1678 : 480</dd></div>
+                  <div><dt>Ratio</dt><dd>1438 : 480</dd></div>
                 </dl>
               </article>
             </div>
@@ -393,11 +367,11 @@ export default function Home() {
                   <header><div><span className="brand-asset-card__index">Master identity</span><h4>Shared logo</h4></div></header>
                   <div className="brand-asset-preview brand-asset-preview--paired">
                     <div className="brand-asset-preview__surface" data-surface="dark">
-                      <BrandLogoCarrier title="Allfit One" />
+                      <BrandLogo variant="cyan" title="Allfit One" />
                       <small>On dark</small>
                     </div>
                     <div className="brand-asset-preview__surface" data-surface="light">
-                      <BrandLogoCarrier title="Allfit One" />
+                      <BrandLogo variant="cyan" title="Allfit One" />
                       <small>On light</small>
                     </div>
                   </div>

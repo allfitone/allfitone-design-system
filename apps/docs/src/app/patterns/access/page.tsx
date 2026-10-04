@@ -39,7 +39,7 @@ export default function AccessPatternPage() {
         <BrandLockup
           surface="light"
           title="Allfit One"
-          width={148}
+          width={120}
           height={40}
         />
         <Badge variant="sport">Studio</Badge>

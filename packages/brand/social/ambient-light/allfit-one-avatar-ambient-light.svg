@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" role="img" aria-labelledby="title description">
+  <title id="title">Allfit One</title>
+  <desc id="description">Allfit One logo on the ambient light tone, avatar 1080 × 1080</desc>
+  <defs>
+    <radialGradient id="bloom-0" cx="0.2" cy="0.08" r="1" gradientTransform="translate(0.2 0.08) scale(0.78 0.52) translate(-0.2 -0.08)">
+      <stop offset="0" stop-color="#60D1D6" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#60D1D6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bloom-1" cx="0.92" cy="0.26" r="1" gradientTransform="translate(0.92 0.26) scale(0.66 0.46) translate(-0.92 -0.26)">
+      <stop offset="0" stop-color="#348E94" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#348E94" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bloom-2" cx="0.5" cy="0.98" r="1" gradientTransform="translate(0.5 0.98) scale(0.88 0.56) translate(-0.5 -0.98)">
+      <stop offset="0" stop-color="#55EFFB" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#55EFFB" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1080" height="1080" fill="#EDF6F6"/>
+  <rect width="1080" height="1080" fill="url(#bloom-0)"/>
+  <rect width="1080" height="1080" fill="url(#bloom-1)"/>
+  <rect width="1080" height="1080" fill="url(#bloom-2)"/>
+  <path fill="#55EFFB" d="M405 0 0 211l120 1L11 1149l324-490L405 0Z" transform="translate(433.37 237.5) scale(0.5265449999999999)"/>
+</svg>

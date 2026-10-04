@@ -44,6 +44,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "generate:assets": "npm run build && node scripts/generate-product-assets.mjs",
+    "generate:social": "npm run build && node scripts/generate-social-assets.mjs",
     "test": "node --test tests/*.test.mjs",
     "check": "npm run build && npm run test && node scripts/validate.mjs",
     "prepack": "npm run check"
@@ -52,9 +53,11 @@
     "react": ">=19"
   },
   "devDependencies": {
+    "@allfitone/tokens": "^0.4.0",
     "@types/react": "^19",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "sharp": "^0.34.5"
   },
   "engines": {
     "node": ">=22"

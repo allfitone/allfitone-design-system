@@ -71,21 +71,6 @@ export function BrandLogo({ variant = "cyan", title, ...props }: BrandLogoProps)
   );
 }
 
-export function BrandLogoCarrier({ title, ...props }: BrandSvgProps) {
-  return (
-    <BrandSvgFrame
-      {...props}
-      viewBox={brandDimensions.logoCarrier.viewBox}
-      title={title}
-    >
-      <g transform="translate(32 36)">
-        <path fill={brandColors.cyan} d={brandGeometry.carrierPath} />
-        <path fill={brandColors.ink} d={brandGeometry.logoPath} transform="translate(142 22) scale(.318)" />
-      </g>
-    </BrandSvgFrame>
-  );
-}
-
 export function BrandWordmark({ surface = "dark", title, ...props }: SurfaceBrandProps) {
   const neutral = surface === "dark" ? brandColors.chalk : brandColors.ink;
 
@@ -114,14 +99,11 @@ export function BrandLockup({ surface = "dark", title, ...props }: SurfaceBrandP
       viewBox={brandDimensions.lockup.viewBox}
       title={title}
     >
-      <g transform="translate(44 36)">
-        <path fill={brandColors.cyan} d={brandGeometry.carrierPath} />
-        <path fill={brandColors.ink} d={brandGeometry.logoPath} transform="translate(142 22) scale(.318)" />
-      </g>
-      <g transform="translate(512 337) scale(.28 -.28)" fill={neutral}>
+      <path fill={brandColors.cyan} d={brandGeometry.logoPath} transform="translate(44 58) scale(.318)" />
+      <g transform="translate(272 337) scale(.28 -.28)" fill={neutral}>
         {brandGeometry.allfitLetters.map(([path, x], index) => <path key={index} d={path} transform={`translate(${x} 0)`} />)}
       </g>
-      <g transform="translate(1240 337) scale(.28 -.28)" fill={brandColors.cyan}>
+      <g transform="translate(1000 337) scale(.28 -.28)" fill={brandColors.cyan}>
         {brandGeometry.oneLetters.map(([path, x], index) => <path key={index} d={path} transform={`translate(${x - 2600} 0)`} />)}
       </g>
     </BrandSvgFrame>
@@ -166,14 +148,11 @@ export function ProductLockup({ product, surface = "dark", title, ...props }: Pr
       viewBox={brandDimensions.product.lockup[product].viewBox}
       title={title}
     >
-      <g transform="translate(44 36)">
-        <path fill={brandColors.cyan} d={brandGeometry.carrierPath} />
-        <path fill={brandColors.ink} d={brandGeometry.logoPath} transform="translate(142 22) scale(.318)" />
-      </g>
-      <g transform="translate(512 337) scale(.28 -.28)" fill={neutral}>
+      <path fill={brandColors.cyan} d={brandGeometry.logoPath} transform="translate(44 58) scale(.318)" />
+      <g transform="translate(272 337) scale(.28 -.28)" fill={neutral}>
         {brandGeometry.allfitLetters.map(([path, x], index) => <path key={index} d={path} transform={`translate(${x} 0)`} />)}
       </g>
-      <g transform="translate(512 337) scale(.28 -.28)" fill={brandColors.cyan}>
+      <g transform="translate(272 337) scale(.28 -.28)" fill={brandColors.cyan}>
         <ProductDescriptor product={product} />
       </g>
     </BrandSvgFrame>

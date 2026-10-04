@@ -22,7 +22,9 @@ Web React projects should render brand assets from `@allfitone/react/brand` and 
 The canonical favicon set has two semantic variants: `ink` (ink tile with cyan
 symbol, established by the landing page) and `cyan` (cyan tile with ink symbol,
 established by the Design System Explorer). Consumers must use these packaged
-assets instead of adapting the logo carrier or maintaining local redraws.
+assets instead of adapting the logo or maintaining local redraws.
+
+Marketing surfaces take the generated kit in `packages/brand/social`: the logo and lockup on Design System tones, exported as SVG and PNG in the common social profile, post, story, link-preview, and banner sizes. The kit is derived from the canonical geometry and token colors, is validated by `npm run check`, and is not published to npm.
 
 React Native projects should consume `@allfitone/react-native/brand`, `@allfitone/react-native/icons`, and `@allfitone/react-native/tokens`. The adapter renders canonical geometry through `react-native-svg` and preserves the same semantic Lucide names used on Web.
 

@@ -699,10 +699,6 @@
   border-left: 1px solid var(--afo-color-border-subtle);
 }
 
-.brand-asset-grid--allfit-one {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
 .brand-asset-card {
   display: grid;
   min-width: 0;
@@ -813,10 +809,6 @@
   width: min(82%, 12rem);
 }
 
-.brand-asset-card--carrier .brand-asset-preview__surface > svg {
-  width: min(52%, 7rem);
-}
-
 .brand-asset-preview--logo {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(7.5rem, 0.42fr);
@@ -903,7 +895,8 @@
 }
 
 .brand-asset-card--product-logo .brand-asset-preview__surface > svg {
-  width: min(46%, 5.5rem);
+  width: auto;
+  height: 7rem;
 }
 
 .brand-asset-card--product-wordmark .brand-asset-preview__surface > .product-brand-wordmark {

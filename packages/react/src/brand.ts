@@ -1,7 +1,6 @@
 export {
   BrandLockup,
   BrandLogo,
-  BrandLogoCarrier,
   BrandWordmark,
   ProductLockup,
   ProductWordmark,

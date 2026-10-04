@@ -1,0 +1,527 @@
+{
+  "sourceOfTruth": "packages/brand/scripts/social-assets.mjs",
+  "tones": {
+    "ink": {
+      "label": "Ink",
+      "surface": "dark",
+      "description": "Flat brand ink (`color.ink.void`). The default dark tone."
+    },
+    "surface-deep": {
+      "label": "Surface deep",
+      "surface": "dark",
+      "description": "The `gradient.surfaceDeep` ink gradient used by large cards."
+    },
+    "ambient-dark": {
+      "label": "Ambient dark",
+      "surface": "dark",
+      "description": "Dark canvas (`color.ink.carbon`) under the ambient backdrop blooms."
+    },
+    "chalk": {
+      "label": "Chalk",
+      "surface": "light",
+      "description": "Flat brand chalk (`color.neutral.chalk`). The default light tone."
+    },
+    "white": {
+      "label": "White",
+      "surface": "light",
+      "description": "Pure white (`color.neutral.white`) for platforms that frame images on white."
+    },
+    "ambient-light": {
+      "label": "Ambient light",
+      "surface": "light",
+      "description": "Light canvas (`color.neutral.canvasLight`) under the ambient backdrop blooms."
+    }
+  },
+  "formats": {
+    "avatar": {
+      "label": "Avatar",
+      "width": 1080,
+      "height": 1080,
+      "mark": "logo",
+      "platforms": "Profile picture on Instagram, X, LinkedIn, Facebook, and YouTube"
+    },
+    "square": {
+      "label": "Square post",
+      "width": 1080,
+      "height": 1080,
+      "mark": "lockup",
+      "platforms": "Instagram and Facebook feed, LinkedIn image post"
+    },
+    "story": {
+      "label": "Story",
+      "width": 1080,
+      "height": 1920,
+      "mark": "lockup",
+      "platforms": "Instagram and Facebook stories, reel covers, TikTok"
+    },
+    "link-preview": {
+      "label": "Link preview",
+      "width": 1200,
+      "height": 630,
+      "mark": "lockup",
+      "platforms": "Open Graph and X card images for shared links"
+    },
+    "x-header": {
+      "label": "X header",
+      "width": 1500,
+      "height": 500,
+      "mark": "lockup",
+      "platforms": "X (Twitter) profile header"
+    },
+    "linkedin-banner": {
+      "label": "LinkedIn banner",
+      "width": 1584,
+      "height": 396,
+      "mark": "lockup",
+      "platforms": "LinkedIn profile and company page banner"
+    },
+    "facebook-cover": {
+      "label": "Facebook cover",
+      "width": 1640,
+      "height": 624,
+      "mark": "lockup",
+      "platforms": "Facebook page cover"
+    },
+    "youtube-banner": {
+      "label": "YouTube banner",
+      "width": 2560,
+      "height": 1440,
+      "mark": "lockup",
+      "platforms": "YouTube channel art; the lockup sits inside the 1546 × 423 safe area"
+    }
+  },
+  "assets": [
+    {
+      "tone": "ink",
+      "format": "avatar",
+      "mark": "logo",
+      "width": 1080,
+      "height": 1080,
+      "svg": "social/ink/allfit-one-avatar-ink.svg",
+      "png": "social/ink/allfit-one-avatar-ink.png"
+    },
+    {
+      "tone": "ink",
+      "format": "square",
+      "mark": "lockup",
+      "width": 1080,
+      "height": 1080,
+      "svg": "social/ink/allfit-one-square-ink.svg",
+      "png": "social/ink/allfit-one-square-ink.png"
+    },
+    {
+      "tone": "ink",
+      "format": "story",
+      "mark": "lockup",
+      "width": 1080,
+      "height": 1920,
+      "svg": "social/ink/allfit-one-story-ink.svg",
+      "png": "social/ink/allfit-one-story-ink.png"
+    },
+    {
+      "tone": "ink",
+      "format": "link-preview",
+      "mark": "lockup",
+      "width": 1200,
+      "height": 630,
+      "svg": "social/ink/allfit-one-link-preview-ink.svg",
+      "png": "social/ink/allfit-one-link-preview-ink.png"
+    },
+    {
+      "tone": "ink",
+      "format": "x-header",
+      "mark": "lockup",
+      "width": 1500,
+      "height": 500,
+      "svg": "social/ink/allfit-one-x-header-ink.svg",
+      "png": "social/ink/allfit-one-x-header-ink.png"
+    },
+    {
+      "tone": "ink",
+      "format": "linkedin-banner",
+      "mark": "lockup",
+      "width": 1584,
+      "height": 396,
+      "svg": "social/ink/allfit-one-linkedin-banner-ink.svg",
+      "png": "social/ink/allfit-one-linkedin-banner-ink.png"
+    },
+    {
+      "tone": "ink",
+      "format": "facebook-cover",
+      "mark": "lockup",
+      "width": 1640,
+      "height": 624,
+      "svg": "social/ink/allfit-one-facebook-cover-ink.svg",
+      "png": "social/ink/allfit-one-facebook-cover-ink.png"
+    },
+    {
+      "tone": "ink",
+      "format": "youtube-banner",
+      "mark": "lockup",
+      "width": 2560,
+      "height": 1440,
+      "svg": "social/ink/allfit-one-youtube-banner-ink.svg",
+      "png": "social/ink/allfit-one-youtube-banner-ink.png"
+    },
+    {
+      "tone": "surface-deep",
+      "format": "avatar",
+      "mark": "logo",
+      "width": 1080,
+      "height": 1080,
+      "svg": "social/surface-deep/allfit-one-avatar-surface-deep.svg",
+      "png": "social/surface-deep/allfit-one-avatar-surface-deep.png"
+    },
+    {
+      "tone": "surface-deep",
+      "format": "square",
+      "mark": "lockup",
+      "width": 1080,
+      "height": 1080,
+      "svg": "social/surface-deep/allfit-one-square-surface-deep.svg",
+      "png": "social/surface-deep/allfit-one-square-surface-deep.png"
+    },
+    {
+      "tone": "surface-deep",
+      "format": "story",
+      "mark": "lockup",
+      "width": 1080,
+      "height": 1920,
+      "svg": "social/surface-deep/allfit-one-story-surface-deep.svg",
+      "png": "social/surface-deep/allfit-one-story-surface-deep.png"
+    },
+    {
+      "tone": "surface-deep",
+      "format": "link-preview",
+      "mark": "lockup",
+      "width": 1200,
+      "height": 630,
+      "svg": "social/surface-deep/allfit-one-link-preview-surface-deep.svg",
+      "png": "social/surface-deep/allfit-one-link-preview-surface-deep.png"
+    },
+    {
+      "tone": "surface-deep",
+      "format": "x-header",
+      "mark": "lockup",
+      "width": 1500,
+      "height": 500,
+      "svg": "social/surface-deep/allfit-one-x-header-surface-deep.svg",
+      "png": "social/surface-deep/allfit-one-x-header-surface-deep.png"
+    },
+    {
+      "tone": "surface-deep",
+      "format": "linkedin-banner",
+      "mark": "lockup",
+      "width": 1584,
+      "height": 396,
+      "svg": "social/surface-deep/allfit-one-linkedin-banner-surface-deep.svg",
+      "png": "social/surface-deep/allfit-one-linkedin-banner-surface-deep.png"
+    },
+    {
+      "tone": "surface-deep",
+      "format": "facebook-cover",
+      "mark": "lockup",
+      "width": 1640,
+      "height": 624,
+      "svg": "social/surface-deep/allfit-one-facebook-cover-surface-deep.svg",
+      "png": "social/surface-deep/allfit-one-facebook-cover-surface-deep.png"
+    },
+    {
+      "tone": "surface-deep",
+      "format": "youtube-banner",
+      "mark": "lockup",
+      "width": 2560,
+      "height": 1440,
+      "svg": "social/surface-deep/allfit-one-youtube-banner-surface-deep.svg",
+      "png": "social/surface-deep/allfit-one-youtube-banner-surface-deep.png"
+    },
+    {
+      "tone": "ambient-dark",
+      "format": "avatar",
+      "mark": "logo",
+      "width": 1080,
+      "height": 1080,
+      "svg": "social/ambient-dark/allfit-one-avatar-ambient-dark.svg",
+      "png": "social/ambient-dark/allfit-one-avatar-ambient-dark.png"
+    },
+    {
+      "tone": "ambient-dark",
+      "format": "square",
+      "mark": "lockup",
+      "width": 1080,
+      "height": 1080,
+      "svg": "social/ambient-dark/allfit-one-square-ambient-dark.svg",
+      "png": "social/ambient-dark/allfit-one-square-ambient-dark.png"
+    },
+    {
+      "tone": "ambient-dark",
+      "format": "story",
+      "mark": "lockup",
+      "width": 1080,
+      "height": 1920,
+      "svg": "social/ambient-dark/allfit-one-story-ambient-dark.svg",
+      "png": "social/ambient-dark/allfit-one-story-ambient-dark.png"
+    },
+    {
+      "tone": "ambient-dark",
+      "format": "link-preview",
+      "mark": "lockup",
+      "width": 1200,
+      "height": 630,
+      "svg": "social/ambient-dark/allfit-one-link-preview-ambient-dark.svg",
+      "png": "social/ambient-dark/allfit-one-link-preview-ambient-dark.png"
+    },
+    {
+      "tone": "ambient-dark",
+      "format": "x-header",
+      "mark": "lockup",
+      "width": 1500,
+      "height": 500,
+      "svg": "social/ambient-dark/allfit-one-x-header-ambient-dark.svg",
+      "png": "social/ambient-dark/allfit-one-x-header-ambient-dark.png"
+    },
+    {
+      "tone": "ambient-dark",
+      "format": "linkedin-banner",
+      "mark": "lockup",
+      "width": 1584,
+      "height": 396,
+      "svg": "social/ambient-dark/allfit-one-linkedin-banner-ambient-dark.svg",
+      "png": "social/ambient-dark/allfit-one-linkedin-banner-ambient-dark.png"
+    },
+    {
+      "tone": "ambient-dark",
+      "format": "facebook-cover",
+      "mark": "lockup",
+      "width": 1640,
+      "height": 624,
+      "svg": "social/ambient-dark/allfit-one-facebook-cover-ambient-dark.svg",
+      "png": "social/ambient-dark/allfit-one-facebook-cover-ambient-dark.png"
+    },
+    {
+      "tone": "ambient-dark",
+      "format": "youtube-banner",
+      "mark": "lockup",
+      "width": 2560,
+      "height": 1440,
+      "svg": "social/ambient-dark/allfit-one-youtube-banner-ambient-dark.svg",
+      "png": "social/ambient-dark/allfit-one-youtube-banner-ambient-dark.png"
+    },
+    {
+      "tone": "chalk",
+      "format": "avatar",
+      "mark": "logo",
+      "width": 1080,
+      "height": 1080,
+      "svg": "social/chalk/allfit-one-avatar-chalk.svg",
+      "png": "social/chalk/allfit-one-avatar-chalk.png"
+    },
+    {
+      "tone": "chalk",
+      "format": "square",
+      "mark": "lockup",
+      "width": 1080,
+      "height": 1080,
+      "svg": "social/chalk/allfit-one-square-chalk.svg",
+      "png": "social/chalk/allfit-one-square-chalk.png"
+    },
+    {
+      "tone": "chalk",
+      "format": "story",
+      "mark": "lockup",
+      "width": 1080,
+      "height": 1920,
+      "svg": "social/chalk/allfit-one-story-chalk.svg",
+      "png": "social/chalk/allfit-one-story-chalk.png"
+    },
+    {
+      "tone": "chalk",
+      "format": "link-preview",
+      "mark": "lockup",
+      "width": 1200,
+      "height": 630,
+      "svg": "social/chalk/allfit-one-link-preview-chalk.svg",
+      "png": "social/chalk/allfit-one-link-preview-chalk.png"
+    },
+    {
+      "tone": "chalk",
+      "format": "x-header",
+      "mark": "lockup",
+      "width": 1500,
+      "height": 500,
+      "svg": "social/chalk/allfit-one-x-header-chalk.svg",
+      "png": "social/chalk/allfit-one-x-header-chalk.png"
+    },
+    {
+      "tone": "chalk",
+      "format": "linkedin-banner",
+      "mark": "lockup",
+      "width": 1584,
+      "height": 396,
+      "svg": "social/chalk/allfit-one-linkedin-banner-chalk.svg",
+      "png": "social/chalk/allfit-one-linkedin-banner-chalk.png"
+    },
+    {
+      "tone": "chalk",
+      "format": "facebook-cover",
+      "mark": "lockup",
+      "width": 1640,
+      "height": 624,
+      "svg": "social/chalk/allfit-one-facebook-cover-chalk.svg",
+      "png": "social/chalk/allfit-one-facebook-cover-chalk.png"
+    },
+    {
+      "tone": "chalk",
+      "format": "youtube-banner",
+      "mark": "lockup",
+      "width": 2560,
+      "height": 1440,
+      "svg": "social/chalk/allfit-one-youtube-banner-chalk.svg",
+      "png": "social/chalk/allfit-one-youtube-banner-chalk.png"
+    },
+    {
+      "tone": "white",
+      "format": "avatar",
+      "mark": "logo",
+      "width": 1080,
+      "height": 1080,
+      "svg": "social/white/allfit-one-avatar-white.svg",
+      "png": "social/white/allfit-one-avatar-white.png"
+    },
+    {
+      "tone": "white",
+      "format": "square",
+      "mark": "lockup",
+      "width": 1080,
+      "height": 1080,
+      "svg": "social/white/allfit-one-square-white.svg",
+      "png": "social/white/allfit-one-square-white.png"
+    },
+    {
+      "tone": "white",
+      "format": "story",
+      "mark": "lockup",
+      "width": 1080,
+      "height": 1920,
+      "svg": "social/white/allfit-one-story-white.svg",
+      "png": "social/white/allfit-one-story-white.png"
+    },
+    {
+      "tone": "white",
+      "format": "link-preview",
+      "mark": "lockup",
+      "width": 1200,
+      "height": 630,
+      "svg": "social/white/allfit-one-link-preview-white.svg",
+      "png": "social/white/allfit-one-link-preview-white.png"
+    },
+    {
+      "tone": "white",
+      "format": "x-header",
+      "mark": "lockup",
+      "width": 1500,
+      "height": 500,
+      "svg": "social/white/allfit-one-x-header-white.svg",
+      "png": "social/white/allfit-one-x-header-white.png"
+    },
+    {
+      "tone": "white",
+      "format": "linkedin-banner",
+      "mark": "lockup",
+      "width": 1584,
+      "height": 396,
+      "svg": "social/white/allfit-one-linkedin-banner-white.svg",
+      "png": "social/white/allfit-one-linkedin-banner-white.png"
+    },
+    {
+      "tone": "white",
+      "format": "facebook-cover",
+      "mark": "lockup",
+      "width": 1640,
+      "height": 624,
+      "svg": "social/white/allfit-one-facebook-cover-white.svg",
+      "png": "social/white/allfit-one-facebook-cover-white.png"
+    },
+    {
+      "tone": "white",
+      "format": "youtube-banner",
+      "mark": "lockup",
+      "width": 2560,
+      "height": 1440,
+      "svg": "social/white/allfit-one-youtube-banner-white.svg",
+      "png": "social/white/allfit-one-youtube-banner-white.png"
+    },
+    {
+      "tone": "ambient-light",
+      "format": "avatar",
+      "mark": "logo",
+      "width": 1080,
+      "height": 1080,
+      "svg": "social/ambient-light/allfit-one-avatar-ambient-light.svg",
+      "png": "social/ambient-light/allfit-one-avatar-ambient-light.png"
+    },
+    {
+      "tone": "ambient-light",
+      "format": "square",
+      "mark": "lockup",
+      "width": 1080,
+      "height": 1080,
+      "svg": "social/ambient-light/allfit-one-square-ambient-light.svg",
+      "png": "social/ambient-light/allfit-one-square-ambient-light.png"
+    },
+    {
+      "tone": "ambient-light",
+      "format": "story",
+      "mark": "lockup",
+      "width": 1080,
+      "height": 1920,
+      "svg": "social/ambient-light/allfit-one-story-ambient-light.svg",
+      "png": "social/ambient-light/allfit-one-story-ambient-light.png"
+    },
+    {
+      "tone": "ambient-light",
+      "format": "link-preview",
+      "mark": "lockup",
+      "width": 1200,
+      "height": 630,
+      "svg": "social/ambient-light/allfit-one-link-preview-ambient-light.svg",
+      "png": "social/ambient-light/allfit-one-link-preview-ambient-light.png"
+    },
+    {
+      "tone": "ambient-light",
+      "format": "x-header",
+      "mark": "lockup",
+      "width": 1500,
+      "height": 500,
+      "svg": "social/ambient-light/allfit-one-x-header-ambient-light.svg",
+      "png": "social/ambient-light/allfit-one-x-header-ambient-light.png"
+    },
+    {
+      "tone": "ambient-light",
+      "format": "linkedin-banner",
+      "mark": "lockup",
+      "width": 1584,
+      "height": 396,
+      "svg": "social/ambient-light/allfit-one-linkedin-banner-ambient-light.svg",
+      "png": "social/ambient-light/allfit-one-linkedin-banner-ambient-light.png"
+    },
+    {
+      "tone": "ambient-light",
+      "format": "facebook-cover",
+      "mark": "lockup",
+      "width": 1640,
+      "height": 624,
+      "svg": "social/ambient-light/allfit-one-facebook-cover-ambient-light.svg",
+      "png": "social/ambient-light/allfit-one-facebook-cover-ambient-light.png"
+    },
+    {
+      "tone": "ambient-light",
+      "format": "youtube-banner",
+      "mark": "lockup",
+      "width": 2560,
+      "height": 1440,
+      "svg": "social/ambient-light/allfit-one-youtube-banner-ambient-light.svg",
+      "png": "social/ambient-light/allfit-one-youtube-banner-ambient-light.png"
+    }
+  ]
+}

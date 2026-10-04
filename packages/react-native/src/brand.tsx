@@ -95,30 +95,6 @@ export function BrandLogo({
   );
 }
 
-export function BrandLogoCarrier({
-  accessibilityLabel,
-  decorative,
-  width,
-  height,
-  ...props
-}: Omit<SvgProps, "color"> & NativeBrandAccessibilityProps) {
-  const size = resolveSize(brandDimensions.logoCarrier, width, height, { width: 46, height: 48 });
-
-  return (
-    <Svg
-      {...props}
-      {...accessibilityProps(accessibilityLabel, decorative)}
-      {...size}
-      viewBox={brandDimensions.logoCarrier.viewBox}
-    >
-      <G transform="translate(32 36)">
-        <Path fill={brandColors.cyan} d={brandGeometry.carrierPath} />
-        <Path fill={brandColors.ink} d={brandGeometry.logoPath} transform="translate(142 22) scale(.318)" />
-      </G>
-    </Svg>
-  );
-}
-
 export function BrandWordmark({
   surface = "dark",
   accessibilityLabel,
@@ -156,7 +132,7 @@ export function BrandLockup({
   ...props
 }: NativeSurfaceBrandProps) {
   const neutral = surface === "dark" ? brandColors.chalk : brandColors.ink;
-  const size = resolveSize(brandDimensions.lockup, width, height, { width: 140, height: 40 });
+  const size = resolveSize(brandDimensions.lockup, width, height, { width: 120, height: 40 });
 
   return (
     <Svg
@@ -165,14 +141,11 @@ export function BrandLockup({
       {...size}
       viewBox={brandDimensions.lockup.viewBox}
     >
-      <G transform="translate(44 36)">
-        <Path fill={brandColors.cyan} d={brandGeometry.carrierPath} />
-        <Path fill={brandColors.ink} d={brandGeometry.logoPath} transform="translate(142 22) scale(.318)" />
-      </G>
-      <G transform="translate(512 337) scale(.28 -.28)" fill={neutral}>
+      <Path fill={brandColors.cyan} d={brandGeometry.logoPath} transform="translate(44 58) scale(.318)" />
+      <G transform="translate(272 337) scale(.28 -.28)" fill={neutral}>
         {brandGeometry.allfitLetters.map(([path, x], index) => <Path key={index} d={path} transform={`translate(${x} 0)`} />)}
       </G>
-      <G transform="translate(1240 337) scale(.28 -.28)" fill={brandColors.cyan}>
+      <G transform="translate(1000 337) scale(.28 -.28)" fill={brandColors.cyan}>
         {brandGeometry.oneLetters.map(([path, x], index) => <Path key={index} d={path} transform={`translate(${x - 2600} 0)`} />)}
       </G>
     </Svg>
@@ -232,7 +205,7 @@ export function ProductLockup({
 }: NativeProductSurfaceBrandProps) {
   const neutral = surface === "dark" ? brandColors.chalk : brandColors.ink;
   const size = resolveSize(brandDimensions.product.lockup[product], width, height, {
-    width: product === "backoffice" ? 215 : product === "studio" ? 169 : 163,
+    width: product === "backoffice" ? 195 : product === "studio" ? 149 : 143,
     height: 40,
   });
 
@@ -243,14 +216,11 @@ export function ProductLockup({
       {...size}
       viewBox={brandDimensions.product.lockup[product].viewBox}
     >
-      <G transform="translate(44 36)">
-        <Path fill={brandColors.cyan} d={brandGeometry.carrierPath} />
-        <Path fill={brandColors.ink} d={brandGeometry.logoPath} transform="translate(142 22) scale(.318)" />
-      </G>
-      <G transform="translate(512 337) scale(.28 -.28)" fill={neutral}>
+      <Path fill={brandColors.cyan} d={brandGeometry.logoPath} transform="translate(44 58) scale(.318)" />
+      <G transform="translate(272 337) scale(.28 -.28)" fill={neutral}>
         {brandGeometry.allfitLetters.map(([path, x], index) => <Path key={index} d={path} transform={`translate(${x} 0)`} />)}
       </G>
-      <G transform="translate(512 337) scale(.28 -.28)" fill={brandColors.cyan}>
+      <G transform="translate(272 337) scale(.28 -.28)" fill={brandColors.cyan}>
         <ProductDescriptor product={product} />
       </G>
     </Svg>
