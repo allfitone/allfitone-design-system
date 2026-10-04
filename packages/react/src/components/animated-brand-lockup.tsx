@@ -27,7 +27,7 @@ type AnimatedBrandLockupProps = Omit<
 const revealEase = [0.22, 1, 0.36, 1] as const
 const impactEase = [0.16, 1, 0.3, 1] as const
 
-const carrierVariants = {
+const markVariants = {
   hidden: { opacity: 0, rotate: -3.5, scale: 0.86, x: -72 },
   visible: {
     opacity: [0, 1, 1],
@@ -39,15 +39,6 @@ const carrierVariants = {
       ease: impactEase,
       times: [0, 0.74, 1],
     },
-  },
-} satisfies Variants
-
-const carrierMarkVariants = {
-  hidden: { opacity: 0, scale: 0.72 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { delay: 0.16, duration: 0.28, ease: revealEase },
   },
 } satisfies Variants
 
@@ -149,25 +140,17 @@ function AnimatedBrandLockup({
         {label ? <title>{label}</title> : null}
 
         <m.g
-          variants={carrierVariants}
+          variants={markVariants}
           style={{ transformBox: "fill-box", transformOrigin: "center" }}
         >
-          <g transform="translate(44 36)">
-            <path fill={brandColors.cyan} d={brandGeometry.carrierPath} />
-            <m.g
-              variants={carrierMarkVariants}
-              style={{ transformBox: "fill-box", transformOrigin: "center" }}
-            >
-              <path
-                fill={brandColors.ink}
-                d={brandGeometry.logoPath}
-                transform="translate(142 22) scale(.318)"
-              />
-            </m.g>
-          </g>
+          <path
+            fill={brandColors.cyan}
+            d={brandGeometry.logoPath}
+            transform="translate(44 58) scale(.318)"
+          />
         </m.g>
 
-        <g transform="translate(512 337) scale(.28 -.28)" fill={neutral}>
+        <g transform="translate(272 337) scale(.28 -.28)" fill={neutral}>
           {brandGeometry.allfitLetters.map(([path, x], index) => (
             <m.g
               key={index}
@@ -181,7 +164,7 @@ function AnimatedBrandLockup({
         </g>
 
         <g
-          transform="translate(1240 337) scale(.28 -.28)"
+          transform="translate(1000 337) scale(.28 -.28)"
           fill={brandColors.cyan}
         >
           {brandGeometry.oneLetters.map(([path, x], index) => (

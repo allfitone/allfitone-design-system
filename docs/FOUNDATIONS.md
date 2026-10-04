@@ -86,7 +86,7 @@ Motion communicates response, continuity, entry, or exit.
 - exit: content leaving or collapsing;
 - reduced: zero-duration fallback.
 
-The Allfit One web brand entrance reveals the canonical carrier and wordmark
+The Allfit One web brand entrance reveals the canonical logo and wordmark
 once. It does not borrow a product logo or the secondary pulse motif, and reduced-motion users
 receive the complete final lockup without spatial movement.
 

@@ -12,9 +12,8 @@ export const brandDimensions = {
     cyan: { width: 64, height: 64, viewBox: "0 0 64 64" },
   },
   logo: { width: 405, height: 1149, viewBox: "0 0 405 1149" },
-  logoCarrier: { width: 460, height: 480, viewBox: "0 0 460 480" },
   wordmark: { width: 4047, height: 756, viewBox: "0 0 4047 756" },
-  lockup: { width: 1678, height: 480, viewBox: "0 0 1678 480" },
+  lockup: { width: 1438, height: 480, viewBox: "0 0 1438 480" },
   product: {
     wordmark: {
       space: { width: 5077, height: 756, viewBox: "0 0 5077 756" },
@@ -22,9 +21,9 @@ export const brandDimensions = {
       backoffice: { width: 7318, height: 756, viewBox: "0 0 7318 756" },
     },
     lockup: {
-      space: { width: 1952, height: 480, viewBox: "0 0 1952 480" },
-      studio: { width: 2032, height: 480, viewBox: "0 0 2032 480" },
-      backoffice: { width: 2580, height: 480, viewBox: "0 0 2580 480" },
+      space: { width: 1712, height: 480, viewBox: "0 0 1712 480" },
+      studio: { width: 1792, height: 480, viewBox: "0 0 1792 480" },
+      backoffice: { width: 2340, height: 480, viewBox: "0 0 2340 480" },
     },
   },
 } as const;
@@ -49,7 +48,6 @@ export const brandAssetFiles = {
     ink: "assets/logo/allfit-one-logo-ink.svg",
     chalk: "assets/logo/allfit-one-logo-chalk.svg",
   },
-  logoCarrier: "assets/logo/allfit-one-logo-carrier.svg",
   wordmark: {
     onDark: "assets/wordmark/allfit-one-wordmark-on-dark.svg",
     onLight: "assets/wordmark/allfit-one-wordmark-on-light.svg",
@@ -106,7 +104,6 @@ export const brandAssetSpecifiers = {
     ink: toBrandAssetSpecifier(brandAssetFiles.logo.ink),
     chalk: toBrandAssetSpecifier(brandAssetFiles.logo.chalk),
   },
-  logoCarrier: toBrandAssetSpecifier(brandAssetFiles.logoCarrier),
   wordmark: {
     onDark: toBrandAssetSpecifier(brandAssetFiles.wordmark.onDark),
     onLight: toBrandAssetSpecifier(brandAssetFiles.wordmark.onLight),

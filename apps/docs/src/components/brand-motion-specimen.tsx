@@ -19,7 +19,7 @@ export function BrandMotionSpecimen() {
           <span>Brand entrance / Web</span>
           <h3 id="brand-motion-title">Allfit One reveal</h3>
           <p>
-            A compressed impulse lands the carrier, resolves ALLFIT in cadence,
+            A compressed impulse lands the logo, resolves ALLFIT in cadence,
             then hands the final beat to ONE in signal cyan.
           </p>
         </div>

@@ -58,7 +58,7 @@ export function DeviceGatePattern({ product, theme }: DeviceGatePatternProps) {
           <BrandLockup
             surface={theme}
             title="Allfit One"
-            width={148}
+            width={120}
             height={40}
           />
           {badge}
@@ -117,7 +117,7 @@ export function DeviceGatePattern({ product, theme }: DeviceGatePatternProps) {
               <BrandLockup
                 surface={theme}
                 title="Allfit One"
-                width={148}
+                width={120}
                 height={40}
               />
               <WorkspaceActions>{badge}</WorkspaceActions>

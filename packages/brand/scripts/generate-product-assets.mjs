@@ -27,11 +27,8 @@ function faviconMarkup(variant) {
   <path fill="${foreground}" d="${brandGeometry.logoPath}" transform="${geometry.logoTransform}"/>`;
 }
 
-function carrierMarkup() {
-  return `  <g transform="translate(44 36)">
-    <path fill="${brandColors.cyan}" d="${brandGeometry.carrierPath}"/>
-    <path fill="${brandColors.ink}" d="${brandGeometry.logoPath}" transform="translate(142 22) scale(.318)"/>
-  </g>`;
+function lockupLogoMarkup() {
+  return `  <path fill="${brandColors.cyan}" d="${brandGeometry.logoPath}" transform="translate(44 58) scale(.318)"/>`;
 }
 
 function letterDefinitions(product, prefix) {
@@ -122,7 +119,7 @@ for (const product of products) {
       title: `${name} lockup`,
       description: `Shared Allfit One logo and ${name} outlined wordmark for ${surface} surfaces`,
       viewBox: brandDimensions.product.lockup[product].viewBox,
-      content: `${carrierMarkup()}\n${wordmarkContent(product, surface, `${product}-lockup-${surface}`, "translate(512 337) scale(.28 -.28)")}`,
+      content: `${lockupLogoMarkup()}\n${wordmarkContent(product, surface, `${product}-lockup-${surface}`, "translate(272 337) scale(.28 -.28)")}`,
     }));
     productAssets.push({ path: lockupPath, type: "product-lockup", product, background: "transparent", lettering: "outlined" });
   }

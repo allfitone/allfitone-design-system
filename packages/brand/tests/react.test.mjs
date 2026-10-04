@@ -7,7 +7,6 @@ import { renderToStaticMarkup } from "react-dom/server";
 import {
   BrandLockup,
   BrandLogo,
-  BrandLogoCarrier,
   BrandWordmark,
   ProductLockup,
   ProductWordmark,
@@ -15,7 +14,6 @@ import {
 
 const renderers = [
   ["BrandLogo", BrandLogo, {}],
-  ["BrandLogoCarrier", BrandLogoCarrier, {}],
   ["BrandWordmark", BrandWordmark, {}],
   ["BrandLockup", BrandLockup, {}],
   ["ProductWordmark", ProductWordmark, { product: "studio" }],
@@ -68,8 +66,22 @@ for (const product of ["space", "studio", "backoffice"]) {
       React.createElement(ProductLockup, { product, title: `Allfit ${product}` }),
     );
 
-    assert.match(markup, /transform="translate\(44 36\)"/);
-    assert.match(markup, /transform="translate\(142 22\) scale\(\.318\)"/);
+    assert.match(markup, /fill="#55EFFB" d="M405 0 0 211l120 1L11 1149l324-490L405 0Z" transform="translate\(44 58\) scale\(\.318\)"/);
     assert.doesNotMatch(markup, /stroke=/);
+  });
+}
+
+for (const [name, Renderer, requiredProps] of [
+  ["BrandLockup", BrandLockup, {}],
+  ["ProductLockup", ProductLockup, { product: "space" }],
+]) {
+  test(`${name} renders the plain cyan logo without a carrier`, () => {
+    const markup = renderToStaticMarkup(
+      React.createElement(Renderer, { ...requiredProps, title: "Allfit One" }),
+    );
+
+    assert.match(markup, /fill="#55EFFB" d="M405 0 0 211l120 1L11 1149l324-490L405 0Z"/);
+    assert.doesNotMatch(markup, /M65 0h330/);
+    assert.doesNotMatch(markup, /fill="#030713" d="M405 0 0 211/);
   });
 }

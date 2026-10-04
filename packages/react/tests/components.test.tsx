@@ -308,7 +308,7 @@ describe("ALLFIT ONE React components", () => {
 
     expect(screen.getByRole("img", { name: "Allfit One" })).toHaveAttribute(
       "viewBox",
-      "0 0 1678 480",
+      "0 0 1438 480",
     );
     expect(screen.getByTestId("decorative-lockup")).toHaveAttribute(
       "aria-hidden",
