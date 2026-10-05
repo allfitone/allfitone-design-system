@@ -91,6 +91,38 @@ import {
   Bike,
   type LucideIcon,
   type LucideProps,
+  Apple,
+  Banana,
+  Bean,
+  Beef,
+  CakeSlice,
+  Candy,
+  Carrot,
+  Citrus,
+  Coffee,
+  Cookie,
+  Croissant,
+  CupSoda,
+  Droplet,
+  Drumstick,
+  Egg,
+  Fish,
+  GlassWater,
+  Grape,
+  Ham,
+  Hamburger,
+  IceCreamCone,
+  LeafyGreen,
+  Milk,
+  Nut,
+  Pizza,
+  Popcorn,
+  Salad,
+  Sandwich,
+  Soup,
+  Torus,
+  Wheat,
+  Wine,
 } from "lucide-react";
 
 import {
@@ -188,6 +220,38 @@ const sourceComponents = {
   Trophy,
   Volleyball,
   WavesLadder,
+  Apple,
+  Banana,
+  Bean,
+  Beef,
+  CakeSlice,
+  Candy,
+  Carrot,
+  Citrus,
+  Coffee,
+  Cookie,
+  Croissant,
+  CupSoda,
+  Droplet,
+  Drumstick,
+  Egg,
+  Fish,
+  GlassWater,
+  Grape,
+  Ham,
+  Hamburger,
+  IceCreamCone,
+  LeafyGreen,
+  Milk,
+  Nut,
+  Pizza,
+  Popcorn,
+  Salad,
+  Sandwich,
+  Soup,
+  Torus,
+  Wheat,
+  Wine,
 } satisfies Record<IconSource, LucideIcon>;
 
 type IconSizeProps =
@@ -365,3 +429,35 @@ export const RecordIcon = /* @__PURE__ */ createSemanticIcon("RecordIcon", Troph
 export const FavouriteIcon = /* @__PURE__ */ createSemanticIcon("FavouriteIcon", Star);
 export const LightIcon = /* @__PURE__ */ createSemanticIcon("LightIcon", Feather);
 export const CountdownIcon = /* @__PURE__ */ createSemanticIcon("CountdownIcon", Hourglass);
+export const EggIcon = /* @__PURE__ */ createSemanticIcon("EggIcon", Egg);
+export const DairyIcon = /* @__PURE__ */ createSemanticIcon("DairyIcon", Milk);
+export const GrainIcon = /* @__PURE__ */ createSemanticIcon("GrainIcon", Wheat);
+export const BreadIcon = /* @__PURE__ */ createSemanticIcon("BreadIcon", Croissant);
+export const SandwichIcon = /* @__PURE__ */ createSemanticIcon("SandwichIcon", Sandwich);
+export const MeatIcon = /* @__PURE__ */ createSemanticIcon("MeatIcon", Beef);
+export const PoultryIcon = /* @__PURE__ */ createSemanticIcon("PoultryIcon", Drumstick);
+export const FishIcon = /* @__PURE__ */ createSemanticIcon("FishIcon", Fish);
+export const HamIcon = /* @__PURE__ */ createSemanticIcon("HamIcon", Ham);
+export const FruitIcon = /* @__PURE__ */ createSemanticIcon("FruitIcon", Apple);
+export const BananaIcon = /* @__PURE__ */ createSemanticIcon("BananaIcon", Banana);
+export const CitrusIcon = /* @__PURE__ */ createSemanticIcon("CitrusIcon", Citrus);
+export const GrapeIcon = /* @__PURE__ */ createSemanticIcon("GrapeIcon", Grape);
+export const VegetableIcon = /* @__PURE__ */ createSemanticIcon("VegetableIcon", Carrot);
+export const SaladIcon = /* @__PURE__ */ createSemanticIcon("SaladIcon", Salad);
+export const GreensIcon = /* @__PURE__ */ createSemanticIcon("GreensIcon", LeafyGreen);
+export const LegumeIcon = /* @__PURE__ */ createSemanticIcon("LegumeIcon", Bean);
+export const NutIcon = /* @__PURE__ */ createSemanticIcon("NutIcon", Nut);
+export const SoupIcon = /* @__PURE__ */ createSemanticIcon("SoupIcon", Soup);
+export const CoffeeIcon = /* @__PURE__ */ createSemanticIcon("CoffeeIcon", Coffee);
+export const DrinkIcon = /* @__PURE__ */ createSemanticIcon("DrinkIcon", CupSoda);
+export const WaterIcon = /* @__PURE__ */ createSemanticIcon("WaterIcon", GlassWater);
+export const SweetIcon = /* @__PURE__ */ createSemanticIcon("SweetIcon", Candy);
+export const CookieIcon = /* @__PURE__ */ createSemanticIcon("CookieIcon", Cookie);
+export const DessertIcon = /* @__PURE__ */ createSemanticIcon("DessertIcon", IceCreamCone);
+export const CakeIcon = /* @__PURE__ */ createSemanticIcon("CakeIcon", CakeSlice);
+export const PizzaIcon = /* @__PURE__ */ createSemanticIcon("PizzaIcon", Pizza);
+export const BurgerIcon = /* @__PURE__ */ createSemanticIcon("BurgerIcon", Hamburger);
+export const SnackIcon = /* @__PURE__ */ createSemanticIcon("SnackIcon", Popcorn);
+export const OilIcon = /* @__PURE__ */ createSemanticIcon("OilIcon", Droplet);
+export const WineIcon = /* @__PURE__ */ createSemanticIcon("WineIcon", Wine);
+export const CheeseIcon = /* @__PURE__ */ createSemanticIcon("CheeseIcon", Torus);

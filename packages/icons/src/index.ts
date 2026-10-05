@@ -133,6 +133,42 @@ export const iconCatalog = {
   // Tiempo que se acaba. `time` es un reloj y `interval` una cuenta que
   // alguien puso en marcha; esto es el final acercándose.
   countdown: { source: "Hourglass", category: "object" },
+  // Los alimentos de un registro de comida dicen qué se comió, no cómo se cocinó:
+  // un grupo por alimento, para reconocerlo de un vistazo en una lista. `nutrition`
+  // sigue siendo comer en general; estos son lo que hay en el plato. El queso usa
+  // la rueda que Lucide no dibuja como queso pero que lee como uno a ese tamaño.
+  egg: { source: "Egg", category: "object" },
+  dairy: { source: "Milk", category: "object" },
+  grain: { source: "Wheat", category: "object" },
+  bread: { source: "Croissant", category: "object" },
+  sandwich: { source: "Sandwich", category: "object" },
+  meat: { source: "Beef", category: "object" },
+  poultry: { source: "Drumstick", category: "object" },
+  fish: { source: "Fish", category: "object" },
+  ham: { source: "Ham", category: "object" },
+  fruit: { source: "Apple", category: "object" },
+  banana: { source: "Banana", category: "object" },
+  citrus: { source: "Citrus", category: "object" },
+  grape: { source: "Grape", category: "object" },
+  vegetable: { source: "Carrot", category: "object" },
+  salad: { source: "Salad", category: "object" },
+  greens: { source: "LeafyGreen", category: "object" },
+  legume: { source: "Bean", category: "object" },
+  nut: { source: "Nut", category: "object" },
+  soup: { source: "Soup", category: "object" },
+  coffee: { source: "Coffee", category: "object" },
+  drink: { source: "CupSoda", category: "object" },
+  water: { source: "GlassWater", category: "object" },
+  sweet: { source: "Candy", category: "object" },
+  cookie: { source: "Cookie", category: "object" },
+  dessert: { source: "IceCreamCone", category: "object" },
+  cake: { source: "CakeSlice", category: "object" },
+  pizza: { source: "Pizza", category: "object" },
+  burger: { source: "Hamburger", category: "object" },
+  snack: { source: "Popcorn", category: "object" },
+  oil: { source: "Droplet", category: "object" },
+  wine: { source: "Wine", category: "object" },
+  cheese: { source: "Torus", category: "object" },
 } as const;
 
 export type IconName = keyof typeof iconCatalog;
