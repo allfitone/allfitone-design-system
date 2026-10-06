@@ -26,7 +26,15 @@ import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "rea
 
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
-import { activeTabIndex, INDICATOR_HEIGHT, TAB_MIN_HEIGHT } from "./tab-selection.js";
+import {
+  activeTabIndex,
+  INDICATOR_HEIGHT,
+  TAB_MIN_HEIGHT,
+  tabLabelStyle,
+  type TabLabelStyle,
+} from "./tab-selection.js";
+
+export type { TabLabelStyle };
 
 export type TabItem<Value extends string = string> = {
   readonly value: Value;
@@ -42,6 +50,11 @@ export type TabsProps<Value extends string = string> = {
   readonly accessibilityLabel?: string;
   readonly testID?: string;
   readonly style?: StyleProp<ViewStyle>;
+  /**
+   * `eyebrow` (the default) draws section names in the overline role; `control` draws
+   * labels written in sentence case at the control role, without the wide tracking.
+   */
+  readonly labelStyle?: TabLabelStyle;
 };
 
 // Generic over the value so a screen's own union survives the round trip and the
@@ -53,8 +66,10 @@ export function Tabs<Value extends string>({
   accessibilityLabel,
   testID,
   style,
+  labelStyle,
 }: TabsProps<Value>) {
   const theme = useTheme();
+  const label = tabLabelStyle(labelStyle);
   const active = activeTabIndex(
     items.map((item) => item.value),
     value,
@@ -78,7 +93,7 @@ export function Tabs<Value extends string>({
             accessibilityLabel={item.accessibilityLabel ?? item.label}
             style={styles.tab}
           >
-            <Text role="eyebrow" size="2xs" color={selected ? "primary" : "muted"}>
+            <Text role={label.role} size={label.size} color={selected ? "primary" : "muted"}>
               {item.label}
             </Text>
             {/* On the hairline, not above it, so the line looks marked rather than doubled. */}

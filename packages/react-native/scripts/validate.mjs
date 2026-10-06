@@ -279,9 +279,19 @@ if (!/gradient:\s*false/.test(dangerPalette)) {
 // A controlled strip whose value matches no tab must mark nothing. Falling back to
 // the first would draw a strip that disagrees with the panel below it, and neither
 // side would raise.
-const { activeTabIndex, INDICATOR_HEIGHT, TAB_MIN_HEIGHT } = await import(
+const { activeTabIndex, INDICATOR_HEIGHT, TAB_MIN_HEIGHT, tabLabelStyle } = await import(
   "../dist/tab-selection.js"
 );
+
+// The label stays an eyebrow unless a screen asks otherwise: strips already shipped must
+// not change under the products that use them. «control» is the opt-in for labels in
+// sentence case, which the eyebrow's wide tracking spreads apart.
+if (tabLabelStyle(undefined).role !== "eyebrow" || tabLabelStyle("eyebrow").role !== "eyebrow") {
+  throw new Error("A tab strip must keep its eyebrow labels by default.");
+}
+if (tabLabelStyle("control").role !== "control") {
+  throw new Error("A tab strip asked for control labels must draw them in the control role.");
+}
 
 if (activeTabIndex(["how", "variants"], "variants") !== 1) {
   throw new Error("A tab strip must mark the value it was given.");
