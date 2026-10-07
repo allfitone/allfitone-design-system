@@ -1,6 +1,6 @@
 {
   "name": "@allfitone/react",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "description": "React and Next.js adapters for the Allfit One design system.",
   "repository": {
     "type": "git",
