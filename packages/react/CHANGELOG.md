@@ -1,5 +1,12 @@
 # @allfitone/react
 
+## 0.14.2
+
+### Patch Changes
+
+- Updated dependencies [97db718]
+  - @allfitone/icons@0.5.0
+
 ## 0.14.1
 
 ### Patch Changes

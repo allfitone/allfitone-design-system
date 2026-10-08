@@ -1,6 +1,6 @@
 {
   "name": "@allfitone/react",
-  "version": "0.14.1",
+  "version": "0.14.2",
   "description": "React and Next.js adapters for the Allfit One design system.",
   "repository": {
     "type": "git",
@@ -62,7 +62,7 @@
   },
   "dependencies": {
     "@allfitone/brand": "^0.4.0",
-    "@allfitone/icons": "^0.4.0",
+    "@allfitone/icons": "^0.5.0",
     "@allfitone/tokens": "^0.4.0",
     "@base-ui/react": "^1.6.0",
     "@tanstack/react-table": "^8.21.3",
