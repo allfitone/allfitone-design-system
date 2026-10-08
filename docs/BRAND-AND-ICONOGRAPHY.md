@@ -28,6 +28,8 @@ Marketing surfaces take the generated kit in `packages/brand/social`: the logo a
 
 React Native projects should consume `@allfitone/react-native/brand`, `@allfitone/react-native/icons`, and `@allfitone/react-native/tokens`. The adapter renders canonical geometry through `react-native-svg` and preserves the same semantic Lucide names used on Web.
 
+Food icons (`egg`, `dairy`, `grain`, `fruit`, `coffee`… 32 in all) name a food group, not a dish: a product shows the group it belongs to, so the catalogue stays a closed set that products can map to. They come from Lucide like the rest; `cheese` uses `Torus` because Lucide has no cheese glyph.
+
 ## Distribution rule
 
 Consumer repositories must install released package versions. They must not depend on sibling checkout paths such as `../allfitone-design-system`, because that breaks isolated CI and deployment environments.

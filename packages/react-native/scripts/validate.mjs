@@ -53,29 +53,38 @@ const nativeOnlyOutputs = [
 ];
 const requiredOutputs = [...importableOutputs, ...nativeOnlyOutputs];
 
-await Promise.all(requiredOutputs.map((file) => access(resolve(packageRoot, "dist", file))));
+await Promise.all(
+  requiredOutputs.map((file) => access(resolve(packageRoot, "dist", file)))
+);
 
 const packageMetadata = JSON.parse(
-  await readFile(resolve(packageRoot, "package.json"), "utf8"),
+  await readFile(resolve(packageRoot, "package.json"), "utf8")
 );
 const { allfitoneReactNative, designSystemVersion } = await import(
   "../dist/index.js"
 );
 if (designSystemVersion !== packageMetadata.version) {
   throw new Error(
-    `Global React Native version ${designSystemVersion} must match package version ${packageMetadata.version}.`,
+    `Global React Native version ${designSystemVersion} must match package version ${packageMetadata.version}.`
   );
 }
 if (allfitoneReactNative.packageVersion !== packageMetadata.version) {
   throw new Error(
-    `Runtime React Native version ${allfitoneReactNative.packageVersion} must match package version ${packageMetadata.version}.`,
+    `Runtime React Native version ${allfitoneReactNative.packageVersion} must match package version ${packageMetadata.version}.`
   );
 }
 
-const { getNativeTouchTarget, resolveNativeLetterSpacing } = await import("../dist/tokens.js");
+const { getNativeTouchTarget, resolveNativeLetterSpacing } = await import(
+  "../dist/tokens.js"
+);
 
-if (getNativeTouchTarget("ios") !== 44 || getNativeTouchTarget("android") !== 48) {
-  throw new Error("React Native touch targets do not match the accessibility contract.");
+if (
+  getNativeTouchTarget("ios") !== 44 ||
+  getNativeTouchTarget("android") !== 48
+) {
+  throw new Error(
+    "React Native touch targets do not match the accessibility contract."
+  );
 }
 
 if (resolveNativeLetterSpacing(20, "utility") !== 3.2) {
@@ -85,21 +94,27 @@ if (resolveNativeLetterSpacing(20, "utility") !== 3.2) {
 // Every role must resolve to a face the loader actually registers. A role
 // pointing at an unregistered family renders in the platform font and raises
 // nothing, so this is the only place the mismatch can be caught.
-const { getNativeFontFamily, getRoleFontWeight, nativeFontFamily } = await import(
-  "../dist/font-family.js"
-);
+const { getNativeFontFamily, getRoleFontWeight, nativeFontFamily } =
+  await import("../dist/font-family.js");
 const { typographyRole } = await import("@allfitone/tokens");
 
 const registeredFamilies = new Set(Object.values(nativeFontFamily));
-const loaderSource = await readFile(resolve(packageRoot, "src/fonts.ts"), "utf8");
+const loaderSource = await readFile(
+  resolve(packageRoot, "src/fonts.ts"),
+  "utf8"
+);
 
 for (const role of Object.keys(typographyRole)) {
   const family = getNativeFontFamily(role);
   if (!registeredFamilies.has(family)) {
-    throw new Error(`Typographic role "${role}" resolves to unregistered family "${family}".`);
+    throw new Error(
+      `Typographic role "${role}" resolves to unregistered family "${family}".`
+    );
   }
   if (!loaderSource.includes(family)) {
-    throw new Error(`Family "${family}" is mapped but never loaded by useAllfitFonts.`);
+    throw new Error(
+      `Family "${family}" is mapped but never loaded by useAllfitFonts.`
+    );
   }
   if (typeof getRoleFontWeight(role) !== "number") {
     throw new Error(`Typographic role "${role}" has no numeric weight.`);
@@ -112,52 +127,90 @@ const { resolveTextStyle } = await import("../dist/typography-style.js");
 
 const display = resolveTextStyle("display", "4xl");
 if (display.fontSize !== 36) {
-  throw new Error(`Display 4xl resolved to ${display.fontSize}px instead of 36px.`);
+  throw new Error(
+    `Display 4xl resolved to ${display.fontSize}px instead of 36px.`
+  );
 }
 // 36 x lineHeight.display (0.82) = 29.52, absolute rather than a ratio.
 if (Math.abs(display.lineHeight - 29.52) > 0.001) {
-  throw new Error(`Display line height resolved to ${display.lineHeight} instead of 29.52.`);
+  throw new Error(
+    `Display line height resolved to ${display.lineHeight} instead of 29.52.`
+  );
 }
 // 36 x letterSpacing.display (-0.055) = -1.98, absolute rather than an em ratio.
 if (Math.abs(display.letterSpacing - -1.98) > 0.001) {
-  throw new Error(`Display letter spacing resolved to ${display.letterSpacing} instead of -1.98.`);
+  throw new Error(
+    `Display letter spacing resolved to ${display.letterSpacing} instead of -1.98.`
+  );
 }
 // The card face: italic comes from its own drawn face, never from a synthesised slant.
-if (resolveTextStyle("poster", "4xl").fontFamily !== nativeFontFamily.displayExtraboldItalic) {
-  throw new Error("The poster role must resolve to the drawn extrabold italic face.");
+// A product may open a role's tracking for one use — big numerals that touch —
+// without moving the token every other product reads.
+const opened = resolveTextStyle("display", "4xl", { tracking: 0.01 });
+if (Math.abs(opened.letterSpacing - 0.36) > 0.001) {
+  throw new Error(
+    `Display tracking 0.01 resolved to ${opened.letterSpacing} instead of 0.36.`
+  );
+}
+if (
+  resolveTextStyle("display", "4xl", {}).letterSpacing !== display.letterSpacing
+) {
+  throw new Error(
+    "Leaving tracking out must keep the role's own letter spacing."
+  );
+}
+
+if (
+  resolveTextStyle("poster", "4xl").fontFamily !==
+  nativeFontFamily.displayExtraboldItalic
+) {
+  throw new Error(
+    "The poster role must resolve to the drawn extrabold italic face."
+  );
 }
 if (resolveTextStyle("poster", "4xl").fontStyle !== undefined) {
-  throw new Error("The poster role must not set fontStyle; Android would synthesise the slant.");
+  throw new Error(
+    "The poster role must not set fontStyle; Android would synthesise the slant."
+  );
 }
-if (resolveTextStyle("body", "md").fontFamily !== nativeFontFamily.bodyRegular) {
+if (
+  resolveTextStyle("body", "md").fontFamily !== nativeFontFamily.bodyRegular
+) {
   throw new Error("Body role does not resolve to the registered body family.");
 }
 
 // Roles that lead tighter than their own em box crop the tops of capitals in
 // React Native unless the deficit is padded back. Caught only on a device
 // otherwise, and it looks like a font bug rather than a leading one.
-for (const [role, size] of [["display", "4xl"], ["heading", "2xl"]]) {
+for (const [role, size] of [
+  ["display", "4xl"],
+  ["heading", "2xl"],
+]) {
   const style = resolveTextStyle(role, size);
   if (style.lineHeight >= style.fontSize) continue;
   const deficit = Math.ceil(style.fontSize - style.lineHeight);
   if (style.paddingTop !== deficit) {
     throw new Error(
       `Role "${role}" leads at ${style.lineHeight} under ${style.fontSize}px and pads ` +
-        `${style.paddingTop} instead of ${deficit}; capitals will be clipped.`,
+        `${style.paddingTop} instead of ${deficit}; capitals will be clipped.`
     );
   }
 }
 // A timer that reflows on every tick is the whole reason this role exists.
 const data = resolveTextStyle("data", "3xl");
 if (!data.fontVariant?.includes("tabular-nums")) {
-  throw new Error("The data role must render tabular figures; a timer reflows without them.");
+  throw new Error(
+    "The data role must render tabular figures; a timer reflows without them."
+  );
 }
 if (resolveTextStyle("body", "md").fontVariant !== undefined) {
   throw new Error("Only the data role asks for tabular figures.");
 }
 
 if (resolveTextStyle("body", "md").paddingTop !== 0) {
-  throw new Error("Roles that lead at or above their em box must not be padded.");
+  throw new Error(
+    "Roles that lead at or above their em box must not be padded."
+  );
 }
 
 // Controls carry sentence case, so tracking must stay at zero. The `label` role
@@ -166,7 +219,7 @@ if (resolveTextStyle("body", "md").paddingTop !== 0) {
 const control = resolveTextStyle("control", "sm");
 if (control.letterSpacing !== 0) {
   throw new Error(
-    `Control role tracks at ${control.letterSpacing} instead of 0; sentence-case labels will look spaced out.`,
+    `Control role tracks at ${control.letterSpacing} instead of 0; sentence-case labels will look spaced out.`
   );
 }
 
@@ -175,40 +228,70 @@ if (control.letterSpacing !== 0) {
 // looked measurably cheaper than the same control in the Explorer. Both the
 // labelled pill and the round tick are checked, because it was exactly their
 // disagreement — one painted, one flat — that sent this through the library.
-const gradientSource = await readFile(resolve(packageRoot, "src/accent-gradient.ts"), "utf8");
+const gradientSource = await readFile(
+  resolve(packageRoot, "src/accent-gradient.ts"),
+  "utf8"
+);
 if (!gradientSource.includes("semanticGradient.accent")) {
-  throw new Error("The accent gradient must resolve semanticGradient.accent, matching the web adapter.");
+  throw new Error(
+    "The accent gradient must resolve semanticGradient.accent, matching the web adapter."
+  );
 }
 for (const component of ["button.tsx", "icon-button.tsx"]) {
   const source = await readFile(resolve(packageRoot, "src", component), "utf8");
   if (!source.includes("resolveAccentGradient")) {
-    throw new Error(`${component} must paint the accent through resolveAccentGradient, not its own copy.`);
+    throw new Error(
+      `${component} must paint the accent through resolveAccentGradient, not its own copy.`
+    );
   }
 }
 
 // The destructive action is the other side of that rule. It is a flat `status.danger`
 // fill, because a delete is a plain control and not the one signal surface per screen.
-const buttonSource = await readFile(resolve(packageRoot, "src/button.tsx"), "utf8");
-const dangerPalette = buttonSource.match(/case "danger":\s*return \{([\s\S]*?)\};/)?.[1];
+const buttonSource = await readFile(
+  resolve(packageRoot, "src/button.tsx"),
+  "utf8"
+);
+const dangerPalette = buttonSource.match(
+  /case "danger":\s*return \{([\s\S]*?)\};/
+)?.[1];
 if (!dangerPalette) {
-  throw new Error("Button must resolve a danger palette; destructive actions have no other control.");
+  throw new Error(
+    "Button must resolve a danger palette; destructive actions have no other control."
+  );
 }
 if (!dangerPalette.includes("theme.color.status.danger")) {
-  throw new Error("The danger variant must fill with status.danger rather than a local colour.");
+  throw new Error(
+    "The danger variant must fill with status.danger rather than a local colour."
+  );
 }
 if (!dangerPalette.includes("theme.color.status.onStatus")) {
-  throw new Error("The danger label must use status.onStatus, the foreground the tokens intend over a status fill.");
+  throw new Error(
+    "The danger label must use status.onStatus, the foreground the tokens intend over a status fill."
+  );
 }
 if (!/gradient:\s*false/.test(dangerPalette)) {
-  throw new Error("The danger variant must not spend the one accent gradient a screen is allowed.");
+  throw new Error(
+    "The danger variant must not spend the one accent gradient a screen is allowed."
+  );
 }
 
 // A controlled strip whose value matches no tab must mark nothing. Falling back to
 // the first would draw a strip that disagrees with the panel below it, and neither
 // side would raise.
-const { activeTabIndex, INDICATOR_HEIGHT, TAB_MIN_HEIGHT } = await import(
+const { activeTabIndex, INDICATOR_HEIGHT, TAB_MIN_HEIGHT, tabLabelStyle } = await import(
   "../dist/tab-selection.js"
 );
+
+// The label stays an eyebrow unless a screen asks otherwise: strips already shipped must
+// not change under the products that use them. «control» is the opt-in for labels in
+// sentence case, which the eyebrow's wide tracking spreads apart.
+if (tabLabelStyle(undefined).role !== "eyebrow" || tabLabelStyle("eyebrow").role !== "eyebrow") {
+  throw new Error("A tab strip must keep its eyebrow labels by default.");
+}
+if (tabLabelStyle("control").role !== "control") {
+  throw new Error("A tab strip asked for control labels must draw them in the control role.");
+}
 
 if (activeTabIndex(["how", "variants"], "variants") !== 1) {
   throw new Error("A tab strip must mark the value it was given.");
@@ -217,10 +300,14 @@ if (activeTabIndex(["how", "variants"], "nope") !== -1) {
   throw new Error("An unknown tab value must mark nothing, not the first tab.");
 }
 if (TAB_MIN_HEIGHT < 44) {
-  throw new Error(`A tab is ${TAB_MIN_HEIGHT}px tall and the iOS touch floor is 44.`);
+  throw new Error(
+    `A tab is ${TAB_MIN_HEIGHT}px tall and the iOS touch floor is 44.`
+  );
 }
 if (INDICATOR_HEIGHT < 2) {
-  throw new Error("The active mark must be thicker than the hairline it sits on.");
+  throw new Error(
+    "The active mark must be thicker than the hairline it sits on."
+  );
 }
 
 if (activeTabIndex(["how", "variants"], "variants") !== 1) {
@@ -233,19 +320,27 @@ if (TAB_MIN_HEIGHT < 44) {
   throw new Error();
 }
 if (INDICATOR_HEIGHT < 2) {
-  throw new Error("The active mark must be thicker than the hairline it sits on.");
+  throw new Error(
+    "The active mark must be thicker than the hairline it sits on."
+  );
 }
 
 // The marker meets the ink of the first line, not the top of its box.
-const { stepMarkerOffset, STEP_MARKER_SIZE } = await import("../dist/step-geometry.js");
+const { stepMarkerOffset, STEP_MARKER_SIZE } = await import(
+  "../dist/step-geometry.js"
+);
 
 // Body at 14 in a 21 line box puts its ink centre at 14; a 24 marker centres at 12.
 if (stepMarkerOffset(24, 21, 14) !== 2) {
-  throw new Error("A 24px marker beside a 14/21 line must drop by 2 to meet its ink.");
+  throw new Error(
+    "A 24px marker beside a 14/21 line must drop by 2 to meet its ink."
+  );
 }
 // A marker taller than the ink sits low enough already; pulling it up would clip it.
 if (stepMarkerOffset(40, 21, 14) !== 0) {
-  throw new Error("A marker taller than the line it labels must not be dragged upwards.");
+  throw new Error(
+    "A marker taller than the line it labels must not be dragged upwards."
+  );
 }
 if (STEP_MARKER_SIZE < 20) {
   throw new Error("A step marker must stay large enough to hold two digits.");
@@ -256,24 +351,36 @@ if (STEP_MARKER_SIZE < 20) {
 const { resolveAccentGradient } = await import("../dist/accent-gradient.js");
 
 const accent = resolveAccentGradient();
-if (accent.colors.length < 2 || accent.colors.length !== accent.locations.length) {
-  throw new Error("The accent gradient needs a position for every colour, and two of each.");
+if (
+  accent.colors.length < 2 ||
+  accent.colors.length !== accent.locations.length
+) {
+  throw new Error(
+    "The accent gradient needs a position for every colour, and two of each."
+  );
 }
 for (const position of accent.locations) {
   if (position < 0 || position > 1) {
-    throw new Error("Gradient stops are fractions here, not the percentages the token declares.");
+    throw new Error(
+      "Gradient stops are fractions here, not the percentages the token declares."
+    );
   }
 }
 
 // A wrong gradient angle still paints a gradient, pointing the wrong way.
-const { resolveGradientEndpoints } = await import("../dist/gradient-geometry.js");
+const { resolveGradientEndpoints } = await import(
+  "../dist/gradient-geometry.js"
+);
 
 const diagonal = resolveGradientEndpoints(135);
 if (diagonal.start.x >= diagonal.end.x || diagonal.start.y >= diagonal.end.y) {
   throw new Error("A 135deg gradient must run top-left to bottom-right.");
 }
 const downward = resolveGradientEndpoints(180);
-if (Math.abs(downward.start.y - 0) > 0.001 || Math.abs(downward.end.y - 1) > 0.001) {
+if (
+  Math.abs(downward.start.y - 0) > 0.001 ||
+  Math.abs(downward.end.y - 1) > 0.001
+) {
   throw new Error("A 180deg gradient must run straight down.");
 }
 
@@ -281,7 +388,9 @@ if (Math.abs(downward.start.y - 0) > 0.001 || Math.abs(downward.end.y - 1) > 0.0
 // that takes typing was covered by the thing it asked for, so the panel lifts by the
 // keyboard's height and its cap shrinks by the same amount — without the second half,
 // a tall sheet lifted by 300 points runs off the top of the screen.
-const { resolveSheetGeometry, MAX_HEIGHT_RATIO } = await import("../dist/sheet-geometry.js");
+const { resolveSheetGeometry, MAX_HEIGHT_RATIO } = await import(
+  "../dist/sheet-geometry.js"
+);
 
 const resting = resolveSheetGeometry({
   screenHeight: 800,
@@ -290,13 +399,19 @@ const resting = resolveSheetGeometry({
   basePadding: 16,
 });
 if (resting.lift !== 0) {
-  throw new Error(`A sheet with no keyboard must not lift; it moved ${resting.lift}.`);
+  throw new Error(
+    `A sheet with no keyboard must not lift; it moved ${resting.lift}.`
+  );
 }
 if (resting.maxHeight !== 800 * MAX_HEIGHT_RATIO) {
-  throw new Error(`Resting cap is ${resting.maxHeight} instead of ${800 * MAX_HEIGHT_RATIO}.`);
+  throw new Error(
+    `Resting cap is ${resting.maxHeight} instead of ${800 * MAX_HEIGHT_RATIO}.`
+  );
 }
 if (resting.paddingBottom !== 50) {
-  throw new Error(`Resting padding must clear the home indicator; it is ${resting.paddingBottom}.`);
+  throw new Error(
+    `Resting padding must clear the home indicator; it is ${resting.paddingBottom}.`
+  );
 }
 
 const typing = resolveSheetGeometry({
@@ -306,18 +421,20 @@ const typing = resolveSheetGeometry({
   basePadding: 16,
 });
 if (typing.lift !== 300) {
-  throw new Error(`A sheet must clear the keyboard exactly; it lifted ${typing.lift} of 300.`);
+  throw new Error(
+    `A sheet must clear the keyboard exactly; it lifted ${typing.lift} of 300.`
+  );
 }
 if (typing.maxHeight !== 500 * MAX_HEIGHT_RATIO) {
   throw new Error(
     `Cap with the keyboard up is ${typing.maxHeight}; measured against the whole screen it ` +
-      `would be ${800 * MAX_HEIGHT_RATIO} and the panel would run off the top.`,
+      `would be ${800 * MAX_HEIGHT_RATIO} and the panel would run off the top.`
   );
 }
 if (typing.paddingBottom !== 16) {
   throw new Error(
     `The home indicator is under the keyboard, so reserving for it leaves the panel ` +
-      `floating; padding is ${typing.paddingBottom} instead of 16.`,
+      `floating; padding is ${typing.paddingBottom} instead of 16.`
   );
 }
 
@@ -330,37 +447,61 @@ const absurd = resolveSheetGeometry({
   basePadding: 16,
 });
 if (absurd.maxHeight < 0) {
-  throw new Error(`A sheet cap must never go negative; it is ${absurd.maxHeight}.`);
+  throw new Error(
+    `A sheet cap must never go negative; it is ${absurd.maxHeight}.`
+  );
+}
+
+// With the keyboard up, the only backdrop left to touch is the strip above the lifted
+// panel, and touching it means «I am done typing», not «throw this away».
+const { backdropIntent } = await import("../dist/sheet-geometry.js");
+if (backdropIntent(300) !== "dismiss-keyboard") {
+  throw new Error(
+    `A backdrop touched while typing must only close the keyboard.`
+  );
+}
+if (backdropIntent(0) !== "dismiss") {
+  throw new Error(`A backdrop touched with no keyboard must close the sheet.`);
 }
 
 // A badge that can take a colour stops being a badge and becomes a sticker, which is
 // the DT-009 rule stated as something a build can check.
-const badgeSource = await readFile(resolve(packageRoot, "src", "badge.tsx"), "utf8");
+const badgeSource = await readFile(
+  resolve(packageRoot, "src", "badge.tsx"),
+  "utf8"
+);
 if (!badgeSource.includes("theme.color.status.onStatus")) {
   throw new Error(
     "Badge must take its ink from `status.onStatus`; a hand-picked white or black " +
-      "loses contrast in one of the two themes.",
+      "loses contrast in one of the two themes."
   );
 }
 for (const literal of badgeSource.match(/#[0-9A-Fa-f]{3,8}\b/g) ?? []) {
-  throw new Error(`Badge carries the raw colour ${literal}; tones come from the palette.`);
+  throw new Error(
+    `Badge carries the raw colour ${literal}; tones come from the palette.`
+  );
 }
 
 // `cover-tile.js` imports `react-native`, so its geometry is read from the source. A row
 // the height of the tile is why `xs` exists, and the corner has to follow the box.
-const coverTileSource = await readFile(resolve(packageRoot, "src", "cover-tile.tsx"), "utf8");
+const coverTileSource = await readFile(
+  resolve(packageRoot, "src", "cover-tile.tsx"),
+  "utf8"
+);
 const coverTileBox = coverTileSource.match(/const BOX = \{([^}]*)\}/)?.[1];
 if (!/\bxs:\s*44\b/.test(coverTileBox ?? "")) {
   throw new Error(
     `CoverTile's \`xs\` box must be 44 square; it is {${coverTileBox?.trim()}} and a row ` +
-      "sized to the tile would stand taller than its content asked for.",
+      "sized to the tile would stand taller than its content asked for."
   );
 }
-const coverTileRadius = coverTileSource.match(/const RADIUS = \{([^}]*)\}/)?.[1];
+const coverTileRadius = coverTileSource.match(
+  /const RADIUS = \{([^}]*)\}/
+)?.[1];
 if (!/\bxs:\s*14\b/.test(coverTileRadius ?? "")) {
   throw new Error(
     `CoverTile's \`xs\` corner must be 14; it is {${coverTileRadius?.trim()}} and a box ` +
-      "that shrinks without its corner reads as a different shape, not a smaller one.",
+      "that shrinks without its corner reads as a different shape, not a smaller one."
   );
 }
 
@@ -368,17 +509,24 @@ if (!/\bxs:\s*14\b/.test(coverTileRadius ?? "")) {
 // touch rather than claiming it. Claiming it would silently eat presses on everything
 // underneath, which is the failure this check exists to catch — it looks identical until
 // somebody tries to drag a row.
-const screenSource = await readFile(resolve(packageRoot, "src", "screen.tsx"), "utf8");
+const screenSource = await readFile(
+  resolve(packageRoot, "src", "screen.tsx"),
+  "utf8"
+);
 if (!screenSource.includes("onStartShouldSetResponder")) {
   throw new Error(
     "Screen must put the keyboard away when a touch lands on nothing: a form under a " +
-      "header that stays put has no other way to dismiss it.",
+      "header that stays put has no other way to dismiss it."
   );
 }
-if (!/function dismissKeyboard\(\): boolean \{[\s\S]*?return false;/.test(screenSource)) {
+if (
+  !/function dismissKeyboard\(\): boolean \{[\s\S]*?return false;/.test(
+    screenSource
+  )
+) {
   throw new Error(
     "Screen's keyboard dismissal must answer `false` and never become the responder; " +
-      "claiming the touch would swallow presses and block gestures underneath.",
+      "claiming the touch would swallow presses and block gestures underneath."
   );
 }
 
@@ -389,78 +537,108 @@ if (!/function dismissKeyboard\(\): boolean \{[\s\S]*?return false;/.test(screen
 if (!screenSource.includes("<AmbientBackdrop ")) {
   throw new Error(
     "Screen must draw the ambient backdrop: the ground is the canvas's, and a product " +
-      "mounting it screen by screen is how two grounds appear in one app.",
+      "mounting it screen by screen is how two grounds appear in one app."
   );
 }
-if (screenSource.indexOf("<AmbientBackdrop ") > screenSource.indexOf("<SafeAreaView")) {
+if (
+  screenSource.indexOf("<AmbientBackdrop ") >
+  screenSource.indexOf("<SafeAreaView")
+) {
   throw new Error(
     "Screen's ambient backdrop must sit outside the SafeAreaView; inside it is inset by " +
-      "the padding and leaves unpainted strips down the sides and under the notch.",
+      "the padding and leaves unpainted strips down the sides and under the notch."
   );
 }
 
 // Un aviso que se puede quitar tiene que poder quitarse de las dos maneras, y el
 // temporizador tiene que colgar del mensaje: atado a otra cosa, un aviso nuevo heredaría
 // lo que le quedaba al anterior y se iría a mitad de leerlo.
-const alertSource = await readFile(resolve(packageRoot, "src", "inline-alert.tsx"), "utf8");
+const alertSource = await readFile(
+  resolve(packageRoot, "src", "inline-alert.tsx"),
+  "utf8"
+);
 if (!alertSource.includes("accessibilityLabel={`Quitar aviso:")) {
   throw new Error(
     "InlineAlert's dismissable form must name what it removes: «quitar» alone on nine " +
-      "screens tells a screen reader nothing about which notice it is.",
+      "screens tells a screen reader nothing about which notice it is."
   );
 }
 if (!/useEffect\([\s\S]*?\[message, autoDismissMs/.test(alertSource)) {
   throw new Error(
     "InlineAlert's timer must depend on the message: a new notice has to start counting " +
-      "from zero instead of inheriting what was left of the last one.",
+      "from zero instead of inheriting what was left of the last one."
   );
 }
 
 // A toast confirms; it does not interrupt. `alert` would cut off whatever the screen
 // reader was saying, and a timer tied to anything but the message would cut a new one short.
-const toastSource = await readFile(resolve(packageRoot, "src", "toast.tsx"), "utf8");
-const toastCode = toastSource.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+const toastSource = await readFile(
+  resolve(packageRoot, "src", "toast.tsx"),
+  "utf8"
+);
+const toastCode = toastSource
+  .replace(/\/\*[\s\S]*?\*\//g, "")
+  .replace(/\/\/.*$/gm, "");
 if (/accessibilityRole=\{?"alert"/.test(toastCode)) {
-  throw new Error("Toast must not use accessibilityRole=\"alert\"; a confirmation is not an error.");
+  throw new Error(
+    'Toast must not use accessibilityRole="alert"; a confirmation is not an error.'
+  );
 }
 if (!toastCode.includes('accessibilityLiveRegion="polite"')) {
-  throw new Error("Toast must be a polite live region, or Android never speaks it.");
+  throw new Error(
+    "Toast must be a polite live region, or Android never speaks it."
+  );
 }
-if (!toastCode.includes("AccessibilityInfo.announceForAccessibility(message)")) {
+if (
+  !toastCode.includes("AccessibilityInfo.announceForAccessibility(message)")
+) {
   throw new Error("Toast must announce on iOS, which ignores live regions.");
 }
 if (!/useEffect\([\s\S]*?\[message, duration/.test(toastCode)) {
-  throw new Error("Toast's timer must depend on the message so a new one restarts the clock.");
+  throw new Error(
+    "Toast's timer must depend on the message so a new one restarts the clock."
+  );
 }
 if (!toastCode.includes("semanticMotion.reduced")) {
   throw new Error("Toast must fall back to the reduced motion step.");
 }
 
 // The Instagram glyph is Meta's geometry verbatim; a redraw would no longer be their mark.
-const thirdPartyOutput = await readFile(resolve(packageRoot, "dist", "third-party.js"), "utf8");
+const thirdPartyOutput = await readFile(
+  resolve(packageRoot, "dist", "third-party.js"),
+  "utf8"
+);
 if (!thirdPartyOutput.includes("M7.0301.084c-1.2768.")) {
-  throw new Error("third-party.js must carry the Simple Icons Instagram path unchanged.");
+  throw new Error(
+    "third-party.js must carry the Simple Icons Instagram path unchanged."
+  );
 }
 
 // Un campo sin etiqueta dibujada sigue teniendo nombre. Es el único punto donde
 // `hideLabel` puede convertirse en un campo mudo para quien lo oye.
-const fieldSource = await readFile(resolve(packageRoot, "src", "text-field.tsx"), "utf8");
+const fieldSource = await readFile(
+  resolve(packageRoot, "src", "text-field.tsx"),
+  "utf8"
+);
 if (!/accessibilityLabel=\{label\}/.test(fieldSource)) {
   throw new Error(
     "TextField must keep `accessibilityLabel={label}`: `hideLabel` hides the drawn " +
-      "label, and without the spoken one the field has no name at all.",
+      "label, and without the spoken one the field has no name at all."
   );
 }
 if (!/aria-labelledby=\{hideLabel \? undefined :/.test(fieldSource)) {
   throw new Error(
     "TextField must drop `aria-labelledby` when the label is hidden: it would point at " +
-      "an element that is not rendered, which leaves the field unnamed rather than named twice.",
+      "an element that is not rendered, which leaves the field unnamed rather than named twice."
   );
 }
 
 // The pill's geometry is `width`, never a scale. Comments are stripped first because
 // the file argues that decision in prose, naming the very thing it rejects.
-const pageDotsSource = await readFile(resolve(packageRoot, "src", "page-dots.tsx"), "utf8");
+const pageDotsSource = await readFile(
+  resolve(packageRoot, "src", "page-dots.tsx"),
+  "utf8"
+);
 const pageDotsCode = pageDotsSource
   .replace(/\/\*[\s\S]*?\*\//g, "")
   .replace(/\/\/.*$/gm, "");
@@ -468,13 +646,13 @@ const pageDotsCode = pageDotsSource
 if ((pageDotsCode.match(/\bwidth:/g) ?? []).length < 2) {
   throw new Error(
     "Both of PageDots' paths must animate `width`: the stepped one and the one that " +
-      "follows the finger, or the two rows stop being the same component.",
+      "follows the finger, or the two rows stop being the same component."
   );
 }
 if (/\b(transform|scaleX)\b/.test(pageDotsCode)) {
   throw new Error(
     "PageDots must not stretch the pill with a transform: scaling a four-point pill " +
-      "along one axis smears its corners into ovals, and only a screenshot catches it.",
+      "along one axis smears its corners into ovals, and only a screenshot catches it."
   );
 }
 
@@ -483,20 +661,22 @@ if (/\b(transform|scaleX)\b/.test(pageDotsCode)) {
 if (!/useAnimatedStyle\(/.test(pageDotsCode)) {
   throw new Error(
     "PageDots must read its fractional index inside `useAnimatedStyle`; computed " +
-      "anywhere else it costs a render per frame of the drag.",
+      "anywhere else it costs a render per frame of the drag."
   );
 }
 for (const hop of ["runOnJS", "scheduleOnRN", "useState"]) {
   if (pageDotsCode.includes(hop)) {
     throw new Error(
       `PageDots reaches for \`${hop}\`: following the finger must never schedule work ` +
-        "back to the React runtime, which is the whole reason the shared value exists.",
+        "back to the React runtime, which is the whole reason the shared value exists."
     );
   }
 }
 
 console.log(
   `Validated ${requiredOutputs.length} React Native adapter outputs, ` +
-    `${Object.keys(typographyRole).length} typographic roles, 2 gradient angles ` +
-    `and the sheet's keyboard geometry.`,
+    `${
+      Object.keys(typographyRole).length
+    } typographic roles, 2 gradient angles ` +
+    `and the sheet's keyboard geometry.`
 );

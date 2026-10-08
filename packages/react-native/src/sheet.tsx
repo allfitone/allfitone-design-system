@@ -17,7 +17,8 @@
  * to end up back on sign-in, so a route would have to invent a destination it
  * already had.
  *
- * The backdrop dismisses, and so does the system back gesture on Android through
+ * The backdrop dismisses — once the keyboard is down: while typing, its first touch only
+ * closes the keyboard — and so does the system back gesture on Android through
  * `onRequestClose`. Both are the same intent and neither is a decision, so a
  * sheet that carries one must own the confirmation itself.
  *
@@ -60,7 +61,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { semanticMotion } from "@allfitone/tokens";
 
-import { MAX_HEIGHT_RATIO, resolveSheetGeometry } from "./sheet-geometry.js";
+import {
+  backdropIntent,
+  MAX_HEIGHT_RATIO,
+  resolveSheetGeometry,
+} from "./sheet-geometry.js";
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
 
@@ -100,8 +105,10 @@ export function Sheet({
   // `will` on iOS so the panel moves with the keyboard rather than after it; Android
   // only emits `did`, and asking for `will` there registers a listener that never fires.
   useEffect(() => {
-    const rising = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
-    const falling = Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+    const rising =
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const falling =
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
     const settle = (height_: number, duration: number) => {
       setKeyboardHeight(height_);
       Animated.timing(lift, {
@@ -112,9 +119,11 @@ export function Sheet({
       }).start();
     };
     const shown = Keyboard.addListener(rising, (event) =>
-      settle(event.endCoordinates.height, event.duration ?? 0),
+      settle(event.endCoordinates.height, event.duration ?? 0)
     );
-    const hidden = Keyboard.addListener(falling, (event) => settle(0, event.duration ?? 0));
+    const hidden = Keyboard.addListener(falling, (event) =>
+      settle(0, event.duration ?? 0)
+    );
     return () => {
       shown.remove();
       hidden.remove();
@@ -126,12 +135,14 @@ export function Sheet({
     const step = reduceMotion
       ? semanticMotion.reduced
       : visible
-        ? semanticMotion.enter
-        : semanticMotion.exit;
+      ? semanticMotion.enter
+      : semanticMotion.exit;
     Animated.timing(progress, {
       toValue: visible ? 1 : 0,
       duration: step.duration,
-      easing: Easing.bezier(...(step.easing as [number, number, number, number])),
+      easing: Easing.bezier(
+        ...(step.easing as [number, number, number, number])
+      ),
       useNativeDriver: true,
     }).start(({ finished }) => {
       // Only once it has actually left. Unmounting on `visible` alone is what made
@@ -160,7 +171,11 @@ export function Sheet({
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Cerrar"
-          onPress={onDismiss}
+          onPress={() =>
+            backdropIntent(keyboardHeight) === "dismiss-keyboard"
+              ? Keyboard.dismiss()
+              : onDismiss()
+          }
           style={[StyleSheet.absoluteFill, { backgroundColor: BACKDROP }]}
         />
       </Animated.View>
@@ -188,8 +203,11 @@ export function Sheet({
                 // The entrance and the keyboard are one movement, not two competing
                 // transforms: a second `translateY` in the array would overwrite this.
                 translateY: Animated.subtract(
-                  progress.interpolate({ inputRange: [0, 1], outputRange: [travel, 0] }),
-                  lift,
+                  progress.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [travel, 0],
+                  }),
+                  lift
                 ),
               },
             ],
@@ -200,7 +218,10 @@ export function Sheet({
         {/* A short bar, not a control: it says the panel is a layer. */}
         <View
           aria-hidden
-          style={[styles.grabber, { backgroundColor: theme.color.border.default }]}
+          style={[
+            styles.grabber,
+            { backgroundColor: theme.color.border.default },
+          ]}
         />
 
         {hideTitle ? null : (
@@ -215,7 +236,9 @@ export function Sheet({
 
         {/* Shrinks rather than overflowing: with the keyboard up the cap can fall
             below what the content wants, and a rigid child is drawn past the panel. */}
-        <View style={{ marginTop: hideTitle ? 0 : theme.spacing[3], flexShrink: 1 }}>
+        <View
+          style={{ marginTop: hideTitle ? 0 : theme.spacing[3], flexShrink: 1 }}
+        >
           {children}
         </View>
       </Animated.View>

@@ -77,6 +77,8 @@ Expo projects should install the native peers through `npx expo install` so the 
 
 **`Text` omits the underlying `role` prop.** React Native has its own for accessibility, and its value set intersects the typographic roles at exactly `"heading"`, which silently narrows every other role away. Screen-reader semantics stay available through `accessibilityRole`.
 
+**`tracking` is an override, not a style.** Each role carries its own letter spacing — display and poster are tight on purpose. A product whose figures read too close at its sizes passes `tracking` (in em, e.g. `0.01`) from its own import; the role's default is untouched for every other consumer.
+
 **`Scrim` needs image beneath it.** `coverage` is where the fade *completes*, not where the image ends. If the image stops at that point, the last percent of the fade still shows image and leaves a visible seam — obvious on a light canvas, where the dark edge of a photograph meets a near-white background.
 
 **`Veil` is not a sideways `Scrim`.** A scrim hangs from the edge where an image ends and is *clear* there, fading into the canvas to hide the seam. A veil hangs from its edge and is *opaque* there, dissolving outwards into the picture so words laid on top of it stay legible. Opposite polarities, and pointing one of them sideways would have made a component mean two things depending on which way it faced.

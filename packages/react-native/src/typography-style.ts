@@ -18,7 +18,20 @@ import { resolveNativeLetterSpacing, typography, typographyRole } from "./tokens
 
 export type TextSizeName = keyof typeof typography.size;
 
-export function resolveTextStyle(role: TypographyRoleName, size: TextSizeName): TextStyle {
+/**
+ * `tracking` opens a role's letter spacing for one use, as an `em` ratio that
+ * replaces the token's. Left out, the role keeps its own: every product sees the
+ * same type unless one of them asks, at the call site, for something else.
+ */
+export interface TextStyleOptions {
+  readonly tracking?: number | undefined;
+}
+
+export function resolveTextStyle(
+  role: TypographyRoleName,
+  size: TextSizeName,
+  options: TextStyleOptions = {},
+): TextStyle {
   const definition = typographyRole[role];
   const fontSize = typography.size[size];
   const lineHeight = fontSize * typography.lineHeight[definition.lineHeight];
@@ -32,7 +45,10 @@ export function resolveTextStyle(role: TypographyRoleName, size: TextSizeName): 
     // every tick — `00:09` to `00:10` is two glyphs of different width in proportional
     // figures, and the whole row shifts under the eye that is reading it.
     ...(role === "data" ? { fontVariant: ["tabular-nums" as const] } : {}),
-    letterSpacing: resolveNativeLetterSpacing(fontSize, definition.letterSpacing),
+    letterSpacing:
+      options.tracking === undefined
+        ? resolveNativeLetterSpacing(fontSize, definition.letterSpacing)
+        : fontSize * options.tracking,
     // The display and heading roles lead tighter than their own em box — 0.82
     // for display — which is what gives stacked headlines their density. On the
     // web the ascender simply overflows the line box and still paints. React

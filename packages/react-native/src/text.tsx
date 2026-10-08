@@ -58,6 +58,12 @@ export type TextProps = Omit<RNTextProps, "style" | "role"> & {
   readonly color?: TextColorName;
   readonly align?: TextStyle["textAlign"];
   readonly uppercase?: boolean;
+  /**
+   * Replaces the role's letter spacing, as an `em` ratio, for this text only.
+   * Big display numerals touch at the role's tight tracking; `0.01` opens them.
+   * Leave it out to keep the role's own.
+   */
+  readonly tracking?: number;
   readonly style?: StyleProp<TextStyle>;
 };
 
@@ -67,6 +73,7 @@ export function Text({
   color = "primary",
   align,
   uppercase,
+  tracking,
   style,
   ...props
 }: TextProps) {
@@ -76,7 +83,7 @@ export function Text({
     <RNText
       {...props}
       style={[
-        resolveTextStyle(role, size),
+        resolveTextStyle(role, size, { tracking }),
         { color: theme.color.text[color] },
         align ? { textAlign: align } : null,
         uppercase ? { textTransform: "uppercase" } : null,

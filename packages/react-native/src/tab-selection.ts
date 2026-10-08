@@ -22,3 +22,19 @@ export const INDICATOR_HEIGHT = 2;
 export function activeTabIndex(values: readonly string[], value: string): number {
   return values.indexOf(value);
 }
+
+/**
+ * How a strip draws its labels.
+ *
+ * `eyebrow` is the default and what every strip so far ships with: short words read as
+ * section names, in the overline role. `control` is opt-in for labels written in
+ * sentence case — «Exacta», «Rango» — which the eyebrow's wide tracking spreads apart.
+ */
+export type TabLabelStyle = "eyebrow" | "control";
+
+export function tabLabelStyle(style: TabLabelStyle | undefined): {
+  readonly role: TabLabelStyle;
+  readonly size: "2xs" | "sm";
+} {
+  return style === "control" ? { role: "control", size: "sm" } : { role: "eyebrow", size: "2xs" };
+}

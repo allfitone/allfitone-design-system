@@ -39,6 +39,18 @@ export function resolveSheetGeometry(input: {
     maxHeight: Math.max(0, input.screenHeight - keyboard) * MAX_HEIGHT_RATIO,
     // The home indicator is under the keyboard, so reserving for it as well would
     // leave the panel floating a strip above the keys.
-    paddingBottom: (keyboard > 0 ? 0 : input.safeAreaBottom) + input.basePadding,
+    paddingBottom:
+      (keyboard > 0 ? 0 : input.safeAreaBottom) + input.basePadding,
   };
+}
+
+/**
+ * What a touch on the backdrop means. While the keyboard is up the panel is lifted and
+ * the backdrop is the strip above it, the natural place to tap when done typing: that
+ * touch closes the keyboard and keeps the sheet. With no keyboard, it closes the sheet.
+ */
+export function backdropIntent(
+  keyboardHeight: number
+): "dismiss-keyboard" | "dismiss" {
+  return keyboardHeight > 0 ? "dismiss-keyboard" : "dismiss";
 }
