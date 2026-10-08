@@ -1,5 +1,11 @@
 # @allfitone/icons
 
+## 0.5.0
+
+### Minor Changes
+
+- 97db718: Add 32 food-group icons (egg, dairy, grain, fruit, coffee and more) and an optional `tracking` prop on `Text`, in em, that overrides a role's letter spacing from the consuming product without changing the default for anyone else.
+
 ## 0.4.0
 
 ### Minor Changes

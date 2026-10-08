@@ -1,5 +1,18 @@
 # @allfitone/react-native
 
+## 0.10.0
+
+### Minor Changes
+
+- 97db718: Add 32 food-group icons (egg, dairy, grain, fruit, coffee and more) and an optional `tracking` prop on `Text`, in em, that overrides a role's letter spacing from the consuming product without changing the default for anyone else.
+- 2153935: `Tabs`: new optional `labelStyle` prop. `"eyebrow"`, the default, keeps every existing strip exactly as it was; `"control"` draws labels written in sentence case («Exacta», «Rango») in the control role, without the overline's wide tracking that spread them apart.
+
+### Patch Changes
+
+- 97db718: `Sheet`: while the keyboard is up, a touch on the backdrop now only closes the keyboard instead of closing the sheet and losing what was being typed; a second touch closes the sheet as before.
+- Updated dependencies [97db718]
+  - @allfitone/icons@0.5.0
+
 ## 0.9.0
 
 ### Minor Changes
