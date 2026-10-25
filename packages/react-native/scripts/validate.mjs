@@ -18,6 +18,7 @@ const importableOutputs = [
   "sheet-geometry.js",
   "tab-selection.js",
   "step-geometry.js",
+  "segmented-geometry.js",
 ];
 const nativeOnlyOutputs = [
   "badge.js",
@@ -669,6 +670,26 @@ for (const hop of ["runOnJS", "scheduleOnRN", "useState"]) {
     throw new Error(
       `PageDots reaches for \`${hop}\`: following the finger must never schedule work ` +
         "back to the React runtime, which is the whole reason the shared value exists."
+    );
+  }
+}
+
+// A segmented control has two sizes, and both are a finger's target, whatever is drawn.
+const { segmentedGeometry } = await import("../dist/segmented-geometry.js");
+const regular = segmentedGeometry("md");
+const small = segmentedGeometry("sm");
+if (regular.height !== 48 || regular.inset !== 4) {
+  throw new Error("The regular segmented control keeps its 48 track with a 4 inset.");
+}
+if (small.height >= regular.height || small.labelSize === regular.labelSize) {
+  throw new Error("The small segmented control must be smaller, and say so in its label too.");
+}
+for (const [name, geometry] of [["md", regular], ["sm", small]]) {
+  const segment = geometry.height - 2 * geometry.inset;
+  if (segment + 2 * geometry.hitSlop < getNativeTouchTarget("android")) {
+    throw new Error(
+      `A ${name} segment is ${segment} tall; with its slop it must still reach ` +
+        `${getNativeTouchTarget("android")}, the larger of the two platform targets.`
     );
   }
 }

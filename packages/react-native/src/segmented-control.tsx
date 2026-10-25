@@ -14,12 +14,19 @@
  *
  * **Every segment is the same width**, so the control does not resize when the words
  * change and the thumb does not move under the finger between renders.
+ *
+ * **`size="sm"`** is the same control inside a card: a 28 track that fits its labels
+ * instead of stretching, for a chart's range or a photo's view. Its targets still reach
+ * the platform minimum through `hitSlop`; see `segmented-geometry.ts`.
  */
 
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
 
+import { segmentedGeometry, type SegmentedSize } from "./segmented-geometry.js";
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
+
+export type { SegmentedSize } from "./segmented-geometry.js";
 
 export type SegmentItem<Value extends string = string> = {
   readonly value: Value;
@@ -33,31 +40,27 @@ export type SegmentedControlProps<Value extends string = string> = {
   readonly onChange: (value: Value) => void;
   /** Names the group for a screen reader, e.g. «Tipo de portada». */
   readonly accessibilityLabel?: string;
+  /** `md` (default) splits a screen; `sm` sits inside a card and fits its labels. */
+  readonly size?: SegmentedSize;
   readonly testID?: string;
   readonly style?: StyleProp<ViewStyle>;
 };
-
-/**
- * Por encima del suelo de 44 puntos, no justo debajo.
- *
- * Estaba en 40 porque la pista pone cuatro de relleno y 40 + nada llegaba «casi». Casi no
- * es el suelo: este control parte una pantalla en dos mitades y se toca de pie, así que
- * cada segmento tiene que ser un blanco cómodo por sí mismo, sin contar con que el dedo
- * acierte el centro.
- */
-const HEIGHT = 48;
-
-const INSET = 4;
 
 export function SegmentedControl<Value extends string = string>({
   items,
   value,
   onChange,
   accessibilityLabel,
+  size = "md",
   testID,
   style,
 }: SegmentedControlProps<Value>) {
   const theme = useTheme();
+  // 48 for `md`: above the 44 floor, not just under it. The track's four of padding
+  // once left a 40 control «almost» there, and almost is not the floor.
+  const geometry = segmentedGeometry(size);
+  const small = size === "sm";
+  const radius = small ? geometry.height / 2 - geometry.inset : theme.semanticRadius.control;
 
   return (
     <View
@@ -66,12 +69,14 @@ export function SegmentedControl<Value extends string = string>({
       testID={testID}
       style={[
         styles.track,
+        small ? styles.fitted : null,
         {
-          height: HEIGHT,
-          padding: INSET,
+          height: geometry.height,
+          padding: geometry.inset,
+          gap: geometry.gap,
           // Concentric with the segment's: the track's corner is the segment's plus
           // the inset between them, or the two curves fight each other.
-          borderRadius: theme.semanticRadius.control + INSET,
+          borderRadius: radius + geometry.inset,
           backgroundColor: theme.color.background.surfaceMuted,
           borderColor: theme.color.border.subtle,
         },
@@ -86,11 +91,13 @@ export function SegmentedControl<Value extends string = string>({
             accessibilityRole="tab"
             accessibilityLabel={item.accessibilityLabel ?? item.label}
             accessibilityState={{ selected: chosen }}
+            hitSlop={geometry.hitSlop}
             onPress={() => onChange(item.value)}
             style={({ pressed }) => [
               styles.segment,
+              small ? { flex: 0, minWidth: geometry.minSegmentWidth, paddingHorizontal: 8 } : null,
               {
-                borderRadius: theme.semanticRadius.control,
+                borderRadius: radius,
                 // Transparent rather than the track's own colour: an unchosen segment
                 // is a hole in the track, not a second surface on top of it.
                 backgroundColor: chosen ? theme.color.accent.tonal : "transparent",
@@ -99,7 +106,12 @@ export function SegmentedControl<Value extends string = string>({
               },
             ]}
           >
-            <Text role="control" size="sm" color={chosen ? "accent" : "secondary"} numberOfLines={1}>
+            <Text
+              role="control"
+              size={geometry.labelSize}
+              color={chosen ? "accent" : "secondary"}
+              numberOfLines={1}
+            >
               {item.label}
             </Text>
           </Pressable>
@@ -110,6 +122,7 @@ export function SegmentedControl<Value extends string = string>({
 }
 
 const styles = StyleSheet.create({
-  track: { flexDirection: "row", gap: 4, borderWidth: 1 },
+  track: { flexDirection: "row", borderWidth: 1 },
+  fitted: { alignSelf: "flex-start" },
   segment: { flex: 1, alignItems: "center", justifyContent: "center", borderWidth: 1 },
 });
