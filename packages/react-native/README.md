@@ -67,6 +67,7 @@ Expo projects should install the native peers through `npx expo install` so the 
 - `@allfitone/react-native/text-field`: labelled text entry with a state-carrying border.
 - `@allfitone/react-native/checkbox`: a statement the person affirms, with its mark.
 - `@allfitone/react-native/code-field`: segmented entry for a short numeric code.
+- `@allfitone/react-native/segmented-control`: a few mutually exclusive views on one track; `size="sm"` for inside a card.
 - `@allfitone/react-native/inline-alert`: status message that sits with its control.
 - `@allfitone/react-native/toast`: transient confirmation that floats and then leaves.
 - `@allfitone/react-native/third-party`: `InstagramGlyph` and `instagramGradient`, Instagram's own mark for sharing to it. Never recolour it into the Allfit palette; white, black or the gradient only.
@@ -88,6 +89,8 @@ Expo projects should install the native peers through `npx expo install` so the 
 **`CodeField` is one input, not one per digit.** A field per digit has to simulate backspace across fields, and only one of them receives the platform's one-time-code autofill. The boxes are drawn beneath a single transparent input and hidden from assistive technology.
 
 **`CodeField` sets no `returnKeyType` and does not accept one.** The iOS number pad has no return key, so requesting one makes the platform float a loose button over the layout.
+
+**`SegmentedControl size="sm"` is small to the eye, not to the finger.** The track is 28 and fits its labels instead of stretching, for a chart's range or a photo's view inside a card. Each segment's `hitSlop` still reaches the 48 target, so leave room around it rather than packing other controls against its edges.
 
 **One `SignalBlock` per screen.** Ink & Signal allows a single accent surface; a second one is a design error this component cannot catch.
 

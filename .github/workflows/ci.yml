@@ -24,6 +24,11 @@ jobs:
   validate:
     if: ${{ !startsWith(github.head_ref, 'changeset-release/') }}
     runs-on: ubuntu-latest
+    # Playwright's own image carries both browsers and their system libraries.
+    # `install --with-deps` fetched them from the Ubuntu mirror on every run and
+    # twice took the whole 20 minutes. The tag must match the locked Playwright.
+    container:
+      image: mcr.microsoft.com/playwright:v1.61.1-noble
     timeout-minutes: 20
     steps:
       - name: Checkout
@@ -37,16 +42,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      # Two browsers downloaded on every run cost more than storing them.
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-
-      - name: Install browsers
-        run: npx playwright install --with-deps chromium webkit
 
       - name: Validate packages
         run: npm run check
