@@ -1,6 +1,6 @@
 {
   "name": "@allfitone/react-native",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "React Native adapters for the Allfit One design system.",
   "repository": {
     "type": "git",
