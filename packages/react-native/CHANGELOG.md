@@ -1,5 +1,11 @@
 # @allfitone/react-native
 
+## 0.11.0
+
+### Minor Changes
+
+- bda72d0: `SegmentedControl` takes `size="sm"`: a 28 track that fits its labels, for a control inside a card (a chart's range, a photo's view). Its segments still reach the platform touch target through `hitSlop`, and `md` stays the default.
+
 ## 0.10.0
 
 ### Minor Changes
