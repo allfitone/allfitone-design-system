@@ -386,7 +386,12 @@ function SidebarHeader({ className, ...props }: React.ComponentProps<"div">) {
         // width animates but `data-collapsible` flips at once, so anything sized
         // for the open sidebar is still at full size while the container is
         // 56px, and spilled out of the rail for the length of the transition.
-        "flex flex-col gap-2 p-2 group-data-[collapsible=icon]:overflow-hidden",
+        //
+        // The collapsed inset matches `SidebarGroup`'s. Without it the header
+        // keeps 8px where the content has 6px, so everything in it sits 2px
+        // right of everything below it — measured as a 4px gap difference
+        // around the icon, which is what the eye reads as "not centred".
+        "flex flex-col gap-2 p-2 group-data-[collapsible=icon]:overflow-hidden group-data-[collapsible=icon]:px-1.5",
         className,
       )}
       {...props}
@@ -399,7 +404,13 @@ function SidebarFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="sidebar-footer"
       data-sidebar="footer"
-      className={cn("flex flex-col gap-2 p-2", className)}
+      // Same collapsed inset as `SidebarGroup`, for the same reason as the
+      // header: an account row 2px right of the navigation above it reads as a
+      // misaligned icon, not as a misaligned container.
+      className={cn(
+        "flex flex-col gap-2 p-2 group-data-[collapsible=icon]:px-1.5",
+        className,
+      )}
       {...props}
     />
   )
@@ -539,7 +550,19 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 
 const sidebarMenuButtonVariants = cva(
   // Reference .nav-it: gap 10px, tx3 + 600; activo tonal + accent + 800.
-  "peer/menu-button group/menu-button relative flex min-h-11 w-full appearance-none items-center gap-2.5 overflow-hidden rounded-lg border-0 bg-transparent px-3 py-2 text-left text-sm font-semibold text-[var(--afo-color-text-muted)] no-underline ring-sidebar-ring outline-hidden transition-[width,height,padding,color,background-color] group-has-data-[sidebar=menu-action]/menu-item:pr-12 group-data-[collapsible=icon]:size-11! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-2! hover:bg-muted hover:text-sidebar-foreground active:bg-muted active:text-sidebar-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-muted data-open:hover:text-sidebar-foreground data-active:bg-sidebar-accent data-active:font-extrabold data-active:text-sidebar-accent-foreground [&_svg]:shrink-0 [&>span:last-child]:truncate",
+  //
+  // The collapsed rail centres its icon only if the icon is the only thing laid
+  // out. `truncate` does not take the label out of the row — it clips the text
+  // but the element still claims width, and the gap beside it is still
+  // reserved. Measured on a 56px rail: 20px of icon + 10px of gap + the label's
+  // remainder filled the button's 28px content box, so `justify-center` had
+  // nothing to centre and the icon sat 5px left of the rail's axis. Removing
+  // the gap alone just moved the slack into the label.
+  //
+  // `sr-only` takes the label out of the flow while leaving it in the
+  // accessibility tree, which is the point: it is the control's accessible
+  // name, so `hidden` would silence the whole navigation for a screen reader.
+  "peer/menu-button group/menu-button relative flex min-h-11 w-full appearance-none items-center gap-2.5 overflow-hidden rounded-lg border-0 bg-transparent px-3 py-2 text-left text-sm font-semibold text-[var(--afo-color-text-muted)] no-underline ring-sidebar-ring outline-hidden transition-[width,height,padding,color,background-color] group-has-data-[sidebar=menu-action]/menu-item:pr-12 group-data-[collapsible=icon]:size-11! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-2! hover:bg-muted hover:text-sidebar-foreground active:bg-muted active:text-sidebar-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-muted data-open:hover:text-sidebar-foreground data-active:bg-sidebar-accent data-active:font-extrabold data-active:text-sidebar-accent-foreground [&_svg]:shrink-0 [&>span:last-child]:truncate group-data-[collapsible=icon]:[&>span:last-child]:sr-only",
   {
     variants: {
       variant: {
