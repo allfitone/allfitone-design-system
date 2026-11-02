@@ -1,6 +1,6 @@
 {
   "name": "@allfitone/brand",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Canonical brand assets and renderers for the Allfit One ecosystem.",
   "repository": {
     "type": "git",
@@ -53,7 +53,7 @@
     "react": ">=19"
   },
   "devDependencies": {
-    "@allfitone/tokens": "^0.4.0",
+    "@allfitone/tokens": "^0.4.1",
     "@types/react": "^19",
     "react": "19.2.4",
     "react-dom": "19.2.4",
