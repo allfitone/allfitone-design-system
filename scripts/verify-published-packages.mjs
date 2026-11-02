@@ -11,9 +11,15 @@ if (!Array.isArray(releasePlan) || releasePlan.length === 0) {
 }
 
 const wait = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+
+// The registry can take minutes to serve a version it has already accepted. A one-minute window
+// failed the 0.14.3 and 0.14.4 releases of @allfitone/react after a successful publish, which also
+// skipped their tags and GitHub releases.
+const intervalMs = 5_000;
+const maxAttempts = 60;
 let pending = releasePlan;
 
-for (let attempt = 1; attempt <= 12; attempt += 1) {
+for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
   const nextPending = [];
 
   for (const { name, version } of pending) {
@@ -44,7 +50,7 @@ for (let attempt = 1; attempt <= 12; attempt += 1) {
   pending = nextPending;
 
   if (pending.length === 0) break;
-  if (attempt < 12) await wait(5_000);
+  if (attempt < maxAttempts) await wait(intervalMs);
 }
 
 if (pending.length > 0) {
