@@ -1,5 +1,15 @@
 # @allfitone/react-native
 
+## 0.11.1
+
+### Patch Changes
+
+- 6ef125e: Point repository, homepage and issue links at the renamed `allfitone` GitHub organization so npm provenance matches the publishing repository.
+- Updated dependencies [6ef125e]
+  - @allfitone/brand@0.4.1
+  - @allfitone/icons@0.5.1
+  - @allfitone/tokens@0.4.1
+
 ## 0.11.0
 
 ### Minor Changes

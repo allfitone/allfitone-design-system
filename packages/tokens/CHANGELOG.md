@@ -1,5 +1,11 @@
 # @allfitone/tokens
 
+## 0.4.1
+
+### Patch Changes
+
+- 6ef125e: Point repository, homepage and issue links at the renamed `allfitone` GitHub organization so npm provenance matches the publishing repository.
+
 ## 0.4.0
 
 ### Minor Changes

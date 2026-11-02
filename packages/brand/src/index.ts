@@ -1,4 +1,4 @@
-export const designSystemVersion = "0.4.0" as const;
+export const designSystemVersion = "0.4.1" as const;
 
 export const brandColors = {
   cyan: "#55EFFB",
