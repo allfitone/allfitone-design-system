@@ -25,7 +25,7 @@ After the bootstrap release, configure a trusted publisher in the settings of ev
 | Field | Value |
 | --- | --- |
 | Provider | GitHub Actions |
-| Organization or user | `dinnartec` |
+| Organization or user | `allfitone` |
 | Repository | `allfitone-design-system` |
 | Workflow filename | `publish.yml` |
 | Environment | `npm` |

@@ -4,12 +4,12 @@
   "description": "React Native adapters for the Allfit One design system.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dinnartec/allfitone-design-system.git",
+    "url": "https://github.com/allfitone/allfitone-design-system.git",
     "directory": "packages/react-native"
   },
-  "homepage": "https://github.com/dinnartec/allfitone-design-system#readme",
+  "homepage": "https://github.com/allfitone/allfitone-design-system#readme",
   "bugs": {
-    "url": "https://github.com/dinnartec/allfitone-design-system/issues"
+    "url": "https://github.com/allfitone/allfitone-design-system/issues"
   },
   "publishConfig": {
     "access": "public",
