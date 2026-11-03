@@ -59,7 +59,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | --- | --- |
 | Actions | Button, IconButton |
 | Navigation | Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell, Command |
-| Entry | AccessShell, DeviceGate |
+| Entry | AccessShell, DeviceGate, SiteShell |
 | Forms | Field, Label, Input, Textarea |
 | Selection | Checkbox, RadioGroup, Switch, ToggleGroup, Select, Combobox, DatePicker, Calendar, Tabs |
 | Data display | Table, DataTable, Avatar, Badge, Card, Skeleton, Empty |
@@ -73,6 +73,7 @@ The package root remains metadata-only. There is no component barrel because exp
 ## Composition rules
 
 - `AccessShell` owns the responsive composition for authentication and product-entry pages. Products provide brand, copy, a real anchor action, and security context without adding local layout styles. `AccessTitle` is the page `h1`, `AccessPanel` is named by its `h2`, and `AccessJourney` is reserved for a real ordered workflow.
+- `SiteShell` is the public chrome of product sites such as space.allfit.one and studio.allfit.one: `SiteHeader` and `SiteFooter` with their parts. It owns no surface; every colour is a semantic token, so the same header reads as Space under `data-afo-theme="dark"` and as Studio under `data-afo-theme="light"`. Products pass their own `ProductLockup`, section links, language routes and action. `SiteHeaderNav` hides below `60rem`, where the page itself is the menu. Links accept `render` so a framework router owns navigation. `SiteContainer` is the content column every region lines up with (`min(81rem, 100% - 2 × clamp(1.25rem, 5vw, 4.5rem))`). Set `--afo-site-surface` when the page sits on a surface other than `--background`, so the scrolled header blurs over the same colour.
 - `DeviceGate` replaces a product workspace with plain device guidance on compact phones. Compose one `DeviceGateFallback` and one `DeviceGateContent`; `DeviceGateMain` owns the accessible name, the only visible `main`, and the `h1` while compact. Compose product-owned recovery controls inside `DeviceGateActions`; it arranges actions responsively without owning clipboard, email, QR, or navigation behavior. The CSS contract blocks widths below `600px` and coarse-pointer landscape viewports below `600px` high, while preserving tablet access without user-agent detection or client hydration.
 - Links that look like buttons apply `buttonVariants` to an anchor or framework `Link`. They do not render through Base UI Button. Control variants suppress the user-agent link underline themselves, so a navigating action and a submitting action read identically; the `link` variant keeps its underline on hover, because there the underline is the affordance.
 - Workspace navigation composes `Sidebar` and `WorkspaceShell`; product applications provide destinations and routing state rather than restyling the active signal treatment.

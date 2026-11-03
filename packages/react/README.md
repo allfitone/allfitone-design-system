@@ -53,7 +53,7 @@ Available public component subpaths are:
 
 - actions: `button` and `icon-button`;
 - navigation: `breadcrumb`, `navigation-menu`, `dropdown-menu`, `pagination`, `drawer`, `sidebar`, `workspace-shell`, `setup-shell`, and `command`;
-- entry: `access-shell` for responsive, brand-led authentication and product-entry pages, `setup-shell` for multi-step activation and onboarding, and `device-gate` for replacing compact-phone workspaces with device guidance;
+- entry: `access-shell` for responsive, brand-led authentication and product-entry pages, `setup-shell` for multi-step activation and onboarding, `device-gate` for replacing compact-phone workspaces with device guidance, and `site-shell` for the shared header and footer of public product sites;
 - forms: `field`, `label`, `input`, and `textarea`;
 - selection: `checkbox`, `radio-group`, `switch`, `toggle-group`, `select`, `combobox`, `date-picker`, `calendar`, `tabs`, and `choice-card`;
 - data display: `table`, `data-table`, `avatar`, `badge`, `card`, `skeleton`, and `empty`;
