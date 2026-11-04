@@ -937,7 +937,7 @@
   justify-content: flex-start;
 }
 
-.component-entry:is(#table, #combobox, #date-picker, #calendar, #popover, #alert, #command) {
+.component-entry:is(#table, #combobox, #date-picker, #time-picker, #calendar, #popover, #alert, #command) {
   grid-column: 1 / -1;
 }
 

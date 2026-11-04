@@ -55,7 +55,7 @@ Available public component subpaths are:
 - navigation: `breadcrumb`, `navigation-menu`, `dropdown-menu`, `pagination`, `drawer`, `sidebar`, `workspace-shell`, `setup-shell`, and `command`;
 - entry: `access-shell` for responsive, brand-led authentication and product-entry pages, `setup-shell` for multi-step activation and onboarding, `device-gate` for replacing compact-phone workspaces with device guidance, and `site-shell` for the shared header and footer of public product sites;
 - forms: `field`, `label`, `input`, and `textarea`;
-- selection: `checkbox`, `radio-group`, `switch`, `toggle-group`, `select`, `combobox`, `date-picker`, `calendar`, `tabs`, and `choice-card`;
+- selection: `checkbox`, `radio-group`, `switch`, `toggle-group`, `select`, `combobox`, `date-picker`, `time-picker`, `calendar`, `tabs`, and `choice-card`;
 - data display: `table`, `data-table`, `avatar`, `badge`, `card`, `skeleton`, and `empty`;
 - signature: `accent-block`, `stat-strip`, `tick-ring`, `pulse-mark`, and `animated-brand-lockup`;
 - overlays: `dialog`, `alert-dialog`, `sheet`, `popover`, `tooltip`, and the `CommandDialog` composition from `command`;
@@ -128,7 +128,13 @@ Import `DateRange` and `Matcher` types from the same component subpath.
 or uncontrolled `Date | undefined` value. It keeps its accepted format visible,
 validates typed dates and disabled Calendar matchers, and exposes textual invalid
 or unavailable states without requiring a second parsing implementation in the
-product.
+product. `formatLabel` names the visible format in the product's language.
+
+`TimePicker` is DatePicker's counterpart for a time of day. Its value is an
+`HH:MM` string on a 24-hour clock, with no date or timezone; the product combines
+it with both. Times can be typed or chosen from a list offered every `step`
+minutes, which opens on the current time and moves by arrow, page (one hour),
+Home and End keys. Every visible and announced word is a prop.
 
 `Alert` provides `info`, `success`, `warning`, and `danger` callouts with an
 automatic semantic icon, title, description, and optional action. Static

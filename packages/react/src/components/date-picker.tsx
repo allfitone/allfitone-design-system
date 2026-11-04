@@ -34,6 +34,8 @@ type DatePickerProps = Omit<
   description?: React.ReactNode
   errorMessage?: React.ReactNode
   formatHint?: string
+  /** Names the visible format, as in `Format: MM/DD/YYYY`. */
+  formatLabel?: string
   formatPattern?: string
   invalid?: boolean
   label: React.ReactNode
@@ -59,6 +61,7 @@ function DatePicker(props: DatePickerProps) {
     disabled,
     errorMessage,
     formatHint = "MM/DD/YYYY",
+    formatLabel = "Format",
     formatPattern = "MM/dd/yyyy",
     id: providedId,
     invalid = false,
@@ -289,7 +292,9 @@ function DatePicker(props: DatePickerProps) {
         className="m-0 flex flex-wrap gap-x-1.5 text-sm leading-normal text-muted-foreground"
       >
         {description ? <span>{description}</span> : null}
-        <span>Format: {formatHint}</span>
+        <span>
+          {formatLabel}: {formatHint}
+        </span>
       </p>
       {isInvalid ? (
         <p
