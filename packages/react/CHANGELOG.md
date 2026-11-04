@@ -1,5 +1,11 @@
 # @allfitone/react
 
+## 0.16.0
+
+### Minor Changes
+
+- a3b6862: Add `TimePicker`, DatePicker's counterpart for a time of day: a typed `HH:MM` field on a 24-hour clock and a keyboard-navigable list of times every `step` minutes, with the same visible format, invalid state and translatable words. `DatePicker` gains `formatLabel`, so the visible `Format:` can be named in the product's language.
+
 ## 0.15.1
 
 ### Patch Changes
