@@ -305,6 +305,42 @@ test("operates composite selection controls from the keyboard", async ({ page })
   await expect(select).not.toHaveText("");
 });
 
+test("types and lists times of day from the keyboard", async ({ page }) => {
+  await openCategory(page, "selection", "Selection");
+  const specimen = page.locator("#time-picker");
+  const field = specimen.locator('[data-slot="time-picker"]').first();
+  const input = field.getByLabel("Start time");
+
+  await expect(input).toHaveValue("06:30");
+  await field.getByRole("button", { name: "Open time list" }).click();
+
+  const list = page.getByRole("listbox", { name: "Choose a time" });
+  await expect(list).toBeFocused();
+  await expect(page.getByRole("option", { name: "06:30" })).toHaveAttribute(
+    "aria-selected",
+    "true"
+  );
+  await expect(page.getByRole("option", { name: "06:30" })).toBeInViewport();
+  await list.press("PageDown");
+  await list.press("ArrowDown");
+  await list.press("Enter");
+  await expect(list).toBeHidden();
+  await expect(input).toHaveValue("07:45");
+  await expect(specimen.getByText("07:45", { exact: true })).toBeVisible();
+
+  await input.fill("25:00");
+  await input.press("Enter");
+  await expect(field.getByRole("alert")).toHaveText(
+    "Enter a valid time in HH:MM format."
+  );
+  await expect(input).toHaveAttribute("aria-invalid", "true");
+
+  await input.fill("9:05");
+  await input.press("Enter");
+  await expect(input).toHaveValue("09:05");
+  await expect(input).not.toHaveAttribute("aria-invalid");
+});
+
 test("parses date picker input and keeps its calendar bounded", async ({ page }) => {
   await openCategory(page, "selection", "Selection");
   const specimen = page.locator("#date-picker");

@@ -44,6 +44,7 @@ import { Switch } from "@allfitone/react/components/switch";
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow, TableSortButton, TableState } from "@allfitone/react/components/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@allfitone/react/components/tabs";
 import { Textarea } from "@allfitone/react/components/textarea";
+import { TimePicker } from "@allfitone/react/components/time-picker";
 import { TickRing } from "@allfitone/react/components/tick-ring";
 import { ToggleGroup, ToggleGroupItem } from "@allfitone/react/components/toggle-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@allfitone/react/components/tooltip";
@@ -722,6 +723,48 @@ function DatePickerSpecimen() {
           label="Review deadline"
           description="Use the format shown below the field."
           errorMessage="Choose a review deadline before publishing."
+          invalid
+          required
+        />
+      </div>
+    </div>
+  );
+}
+
+function TimePickerSpecimen() {
+  const [startTime, setStartTime] = useState<string | undefined>("06:30");
+
+  return (
+    <div className="date-picker-specimen">
+      <div className="date-picker-specimen__schedule">
+        <div className="date-picker-specimen__heading">
+          <span>Next planned session</span>
+          <Badge variant="outline">Scheduled</Badge>
+        </div>
+        <TimePicker
+          id="scheduled-session-time"
+          label="Start time"
+          description="Local time at the gym."
+          step={15}
+          onValueChange={setStartTime}
+          value={startTime}
+        />
+        <div className="date-picker-specimen__slot" aria-live="polite">
+          <FoundationIcon name="time" decorative />
+          <span>
+            <small>Current slot</small>
+            <strong>{startTime ?? "No start time"}</strong>
+            <em>Strength · Camila Torres</em>
+          </span>
+        </div>
+      </div>
+      <div className="date-picker-specimen__validation">
+        <Badge variant="code">Required state</Badge>
+        <TimePicker
+          id="check-in-cutoff"
+          label="Check-in cutoff"
+          description="Use the format shown below the field."
+          errorMessage="Choose a cutoff time before publishing."
           invalid
           required
         />
@@ -1549,6 +1592,10 @@ export function ComponentCatalog({
 
           <ComponentSection id="date-picker">
             <DatePickerSpecimen />
+          </ComponentSection>
+
+          <ComponentSection id="time-picker">
+            <TimePickerSpecimen />
           </ComponentSection>
 
           <ComponentSection id="calendar">

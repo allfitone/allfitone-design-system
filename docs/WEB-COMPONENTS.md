@@ -61,7 +61,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | Navigation | Breadcrumb, NavigationMenu, DropdownMenu, Pagination, Drawer, Sidebar, WorkspaceShell, Command |
 | Entry | AccessShell, DeviceGate, SiteShell |
 | Forms | Field, Label, Input, Textarea |
-| Selection | Checkbox, RadioGroup, Switch, ToggleGroup, Select, Combobox, DatePicker, Calendar, Tabs |
+| Selection | Checkbox, RadioGroup, Switch, ToggleGroup, Select, Combobox, DatePicker, TimePicker, Calendar, Tabs |
 | Data display | Table, DataTable, Avatar, Badge, Card, Skeleton, Empty |
 | Signature | AccentBlock, StatStrip, TickRing, PulseMark, AnimatedBrandLockup |
 | Overlays | Dialog, AlertDialog, Sheet, Popover, Tooltip, CommandDialog |
@@ -134,6 +134,15 @@ The package root remains metadata-only. There is no component barrel because exp
   input that does not match that pattern and rejects dates matched by
   `calendarProps.disabled`; both failures remain explicit in text and through
   `aria-invalid`.
+- Pass `formatLabel` with `formatHint` when the product speaks another
+  language: DatePicker shows `{formatLabel}: {formatHint}` below the field.
+- TimePicker keeps DatePicker's anatomy for a time of day: a typed field, a
+  trailing 44 px list action and `Alt+ArrowDown`. Its value is `HH:MM` on a
+  24-hour clock without date or timezone. The list offers a time every `step`
+  minutes (30 by default) as a listbox that keeps focus and announces the
+  active option through `aria-activedescendant`; arrows move one option,
+  `PageUp`/`PageDown` one hour, `Home`/`End` the ends, `Enter` or `Space`
+  selects and closes. Typed times need not fall on the step.
 - Calendar supports controlled single-date and range selection through
   React DayPicker. Use `disabled` matchers for unavailable dates and
   `excludeDisabled` when a range must reset instead of crossing one.

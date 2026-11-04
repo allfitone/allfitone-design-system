@@ -92,6 +92,20 @@ describe("DatePicker", () => {
     expect(screen.getByLabelText("Session date")).toHaveValue("")
   })
 
+  it("names its format in the product's language", () => {
+    render(
+      <DatePicker
+        label="Fecha"
+        formatLabel="Formato"
+        formatHint="DD/MM/AAAA"
+        formatPattern="dd/MM/yyyy"
+      />
+    )
+
+    expect(screen.getByText("Formato: DD/MM/AAAA")).toBeVisible()
+    expect(screen.queryByText(/Format:/)).not.toBeInTheDocument()
+  })
+
   it("supports a controlled value without losing accessibility", async () => {
     const { container } = render(
       <DatePicker
