@@ -75,6 +75,24 @@ describe("controls rendered as anchors", () => {
     expect(screen.getByRole("link", { name: "Invite a member" })).toHaveClass("no-underline");
   });
 
+  // Without Preflight a `<button>` keeps the user agent's grey face unless the variant
+  // paints over it. Ghost and link once did not: near-white text on #F0F0F0 in Backoffice.
+  it.each(["default", "outline", "secondary", "ghost", "destructive", "link"] as const)(
+    "gives the %s variant a background of its own",
+    (variant) => {
+      const resting = buttonVariants({ variant })
+        .split(/\s+/)
+        .filter((utility) => /^bg-(?!clip-)/.test(utility));
+
+      expect(resting).not.toEqual([]);
+    },
+  );
+
+  it("keeps the ghost and link faces transparent at rest", () => {
+    expect(buttonVariants({ variant: "ghost" }).split(/\s+/)).toContain("bg-transparent");
+    expect(buttonVariants({ variant: "link" }).split(/\s+/)).toContain("bg-transparent");
+  });
+
   it("keeps the underline affordance on the link variant", () => {
     const classes = buttonVariants({ variant: "link" });
 

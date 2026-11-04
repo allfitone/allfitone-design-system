@@ -15,11 +15,12 @@ const buttonVariants = cva(
           "border-border bg-transparent text-[var(--afo-color-text-secondary)] hover:border-primary hover:bg-muted hover:text-foreground aria-expanded:border-primary aria-expanded:bg-muted aria-expanded:text-foreground",
         secondary:
           "border-border bg-secondary text-secondary-foreground hover:border-input hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+        // Ghost and link clear the user agent's button face themselves: no Preflight does it.
         ghost:
-          "text-foreground shadow-none hover:bg-muted hover:shadow-none aria-expanded:bg-muted aria-expanded:text-foreground",
+          "bg-transparent text-foreground shadow-none hover:bg-muted hover:shadow-none aria-expanded:bg-muted aria-expanded:text-foreground",
         destructive:
           "border-destructive bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklch,var(--destructive),var(--foreground)_8%)]",
-        link: "text-[var(--afo-color-text-accent)] shadow-none hover:translate-y-0 hover:shadow-none active:translate-y-0 underline-offset-4 hover:underline",
+        link: "bg-transparent text-[var(--afo-color-text-accent)] shadow-none hover:translate-y-0 hover:shadow-none active:translate-y-0 underline-offset-4 hover:underline",
       },
       size: {
         default:
