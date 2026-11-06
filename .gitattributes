@@ -1,0 +1,35 @@
+# Line endings for this repository.
+#
+# Git already stores every text file here with LF. What it did NOT do was say
+# how to check one out, so a clone on Windows with `core.autocrlf=true` wrote
+# CRLF into the working tree — and the brand gate compares a committed SVG
+# byte for byte against what its generator writes, which is LF. All 48 social
+# assets failed on Windows and passed in CI, which is the worst shape a gate
+# can have: red for whoever is working, green for whoever is reviewing.
+#
+# `eol=lf` is what fixes it, and it beats `core.autocrlf` rather than asking
+# every person to configure it. Any file a generator writes and a test reads
+# back has to come out of git exactly as the generator would write it.
+* text=auto eol=lf
+
+# Binary, so git never looks at the bytes. PNGs are the reason this list
+# exists: 61 of them contain a CR+LF pair by coincidence, and `text=auto`
+# classifies them by their NUL bytes rather than by that pair. Saying it here
+# does not change today's behaviour — it makes the next image format somebody
+# commits safe without anybody having to know the heuristic.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.avif binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.pdf binary
+*.zip binary
+
+# SVG is text, and deliberately not in the list above: it is generated,
+# compared and diffed as text, and it must be LF.
