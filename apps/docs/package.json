@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "start": "next start",
+    "start": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/serve-export.mts",
     "build": "npm run build:dependencies && npm run build:next",
     "build:dependencies": "npm run build --workspace @allfitone/brand && npm run build --workspace @allfitone/icons && npm run build --workspace @allfitone/tokens && npm run build --workspace @allfitone/react",
     "build:next": "next build",
