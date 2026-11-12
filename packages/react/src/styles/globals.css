@@ -15,6 +15,16 @@
 
 @source "../components";
 
+/*
+ * Tests are not a source of classes. Automatic detection reaches them anyway,
+ * so a test that asserts a class string by name has that string extracted as a
+ * real candidate and emitted into the published stylesheet. `card.test.tsx`
+ * asserts that the card no longer carries the descendant form of its footer
+ * rule — and naming it put that exact rule back into `dist/styles.css`, where
+ * anyone checking the fix by reading the CSS would find the defect still there.
+ */
+@source not "../../tests";
+
 @custom-variant dark (&:is([data-afo-theme="dark"] *));
 
 @theme inline {
