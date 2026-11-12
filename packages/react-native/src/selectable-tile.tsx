@@ -30,10 +30,20 @@
  * and a grid where some things have artwork and some do not reads as broken rather
  * than as incomplete. Tiles on the same line still stretch to each other, so a row
  * that mixes the two stays a row.
+ *
+ * **With an `icon` it is an option card**: a glyph, a name and a line saying what the
+ * option means, set to the left. That is the shape for a few kinds somebody must tell
+ * apart by meaning rather than by sight — a pain, a limitation, a recovery — where the
+ * caption is the reason the card exists. Cards on one line share the tallest one's
+ * height, so a caption of two lines never leaves its neighbours short.
+ *
+ * `choice="single"` makes it a radio: picking one replaces the other, and the screen
+ * reader says so. The default stays `multiple`, the equipment case.
  */
 
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
 
+import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
 
@@ -58,6 +68,12 @@ export type SelectableTileProps = {
   readonly disabled?: boolean;
   /** The picture. An `Image`, an icon, anything the caller already has. */
   readonly children?: React.ReactNode;
+  /** Draws an option card: this glyph, the name and `caption`, set to the left. */
+  readonly icon?: IconName;
+  /** What the option means, under its name. Only drawn on an option card. */
+  readonly caption?: string;
+  /** `single` answers as a radio; `multiple`, the default, as a checkbox. */
+  readonly choice?: "multiple" | "single";
   readonly accessibilityLabel?: string;
   readonly testID?: string;
   readonly style?: StyleProp<ViewStyle>;
@@ -70,11 +86,30 @@ export function SelectableTile({
   onPress,
   disabled,
   children,
+  icon,
+  caption,
+  choice = "multiple",
   accessibilityLabel,
   testID,
   style,
 }: SelectableTileProps) {
   const theme = useTheme();
+  if (icon !== undefined) {
+    return (
+      <OptionCard
+        name={name}
+        icon={icon}
+        caption={caption}
+        selected={selected}
+        onPress={onPress}
+        disabled={disabled}
+        choice={choice}
+        accessibilityLabel={accessibilityLabel}
+        testID={testID}
+        style={style}
+      />
+    );
+  }
   // `null` and `undefined` both mean "the caller had nothing", and a consumer
   // choosing between them should not change the tile's shape.
   const bare = children === undefined || children === null;
@@ -91,9 +126,13 @@ export function SelectableTile({
 
   return (
     <Pressable
-      accessibilityRole="checkbox"
+      accessibilityRole={choice === "single" ? "radio" : "checkbox"}
       accessibilityLabel={accessibilityLabel ?? name}
-      accessibilityState={{ checked: selected, disabled: disabled === true }}
+      accessibilityState={
+        choice === "single"
+          ? { selected, disabled: disabled === true }
+          : { checked: selected, disabled: disabled === true }
+      }
       disabled={disabled}
       onPress={onPress}
       testID={testID}
@@ -138,7 +177,104 @@ export function SelectableTile({
   );
 }
 
+function OptionCard({
+  name,
+  icon,
+  caption,
+  selected,
+  onPress,
+  disabled,
+  choice,
+  accessibilityLabel,
+  testID,
+  style,
+}: {
+  readonly name: string;
+  readonly icon: IconName;
+  readonly caption: string | undefined;
+  readonly selected: boolean;
+  readonly onPress: () => void;
+  readonly disabled: boolean | undefined;
+  readonly choice: "multiple" | "single";
+  readonly accessibilityLabel: string | undefined;
+  readonly testID: string | undefined;
+  readonly style: StyleProp<ViewStyle>;
+}) {
+  const theme = useTheme();
+  const on = selected && disabled !== true;
+  return (
+    <Pressable
+      accessibilityRole={choice === "single" ? "radio" : "checkbox"}
+      accessibilityLabel={accessibilityLabel ?? (caption ? `${name}: ${caption}` : name)}
+      accessibilityState={
+        choice === "single"
+          ? { selected, disabled: disabled === true }
+          : { checked: selected, disabled: disabled === true }
+      }
+      disabled={disabled}
+      onPress={onPress}
+      testID={testID}
+      style={({ pressed }) => [
+        styles.card,
+        {
+          borderColor: disabled
+            ? theme.color.action.disabled
+            : on
+              ? theme.color.border.accent
+              : theme.color.border.subtle,
+          backgroundColor: on ? theme.color.accent.tonal : theme.color.background.surfaceSubtle,
+          opacity: pressed && !disabled ? 0.7 : 1,
+        },
+        style,
+      ]}
+    >
+      <View
+        style={[
+          styles.glyph,
+          { backgroundColor: on ? theme.color.icon.accent : theme.color.background.surface },
+        ]}
+      >
+        <FoundationIcon
+          name={icon}
+          size="sm"
+          color={on ? theme.color.accent.onAccent : theme.color.icon.secondary}
+          decorative
+        />
+      </View>
+      <Text
+        role="control"
+        size="sm"
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.85}
+        color={disabled ? "disabled" : on ? "accent" : "primary"}
+      >
+        {name}
+      </Text>
+      {caption === undefined ? null : (
+        <Text role="body" size="xs" color="muted">
+          {caption}
+        </Text>
+      )}
+    </Pressable>
+  );
+}
+
 const styles = StyleSheet.create({
+  card: {
+    flex: 1,
+    gap: 8,
+    borderWidth: 1.5,
+    borderRadius: 18,
+    padding: 12,
+  },
+  glyph: {
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   base: {
     borderRadius: 16,
     flexDirection: "column",

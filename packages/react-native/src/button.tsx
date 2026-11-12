@@ -23,6 +23,10 @@
  * Cyan is reserved for action, focus and selection, and only one visual emphasis
  * is allowed per screen. A screen with two primary buttons is a design error
  * this component cannot catch — worth knowing before reaching for a second one.
+ *
+ * `quietDanger` is the ghost of `danger`: the word in the status colour on no fill, for
+ * the destructive action that only opens a confirmation — «Eliminar este registro» under
+ * a form — and so must not weigh as much as the confirmation itself.
  */
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -42,7 +46,7 @@ import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme, type Theme } from "./theme.js";
 
-export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "quietDanger";
 
 export type ButtonProps = Omit<PressableProps, "style" | "children"> & {
   readonly label: string;
@@ -80,7 +84,10 @@ type ButtonPalette = {
 function resolvePalette(theme: Theme, variant: ButtonVariant, disabled: boolean): ButtonPalette {
   if (disabled) {
     return {
-      background: variant === "ghost" ? "transparent" : theme.color.action.disabled,
+      background:
+        variant === "ghost" || variant === "quietDanger"
+          ? "transparent"
+          : theme.color.action.disabled,
       border: null,
       foreground: theme.color.action.onDisabled,
       gradient: false,
@@ -111,6 +118,13 @@ function resolvePalette(theme: Theme, variant: ButtonVariant, disabled: boolean)
       };
     // The system had the colour and not the control, so deleting was drawn as a
     // ghost and read like every other secondary choice on the screen.
+    case "quietDanger":
+      return {
+        background: "transparent",
+        border: null,
+        foreground: theme.color.status.danger,
+        gradient: false,
+      };
     case "danger":
       return {
         background: theme.color.status.danger,
@@ -156,7 +170,9 @@ export function Button({
           borderColor: palette.border ?? undefined,
         },
         // Ghost sits inline with text and would look detached with elevation.
-        variant === "ghost" || inactive ? null : resolveShadowStyle("control"),
+        variant === "ghost" || variant === "quietDanger" || inactive
+          ? null
+          : resolveShadowStyle("control"),
         // Opacity rather than a hover token: React Native has no hover, and the
         // press state has to read on both themes without a second palette.
         pressed ? styles.pressed : null,

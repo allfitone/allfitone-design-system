@@ -8,20 +8,33 @@
  *
  * Colour is never the only carrier. The icon and the text say the same thing, so
  * the message survives forced colours and colour-blind vision.
+ *
+ * **With a `title` it is a notice rather than a verdict**: the title carries the tone
+ * and the message under it is set as body text, readable at length, on a ground tinted
+ * with the tone and a panel's radius, so it reads as a card about a subject rather than
+ * as an error under a field. `icon` names the
+ * subject when the default mark would say «error» about something that is not one — a
+ * lock over what only a permission opens.
  */
 
 import { useEffect, useRef } from "react";
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
 import { Circle, Path, Svg } from "react-native-svg";
 
+import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
+import { withAlpha } from "./tokens.js";
 
 export type InlineAlertTone = "danger" | "warning" | "info" | "success";
 
 export type InlineAlertProps = {
   readonly message: string;
   readonly tone?: InlineAlertTone;
+  /** Drawn above the message in the tone; the message then reads as body text. */
+  readonly title?: string;
+  /** Replaces the default mark when the subject is not an error. */
+  readonly icon?: IconName;
   /**
    * Cuando se pasa, el aviso se puede tocar para quitarlo y se va solo pasados unos
    * segundos. Sin esto se queda, que es lo correcto cuando explica por qué un control
@@ -44,12 +57,15 @@ const DISMISS_AFTER = 6000;
 export function InlineAlert({
   message,
   tone = "danger",
+  title,
+  icon,
   onDismiss,
   autoDismissMs = DISMISS_AFTER,
   style,
 }: InlineAlertProps) {
   const theme = useTheme();
   const accent = theme.color.status[tone];
+  const titled = title !== undefined;
 
   // Leído por el efecto para que el temporizador no se reinicie cuando quien llama pasa
   // una función nueva en cada render, que es lo normal con una flecha en línea.
@@ -75,23 +91,38 @@ export function InlineAlert({
         styles.base,
         {
           gap: theme.spacing[2],
-          paddingHorizontal: theme.spacing[3],
-          paddingVertical: theme.spacing[3],
-          borderRadius: theme.semanticRadius.controlSmall,
-          borderColor: accent,
-          backgroundColor: theme.color.background.surfaceSubtle,
+          paddingHorizontal: titled ? theme.spacing[4] : theme.spacing[3],
+          paddingVertical: titled ? theme.spacing[4] : theme.spacing[3],
+          borderRadius: titled ? theme.semanticRadius.panel : theme.semanticRadius.controlSmall,
+          borderColor: titled ? withAlpha(accent, 0.25) : accent,
+          backgroundColor: titled ? withAlpha(accent, 0.07) : theme.color.background.surfaceSubtle,
         },
         style,
       ]}
     >
-      <Svg width={16} height={16} viewBox="0 0 24 24" style={styles.icon}>
-        <Circle cx={12} cy={12} r={10} stroke={accent} strokeWidth={2} fill="none" />
-        <Path d="M12 7v6" stroke={accent} strokeWidth={2} strokeLinecap="round" />
-        <Path d="M12 16.5h.01" stroke={accent} strokeWidth={2} strokeLinecap="round" />
-      </Svg>
-      <Text role="label" size="xs" style={{ flex: 1, color: accent }}>
-        {message}
-      </Text>
+      {icon === undefined ? (
+        <Svg width={16} height={16} viewBox="0 0 24 24" style={styles.icon}>
+          <Circle cx={12} cy={12} r={10} stroke={accent} strokeWidth={2} fill="none" />
+          <Path d="M12 7v6" stroke={accent} strokeWidth={2} strokeLinecap="round" />
+          <Path d="M12 16.5h.01" stroke={accent} strokeWidth={2} strokeLinecap="round" />
+        </Svg>
+      ) : (
+        <FoundationIcon name={icon} size="xs" color={accent} decorative style={styles.icon} />
+      )}
+      {title === undefined ? (
+        <Text role="label" size="xs" style={{ flex: 1, color: accent }}>
+          {message}
+        </Text>
+      ) : (
+        <View style={styles.words}>
+          <Text role="control" size="sm" style={{ color: accent }}>
+            {title}
+          </Text>
+          <Text role="body" size="xs" color="secondary">
+            {message}
+          </Text>
+        </View>
+      )}
     </View>
   );
 
@@ -120,4 +151,5 @@ const styles = StyleSheet.create({
   icon: {
     marginTop: 1,
   },
+  words: { flex: 1, gap: 4 },
 });

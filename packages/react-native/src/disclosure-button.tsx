@@ -22,6 +22,13 @@
  * belongs to a heading that is read once; this is a control whose label is read
  * every time the screen is scanned, and at that job it was the thing people disliked
  * before they could say why.
+ *
+ * **`variant="field"` reads as a form field that opens a picker**: the glyph, the value
+ * in the control role, and `actionLabel` («Cambiar») in the accent before the chevron,
+ * on the field's own ground. The form names the field above it, as it names a
+ * `TextField`, so `label` here is only spoken. It is what a form wants for a value
+ * chosen on another screen — an area of the body, a day — where the stacked variant
+ * reads as a filter.
  */
 
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
@@ -46,6 +53,10 @@ export type DisclosureButtonProps = {
   readonly disabled?: boolean;
   /** Fills the row it is in. Off by default. */
   readonly grow?: boolean;
+  /** `field` draws one line on a field's ground; `stacked`, the default, two lines. */
+  readonly variant?: "stacked" | "field";
+  /** The word before the chevron on a `field`, such as «Cambiar». */
+  readonly actionLabel?: string;
   readonly accessibilityLabel?: string;
   readonly testID?: string;
   readonly style?: StyleProp<ViewStyle>;
@@ -59,12 +70,68 @@ export function DisclosureButton({
   active,
   disabled,
   grow,
+  variant = "stacked",
+  actionLabel,
   accessibilityLabel,
   testID,
   style,
 }: DisclosureButtonProps) {
   const theme = useTheme();
   const on = active === true && disabled !== true;
+  if (variant === "field") {
+    return (
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={accessibilityLabel ?? label}
+        accessibilityValue={{ text: value }}
+        accessibilityState={{ disabled: disabled === true }}
+        disabled={disabled}
+        onPress={onPress}
+        testID={testID}
+        style={({ pressed }) => [
+          styles.field,
+          {
+            borderColor: disabled ? theme.color.action.disabled : theme.color.border.subtle,
+            backgroundColor: theme.color.background.surfaceSubtle,
+            borderRadius: theme.semanticRadius.control,
+            paddingHorizontal: theme.semanticSpacing.controlInsetX,
+            opacity: pressed && !disabled ? 0.7 : 1,
+          },
+          grow ? styles.grow : null,
+          style,
+        ]}
+      >
+        {icon === undefined ? null : (
+          <FoundationIcon
+            name={icon}
+            size={ICON_SIZE}
+            color={disabled ? theme.color.text.disabled : theme.color.icon.accent}
+            decorative
+          />
+        )}
+        <Text
+          role="control"
+          size="sm"
+          numberOfLines={1}
+          color={disabled ? "disabled" : on ? "primary" : "muted"}
+          style={styles.text}
+        >
+          {value}
+        </Text>
+        {actionLabel === undefined ? null : (
+          <Text role="control" size="xs" color={disabled ? "disabled" : "accent"}>
+            {actionLabel}
+          </Text>
+        )}
+        <FoundationIcon
+          name="next"
+          size="xs"
+          color={disabled ? theme.color.text.disabled : theme.color.icon.secondary}
+          decorative
+        />
+      </Pressable>
+    );
+  }
 
   const ink = () => {
     if (disabled) return theme.color.text.disabled;
@@ -131,5 +198,12 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   grow: { flex: 1 },
+  field: {
+    minHeight: 52,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    borderWidth: 2,
+  },
   text: { flex: 1, gap: 1, minWidth: 0 },
 });

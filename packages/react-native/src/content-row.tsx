@@ -19,14 +19,29 @@
  * **`trailing` is the whole difference between reading and acting.** A chevron says the
  * row opens; an action is a second target inside the row, which needs its own label
  * because «más opciones» on nine identical rows tells a screen reader nothing.
+ *
+ * **`icon` is the small mark, `preview` the picture.** A row that is told apart by
+ * kind rather than by look — a pain, a limitation — carries a glyph on a quiet tile,
+ * not a 56 px frame with a symbol lost in it. `tag` is a word about the row's kind set
+ * beside its name, as a quiet `Badge`, so the caption stays free for the row's own
+ * words.
+ *
+ * **`ContentGroup` puts several rows on one card**, divided by hairlines, the way a
+ * settings list groups what belongs together. Rows inside it are `plain`; the group
+ * owns the surface.
  */
 
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
-import type { ReactNode } from "react";
+import { Children, createContext, useContext, type ReactNode } from "react";
 
+import { Badge, badgeToneColor, type BadgeTone } from "./badge.js";
 import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
+import { withAlpha } from "./tokens.js";
+
+/** Set by `ContentGroup`, so its rows take the group's inset rather than their own card. */
+const Grouped = createContext(false);
 
 /**
  * El cuadrado donde va el arte, y el blanco redondo de al lado.
@@ -36,6 +51,7 @@ import { useTheme } from "./theme.js";
  * su borde: parecía que el componente no lo dibujaba, y lo dibujaba.
  */
 const PREVIEW = 56;
+const GLYPH = 36;
 const ACTION = 30;
 
 export interface ContentRowProps {
@@ -45,6 +61,14 @@ export interface ContentRowProps {
   /** `quiet` for the absence of the fact the note reports. Default `accent`. */
   readonly noteTone?: "accent" | "quiet";
   readonly preview?: ReactNode;
+  /** A glyph on a quiet tile, in place of a `preview`, for rows told apart by kind. */
+  readonly icon?: IconName;
+  /** A word about the row's kind, drawn beside the name as a quiet badge. */
+  readonly tag?: string;
+  /** Tints the glyph's tile and colours the glyph; default is the accent on a quiet tile. */
+  readonly iconTone?: BadgeTone;
+  /** The tone of `tag`. Default `accent`. */
+  readonly tagTone?: BadgeTone;
   readonly onPress: () => void;
   /** Filled by default; `plain` for a row that is an entrance rather than a thing. */
   readonly tone?: "surface" | "plain";
@@ -68,6 +92,10 @@ export function ContentRow({
   note,
   noteTone = "accent",
   preview,
+  icon,
+  tag,
+  iconTone,
+  tagTone = "accent",
   onPress,
   tone = "surface",
   trailing = { kind: "chevron" },
@@ -77,6 +105,10 @@ export function ContentRow({
   style,
 }: ContentRowProps) {
   const theme = useTheme();
+  const grouped = useContext(Grouped);
+  const glyphInk = iconTone === undefined ? theme.color.icon.accent : badgeToneColor(theme, iconTone);
+  const glyphGround =
+    iconTone === undefined ? theme.color.background.surfaceMuted : withAlpha(glyphInk, 0.14);
 
   return (
     <Pressable
@@ -89,21 +121,35 @@ export function ContentRow({
       testID={testID}
       style={({ pressed }) => [
         styles.base,
+        grouped ? styles.grouped : null,
         {
           backgroundColor:
-            tone === "surface" ? theme.color.background.surface : "transparent",
-          borderRadius: theme.semanticRadius.card,
+            tone === "surface" && !grouped ? theme.color.background.surface : "transparent",
+          borderRadius: grouped ? 0 : theme.semanticRadius.card,
           opacity: pressed && !disabled ? 0.7 : 1,
         },
         style,
       ]}
     >
       {preview === undefined ? null : <View style={styles.preview}>{preview}</View>}
+      {icon === undefined ? null : (
+        <View style={[styles.glyph, { backgroundColor: glyphGround }]}>
+          <FoundationIcon name={icon} size="sm" color={glyphInk} decorative />
+        </View>
+      )}
 
-      <View style={styles.text}>
-        <Text role="control" size="md" numberOfLines={1}>
-          {name}
-        </Text>
+      <View style={[styles.text, grouped ? styles.groupedText : null]}>
+        <View style={styles.title}>
+          <Text
+            role="control"
+            size={icon === undefined ? "md" : "sm"}
+            numberOfLines={1}
+            style={styles.shrink}
+          >
+            {name}
+          </Text>
+          {tag === undefined ? null : <Badge label={tag} tone={tagTone} variant="quiet" />}
+        </View>
         {caption === undefined ? null : (
           <Text role="body" size="xs" color="muted" numberOfLines={1}>
             {caption}
@@ -156,8 +202,48 @@ export function ContentRow({
   );
 }
 
+/**
+ * Several rows on one card, divided by hairlines. The rows inside take the group's inset
+ * and lose their own surface, so a row reads the same here whatever `tone` it was given.
+ */
+export function ContentGroup({
+  children,
+  style,
+}: {
+  readonly children: ReactNode;
+  readonly style?: StyleProp<ViewStyle>;
+}) {
+  const theme = useTheme();
+  const rows = Children.toArray(children);
+  return (
+    <View
+      style={[
+        styles.group,
+        {
+          backgroundColor: theme.color.background.surface,
+          borderColor: theme.color.border.subtle,
+          borderRadius: theme.semanticRadius.panel,
+        },
+        style,
+      ]}
+    >
+      <Grouped.Provider value>
+        {rows.map((row, index) => (
+          <View key={index}>
+            {index > 0 ? (
+              <View style={[styles.divider, { backgroundColor: theme.color.border.subtle }]} />
+            ) : null}
+            {row}
+          </View>
+        ))}
+      </Grouped.Provider>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   base: { flexDirection: "row", alignItems: "center", gap: 12, padding: 12 },
+  grouped: { paddingHorizontal: 0, paddingVertical: 14 },
   preview: {
     width: PREVIEW,
     height: PREVIEW,
@@ -167,6 +253,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: { flex: 1, gap: 2 },
+  groupedText: { gap: 3 },
+  title: { flexDirection: "row", alignItems: "center", gap: 8 },
+  shrink: { flexShrink: 1 },
+  glyph: {
+    width: GLYPH,
+    height: GLYPH,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  group: { borderWidth: 1, overflow: "hidden", paddingHorizontal: 16, paddingVertical: 2 },
+  divider: { height: StyleSheet.hairlineWidth * 2 },
   action: {
     width: ACTION,
     height: ACTION,
