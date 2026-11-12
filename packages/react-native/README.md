@@ -70,6 +70,9 @@ Expo projects should install the native peers through `npx expo install` so the 
 - `@allfitone/react-native/segmented-control`: a few mutually exclusive views on one track; `size="sm"` for inside a card.
 - `@allfitone/react-native/inline-alert`: status message that sits with its control.
 - `@allfitone/react-native/toast`: transient confirmation that floats and then leaves.
+- `@allfitone/react-native/switch`: an on/off whose effect shows on the screen at once; use `checkbox` for a statement sent with a form.
+- `@allfitone/react-native/record-card`: one record read back whole — kind, the person's words, dated facts and origin.
+- `@allfitone/react-native/requirement-list`: requirements that light up as they are met, such as a password's.
 - `@allfitone/react-native/third-party`: `InstagramGlyph` and `instagramGradient`, Instagram's own mark for sharing to it. Never recolour it into the Allfit palette; white, black or the gradient only.
 
 ## Notes that are easy to get wrong
