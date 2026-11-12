@@ -73,6 +73,11 @@
       "react-native": "./dist/content-row.js",
       "import": "./dist/content-row.js"
     },
+    "./record-card": {
+      "types": "./dist/record-card.d.ts",
+      "react-native": "./dist/record-card.js",
+      "import": "./dist/record-card.js"
+    },
     "./cover-tile": {
       "types": "./dist/cover-tile.d.ts",
       "react-native": "./dist/cover-tile.js",
@@ -148,6 +153,11 @@
       "react-native": "./dist/selectable-tile.js",
       "import": "./dist/selectable-tile.js"
     },
+    "./requirement-list": {
+      "types": "./dist/requirement-list.d.ts",
+      "react-native": "./dist/requirement-list.js",
+      "import": "./dist/requirement-list.js"
+    },
     "./shadow-style": {
       "types": "./dist/shadow-style.d.ts",
       "react-native": "./dist/shadow-style.js",
@@ -177,6 +187,11 @@
       "types": "./dist/stepper.d.ts",
       "react-native": "./dist/stepper.js",
       "import": "./dist/stepper.js"
+    },
+    "./switch": {
+      "types": "./dist/switch.d.ts",
+      "react-native": "./dist/switch.js",
+      "import": "./dist/switch.js"
     },
     "./tab-selection": {
       "types": "./dist/tab-selection.d.ts",
