@@ -22,6 +22,11 @@
  * confirm is a labelled pill were painted differently for no reason anybody could
  * name — `gradient.signal` is the token for primary CTAs, and a tick that commits a
  * screen is one.
+ *
+ * **`plain` at full size is a glyph alone in a corner** — the way back from a screen
+ * with no header. With no circle to give it presence, a 16 px glyph in the secondary ink
+ * nearly vanished, so it draws at 24 in the primary ink with the compact stroke. The
+ * compact `plain`, a glyph beside content, keeps the quiet 16.
  */
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -91,6 +96,7 @@ function resolvePalette(theme: Theme, variant: IconButtonVariant, disabled: bool
         foreground: theme.color.icon.secondary,
         gradient: false,
       };
+
   }
 }
 
@@ -107,6 +113,8 @@ export function IconButton({
   const theme = useTheme();
   const inactive = disabled === true;
   const palette = resolvePalette(theme, variant, inactive);
+  const alone = variant === "plain" && scale === "md";
+  const ink = alone && !inactive ? theme.color.icon.primary : palette.foreground;
   const accent = resolveAccentGradient();
   const size = scale === "sm" ? COMPACT_SIZE : theme.touchTarget;
 
@@ -144,7 +152,13 @@ export function IconButton({
       ) : null}
 
       <View pointerEvents="none">
-        <FoundationIcon name={icon} size="sm" color={palette.foreground} decorative />
+        <FoundationIcon
+          name={icon}
+          size={alone ? "lg" : "sm"}
+          strokeScale={alone ? "compact" : "default"}
+          color={ink}
+          decorative
+        />
       </View>
     </Pressable>
   );
