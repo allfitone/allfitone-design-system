@@ -3,7 +3,8 @@
  *
  * **A row that cannot open anything never pretends it can.** Without `onPress` the row
  * only reports, and a chevron or an inner action would promise a place it does not
- * lead to, so both resolve to nothing. A badge still says its word.
+ * lead to, so both resolve to nothing. A badge still says its word, and a choice or a
+ * button keeps its place: each is its own target with its own name.
  *
  * The figure before the chevron is small by default: it is a fact about the row, and
  * at the poster's larger sizes it outweighed the row's own name.
@@ -25,6 +26,20 @@ export type RowTrailingInput =
       readonly uppercase?: boolean;
       readonly dot?: boolean;
     }
+  | {
+      readonly kind: "choice";
+      readonly items: readonly unknown[];
+      readonly value: string;
+      readonly onChange: (value: never) => void;
+      readonly accessibilityLabel: string;
+    }
+  | {
+      readonly kind: "button";
+      readonly label: string;
+      readonly onPress: () => void;
+      readonly accessibilityLabel?: string;
+    }
+  | { readonly kind: "date"; readonly weekday: string; readonly day: string }
   | { readonly kind: "none" };
 
 export function resolveRowTrailing<T extends RowTrailingInput>(
@@ -57,4 +72,9 @@ export function rowGlyphPaint(
 ): "accent" | "quiet" | "tone" {
   if (iconTone === undefined) return "accent";
   return iconTone === "quiet" ? "quiet" : "tone";
+}
+
+/** A control at the end takes the width a name needs, so its row lets the words wrap. */
+export function rowTextLines(kind: RowTrailingInput["kind"]): 1 | 2 {
+  return kind === "choice" || kind === "button" || kind === "badge" ? 2 : 1;
 }

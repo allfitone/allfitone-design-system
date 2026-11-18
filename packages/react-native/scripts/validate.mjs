@@ -22,6 +22,7 @@ const importableOutputs = [
   "badge-look.js",
   "row-look.js",
   "note-look.js",
+  "datum-look.js",
 ];
 const nativeOnlyOutputs = [
   "badge.js",
@@ -53,6 +54,7 @@ const nativeOnlyOutputs = [
   "text-field.js",
   "inline-alert.js",
   "note.js",
+  "datum-row.js",
   "toast.js",
   "third-party.js",
   "page-dots.js",
@@ -784,7 +786,9 @@ same(
 );
 
 // A row that cannot open anything never pretends it can: no chevron, no action.
-const { resolveRowTrailing, rowValueSize, rowGlyphPaint } = await import("../dist/row-look.js");
+const { resolveRowTrailing, rowValueSize, rowGlyphPaint, rowTextLines } = await import(
+  "../dist/row-look.js"
+);
 same(resolveRowTrailing(true, undefined), { kind: "chevron" }, "A pressable row opens with a chevron");
 same(resolveRowTrailing(false, undefined), { kind: "none" }, "A row that only reports ends in nothing");
 same(
@@ -797,6 +801,40 @@ same(
   { kind: "badge", label: "Pronto" },
   "A row that only reports keeps its badge"
 );
+// A control is its own target: a row that only reports may still end in a choice or
+// a button, and a date is a fact either way.
+for (const trailing of [
+  { kind: "choice", items: [], value: "a", onChange: () => {}, accessibilityLabel: "x" },
+  { kind: "button", label: "Quitar", onPress: () => {} },
+  { kind: "date", weekday: "LUN", day: "16" },
+]) {
+  if (resolveRowTrailing(false, trailing) !== trailing) {
+    throw new Error(`A row that only reports must keep its ${trailing.kind} trailing.`);
+  }
+}
+
+// A control at the end takes the width a name needs; such a row lets its name and
+// caption wrap to a second line instead of cutting «Entrenar con Bodytech C…».
+same(
+  ["chevron", "none", "date", "choice", "button", "badge"].map(rowTextLines),
+  [1, 1, 1, 2, 2, 2],
+  "Only a row ending in a control lets its words wrap"
+);
+
+// A datum unanswered says so and offers the answer; answered, it shows where it came
+// from, and the versions link only when there are other versions.
+const { datumLines } = await import("../dist/datum-look.js");
+same(
+  datumLines({}),
+  { value: "Sin responder", answered: false, origin: undefined, answer: "Responder" },
+  "An unanswered datum says so and offers the answer"
+);
+same(
+  datumLines({ value: "En casa", origin: "Declarado por ti" }),
+  { value: "En casa", answered: true, origin: "Declarado por ti", answer: undefined },
+  "An answered datum shows its origin and offers nothing else"
+);
+
 if (rowValueSize(undefined) !== "sm" || rowValueSize("lg") !== "lg") {
   throw new Error("A row's figure is small unless the screen asks for another size.");
 }

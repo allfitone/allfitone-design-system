@@ -32,6 +32,12 @@
  * `value` is the row's latest figure before the chevron («70,2 kg»), small unless the
  * screen asks otherwise; a `badge` trailing says a state with the `Badge` itself.
  *
+ * **A row may end in a control.** `choice` is a small `SegmentedControl` — «Sí / No» to
+ * what a gym asks — and `button` the quiet danger button — «Quitar». Each is its own
+ * target, so a row that only reports may carry one. `date` is the weekday and the day,
+ * the way a session reads in a history; `previewMark` sets a glyph on the preview's
+ * corner and `nameStyle="poster"` gives the name the figures' face.
+ *
  * **`ContentGroup` puts several rows on one card**, divided by hairlines, the way a
  * settings list groups what belongs together. Rows inside it are `plain`; the group
  * owns the surface.
@@ -41,15 +47,23 @@ import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "rea
 import { Children, createContext, useContext, type ReactNode } from "react";
 
 import { Badge, badgeToneColor, type BadgeTone } from "./badge.js";
+import { Button } from "./button.js";
+import { SegmentedControl, type SegmentItem } from "./segmented-control.js";
 import type { BadgeVariant } from "./badge-look.js";
 import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
 import { withAlpha } from "./tokens.js";
-import { resolveRowTrailing, rowGlyphPaint, rowValueSize, type RowValueSize } from "./row-look.js";
+import {
+  resolveRowTrailing,
+  rowGlyphPaint,
+  rowTextLines,
+  rowValueSize,
+  type RowValueSize,
+} from "./row-look.js";
 
 /** Set by `ContentGroup`, so its rows take the group's inset rather than their own card. */
-const Grouped = createContext(false);
+export const Grouped = createContext(false);
 
 /**
  * El cuadrado donde va el arte, y el blanco redondo de al lado.
@@ -80,6 +94,10 @@ export interface ContentRowProps {
   readonly iconTone?: BadgeTone | "quiet";
   /** The tone of `tag`. Default `accent`. */
   readonly tagTone?: BadgeTone;
+  /** A glyph on the preview's corner, in the accent: a record set in that session. */
+  readonly previewMark?: IconName;
+  /** `poster` sets the name in the figures' face, as a history names its sessions. */
+  readonly nameStyle?: "default" | "poster";
   /** Without it the row only reports: it is not a target and ends in no chevron. */
   readonly onPress?: () => void;
   /** The row's latest figure, before the trailing: «70,2 kg». */
@@ -111,6 +129,20 @@ type Trailing =
       readonly uppercase?: boolean;
       readonly dot?: boolean;
     }
+  | {
+      readonly kind: "choice";
+      readonly items: readonly SegmentItem[];
+      readonly value: string;
+      readonly onChange: (value: string) => void;
+      readonly accessibilityLabel: string;
+    }
+  | {
+      readonly kind: "button";
+      readonly label: string;
+      readonly onPress: () => void;
+      readonly accessibilityLabel?: string;
+    }
+  | { readonly kind: "date"; readonly weekday: string; readonly day: string }
   | { readonly kind: "none" };
 
 export function ContentRow({
@@ -119,6 +151,8 @@ export function ContentRow({
   note,
   noteTone = "accent",
   preview,
+  previewMark,
+  nameStyle = "default",
   icon,
   tag,
   iconTone,
@@ -137,6 +171,7 @@ export function ContentRow({
   const grouped = useContext(Grouped);
   const end = resolveRowTrailing(onPress !== undefined, trailing);
   const paint = rowGlyphPaint(iconTone);
+  const lines = rowTextLines(end.kind);
   const glyphInk =
     paint === "accent"
       ? theme.color.icon.accent
@@ -157,7 +192,29 @@ export function ContentRow({
 
   const body = (
     <>
-      {preview === undefined ? null : <View style={styles.preview}>{preview}</View>}
+      {preview === undefined ? null : (
+        <View>
+          <View style={styles.preview}>{preview}</View>
+          {previewMark === undefined ? null : (
+            <View
+              style={[
+                styles.mark,
+                {
+                  backgroundColor: theme.color.icon.accent,
+                  borderColor: theme.color.background.surface,
+                },
+              ]}
+            >
+              <FoundationIcon
+                name={previewMark}
+                customSize={10}
+                color={theme.color.text.inverse}
+                decorative
+              />
+            </View>
+          )}
+        </View>
+      )}
       {icon === undefined ? null : (
         <View style={[styles.glyph, { backgroundColor: glyphGround }]}>
           <FoundationIcon name={icon} size="sm" color={glyphInk} decorative />
@@ -166,18 +223,24 @@ export function ContentRow({
 
       <View style={[styles.text, grouped ? styles.groupedText : null]}>
         <View style={styles.title}>
-          <Text
-            role="control"
-            size={icon === undefined ? "md" : "sm"}
-            numberOfLines={1}
-            style={styles.shrink}
-          >
-            {name}
-          </Text>
+          {nameStyle === "poster" ? (
+            <Text role="poster" size="md" uppercase numberOfLines={1} style={styles.shrink}>
+              {name}
+            </Text>
+          ) : (
+            <Text
+              role="control"
+              size={icon === undefined ? "md" : "sm"}
+              numberOfLines={lines}
+              style={styles.shrink}
+            >
+              {name}
+            </Text>
+          )}
           {tag === undefined ? null : <Badge label={tag} tone={tagTone} variant="quiet" />}
         </View>
         {caption === undefined ? null : (
-          <Text role="body" size="xs" color="muted" numberOfLines={1}>
+          <Text role="body" size="xs" color="muted" numberOfLines={lines}>
             {caption}
           </Text>
         )}
@@ -208,6 +271,33 @@ export function ContentRow({
         />
       ) : end.kind === "badge" ? (
         <Badge {...badgeOf(end)} style={styles.badge} />
+      ) : end.kind === "choice" ? (
+        <SegmentedControl
+          size="sm"
+          items={end.items}
+          value={end.value}
+          onChange={end.onChange}
+          accessibilityLabel={end.accessibilityLabel}
+        />
+      ) : end.kind === "button" ? (
+        <Button
+          label={end.label}
+          variant="quietDanger"
+          size="sm"
+          onPress={end.onPress}
+          {...(end.accessibilityLabel === undefined
+            ? {}
+            : { accessibilityLabel: end.accessibilityLabel })}
+        />
+      ) : end.kind === "date" ? (
+        <View style={styles.date}>
+          <Text role="eyebrow" size="2xs" color="muted" uppercase>
+            {end.weekday}
+          </Text>
+          <Text role="poster" size="xl">
+            {end.day}
+          </Text>
+        </View>
       ) : end.kind === "action" ? (
         <Pressable
           accessibilityRole="button"
@@ -234,7 +324,14 @@ export function ContentRow({
   );
 
   if (onPress === undefined) {
-    const spoken = [name, caption, note, value, end.kind === "badge" ? end.label : undefined];
+    const spoken = [
+      name,
+      caption,
+      note,
+      value,
+      end.kind === "badge" ? end.label : undefined,
+      end.kind === "date" ? `${end.weekday} ${end.day}` : undefined,
+    ];
     return (
       <View
         accessible
@@ -323,6 +420,18 @@ const styles = StyleSheet.create({
   title: { flexDirection: "row", alignItems: "center", gap: 8 },
   shrink: { flexShrink: 1 },
   badge: { alignSelf: "center" },
+  date: { alignItems: "center", minWidth: 40 },
+  mark: {
+    position: "absolute",
+    right: -4,
+    bottom: -4,
+    width: 19,
+    height: 19,
+    borderRadius: 10,
+    borderWidth: 2,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   glyph: {
     width: GLYPH,
     height: GLYPH,

@@ -113,6 +113,11 @@
       "react-native": "./dist/icons.js",
       "import": "./dist/icons.js"
     },
+    "./datum-row": {
+      "types": "./dist/datum-row.d.ts",
+      "react-native": "./dist/datum-row.js",
+      "import": "./dist/datum-row.js"
+    },
     "./note": {
       "types": "./dist/note.d.ts",
       "react-native": "./dist/note.js",

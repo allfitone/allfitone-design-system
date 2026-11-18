@@ -74,6 +74,7 @@ Expo projects should install the native peers through `npx expo install` so the 
 - `@allfitone/react-native/record-card`: one record read back whole — kind, the person's words, dated facts and origin.
 - `@allfitone/react-native/requirement-list`: requirements that light up as they are met, such as a password's.
 - `@allfitone/react-native/note`: one quiet phrase with a mark, under a form (`sm`) or beside content (`md`); not an alert.
+- `@allfitone/react-native/datum-row`: one datum about the person — what it is, its answer and where it came from — or «Sin responder» with «Responder».
 - `@allfitone/react-native/third-party`: `InstagramGlyph` and `instagramGradient`, Instagram's own mark for sharing to it. Never recolour it into the Allfit palette; white, black or the gradient only.
 
 ## Notes that are easy to get wrong
