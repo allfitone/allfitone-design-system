@@ -19,6 +19,8 @@ const importableOutputs = [
   "tab-selection.js",
   "step-geometry.js",
   "segmented-geometry.js",
+  "badge-look.js",
+  "row-look.js",
 ];
 const nativeOnlyOutputs = [
   "badge.js",
@@ -696,6 +698,73 @@ for (const [name, geometry] of [["md", regular], ["sm", small]]) {
     );
   }
 }
+
+// A badge's look. The two variants already shipped must not move under the products
+// that use them; `tonal` is the new soft one, and caps and the dot are the caller's.
+const { badgeLook } = await import("../dist/badge-look.js");
+const same = (actual, expected, message) => {
+  if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+    throw new Error(`${message}: ${JSON.stringify(actual)}`);
+  }
+};
+const look = (fill, edge, ink, role, size, uppercase, dot) =>
+  ({ fill, edge, ink, role, size, uppercase, dot });
+same(
+  badgeLook({ tone: "success" }),
+  look("tone", "fill", "onStatus", "eyebrow", "2xs", true, false),
+  "A solid toned badge keeps its filled eyebrow"
+);
+same(
+  badgeLook({}),
+  look("none", "border", "secondary", "eyebrow", "2xs", true, false),
+  "A neutral badge keeps its outline"
+);
+same(
+  badgeLook({ tone: "success", variant: "quiet" }),
+  look("canvas", "chip", "tone", "control", "xs", false, false),
+  "A quiet badge keeps its lower-case phrase on the canvas"
+);
+same(
+  badgeLook({ tone: "success", variant: "tonal", dot: true }),
+  look("tint", "none", "tone", "eyebrow", "2xs", true, true),
+  "A tonal badge tints its ground and inks its word in the tone"
+);
+same(
+  badgeLook({ tone: "success", variant: "tonal", uppercase: false }),
+  look("tint", "none", "tone", "control", "xs", false, false),
+  "A tonal badge asked for no caps reads as a word"
+);
+same(
+  badgeLook({ variant: "tonal" }),
+  look("muted", "none", "secondary", "eyebrow", "2xs", true, false),
+  "A neutral tonal badge sits on the muted surface"
+);
+if (badgeLook({ tone: "success", uppercase: false }).role !== "control") {
+  throw new Error("Any badge asked for no caps must drop the eyebrow's wide tracking.");
+}
+
+// A row that cannot open anything never pretends it can: no chevron, no action.
+const { resolveRowTrailing, rowValueSize, rowGlyphPaint } = await import("../dist/row-look.js");
+same(resolveRowTrailing(true, undefined), { kind: "chevron" }, "A pressable row opens with a chevron");
+same(resolveRowTrailing(false, undefined), { kind: "none" }, "A row that only reports ends in nothing");
+same(
+  resolveRowTrailing(false, { kind: "chevron" }),
+  { kind: "none" },
+  "A row that only reports must not draw a chevron"
+);
+same(
+  resolveRowTrailing(false, { kind: "badge", label: "Pronto" }),
+  { kind: "badge", label: "Pronto" },
+  "A row that only reports keeps its badge"
+);
+if (rowValueSize(undefined) !== "sm" || rowValueSize("lg") !== "lg") {
+  throw new Error("A row's figure is small unless the screen asks for another size.");
+}
+same(
+  [undefined, "quiet", "neutral", "danger"].map(rowGlyphPaint),
+  ["accent", "quiet", "tone", "tone"],
+  "The glyph keeps its accent by default; quiet is the grey ink on the muted tile"
+);
 
 console.log(
   `Validated ${requiredOutputs.length} React Native adapter outputs, ` +

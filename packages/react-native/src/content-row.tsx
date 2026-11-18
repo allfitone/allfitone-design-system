@@ -26,6 +26,12 @@
  * beside its name, as a quiet `Badge`, so the caption stays free for the row's own
  * words.
  *
+ * **A row may only report.** Without `onPress` it is not a target: no press, no chevron,
+ * no inner action, and a screen reader reads it as text. «Pronto», «Sin gimnasio» and
+ * a live state are facts, and a row that cannot open anything never pretends it can.
+ * `value` is the row's latest figure before the chevron («70,2 kg»), small unless the
+ * screen asks otherwise; a `badge` trailing says a state with the `Badge` itself.
+ *
  * **`ContentGroup` puts several rows on one card**, divided by hairlines, the way a
  * settings list groups what belongs together. Rows inside it are `plain`; the group
  * owns the surface.
@@ -35,10 +41,12 @@ import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "rea
 import { Children, createContext, useContext, type ReactNode } from "react";
 
 import { Badge, badgeToneColor, type BadgeTone } from "./badge.js";
+import type { BadgeVariant } from "./badge-look.js";
 import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
 import { withAlpha } from "./tokens.js";
+import { resolveRowTrailing, rowGlyphPaint, rowValueSize, type RowValueSize } from "./row-look.js";
 
 /** Set by `ContentGroup`, so its rows take the group's inset rather than their own card. */
 const Grouped = createContext(false);
@@ -65,26 +73,45 @@ export interface ContentRowProps {
   readonly icon?: IconName;
   /** A word about the row's kind, drawn beside the name as a quiet badge. */
   readonly tag?: string;
-  /** Tints the glyph's tile and colours the glyph; default is the accent on a quiet tile. */
-  readonly iconTone?: BadgeTone;
+  /**
+   * Tints the glyph's tile and colours the glyph; default is the accent on a quiet tile.
+   * `quiet` is the secondary ink on that tile, for a settings list where no row is louder.
+   */
+  readonly iconTone?: BadgeTone | "quiet";
   /** The tone of `tag`. Default `accent`. */
   readonly tagTone?: BadgeTone;
-  readonly onPress: () => void;
+  /** Without it the row only reports: it is not a target and ends in no chevron. */
+  readonly onPress?: () => void;
+  /** The row's latest figure, before the trailing: «70,2 kg». */
+  readonly value?: string;
+  /** Default `sm`, so the figure never outweighs the row's name. */
+  readonly valueSize?: RowValueSize;
   /** Filled by default; `plain` for a row that is an entrance rather than a thing. */
   readonly tone?: "surface" | "plain";
-  readonly trailing?:
-    | { readonly kind: "chevron"; readonly tone?: "muted" | "accent" }
-    | {
-        readonly kind: "action";
-        readonly icon: IconName;
-        readonly accessibilityLabel: string;
-        readonly onPress: () => void;
-      };
+  readonly trailing?: Trailing;
   readonly disabled?: boolean;
   readonly accessibilityLabel?: string;
   readonly testID?: string;
   readonly style?: StyleProp<ViewStyle>;
 }
+
+type Trailing =
+  | { readonly kind: "chevron"; readonly tone?: "muted" | "accent" }
+  | {
+      readonly kind: "action";
+      readonly icon: IconName;
+      readonly accessibilityLabel: string;
+      readonly onPress: () => void;
+    }
+  | {
+      readonly kind: "badge";
+      readonly label: string;
+      readonly tone?: BadgeTone;
+      readonly variant?: BadgeVariant;
+      readonly uppercase?: boolean;
+      readonly dot?: boolean;
+    }
+  | { readonly kind: "none" };
 
 export function ContentRow({
   name,
@@ -97,8 +124,10 @@ export function ContentRow({
   iconTone,
   tagTone = "accent",
   onPress,
+  value,
+  valueSize,
   tone = "surface",
-  trailing = { kind: "chevron" },
+  trailing,
   disabled,
   accessibilityLabel,
   testID,
@@ -106,31 +135,28 @@ export function ContentRow({
 }: ContentRowProps) {
   const theme = useTheme();
   const grouped = useContext(Grouped);
-  const glyphInk = iconTone === undefined ? theme.color.icon.accent : badgeToneColor(theme, iconTone);
+  const end = resolveRowTrailing(onPress !== undefined, trailing);
+  const paint = rowGlyphPaint(iconTone);
+  const glyphInk =
+    paint === "accent"
+      ? theme.color.icon.accent
+      : paint === "quiet"
+        ? theme.color.icon.secondary
+        : badgeToneColor(theme, iconTone as BadgeTone);
   const glyphGround =
-    iconTone === undefined ? theme.color.background.surfaceMuted : withAlpha(glyphInk, 0.14);
+    paint === "tone" ? withAlpha(glyphInk, 0.14) : theme.color.background.surfaceMuted;
+  const frame = [
+    styles.base,
+    grouped ? styles.grouped : null,
+    {
+      backgroundColor:
+        tone === "surface" && !grouped ? theme.color.background.surface : "transparent",
+      borderRadius: grouped ? 0 : theme.semanticRadius.card,
+    },
+  ];
 
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={accessibilityLabel ?? name}
-      accessibilityHint={caption}
-      accessibilityState={{ disabled: disabled === true }}
-      disabled={disabled}
-      onPress={onPress}
-      testID={testID}
-      style={({ pressed }) => [
-        styles.base,
-        grouped ? styles.grouped : null,
-        {
-          backgroundColor:
-            tone === "surface" && !grouped ? theme.color.background.surface : "transparent",
-          borderRadius: grouped ? 0 : theme.semanticRadius.card,
-          opacity: pressed && !disabled ? 0.7 : 1,
-        },
-        style,
-      ]}
-    >
+  const body = (
+    <>
       {preview === undefined ? null : <View style={styles.preview}>{preview}</View>}
       {icon === undefined ? null : (
         <View style={[styles.glyph, { backgroundColor: glyphGround }]}>
@@ -167,20 +193,26 @@ export function ContentRow({
         )}
       </View>
 
-      {trailing.kind === "chevron" ? (
+      {value === undefined ? null : (
+        <Text role="poster" size={rowValueSize(valueSize)} color="accent" numberOfLines={1}>
+          {value}
+        </Text>
+      )}
+
+      {end.kind === "chevron" ? (
         <FoundationIcon
           name="next"
           size="xs"
-          color={
-            trailing.tone === "accent" ? theme.color.icon.accent : theme.color.icon.secondary
-          }
+          color={end.tone === "accent" ? theme.color.icon.accent : theme.color.icon.secondary}
           decorative
         />
-      ) : (
+      ) : end.kind === "badge" ? (
+        <Badge {...badgeOf(end)} style={styles.badge} />
+      ) : end.kind === "action" ? (
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={trailing.accessibilityLabel}
-          onPress={trailing.onPress}
+          accessibilityLabel={end.accessibilityLabel}
+          onPress={end.onPress}
           hitSlop={8}
           style={({ pressed }) => [
             styles.action,
@@ -191,15 +223,49 @@ export function ContentRow({
           ]}
         >
           <FoundationIcon
-            name={trailing.icon}
+            name={end.icon}
             size="xs"
             color={theme.color.icon.secondary}
             decorative
           />
         </Pressable>
-      )}
+      ) : null}
+    </>
+  );
+
+  if (onPress === undefined) {
+    const spoken = [name, caption, note, value, end.kind === "badge" ? end.label : undefined];
+    return (
+      <View
+        accessible
+        accessibilityLabel={accessibilityLabel ?? spoken.filter(Boolean).join(". ")}
+        testID={testID}
+        style={[...frame, style]}
+      >
+        {body}
+      </View>
+    );
+  }
+
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel ?? name}
+      accessibilityHint={caption}
+      accessibilityState={{ disabled: disabled === true }}
+      disabled={disabled}
+      onPress={onPress}
+      testID={testID}
+      style={({ pressed }) => [...frame, { opacity: pressed && !disabled ? 0.7 : 1 }, style]}
+    >
+      {body}
     </Pressable>
   );
+}
+
+/** The trailing's badge props, without the `kind` that only the row reads. */
+function badgeOf({ kind: _kind, ...badge }: Extract<Trailing, { kind: "badge" }>) {
+  return badge;
 }
 
 /**
@@ -256,6 +322,7 @@ const styles = StyleSheet.create({
   groupedText: { gap: 3 },
   title: { flexDirection: "row", alignItems: "center", gap: 8 },
   shrink: { flexShrink: 1 },
+  badge: { alignSelf: "center" },
   glyph: {
     width: GLYPH,
     height: GLYPH,
