@@ -21,6 +21,7 @@ const importableOutputs = [
   "segmented-geometry.js",
   "badge-look.js",
   "row-look.js",
+  "note-look.js",
 ];
 const nativeOnlyOutputs = [
   "badge.js",
@@ -51,6 +52,7 @@ const nativeOnlyOutputs = [
   "glass.js",
   "text-field.js",
   "inline-alert.js",
+  "note.js",
   "toast.js",
   "third-party.js",
   "page-dots.js",
@@ -756,6 +758,30 @@ same(
 if (badgeLook({ tone: "success", uppercase: false }).role !== "control") {
   throw new Error("Any badge asked for no caps must drop the eyebrow's wide tracking.");
 }
+
+// A note is one phrase with a mark: small under a form, a step up beside content.
+// `accent` inks the mark; the tonal tile belongs to the larger size only.
+const { noteLook } = await import("../dist/note-look.js");
+same(
+  noteLook({}),
+  { textSize: "xs", iconSize: 12, boxed: false, tile: false, accent: false },
+  "A note is small and grey by default"
+);
+same(
+  noteLook({ size: "md", tile: true }),
+  { textSize: "sm", iconSize: 16, boxed: false, tile: true, accent: true },
+  "A medium note in the tonal tile inks its mark in the accent"
+);
+same(
+  noteLook({ size: "md", accent: true }),
+  { textSize: "sm", iconSize: 16, boxed: false, tile: false, accent: true },
+  "An accented note without a tile only inks its mark"
+);
+same(
+  noteLook({ size: "sm", tile: true, boxed: true }),
+  { textSize: "xs", iconSize: 12, boxed: true, tile: false, accent: false },
+  "A small note has no tile"
+);
 
 // A row that cannot open anything never pretends it can: no chevron, no action.
 const { resolveRowTrailing, rowValueSize, rowGlyphPaint } = await import("../dist/row-look.js");
