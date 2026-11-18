@@ -202,6 +202,20 @@ for (const [role, size] of [
     );
   }
 }
+// A leaning face overhangs its own advance, and React Native clips what passes the
+// box: «86» lost the edge of its 6. Italic roles pad the lean back; upright ones do not.
+for (const size of ["md", "4xl"]) {
+  const poster = resolveTextStyle("poster", size);
+  if (!(poster.paddingRight >= Math.ceil(poster.fontSize * 0.12))) {
+    throw new Error(
+      `The poster role at ${size} pads ${poster.paddingRight} on its right; the lean is clipped.`
+    );
+  }
+}
+if (resolveTextStyle("display", "4xl").paddingRight !== undefined) {
+  throw new Error("An upright role must not pad for a lean it does not have.");
+}
+
 // A timer that reflows on every tick is the whole reason this role exists.
 const data = resolveTextStyle("data", "3xl");
 if (!data.fontVariant?.includes("tabular-nums")) {
