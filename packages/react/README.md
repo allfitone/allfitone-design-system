@@ -56,7 +56,7 @@ Available public component subpaths are:
 - entry: `access-shell` for responsive, brand-led authentication and product-entry pages, `setup-shell` for multi-step activation and onboarding, `device-gate` for replacing compact-phone workspaces with device guidance, and `site-shell` for the shared header and footer of public product sites;
 - forms: `field`, `label`, `input`, and `textarea`;
 - selection: `checkbox`, `radio-group`, `switch`, `toggle-group`, `select`, `combobox`, `date-picker`, `time-picker`, `calendar`, `tabs`, and `choice-card`;
-- data display: `table`, `data-table`, `avatar`, `badge`, `card`, `skeleton`, and `empty`;
+- data display: `table`, `data-table`, `avatar`, `badge`, `card`, `chart`, `bar-list`, `skeleton`, and `empty`;
 - signature: `accent-block`, `stat-strip`, `tick-ring`, `pulse-mark`, and `animated-brand-lockup`;
 - overlays: `dialog`, `alert-dialog`, `sheet`, `popover`, `tooltip`, and the `CommandDialog` composition from `command`;
 - feedback: `progress`, `alert`, `sonner`, and `spinner`;
@@ -96,6 +96,31 @@ root with `aria-label` or `aria-labelledby`, include `AvatarFallback`, and use
 `decorative` only beside equivalent visible identity text. Presence states pair
 semantic color with distinct icons and labels; groups expose their remaining
 member count in words.
+
+`AreaChart` and `BarChart` come from `@allfitone/react/components/chart`, the
+only subpath that loads `recharts`. Pass `data`, the `index` field that names
+each position, one or two `series` and an `aria-label`; the chart owns its
+marks, its two colours (`--chart-1`, `--chart-2`) and its axes. A missing value
+is a gap, and every value is repeated as text in a hidden table and in a
+readout that follows the pointer and the arrow keys.
+
+```tsx
+<AreaChart
+  aria-label="Adherence by week"
+  data={weeks}
+  index="week"
+  indexLabel="Week"
+  series={[{ key: "rate", label: "Sessions logged" }]}
+  domain={[0, 100]}
+  formatValue={(value) => `${value}%`}
+  describeValue={(value, week) => `${value}% (${week.logged} of ${week.planned})`}
+  missingLabel="Nothing was planned"
+/>
+```
+
+`BarList` ranks a handful of named things as bars on one shared scale. Each row
+is a name, a figure and a bar; the first two are text, so the list reads the
+same without the bar. It does not sort: pass the rows in reading order.
 
 `Command` filters and ranks keyboard-first workspace destinations and actions.
 Give the root a descriptive `label`, compose a named input, grouped items,

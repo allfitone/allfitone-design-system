@@ -118,6 +118,8 @@ export const componentCategories = [
       item("data-display", "avatar", "Avatar", "Member and coach identity survives image failure, while presence remains recognizable without relying on color.", "@allfitone/react/components/avatar", ["Named / decorative", "Image fallback", "Icon plus presence label", "Group and count"]),
       item("data-display", "badge", "Badge", "Short status labels always state their meaning in words.", "@allfitone/react/components/badge", ["Text plus color", "Long status", "Interactive target"]),
       item("data-display", "card", "Card", "Structured composition keeps title, action, content and footer predictable.", "@allfitone/react/components/card", ["Default / active", "Action slot", "Long content", "Responsive"]),
+      item("data-display", "chart", "Chart", "A trend over time or a comparison across a few positions, drawn in the signal and its context, with every value repeated as text.", "@allfitone/react/components/chart", ["AreaChart / BarChart", "Two series at most", "Missing value is a gap", "Table view and arrow keys"]),
+      item("data-display", "bar-list", "BarList", "A ranked list drawn as bars: each row is a name, a figure and a bar on a shared baseline.", "@allfitone/react/components/bar-list", ["Name and figure are text", "One shared scale", "Zero keeps its row", "Long names wrap"]),
       item("data-display", "skeleton", "Skeleton", "Decorative loading placeholders respect reduced motion.", "@allfitone/react/components/skeleton", ["Decorative only", "Reduced motion", "Content-shaped"]),
       item("data-display", "empty", "Empty", "Empty states explain what happened and provide the next action.", "@allfitone/react/components/empty", ["Clear reason", "Next action", "Long content"]),
     ],

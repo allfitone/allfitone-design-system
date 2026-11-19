@@ -681,6 +681,134 @@ test("keeps avatar identity and presence explicit without a profile image", asyn
   await expect(online).toHaveCSS("forced-color-adjust", "none");
 });
 
+test("draws charts whose every value is also text and within reach of the keyboard", async ({
+  page,
+}) => {
+  await openCategory(page, "data-display", "Data display");
+  const specimen = page.locator("#chart");
+  const adherence = specimen.getByRole("figure", { name: "Adherence by week" });
+  const clients = specimen.getByRole("figure", {
+    name: "Clients joining and leaving by month",
+  });
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  for (const theme of ["dark", "light"] as const) {
+    await page.getByRole("button", { name: theme, exact: true }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-afo-theme", theme);
+    const results = await new AxeBuilder({ page })
+      .include("#chart")
+      .include("#bar-list")
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+      .analyze();
+    expect(results.violations).toEqual([]);
+  }
+
+  // The table says what the plot draws, the week with nothing planned included.
+  const weeks = adherence.getByRole("table", { name: "Adherence by week" }).locator("tbody tr");
+  await expect(weeks).toHaveCount(8);
+  await expect(weeks.first()).toHaveText(/Week of 21 Sep\s*62% \(23 of 37 sessions\)/);
+  await expect(weeks.nth(3)).toHaveText(/Week of 12 Oct\s*Nothing was planned/);
+
+  // That week is a gap in the line, never a point at zero.
+  await expect(adherence.locator(".recharts-area-dot")).toHaveCount(7);
+  await expect(adherence.locator('[data-slot="chart-legend"]')).toHaveCount(0);
+
+  // Two series are named in a legend and wear the two chart colours in order.
+  await expect(
+    clients.locator('[data-slot="chart-legend"]').getByRole("listitem"),
+  ).toHaveText(["Joined", "Left"]);
+  const fills = await clients
+    .locator(".recharts-bar-rectangle path")
+    .evaluateAll((marks) => [...new Set(marks.map((mark) => mark.getAttribute("fill")))]);
+  expect(fills).toEqual(["var(--chart-1)", "var(--chart-2)"]);
+
+  // The arrow keys read each position out, and the ring sits on the plot.
+  await adherence.locator(".recharts-surface").focus();
+  await expect(adherence.getByRole("status")).toHaveText(/Week of 21 Sep\s*62%/);
+  await page.keyboard.press("ArrowRight");
+  await page.keyboard.press("ArrowRight");
+  await page.keyboard.press("ArrowRight");
+  await expect(adherence.getByRole("status")).toHaveText(
+    /Week of 12 Oct\s*Nothing was planned/,
+  );
+  await expect(adherence.locator('[data-slot="chart-plot"]')).not.toHaveCSS(
+    "box-shadow",
+    "none",
+  );
+
+  // No axis label is cut once the page narrows. The axis sizes itself from its
+  // labels as drawn, and this resize passes through a width where the library
+  // would measure them scaled down and leave the axis too narrow for them.
+  await page.setViewportSize({ width: 320, height: 800 });
+  for (const figure of [adherence, clients]) {
+    await expect
+      .poll(() =>
+        figure.locator('[data-slot="chart-plot"]').evaluate((plot) => {
+          const surface = plot.querySelector(".recharts-surface")?.getBoundingClientRect();
+          const labels = [...plot.querySelectorAll(".recharts-yAxis-tick-labels text")];
+          if (!surface || labels.length === 0) return false;
+          return labels.every((label) => {
+            const box = label.getBoundingClientRect();
+            return box.left >= surface.left - 0.5 && box.right <= surface.right + 0.5;
+          });
+        }),
+      )
+      .toBe(true);
+  }
+
+  await page.emulateMedia({ forcedColors: "active", reducedMotion: "reduce" });
+  expect(
+    await clients.evaluate((figure) => {
+      const style = getComputedStyle(figure);
+      return [
+        style.getPropertyValue("--chart-1").trim(),
+        style.getPropertyValue("--chart-2").trim(),
+      ];
+    }),
+  ).toEqual(["CanvasText", "GrayText"]);
+});
+
+test("ranks named things as bars that say nothing the text does not", async ({ page }) => {
+  await openCategory(page, "data-display", "Data display");
+  const list = page.locator("#bar-list").getByRole("list", { name: "Clients per coach" });
+  const rows = list.getByRole("listitem");
+
+  await expect(rows).toHaveCount(5);
+  await expect(rows.first()).toHaveText("Laura Gómez14");
+  await expect(rows.last()).toHaveText("Sofía Peña0");
+  await expect(list.locator('[data-slot="bar-list-track"]').first()).toHaveAttribute(
+    "aria-hidden",
+    "true",
+  );
+
+  // One scale: the largest fills its row, the rest follow, a zero draws nothing.
+  const widths = await list
+    .locator('[data-slot="bar-list-bar"]')
+    .evaluateAll((bars) => bars.map((bar) => bar.getBoundingClientRect().width));
+  const full = await list
+    .locator('[data-slot="bar-list-track"]')
+    .first()
+    .evaluate((track) => track.getBoundingClientRect().width);
+  expect(widths[0]).toBeCloseTo(full, 0);
+  expect(widths[1]).toBeCloseTo((full * 11) / 14, 0);
+  expect(widths[4]).toBe(0);
+
+  // A long name wraps inside its row instead of pushing the figure out.
+  await page.setViewportSize({ width: 320, height: 800 });
+  const long = rows.filter({ hasText: "Bartholomew Featherstonehaugh" });
+  const row = await long.boundingBox();
+  const figure = await long.locator('[data-slot="bar-list-value"]').boundingBox();
+  expect(row).not.toBeNull();
+  expect(figure).not.toBeNull();
+  expect(figure!.x + figure!.width).toBeLessThanOrEqual(row!.x + row!.width + 0.5);
+
+  await page.emulateMedia({ forcedColors: "active", reducedMotion: "reduce" });
+  await expect(list.locator('[data-slot="bar-list-bar"]').first()).toHaveCSS(
+    "forced-color-adjust",
+    "none",
+  );
+});
+
 test("operates workspace navigation and returns focus from mobile overlays", async ({ page }) => {
   await openCategory(page, "navigation", "Navigation");
   const navigationMenu = page.locator("#navigation-menu");
