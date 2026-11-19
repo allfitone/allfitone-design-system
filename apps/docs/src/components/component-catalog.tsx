@@ -8,10 +8,12 @@ import { Alert, AlertAction, AlertDescription, AlertTitle } from "@allfitone/rea
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@allfitone/react/components/alert-dialog";
 import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarPresence } from "@allfitone/react/components/avatar";
 import { Badge } from "@allfitone/react/components/badge";
+import { BarList } from "@allfitone/react/components/bar-list";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@allfitone/react/components/breadcrumb";
 import { Button, buttonVariants } from "@allfitone/react/components/button";
 import { Calendar, type DateRange, type Matcher } from "@allfitone/react/components/calendar";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@allfitone/react/components/card";
+import { AreaChart, BarChart } from "@allfitone/react/components/chart";
 import { Checkbox } from "@allfitone/react/components/checkbox";
 import { ChoiceCard, ChoiceCardAction, ChoiceCardDescription, ChoiceCardEyebrow, ChoiceCardTitle } from "@allfitone/react/components/choice-card";
 import { Combobox, ComboboxActions, ComboboxChip, ComboboxChipRemove, ComboboxChips, ComboboxChipsInput, ComboboxClear, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxInput, ComboboxInputGroup, ComboboxItem, ComboboxLabel, ComboboxList, ComboboxStatus, ComboboxTrigger, ComboboxValue } from "@allfitone/react/components/combobox";
@@ -999,6 +1001,94 @@ function AlertSpecimen() {
   );
 }
 
+// The week of 12 Oct had nothing planned: it is a gap, never a zero.
+const adherenceByWeek = [
+  { week: "21 Sep", rate: 62, logged: 23, planned: 37 },
+  { week: "28 Sep", rate: 68, logged: 25, planned: 37 },
+  { week: "5 Oct", rate: 71, logged: 27, planned: 38 },
+  { week: "12 Oct", rate: null, logged: 0, planned: 0 },
+  { week: "19 Oct", rate: 75, logged: 30, planned: 40 },
+  { week: "26 Oct", rate: 80, logged: 32, planned: 40 },
+  { week: "2 Nov", rate: 78, logged: 31, planned: 40 },
+  { week: "9 Nov", rate: 86, logged: 36, planned: 42 },
+];
+
+const clientsByMonth = [
+  { month: "Jun", joined: 4, left: 1 },
+  { month: "Jul", joined: 6, left: 2 },
+  { month: "Aug", joined: 3, left: 3 },
+  { month: "Sep", joined: 7, left: 1 },
+  { month: "Oct", joined: 5, left: 2 },
+  { month: "Nov", joined: 8, left: 1 },
+];
+
+const clientsByCoach = [
+  { id: "laura", label: "Laura Gómez", value: 14 },
+  { id: "andres", label: "Andrés Ruiz", value: 11 },
+  { id: "camila", label: "Camila Torres", value: 9 },
+  { id: "bartholomew", label: "Bartholomew Featherstonehaugh", value: 4 },
+  { id: "sofia", label: "Sofía Peña", value: 0 },
+];
+
+function ChartSpecimen() {
+  return (
+    <div className="chart-specimen">
+      <Card>
+        <CardHeader>
+          <CardTitle>Adherence</CardTitle>
+          <CardDescription>Sessions logged out of those planned, over the last eight closed weeks.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <AreaChart
+            aria-label="Adherence by week"
+            data={adherenceByWeek}
+            index="week"
+            indexLabel="Week"
+            series={[{ key: "rate", label: "Sessions logged" }]}
+            domain={[0, 100]}
+            formatValue={(value) => `${value}%`}
+            describeValue={(value, week) => `${value}% (${week.logged} of ${week.planned} sessions)`}
+            formatIndex={(week) => `Week of ${week}`}
+            missingLabel="Nothing was planned"
+          />
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Clients</CardTitle>
+          <CardDescription>Who joined and who left, month by month.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <BarChart
+            aria-label="Clients joining and leaving by month"
+            data={clientsByMonth}
+            index="month"
+            indexLabel="Month"
+            series={[
+              { key: "joined", label: "Joined" },
+              { key: "left", label: "Left" },
+            ]}
+          />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function BarListSpecimen() {
+  return (
+    <Card className="bar-list-specimen">
+      <CardHeader>
+        <CardTitle>Clients per coach</CardTitle>
+        <CardDescription>Sofía has room for the next one.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <BarList aria-label="Clients per coach" items={clientsByCoach} />
+      </CardContent>
+    </Card>
+  );
+}
+
 function AvatarSpecimen() {
   return (
     <div className="avatar-specimen">
@@ -1635,6 +1725,8 @@ export function ComponentCatalog({
           <ComponentSection id="avatar"><AvatarSpecimen /></ComponentSection>
           <ComponentSection id="badge"><div className="demo-row"><Badge>Active</Badge><Badge variant="code">ACT</Badge><Badge variant="success">Synced</Badge><Badge variant="warning">Review needed</Badge><Badge variant="info">New activity</Badge><Badge variant="destructive">Access blocked</Badge></div></ComponentSection>
           <ComponentSection id="card"><Card data-state="active"><CardHeader><CardTitle>Strength cycle</CardTitle><CardDescription>4-week program · week 2</CardDescription><CardAction><Badge>Active</Badge></CardAction></CardHeader><CardContent><strong className="metric-value">18,420 kg</strong><p className="metric-caption">Volume completed this week</p></CardContent><CardFooter><Button size="sm" variant="ghost">Open program</Button></CardFooter></Card></ComponentSection>
+          <ComponentSection id="chart"><ChartSpecimen /></ComponentSection>
+          <ComponentSection id="bar-list"><BarListSpecimen /></ComponentSection>
           <ComponentSection id="skeleton"><div className="skeleton-stack"><Skeleton className="skeleton-avatar" /><div><Skeleton className="skeleton-line skeleton-line--strong" /><Skeleton className="skeleton-line" /></div></div></ComponentSection>
           <ComponentSection id="empty"><Empty className="catalog-empty"><EmptyHeader><EmptyMedia variant="icon"><FoundationIcon name="activity" decorative /></EmptyMedia><EmptyTitle>No sessions yet</EmptyTitle><EmptyDescription>Record the first session to start building this member&apos;s history.</EmptyDescription></EmptyHeader><EmptyContent><Button size="sm"><FoundationIcon name="add" data-icon="inline-start" decorative />Record session</Button></EmptyContent></Empty></ComponentSection>
         </div>

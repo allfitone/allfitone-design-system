@@ -62,7 +62,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | Entry | AccessShell, DeviceGate, SiteShell |
 | Forms | Field, Label, Input, Textarea |
 | Selection | Checkbox, RadioGroup, Switch, ToggleGroup, Select, Combobox, DatePicker, TimePicker, Calendar, Tabs |
-| Data display | Table, DataTable, Avatar, Badge, Card, Skeleton, Empty |
+| Data display | Table, DataTable, Avatar, Badge, Card, AreaChart, BarChart, BarList, Skeleton, Empty |
 | Signature | AccentBlock, StatStrip, TickRing, PulseMark, AnimatedBrandLockup |
 | Overlays | Dialog, AlertDialog, Sheet, Popover, Tooltip, CommandDialog |
 | Feedback | Progress, Alert, Sonner/Toast, Spinner |
@@ -177,6 +177,36 @@ The package root remains metadata-only. There is no component barrel because exp
 - Static Alert callouts do not create a live region. Use `live="polite"` for
   non-urgent updates and `live="assertive"` only for urgent failures that
   appear dynamically. Neither priority moves focus.
+- `AreaChart` draws a trend over time and `BarChart` a comparison across a few
+  named positions. Both are closed: a product passes `data`, the `index` field,
+  one or two `series` and its own words, never marks, colours or axes. Use a
+  chart when the shape of the data is the message; a single figure belongs in
+  `StatStrip` or a card, and a part of a known whole in `Progress` or
+  `TickRing`.
+- A chart has two colours and no third. `--chart-1` is the signal and
+  `--chart-2` its context in slate, told apart by lightness as much as by hue
+  (OKLab ΔE 25 in dark and 16 in light; 23 and 13 under protanopia and
+  deuteranopia, both above 3:1 against their surface). The `series` type stops
+  at two; a third thing to compare is a second chart. Never plot two measures
+  of different scale on one chart.
+- A missing value (`null`, `undefined` or a non-finite number) is a gap: the
+  line breaks and the bar is absent. It is never drawn as zero. Say what the
+  gap means with `missingLabel`. With an empty `data` a chart renders nothing,
+  like `BarList` with no `items`: the product shows its own empty state.
+- Every charted value is also text. Each chart renders a visually hidden table
+  with the same rows and words, named by the required `aria-label`, and a
+  readout that follows the pointer and, once the plot has focus, the arrow
+  keys. `formatValue` writes the axis; `describeValue` and `formatIndex` say
+  more in the readout and the table than the axis has room for. Two series get
+  a legend; one series is named by the title above it.
+- Charts do not animate, restate their colours in system colours under forced
+  colors, and take their height from `height` (224 px by default) and their
+  width from their container.
+- `BarList` ranks a handful of named things on one shared scale: each row is a
+  name, a figure and a bar. Name and figure are text and the bar is hidden from
+  assistive technology, so it needs no table view. Rows keep the order given,
+  a zero keeps its row and draws nothing, and `max` fixes the scale when the
+  largest value should not fill the row.
 - `IconButton` requires `aria-label` in TypeScript.
 - `TickRing` requires `aria-label` in TypeScript because its `meter` value must always have a name.
 - `AnimatedBrandLockup` stays on its explicit component subpath so the Motion runtime is loaded only by consumers that opt into brand animation. Change `replayKey` to replay it.

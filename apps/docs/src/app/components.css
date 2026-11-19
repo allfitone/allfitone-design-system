@@ -937,8 +937,24 @@
   justify-content: flex-start;
 }
 
-.component-entry:is(#table, #combobox, #date-picker, #time-picker, #calendar, #popover, #alert, #command) {
+.component-entry:is(#table, #combobox, #date-picker, #time-picker, #calendar, #popover, #alert, #command, #chart) {
   grid-column: 1 / -1;
+}
+
+.chart-specimen {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: 1.25rem;
+}
+
+.chart-specimen > * {
+  min-width: 0;
+}
+
+.bar-list-specimen {
+  width: min(26rem, 100%);
 }
 
 .combobox-specimen {

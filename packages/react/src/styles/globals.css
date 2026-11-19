@@ -63,6 +63,8 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
   --font-sans: var(--afo-font-family-body);
   --font-display: var(--afo-font-family-display);
   --spacing: var(--afo-space-1);
@@ -130,6 +132,15 @@
   --sidebar-accent-foreground: var(--afo-color-text-accent);
   --sidebar-border: var(--afo-color-border-subtle);
   --sidebar-ring: var(--afo-color-focus-ring);
+  /*
+   * Ink & Signal in a chart: the signal, then its context in ink. Slate is the
+   * one neutral that clears 3:1 on both surfaces and stays apart from the
+   * signal in both themes (OKLab ΔE 25 dark, 16 light; 23 and 13 under
+   * protanopia and deuteranopia). There is no third: a chart of three things
+   * is two charts.
+   */
+  --chart-1: var(--afo-color-text-accent);
+  --chart-2: var(--afo-color-neutral-slate);
   --afo-control-surface: color-mix(in srgb, var(--card) 88%, var(--background));
   --afo-control-surface-hover: color-mix(in srgb, var(--muted) 72%, var(--card));
   --afo-accent-soft: color-mix(in srgb, var(--primary) 13%, transparent);
@@ -151,6 +162,30 @@
 
   :where([data-slot]):focus-visible {
     outline: none;
+    box-shadow:
+      0 0 0 2px var(--afo-color-neutral-chalk),
+      0 0 0 4px var(--afo-color-ink-void);
+  }
+
+  /* A chart takes focus on the drawing itself, which carries no slot, so the
+     plot around it wears the ring.
+
+     The drawing keeps the size it was drawn for. The library stretches it to
+     its wrapper, and for a frame of every resize the two disagree; the axis
+     sizes itself from its labels as they are on screen, so a measure taken in
+     that frame comes out narrow and cuts them for good. The library sets the
+     stretch inline, hence the priority. Under an ancestor's transform the
+     same measure is still off, and the label then runs into the padding
+     instead of being cut. */
+  [data-slot="chart-plot"] .recharts-surface {
+    width: auto !important;
+    height: auto !important;
+    outline: none;
+    overflow: visible;
+  }
+
+  [data-slot="chart-plot"]:has(.recharts-surface:focus-visible) {
+    border-radius: var(--afo-radius-sm);
     box-shadow:
       0 0 0 2px var(--afo-color-neutral-chalk),
       0 0 0 4px var(--afo-color-ink-void);
@@ -449,6 +484,26 @@
     border-color: CanvasText;
   }
 
+  /* A drawn mark keeps its authored colour under forced colours, so the two
+     chart colours are restated in system colours that hold on any Canvas. */
+  [data-slot="chart"],
+  [data-slot="bar-list"] {
+    --chart-1: CanvasText;
+    --chart-2: GrayText;
+    --border: GrayText;
+    --muted-foreground: CanvasText;
+    --card: Canvas;
+  }
+
+  [data-slot="bar-list-bar"] {
+    background: CanvasText;
+    forced-color-adjust: none;
+  }
+
+  [data-slot="chart-tooltip"] {
+    border-color: CanvasText;
+  }
+
   [data-slot="command-item"][data-selected="true"] {
     outline: 1px solid Highlight;
     outline-offset: -2px;
@@ -479,7 +534,8 @@
     outline-offset: -2px;
   }
 
-  :where([data-slot]):focus-visible {
+  :where([data-slot]):focus-visible,
+  [data-slot="chart-plot"]:has(.recharts-surface:focus-visible) {
     outline: 2px solid CanvasText;
     outline-offset: 2px;
     box-shadow: none;
