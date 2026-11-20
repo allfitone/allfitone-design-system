@@ -1,5 +1,13 @@
 # @allfitone/icons
 
+## 0.6.0
+
+### Minor Changes
+
+- 141d0a4: Add `library` to the icon catalogue: books on a shelf, for the place a product keeps
+  what is used again (templates, programs, movements). Until now such a section could
+  only borrow `training`, the glyph of the activity, or share one with another entry.
+
 ## 0.5.1
 
 ### Patch Changes
