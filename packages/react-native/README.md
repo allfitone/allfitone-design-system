@@ -75,6 +75,9 @@ Expo projects should install the native peers through `npx expo install` so the 
 - `@allfitone/react-native/requirement-list`: requirements that light up as they are met, such as a password's.
 - `@allfitone/react-native/note`: one quiet phrase with a mark, under a form (`sm`) or beside content (`md`); not an alert.
 - `@allfitone/react-native/datum-row`: one datum about the person — what it is, its answer and where it came from — or «Sin responder» with «Responder».
+- `@allfitone/react-native/offer-row`: a way out offered in a row — tile, label and what happens — on the signal ground (`deep`), flat and outlined (`quiet`), as a card on a sheet (`muted`), on the accent's tonal ground for something kept behind a plan (`tonal`), or as an entry of a sheet's menu (`action`, with `danger` for the destructive one).
+- `@allfitone/react-native/stat-tile`: a figure somebody picks to edit, stacked under a visual (`stack`) or with its glyph beside it (`inline`).
+- `@allfitone/react-native/progress-ring`: a share drawn as a ring in a tone, its centre left to the caller.
 - `@allfitone/react-native/third-party`: `InstagramGlyph` and `instagramGradient`, Instagram's own mark for sharing to it. Never recolour it into the Allfit palette; white, black or the gradient only.
 
 ## Notes that are easy to get wrong

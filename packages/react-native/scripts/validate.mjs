@@ -23,6 +23,13 @@ const importableOutputs = [
   "row-look.js",
   "note-look.js",
   "datum-look.js",
+  "offer-look.js",
+  "stat-look.js",
+  "button-look.js",
+  "icon-button-look.js",
+  "chip-look.js",
+  "disclosure-look.js",
+  "alert-look.js",
 ];
 const nativeOnlyOutputs = [
   "badge.js",
@@ -55,6 +62,9 @@ const nativeOnlyOutputs = [
   "inline-alert.js",
   "note.js",
   "datum-row.js",
+  "offer-row.js",
+  "stat-tile.js",
+  "progress-ring.js",
   "toast.js",
   "third-party.js",
   "page-dots.js",
@@ -297,6 +307,19 @@ if (!dangerPalette.includes("theme.color.status.onStatus")) {
 if (!/gradient:\s*false/.test(dangerPalette)) {
   throw new Error(
     "The danger variant must not spend the one accent gradient a screen is allowed."
+  );
+}
+
+const outlineDangerPalette = buttonSource.match(
+  /case "outlineDanger":\s*return \{([\s\S]*?)\};/
+)?.[1];
+if (
+  !outlineDangerPalette ||
+  !outlineDangerPalette.includes("theme.color.border.subtle") ||
+  !outlineDangerPalette.includes("theme.color.status.danger")
+) {
+  throw new Error(
+    "The outlined danger variant must draw the red word in the subtle outline, as buttonLook says."
   );
 }
 
@@ -766,24 +789,116 @@ if (badgeLook({ tone: "success", uppercase: false }).role !== "control") {
 const { noteLook } = await import("../dist/note-look.js");
 same(
   noteLook({}),
-  { textSize: "xs", iconSize: 12, boxed: false, tile: false, accent: false },
+  { textSize: "xs", iconSize: 12, boxed: false, tile: false, accent: false, outlined: false },
   "A note is small and grey by default"
 );
 same(
   noteLook({ size: "md", tile: true }),
-  { textSize: "sm", iconSize: 16, boxed: false, tile: true, accent: true },
+  { textSize: "sm", iconSize: 16, boxed: false, tile: true, accent: true, outlined: false },
   "A medium note in the tonal tile inks its mark in the accent"
 );
 same(
   noteLook({ size: "md", accent: true }),
-  { textSize: "sm", iconSize: 16, boxed: false, tile: false, accent: true },
+  { textSize: "sm", iconSize: 16, boxed: false, tile: false, accent: true, outlined: false },
   "An accented note without a tile only inks its mark"
 );
 same(
   noteLook({ size: "sm", tile: true, boxed: true }),
-  { textSize: "xs", iconSize: 12, boxed: true, tile: false, accent: false },
+  { textSize: "xs", iconSize: 12, boxed: true, tile: false, accent: false, outlined: false },
   "A small note has no tile"
 );
+
+// An outlined note stands alone in a section, as a panel: its mark grows to 16 so it
+// reads beside the phrase, and the outline replaces the muted ground.
+same(
+  noteLook({ outlined: true, accent: true }),
+  { textSize: "xs", iconSize: 16, boxed: false, tile: false, accent: true, outlined: true },
+  "An outlined small note keeps its small phrase and draws a 16 mark"
+);
+same(
+  noteLook({ outlined: true, boxed: true }).boxed,
+  false,
+  "An outlined note has no muted ground"
+);
+
+// An offer is a way out offered in a row: three grounds, each with its own tile.
+const { offerLook } = await import("../dist/offer-look.js");
+same(
+  offerLook({ tone: "deep" }),
+  { ground: "signal", edge: false, radius: 22, padding: [14, 0], height: 74, gap: 12,
+    tile: { size: 42, radius: 14, fill: "solid", edge: false }, iconSize: "sm",
+    captionSize: "sm", captionLines: 0, chevron: true },
+  "The deep offer keeps the signal ground, the solid tile and the chevron"
+);
+same(
+  offerLook({ tone: "quiet" }),
+  { ground: "surface", edge: true, radius: 20, padding: [14, 12], height: 0, gap: 12,
+    tile: { size: 36, radius: 12, fill: "tonal", edge: false }, iconSize: "sm",
+    captionSize: "sm", captionLines: 0, chevron: false },
+  "The quiet offer is flat, outlined, with the tonal tile and no arrow"
+);
+same(
+  offerLook({ tone: "muted" }),
+  { ground: "muted", edge: true, radius: 22, padding: [14, 14], height: 0, gap: 14,
+    tile: { size: 46, radius: 16, fill: "tint", edge: true }, iconSize: "md",
+    captionSize: "xs", captionLines: 1, chevron: true },
+  "The muted offer is a card on a sheet with a large tinted tile"
+);
+if (offerLook({ tone: "deep", end: "none" }).chevron || !offerLook({ tone: "quiet", end: "chevron" }).chevron) {
+  throw new Error("An offer's end is the caller's when it says so.");
+}
+
+// A stat tile is a figure somebody picks to edit: chosen, its edge turns accent and thickens.
+const { statTileLook, ringArc } = await import("../dist/stat-look.js");
+same(
+  statTileLook({ layout: "stack", selected: false }),
+  { direction: "column", align: "center", radius: 22, padding: 12, gap: 6, edge: "subtle", edgeWidth: 1 },
+  "A stacked stat tile centres its figure on a 22 card"
+);
+same(
+  statTileLook({ layout: "inline", selected: true }),
+  { direction: "row", align: "center", radius: 20, padding: 14, gap: 10, edge: "accent", edgeWidth: 1.5 },
+  "A chosen inline stat tile wears the accent edge"
+);
+const arc = ringArc(76, 7, 0.25);
+if (Math.abs(arc.radius - 34.5) > 1e-9 || Math.abs(arc.filled - arc.length / 4) > 1e-9) {
+  throw new Error(`A ring's arc is its share of the circumference: ${JSON.stringify(arc)}`);
+}
+if (ringArc(76, 7, 1.4).filled !== ringArc(76, 7, 1).filled || ringArc(76, 7, -1).filled !== 0) {
+  throw new Error("A ring's share is clamped between nothing and the whole circle.");
+}
+
+// A destructive action that leaves a whole screen keeps its outline: the pill with the
+// red word, weighed like a secondary action rather than like a link.
+const { buttonLook } = await import("../dist/button-look.js");
+same(
+  buttonLook("outlineDanger"),
+  { fill: "none", edge: "subtle", ink: "danger", gradient: false, shadow: false },
+  "The outlined danger button is a red word in a subtle outline"
+);
+same(
+  buttonLook("quietDanger"),
+  { fill: "none", edge: "none", ink: "danger", gradient: false, shadow: false },
+  "The quiet danger button keeps no outline"
+);
+same(
+  buttonLook("primary"),
+  { fill: "primary", edge: "none", ink: "onPrimary", gradient: true, shadow: true },
+  "The primary button keeps its gradient and its shadow"
+);
+
+// The smallest icon button is the glyph alone, beside content in a tight row; its reach
+// is all slop, and still a finger's target on both platforms.
+const { iconButtonBox } = await import("../dist/icon-button-look.js");
+for (const size of ["xs", "sm"]) {
+  const { box, reach } = iconButtonBox(size, getNativeTouchTarget("android"));
+  if (box + 2 * reach < getNativeTouchTarget("android")) {
+    throw new Error(`An ${size} icon button reaches ${box + 2 * reach}, short of the target.`);
+  }
+}
+if (iconButtonBox("xs", 48).box !== 16) {
+  throw new Error("An xs icon button takes only its glyph's width, so the row keeps its words.");
+}
 
 // A row that cannot open anything never pretends it can: no chevron, no action.
 const { resolveRowTrailing, rowValueSize, rowGlyphPaint, rowTextLines } = await import(
@@ -835,6 +950,13 @@ same(
   "An answered datum shows its origin and offers nothing else"
 );
 
+const { rowTitleShrink } = await import("../dist/row-look.js");
+same(
+  rowTitleShrink(),
+  { name: 1, tag: 0 },
+  "The name gives way before the tag: «Sigue esta» is always read whole"
+);
+
 if (rowValueSize(undefined) !== "sm" || rowValueSize("lg") !== "lg") {
   throw new Error("A row's figure is small unless the screen asks for another size.");
 }
@@ -842,6 +964,117 @@ same(
   [undefined, "quiet", "neutral", "danger"].map(rowGlyphPaint),
   ["accent", "quiet", "tone", "tone"],
   "The glyph keeps its accent by default; quiet is the grey ink on the muted tile"
+);
+
+// Round two of TECH-327: what Space keeps as it is today, now drawn by the library.
+same(
+  offerLook({ tone: "tonal" }),
+  { ground: "tonal", edge: true, radius: 18, padding: [16, 16], height: 0, gap: 12,
+    tile: { size: 0, radius: 0, fill: "none", edge: false }, iconSize: "md",
+    captionSize: "xs", captionLines: 0, chevron: false },
+  "The tonal offer is the accent ground with a bare mark and no arrow («Lo anterior…»)"
+);
+same(
+  offerLook({ tone: "action" }),
+  { ground: "subtle", edge: true, radius: 18, padding: [12, 12], height: 0, gap: 14,
+    tile: { size: 36, radius: 12, fill: "muted", edge: false }, iconSize: "sm",
+    captionSize: "sm", captionLines: 0, chevron: false },
+  "The action offer is a card in a sheet's menu, its tile quiet and no arrow"
+);
+const { offerPaint } = await import("../dist/offer-look.js");
+same(
+  offerPaint({ tone: "action", danger: true }),
+  { ground: "danger", edge: "danger", tile: "danger", glyph: "danger", label: "md",
+    labelInk: "danger", captionInk: "muted" },
+  "A destructive action wears the danger ground, edge, tile and name"
+);
+same(
+  offerPaint({ tone: "action" }),
+  { ground: "subtle", edge: "subtle", tile: "muted", glyph: "primary", label: "md",
+    labelInk: "primary", captionInk: "muted" },
+  "An ordinary action is quiet: primary glyph on the muted tile"
+);
+same(
+  offerPaint({ tone: "tonal" }),
+  { ground: "tonal", edge: "accent", tile: "none", glyph: "tone", label: "sm",
+    labelInk: "primary", captionInk: "secondary" },
+  "The tonal offer edges in the accent and sets its name a step down"
+);
+same(
+  offerPaint({ tone: "quiet", danger: true }),
+  { ground: "surface", edge: "subtle", tile: "tonal", glyph: "tone", label: "md",
+    labelInk: "primary", captionInk: "muted" },
+  "Only an action can be destructive"
+);
+
+same(
+  badgeLook({ tone: "accent", variant: "outline" }),
+  look("none", "tone", "tone", "eyebrow", "2xs", true, false),
+  "An outlined badge draws only its edge and word in the tone («Récord»)"
+);
+same(
+  badgeLook({ tone: "success", variant: "outline", uppercase: false, dot: true }),
+  look("none", "tone", "tone", "control", "xs", false, true),
+  "The outlined live state keeps its dot in sentence case («Activo»)"
+);
+
+const { chipPaint } = await import("../dist/chip-look.js");
+same(
+  [false, true].map((selected) => chipPaint({ selected })),
+  [{ ground: "surface", edge: "subtle", ink: "secondary" }, { ground: "tonal", edge: "accent", ink: "accent" }],
+  "A chip keeps its ground and edge, and the accent when chosen"
+);
+same(
+  [false, true].map((selected) => chipPaint({ selected, variant: "bare" })),
+  [{ ground: "none", edge: "none", ink: "secondary" }, { ground: "tonal", edge: "accent", ink: "accent" }],
+  "A bare chip is only its word until it is chosen («Elige un mes»)"
+);
+same(
+  chipPaint({ selected: false, disabled: true, variant: "bare" }),
+  { ground: "none", edge: "none", ink: "disabled" },
+  "A bare chip that cannot be chosen stays bare"
+);
+
+const { rowDensity, rowNameRole, rowValuePaint, rowFrame } = await import("../dist/row-look.js");
+same(
+  [rowDensity({}), rowDensity({ hasIcon: true }), rowDensity({ size: "sm" })],
+  [{ name: "md", preview: 56 }, { name: "sm", preview: 56 }, { name: "sm", preview: 40 }],
+  "A small row sets its name a step down and its picture at 40"
+);
+if (rowNameRole("outlined") !== "body" || rowNameRole("surface") !== "control") {
+  throw new Error("An outlined row is a link and names it in the body's weight.");
+}
+same(
+  [rowValuePaint({}), rowValuePaint({ tone: "primary", face: "data" }), rowValuePaint({ tone: "muted", face: "data" })],
+  [{ role: "poster", ink: "accent" }, { role: "data", ink: "primary" }, { role: "data", ink: "muted" }],
+  "A row's figure is the accent poster unless the screen asks for plain data («$19.900»)"
+);
+same(
+  [rowFrame({ tone: "surface" }), rowFrame({ tone: "outlined" }), rowFrame({ tone: "outlined", grouped: true })],
+  [{ ground: "surface", edge: false, radius: "card" }, { ground: "none", edge: true, radius: "field" }, { ground: "none", edge: false, radius: "none" }],
+  "An outlined row is a bordered box on the screen's own ground («Dónde entrenas»)"
+);
+
+const { disclosureLook } = await import("../dist/disclosure-look.js");
+same(
+  disclosureLook("select"),
+  { ground: "muted", edgeWidth: 1.5, radius: 14, minHeight: 52, label: "2xs", value: "md", glyph: "expand" },
+  "A select reads as a picker: the small label over the value and a down chevron («+57»)"
+);
+if (disclosureLook("field").glyph !== "next" || disclosureLook("stacked").glyph !== "none") {
+  throw new Error("The field and stacked disclosures keep their ends.");
+}
+
+const { alertMarkSize } = await import("../dist/alert-look.js");
+if (alertMarkSize(undefined) !== "xs" || alertMarkSize("md") !== "md") {
+  throw new Error("An alert's mark is small unless a panel asks for the larger one.");
+}
+
+const { noteAlign } = await import("../dist/note-look.js");
+same(
+  [noteAlign(undefined), noteAlign("center")],
+  [{ justify: "flex-start", grow: true }, { justify: "center", grow: false }],
+  "A centred note sits in the middle and its phrase stops filling the row («Solo tú la ves»)"
 );
 
 console.log(

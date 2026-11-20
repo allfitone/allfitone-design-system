@@ -16,6 +16,10 @@
  * than as the form's small print. `accent` inks the mark, for what a paid plan opens;
  * `tile` sets it in the tonal tile, for something on its way, and only `md` has room.
  *
+ * `outlined` is the panel a section ends on — «your photos are only yours» — drawn with
+ * an outline rather than a ground, its mark at 16 beside the small phrase. `align="center"`
+ * sits a note in the middle of what it closes, such as «Solo tú la ves» under a camera.
+ *
  * The mark is decorative: the phrase says everything, and a screen reader reads only it.
  */
 
@@ -23,7 +27,7 @@ import { StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
 import type { ReactNode } from "react";
 
 import { FoundationIcon, type IconName } from "./icons.js";
-import { noteLook, type NoteSize } from "./note-look.js";
+import { noteAlign, noteLook, type NoteSize } from "./note-look.js";
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
 
@@ -41,6 +45,10 @@ export type NoteProps = {
   readonly accent?: boolean;
   /** The mark in the tonal tile, for something on its way. Drawn at `md` only. */
   readonly tile?: boolean;
+  /** An outline instead of the muted ground, for a note that stands alone in a section. */
+  readonly outlined?: boolean;
+  /** `center` sits the note in the middle of what it closes, such as «Solo tú la ves». */
+  readonly align?: "start" | "center";
   readonly testID?: string;
   readonly style?: StyleProp<ViewStyle>;
 };
@@ -52,11 +60,14 @@ export function Note({
   boxed,
   accent,
   tile,
+  outlined,
+  align,
   testID,
   style,
 }: NoteProps) {
   const theme = useTheme();
-  const look = noteLook({ size, boxed, accent, tile });
+  const placed = noteAlign(align);
+  const look = noteLook({ size, boxed, accent, tile, outlined });
   const mark = (
     <FoundationIcon
       name={icon}
@@ -75,6 +86,8 @@ export function Note({
         look.boxed
           ? [styles.boxed, { backgroundColor: theme.color.background.surfaceMuted }]
           : null,
+        look.outlined ? [styles.outlined, { borderColor: theme.color.border.subtle }] : null,
+        { justifyContent: placed.justify },
         style,
       ]}
     >
@@ -91,9 +104,16 @@ export function Note({
           {mark}
         </View>
       ) : (
-        <View style={look.textSize === "xs" ? styles.smallMark : null}>{mark}</View>
+        <View style={look.textSize === "xs" && !look.outlined ? styles.smallMark : null}>
+          {mark}
+        </View>
       )}
-      <Text role="body" size={look.textSize} color="secondary" style={styles.phrase}>
+      <Text
+        role="body"
+        size={look.textSize}
+        color="secondary"
+        style={placed.grow ? styles.phrase : null}
+      >
         {children}
       </Text>
     </View>
@@ -107,6 +127,7 @@ const styles = StyleSheet.create({
   // Centres a 12 mark on the first line of 12 type set at 1.5.
   smallMark: { marginTop: 3 },
   boxed: { borderRadius: 14, padding: 14 },
+  outlined: { alignItems: "center", gap: 10, borderWidth: 1, borderRadius: 18, padding: 14 },
   tile: {
     width: 34,
     height: 34,

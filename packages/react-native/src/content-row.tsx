@@ -38,6 +38,13 @@
  * the way a session reads in a history; `previewMark` sets a glyph on the preview's
  * corner and `nameStyle="poster"` gives the name the figures' face.
  *
+ * **Smaller and plainer when the screen asks.** `size="sm"` sets the name a step down and
+ * the picture at 40, for a list of many — the variants of an exercise, the gyms. `tone=
+ * "outlined"` is a link to somewhere else — «Dónde entrenas»: a bordered box on the
+ * screen's own ground, its name in the body's weight. `captionTone="danger"` says what
+ * failed — «Apple no pudo cobrar»; `valueTone` and `valueFace="data"` set an amount as
+ * plain data rather than the accent figure; `iconShape="round"` puts the glyph on a disc.
+ *
  * **`ContentGroup` puts several rows on one card**, divided by hairlines, the way a
  * settings list groups what belongs together. Rows inside it are `plain`; the group
  * owns the surface.
@@ -56,9 +63,16 @@ import { useTheme } from "./theme.js";
 import { withAlpha } from "./tokens.js";
 import {
   resolveRowTrailing,
+  rowDensity,
+  rowFrame,
   rowGlyphPaint,
+  rowNameRole,
   rowTextLines,
+  rowTitleShrink,
+  rowValuePaint,
   rowValueSize,
+  type RowSize,
+  type RowTone,
   type RowValueSize,
 } from "./row-look.js";
 
@@ -73,6 +87,8 @@ export const Grouped = createContext(false);
  * su borde: parecía que el componente no lo dibujaba, y lo dibujaba.
  */
 const PREVIEW = 56;
+/** The radius of a field, which an outlined row is drawn as. */
+const FIELD_RADIUS = 14;
 const GLYPH = 36;
 const ACTION = 30;
 
@@ -104,8 +120,21 @@ export interface ContentRowProps {
   readonly value?: string;
   /** Default `sm`, so the figure never outweighs the row's name. */
   readonly valueSize?: RowValueSize;
-  /** Filled by default; `plain` for a row that is an entrance rather than a thing. */
-  readonly tone?: "surface" | "plain";
+  /** `primary` or `muted` set the figure in plain ink instead of the accent. */
+  readonly valueTone?: "accent" | "primary" | "muted";
+  /** `data` sets the figure upright, as an amount among others. Default `poster`. */
+  readonly valueFace?: "poster" | "data";
+  /** `danger` for a caption that says what failed. Default `muted`. */
+  readonly captionTone?: "muted" | "danger";
+  /** `round` puts the glyph on a disc instead of the rounded tile. */
+  readonly iconShape?: "square" | "round";
+  /** `sm` for a list of many: the name a step down, the picture at 40. */
+  readonly size?: RowSize;
+  /**
+   * Filled by default; `plain` for a row that is an entrance rather than a thing;
+   * `outlined` for a link to somewhere else, a bordered box with the name in body weight.
+   */
+  readonly tone?: RowTone;
   readonly trailing?: Trailing;
   readonly disabled?: boolean;
   readonly accessibilityLabel?: string;
@@ -114,7 +143,12 @@ export interface ContentRowProps {
 }
 
 type Trailing =
-  | { readonly kind: "chevron"; readonly tone?: "muted" | "accent" }
+  | {
+      readonly kind: "chevron";
+      readonly tone?: "muted" | "accent";
+      /** `forward` is the arrow a link to another screen ends in. Default `next`. */
+      readonly glyph?: "next" | "forward";
+    }
   | {
       readonly kind: "action";
       readonly icon: IconName;
@@ -160,6 +194,11 @@ export function ContentRow({
   onPress,
   value,
   valueSize,
+  valueTone,
+  valueFace,
+  captionTone = "muted",
+  iconShape = "square",
+  size,
   tone = "surface",
   trailing,
   disabled,
@@ -180,21 +219,37 @@ export function ContentRow({
         : badgeToneColor(theme, iconTone as BadgeTone);
   const glyphGround =
     paint === "tone" ? withAlpha(glyphInk, 0.14) : theme.color.background.surfaceMuted;
+  const density = rowDensity({ size, hasIcon: icon !== undefined });
+  const shape = rowFrame({ tone, grouped });
+  const figure = rowValuePaint({ tone: valueTone, face: valueFace });
   const frame = [
     styles.base,
     grouped ? styles.grouped : null,
+    shape.edge ? styles.outlined : null,
     {
       backgroundColor:
-        tone === "surface" && !grouped ? theme.color.background.surface : "transparent",
-      borderRadius: grouped ? 0 : theme.semanticRadius.card,
+        shape.ground === "surface" ? theme.color.background.surface : "transparent",
+      borderRadius: { card: theme.semanticRadius.card, field: FIELD_RADIUS, none: 0 }[
+        shape.radius
+      ],
     },
+    shape.edge ? { borderColor: theme.color.border.subtle } : null,
   ];
 
   const body = (
     <>
       {preview === undefined ? null : (
         <View>
-          <View style={styles.preview}>{preview}</View>
+          <View
+            style={[
+              styles.preview,
+              density.preview === PREVIEW
+                ? null
+                : { width: density.preview, height: density.preview, borderRadius: 12 },
+            ]}
+          >
+            {preview}
+          </View>
           {previewMark === undefined ? null : (
             <View
               style={[
@@ -216,7 +271,13 @@ export function ContentRow({
         </View>
       )}
       {icon === undefined ? null : (
-        <View style={[styles.glyph, { backgroundColor: glyphGround }]}>
+        <View
+          style={[
+            styles.glyph,
+            { backgroundColor: glyphGround },
+            iconShape === "round" ? { borderRadius: GLYPH / 2 } : null,
+          ]}
+        >
           <FoundationIcon name={icon} size="sm" color={glyphInk} decorative />
         </View>
       )}
@@ -229,18 +290,25 @@ export function ContentRow({
             </Text>
           ) : (
             <Text
-              role="control"
-              size={icon === undefined ? "md" : "sm"}
+              role={rowNameRole(tone)}
+              size={density.name}
               numberOfLines={lines}
               style={styles.shrink}
             >
               {name}
             </Text>
           )}
-          {tag === undefined ? null : <Badge label={tag} tone={tagTone} variant="quiet" />}
+          {tag === undefined ? null : (
+            <Badge
+              label={tag}
+              tone={tagTone}
+              variant="quiet"
+              style={{ flexShrink: rowTitleShrink().tag }}
+            />
+          )}
         </View>
         {caption === undefined ? null : (
-          <Text role="body" size="xs" color="muted" numberOfLines={lines}>
+          <Text role="body" size="xs" color={captionTone} numberOfLines={lines}>
             {caption}
           </Text>
         )}
@@ -257,15 +325,20 @@ export function ContentRow({
       </View>
 
       {value === undefined ? null : (
-        <Text role="poster" size={rowValueSize(valueSize)} color="accent" numberOfLines={1}>
+        <Text
+          role={figure.role}
+          size={rowValueSize(valueSize)}
+          color={figure.ink}
+          numberOfLines={1}
+        >
           {value}
         </Text>
       )}
 
       {end.kind === "chevron" ? (
         <FoundationIcon
-          name="next"
-          size="xs"
+          name={end.glyph ?? "next"}
+          size={end.glyph === "forward" ? "sm" : "xs"}
           color={end.tone === "accent" ? theme.color.icon.accent : theme.color.icon.secondary}
           decorative
         />
@@ -407,6 +480,7 @@ export function ContentGroup({
 const styles = StyleSheet.create({
   base: { flexDirection: "row", alignItems: "center", gap: 12, padding: 12 },
   grouped: { paddingHorizontal: 0, paddingVertical: 14 },
+  outlined: { borderWidth: 1, paddingHorizontal: 14, paddingVertical: 14 },
   preview: {
     width: PREVIEW,
     height: PREVIEW,

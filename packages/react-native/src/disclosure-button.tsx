@@ -29,10 +29,16 @@
  * `TextField`, so `label` here is only spoken. It is what a form wants for a value
  * chosen on another screen — an area of the body, a day — where the stacked variant
  * reads as a filter.
+ *
+ * **`variant="select"` is the small picker beside another field** — the country before a
+ * phone number: `label` in the smallest body step over the `value` in the control weight,
+ * and a chevron down, on the muted ground. Both are read out, so the label is the value's
+ * name here, not only spoken.
  */
 
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
 
+import { disclosureLook } from "./disclosure-look.js";
 import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
@@ -53,8 +59,11 @@ export type DisclosureButtonProps = {
   readonly disabled?: boolean;
   /** Fills the row it is in. Off by default. */
   readonly grow?: boolean;
-  /** `field` draws one line on a field's ground; `stacked`, the default, two lines. */
-  readonly variant?: "stacked" | "field";
+  /**
+   * `field` draws one line on a field's ground; `stacked`, the default, two lines;
+   * `select` the small label over the value with a chevron down.
+   */
+  readonly variant?: "stacked" | "field" | "select";
   /** The word before the chevron on a `field`, such as «Cambiar». */
   readonly actionLabel?: string;
   readonly accessibilityLabel?: string;
@@ -78,6 +87,48 @@ export function DisclosureButton({
 }: DisclosureButtonProps) {
   const theme = useTheme();
   const on = active === true && disabled !== true;
+  if (variant === "select") {
+    const look = disclosureLook("select");
+    return (
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={accessibilityLabel ?? `${label} ${value}`}
+        accessibilityValue={{ text: value }}
+        accessibilityState={{ disabled: disabled === true }}
+        disabled={disabled}
+        onPress={onPress}
+        testID={testID}
+        style={({ pressed }) => [
+          styles.select,
+          {
+            minHeight: look.minHeight,
+            borderRadius: look.radius,
+            borderWidth: look.edgeWidth,
+            borderColor: disabled ? theme.color.action.disabled : theme.color.border.subtle,
+            backgroundColor: theme.color.background.surfaceMuted,
+            opacity: pressed && !disabled ? 0.7 : 1,
+          },
+          grow ? styles.grow : null,
+          style,
+        ]}
+      >
+        <View style={styles.text}>
+          <Text role="body" size="2xs" color={disabled ? "disabled" : "secondary"} numberOfLines={1}>
+            {label}
+          </Text>
+          <Text role="control" size="md" color={disabled ? "disabled" : "primary"} numberOfLines={1}>
+            {value}
+          </Text>
+        </View>
+        <FoundationIcon
+          name="expand"
+          size="xs"
+          color={disabled ? theme.color.text.disabled : theme.color.icon.secondary}
+          decorative
+        />
+      </Pressable>
+    );
+  }
   if (variant === "field") {
     return (
       <Pressable
@@ -206,4 +257,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   text: { flex: 1, gap: 1, minWidth: 0 },
+  select: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+  },
 });

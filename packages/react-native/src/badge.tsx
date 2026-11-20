@@ -26,6 +26,7 @@
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
 
 import { badgeLook, type BadgeVariant } from "./badge-look.js";
+import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
 import { material, withAlpha } from "./tokens.js";
@@ -86,6 +87,8 @@ export type BadgeProps = {
    * en vez de como una etiqueta a gritos.
    * `tonal` tiñe el fondo con el tono y escribe la palabra en ese tono: un estado que
    * se lee sobre una fila oscura sin el brillo de un relleno sólido.
+   * `outline` dibuja solo el borde y la palabra en el tono, sobre el fondo que tenga
+   * debajo: «Récord» junto a un ejercicio, «Activo» sobre una tarjeta.
    */
   readonly variant?: BadgeVariant;
   readonly tone?: BadgeTone;
@@ -93,6 +96,8 @@ export type BadgeProps = {
   readonly uppercase?: boolean;
   /** A dot in the tone before the word, for a state that is live. */
   readonly dot?: boolean;
+  /** A glyph in the tone before the word: the trophy of a record. */
+  readonly icon?: IconName;
   /** Makes it a target. The badge reports the fact; pressing opens where it is set. */
   readonly onPress?: () => void;
   readonly accessibilityLabel?: string;
@@ -105,6 +110,7 @@ export function Badge({
   variant = "solid",
   uppercase,
   dot,
+  icon,
   onPress,
   accessibilityLabel,
   style,
@@ -129,6 +135,7 @@ export function Badge({
     fill: background,
     border: theme.color.border.default,
     chip: material[theme.name].chip.border,
+    tone: toneColor,
     none: "transparent",
   }[look.edge];
   const ink = {
@@ -141,6 +148,9 @@ export function Badge({
   const body = (
     <View style={[styles.pill, { backgroundColor: background, borderColor: edge }, style]}>
       {look.dot ? <View style={[styles.dot, { backgroundColor: ink }]} /> : null}
+      {icon === undefined ? null : (
+        <FoundationIcon name={icon} size="xs" color={ink} decorative />
+      )}
       {/* One line, always: a badge is one or two words by definition, and a wrapped
           one turns the row it labels into two rows. */}
       <Text

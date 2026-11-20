@@ -20,10 +20,14 @@
  * a column of fragments. When the row is tight the label shrinks a little before it
  * would break. `size="sm"` is the compact chip for four or five answers that share one
  * row with `grow`, such as «Hoy · Esta semana · Este mes · Otra fecha».
+ *
+ * `variant="bare"` is for a grid of many — the months of a year: until a chip is chosen
+ * it is only its word, with no ground and no edge; chosen, it is the same chip.
  */
 
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
 
+import { chipPaint, type ChipVariant } from "./chip-look.js";
 import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
@@ -46,6 +50,8 @@ export type ChipProps = {
   readonly grow?: boolean;
   /** `sm` is shorter and set smaller, for several chips sharing one row. */
   readonly size?: "md" | "sm";
+  /** `bare` has no ground or edge until it is chosen, for a grid of many. */
+  readonly variant?: ChipVariant;
   readonly accessibilityLabel?: string;
   readonly testID?: string;
   readonly style?: StyleProp<ViewStyle>;
@@ -60,26 +66,34 @@ export function Chip({
   disabled,
   grow,
   size = "md",
+  variant = "default",
   accessibilityLabel,
   testID,
   style,
 }: ChipProps) {
   const theme = useTheme();
 
-  const border = () => {
-    if (disabled) return theme.color.action.disabled;
-    return selected ? theme.color.border.accent : theme.color.border.subtle;
-  };
-
-  const background = () => {
-    if (disabled) return theme.color.background.surfaceSubtle;
-    return selected ? theme.color.accent.tonal : theme.color.background.surface;
-  };
-
-  const ink = () => {
-    if (disabled) return theme.color.text.disabled;
-    return selected ? theme.color.text.accent : theme.color.text.secondary;
-  };
+  const paint = chipPaint({ selected, disabled, variant });
+  const border = () =>
+    ({
+      subtle: theme.color.border.subtle,
+      accent: theme.color.border.accent,
+      disabled: theme.color.action.disabled,
+      none: "transparent",
+    })[paint.edge];
+  const background = () =>
+    ({
+      surface: theme.color.background.surface,
+      tonal: theme.color.accent.tonal,
+      subtle: theme.color.background.surfaceSubtle,
+      none: "transparent",
+    })[paint.ground];
+  const ink = () =>
+    ({
+      secondary: theme.color.text.secondary,
+      accent: theme.color.text.accent,
+      disabled: theme.color.text.disabled,
+    })[paint.ink];
 
   return (
     <Pressable

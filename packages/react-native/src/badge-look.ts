@@ -5,15 +5,16 @@
  * `tonal` is the soft one: the tone at a fraction on the ground and the word in the
  * tone, the way a status reads on a dark row without shouting. Caps and the dot are
  * the caller's; a badge in caps keeps the eyebrow's tracking and one without drops it,
- * because that tracking pulls a lower-case word apart.
+ * because that tracking pulls a lower-case word apart. `outline` draws only the edge
+ * and the word in the tone, on whatever ground it sits — «Récord», «Activo» on a card.
  */
 
-export type BadgeVariant = "solid" | "quiet" | "tonal";
+export type BadgeVariant = "solid" | "quiet" | "tonal" | "outline";
 
 export interface BadgeLook {
   /** `tone` fills with the tone, `tint` with the tone at a fraction, `muted` the quiet surface. */
   readonly fill: "tone" | "tint" | "muted" | "canvas" | "none";
-  readonly edge: "fill" | "border" | "chip" | "none";
+  readonly edge: "fill" | "border" | "chip" | "tone" | "none";
   readonly ink: "onStatus" | "tone" | "primary" | "secondary";
   readonly role: "eyebrow" | "control";
   readonly size: "2xs" | "xs";
@@ -46,6 +47,11 @@ export function badgeLook({
       ...text,
       dot,
     };
+  }
+  if (variant === "outline") {
+    return neutral
+      ? { fill: "none", edge: "border", ink: "secondary", ...text, dot }
+      : { fill: "none", edge: "tone", ink: "tone", ...text, dot };
   }
   if (variant === "tonal") {
     return {
