@@ -208,6 +208,38 @@ describe("sidebar collapse below a comfortable width", () => {
   });
 });
 
+describe("the sidebar's edge", () => {
+  // A border class with no colour draws in the text colour, since no Preflight
+  // sets a default: beside a dark page the edge was a near-white line.
+  it("is drawn in the sidebar border, not in the text colour", () => {
+    setViewportWidth(1440);
+
+    render(
+      <SidebarProvider>
+        <Sidebar>Navigation</Sidebar>
+      </SidebarProvider>,
+    );
+
+    const edge = document.querySelector('[data-slot="sidebar-container"]');
+    expect(edge).toHaveClass("group-data-[side=left]:border-r");
+    expect(edge).toHaveClass("border-sidebar-border");
+  });
+
+  it("leaves the floating and inset sidebars without an edge", () => {
+    setViewportWidth(1440);
+
+    render(
+      <SidebarProvider>
+        <Sidebar variant="floating">Navigation</Sidebar>
+      </SidebarProvider>,
+    );
+
+    const edge = document.querySelector('[data-slot="sidebar-container"]');
+    expect(edge).not.toHaveClass("group-data-[side=left]:border-r");
+    expect(edge).not.toHaveClass("border-sidebar-border");
+  });
+});
+
 describe("button still behaves as a button", () => {
   it("keeps its accessible role and label", () => {
     render(<Button>Save</Button>);

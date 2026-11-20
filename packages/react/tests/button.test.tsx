@@ -11,6 +11,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { Button, buttonVariants } from "../src/components/button.js";
+import { cn } from "../src/lib/utils.js";
 
 afterEach(cleanup);
 
@@ -57,6 +58,28 @@ describe("Button", () => {
       expect(classes).toContain("border-input");
       // The subtle border is 14 % of a cool grey: on the dark surface it vanished.
       expect(classes).not.toContain("border-border");
+    },
+  );
+
+  // A link styled as a button takes these classes as they come, with no merge.
+  // Two classes for one property leave the stylesheet's order to pick the winner,
+  // and it picked the transparent border over the outline's.
+  it("stands on its own: no class waits for a merge to win", () => {
+    const variants = ["default", "outline", "secondary", "ghost", "destructive", "link"] as const;
+    const sizes = ["default", "xs", "sm", "lg", "icon", "icon-xs", "icon-sm", "icon-lg"] as const;
+
+    for (const variant of variants) {
+      for (const size of sizes) {
+        const classes = buttonVariants({ variant, size }).split(/\s+/).filter(Boolean);
+        expect(cn(classes.join(" ")).split(" "), `${variant} / ${size}`).toEqual(classes);
+      }
+    }
+  });
+
+  it.each(["outline", "secondary", "destructive"] as const)(
+    "keeps the %s border when the classes go straight onto a link",
+    (variant) => {
+      expect(buttonVariants({ variant }).split(" ")).not.toContain("border-transparent");
     },
   );
 });
