@@ -63,6 +63,17 @@ test("duplicate is catalogued and resolves to a component", () => {
   assert.match(markup, /class="[^"]*lucide-copy(?:\s|")/);
 });
 
+// The section a product keeps its reusable material in had only `training` to borrow,
+// the glyph of the activity itself.
+test("library is catalogued and resolves to a component", () => {
+  assert.equal(iconCatalog.library.source, "Library");
+  assert.equal(iconCatalog.library.category, "object");
+  assert.ok(iconReact.LibraryIcon, "Missing static export LibraryIcon");
+
+  const markup = renderToStaticMarkup(React.createElement(FoundationIcon, { name: "library" }));
+  assert.match(markup, /class="[^"]*lucide-library(?:\s|")/);
+});
+
 // The three a share screen asks for: pick a picture, keep the image, hand it on.
 test("image, download and share are catalogued and resolve to components", () => {
   for (const [name, source, lucide] of [
