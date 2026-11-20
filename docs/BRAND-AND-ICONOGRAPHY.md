@@ -30,6 +30,8 @@ React Native projects should consume `@allfitone/react-native/brand`, `@allfiton
 
 Food icons (`egg`, `dairy`, `grain`, `fruit`, `coffee`… 32 in all) name a food group, not a dish: a product shows the group it belongs to, so the catalogue stays a closed set that products can map to. They come from Lucide like the rest; `cheese` uses `Torus` because Lucide has no cheese glyph.
 
+`library` (books on a shelf) names the place a product keeps what is used again, such as templates, programs and movements. `training` names the activity and `operation` one plan under way, so a section of reusable material uses `library` rather than borrow either.
+
 ## Distribution rule
 
 Consumer repositories must install released package versions. They must not depend on sibling checkout paths such as `../allfitone-design-system`, because that breaks isolated CI and deployment environments.

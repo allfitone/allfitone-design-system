@@ -43,6 +43,9 @@ export const iconCatalog = {
   organization: { source: "Building2", category: "object" },
   training: { source: "Dumbbell", category: "object" },
   operation: { source: "ClipboardList", category: "object" },
+  // What is kept to be used again: templates, programs, movements. `training` is
+  // the activity and `operation` one plan under way; this is the shelf they come from.
+  library: { source: "Library", category: "object" },
   business: { source: "ChartNoAxesCombined", category: "object" },
   permissions: { source: "ShieldCheck", category: "object" },
   settings: { source: "Settings", category: "object" },

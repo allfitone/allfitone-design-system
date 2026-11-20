@@ -37,6 +37,7 @@ import {
   House,
   Info,
   LayoutDashboard,
+  Library,
   ListChecks,
   LoaderCircle,
   Lock,
@@ -168,6 +169,7 @@ const sourceComponents = {
   House,
   Info,
   LayoutDashboard,
+  Library,
   ListChecks,
   LoaderCircle,
   Lock,
@@ -382,6 +384,7 @@ export const ExploreIcon = /* @__PURE__ */ createSemanticIcon("ExploreIcon", Com
 export const SubtractIcon = /* @__PURE__ */ createSemanticIcon("SubtractIcon", Minus);
 export const ReorderIcon = /* @__PURE__ */ createSemanticIcon("ReorderIcon", GripVertical);
 export const DuplicateIcon = /* @__PURE__ */ createSemanticIcon("DuplicateIcon", Copy);
+export const LibraryIcon = /* @__PURE__ */ createSemanticIcon("LibraryIcon", Library);
 export const ImageIcon = /* @__PURE__ */ createSemanticIcon("ImageIcon", Image);
 export const DownloadIcon = /* @__PURE__ */ createSemanticIcon("DownloadIcon", Download);
 export const ShareIcon = /* @__PURE__ */ createSemanticIcon("ShareIcon", Share);
