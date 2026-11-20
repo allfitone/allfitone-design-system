@@ -23,7 +23,7 @@ import { AnimatedBrandLockup } from "@allfitone/react/components/animated-brand-
 - `@allfitone/react/icons`: semantic Lucide icon component and icon metadata.
 - `@allfitone/react/tokens`: typed platform-neutral token values.
 - `@allfitone/react/tokens.css`: generated Web token variables and theme selectors.
-- `@allfitone/react/app.css`: application canvas, browser reset, and product-font bridge.
+- `@allfitone/react/app.css`: application canvas, browser reset, and product-font bridge. A button's family and size are reset inside a layer, so a component's own size wins; fields keep the page's 16 px.
 - `@allfitone/react/styles.css`: compiled Tailwind 4 component utilities and the ALLFIT ONE shadcn bridge.
 - `@allfitone/react/components/*`: explicit component subpaths; there is no all-components barrel.
 - `@allfitone/react/lib/utils`: public `cn` class-composition utility.

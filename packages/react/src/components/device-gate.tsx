@@ -81,11 +81,11 @@ function DeviceGateVisual({
     >
       <span
         data-slot="device-gate-screen"
-        className="absolute top-0 left-0 h-28 w-48 overflow-hidden rounded-[1.4rem] border border-[var(--afo-color-border-strong)] bg-card shadow-[var(--afo-shadow-card)] before:absolute before:inset-x-0 before:top-0 before:h-1 before:bg-[image:var(--afo-gradient-accent)] before:content-[''] after:absolute after:bottom-[-1rem] after:left-1/2 after:h-5 after:w-16 after:-translate-x-1/2 after:rounded-b-[var(--afo-radius-control)] after:border-x after:border-b after:border-[var(--afo-color-border-strong)] after:content-['']"
+        className="absolute top-0 left-0 h-28 w-48 overflow-hidden rounded-[1.4rem] border border-[var(--afo-color-border-strong)] bg-card shadow-[var(--afo-surface-shadow)] before:absolute before:inset-x-0 before:top-0 before:h-1 before:bg-[image:var(--afo-gradient-accent)] before:content-[''] after:absolute after:bottom-[-1rem] after:left-1/2 after:h-5 after:w-16 after:-translate-x-1/2 after:rounded-b-[var(--afo-radius-control)] after:border-x after:border-b after:border-[var(--afo-color-border-strong)] after:content-['']"
       />
       <span
         data-slot="device-gate-tablet"
-        className="absolute right-0 bottom-0 h-28 w-[4.75rem] rounded-[1.35rem] border border-[var(--afo-color-border-strong)] bg-[var(--afo-color-background-surface-subtle)] shadow-[var(--afo-shadow-floating)] before:absolute before:top-2 before:left-1/2 before:h-1 before:w-3 before:-translate-x-1/2 before:rounded-[var(--afo-radius-pill)] before:bg-[var(--afo-color-border-strong)] before:content-[''] after:absolute after:inset-x-2 after:top-5 after:bottom-3 after:rounded-[var(--afo-radius-control)] after:bg-[var(--afo-accent-soft)] after:content-['']"
+        className="absolute right-0 bottom-0 h-28 w-[4.75rem] rounded-[1.35rem] border border-[var(--afo-color-border-strong)] bg-[var(--afo-color-background-surface-subtle)] shadow-[var(--afo-floating-shadow)] before:absolute before:top-2 before:left-1/2 before:h-1 before:w-3 before:-translate-x-1/2 before:rounded-[var(--afo-radius-pill)] before:bg-[var(--afo-color-border-strong)] before:content-[''] after:absolute after:inset-x-2 after:top-5 after:bottom-3 after:rounded-[var(--afo-radius-control)] after:bg-[var(--afo-accent-soft)] after:content-['']"
       />
     </div>
   );

@@ -45,6 +45,7 @@ import { StatStrip, StatStripItem } from "@allfitone/react/components/stat-strip
 import { Switch } from "@allfitone/react/components/switch";
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow, TableSortButton, TableState } from "@allfitone/react/components/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@allfitone/react/components/tabs";
+import { Text } from "@allfitone/react/components/text";
 import { Textarea } from "@allfitone/react/components/textarea";
 import { TimePicker } from "@allfitone/react/components/time-picker";
 import { TickRing } from "@allfitone/react/components/tick-ring";
@@ -1075,6 +1076,25 @@ function ChartSpecimen() {
   );
 }
 
+function TextSpecimen() {
+  return (
+    <div className="text-specimen">
+      <Text role="display" size="5xl" uppercase>Ana Álvarez</Text>
+      <Text role="heading" size="2xl">Week by week</Text>
+      <Text>How her training is going, computed when it is read and only from the sessions she shares.</Text>
+      <Text size="sm" color="secondary">Weeks are computed in Bogotá time.</Text>
+      <div className="text-specimen__figure">
+        <Text as="span" role="eyebrow" size="xs" color="muted" uppercase>Volume</Text>
+        <Text as="span" role="data" size="4xl">7,820 kg</Text>
+      </div>
+      <div className="text-specimen__row">
+        <Text as="span" role="label" size="xs" color="muted" uppercase>Scope</Text>
+        <Text as="span" role="control" size="sm" color="accent">See the sessions</Text>
+      </div>
+    </div>
+  );
+}
+
 function BarListSpecimen() {
   return (
     <Card className="bar-list-specimen">
@@ -1720,6 +1740,7 @@ export function ComponentCatalog({
         <CategoryHeader id="data-display" />
         {navigation}
         <div className="component-grid">
+          <ComponentSection id="text"><TextSpecimen /></ComponentSection>
           <ComponentSection id="table"><TableSpecimen /></ComponentSection>
           <ComponentSection id="data-table"><DataTableSpecimen /></ComponentSection>
           <ComponentSection id="avatar"><AvatarSpecimen /></ComponentSection>

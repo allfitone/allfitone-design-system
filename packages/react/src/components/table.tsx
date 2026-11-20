@@ -30,7 +30,7 @@ function Table({
       aria-label={scrollAreaLabel}
       tabIndex={scrollAreaLabel ? 0 : undefined}
       className={cn(
-        "relative w-full overflow-x-auto rounded-xl border border-border bg-card shadow-[var(--afo-shadow-card)]",
+        "relative w-full overflow-x-auto rounded-xl border border-border bg-card",
         containerClassName
       )}
     >
@@ -189,7 +189,7 @@ function TableCell({
       data-align={align}
       data-numeric={numeric || undefined}
       className={cn(
-        "px-4 py-3 align-middle whitespace-nowrap group-data-[density=compact]/table:px-3 group-data-[density=compact]/table:py-2 data-[numeric=true]:text-right data-[align=center]:text-center data-[align=end]:text-right data-[numeric=true]:font-display data-[numeric=true]:text-base data-[numeric=true]:leading-none data-[numeric=true]:font-semibold data-[numeric=true]:tracking-[var(--afo-letter-spacing-athletic)] data-[numeric=true]:tabular-nums [&:has([data-slot=checkbox])]:w-14 [&:has([data-slot=checkbox])]:px-1.5",
+        "px-4 py-3 align-middle whitespace-nowrap group-data-[density=compact]/table:px-3 group-data-[density=compact]/table:py-2 data-[numeric=true]:text-right data-[align=center]:text-center data-[align=end]:text-right data-[numeric=true]:font-display data-[numeric=true]:text-base data-[numeric=true]:leading-none data-[numeric=true]:font-semibold data-[numeric=true]:tracking-[var(--afo-typography-data-letter-spacing)] data-[numeric=true]:tabular-nums [&:has([data-slot=checkbox])]:w-14 [&:has([data-slot=checkbox])]:px-1.5",
         className
       )}
       {...props}

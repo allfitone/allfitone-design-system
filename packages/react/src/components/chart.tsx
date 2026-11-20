@@ -168,7 +168,7 @@ function Chart<Datum extends ChartDatum>({
         data-slot="chart-tooltip"
         role="status"
         aria-live="assertive"
-        className="grid min-w-36 gap-1.5 rounded-[var(--afo-radius-control)] border border-border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-[var(--afo-shadow-card)]"
+        className="grid min-w-36 gap-1.5 rounded-[var(--afo-radius-control)] border border-border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-[var(--afo-floating-shadow)]"
       >
         <span className="text-muted-foreground">{indexText(datum)}</span>
         <ul role="list" className="grid gap-1">

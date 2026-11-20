@@ -1,9 +1,10 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it } from "vitest";
 
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -21,6 +22,8 @@ import {
  * stylesheet — so the class list is where the contract actually lives here. The
  * emitted CSS is `:has(>[data-slot=card-footer]){padding-bottom:0}`.
  */
+afterEach(cleanup);
+
 describe("Card", () => {
   it("looks for a footer among its own children, not anywhere beneath it", () => {
     render(
@@ -57,5 +60,42 @@ describe("Card", () => {
     // second copy of the same declaration behind `data-[size=sm]` said nothing
     // the first did not.
     expect(small.className.match(/has-\[>\[data-slot=card-footer\]\]:pb-0/g)).toHaveLength(1);
+  });
+
+  it("is bounded by a hairline, not lifted by a shadow", () => {
+    render(<Card data-testid="card" />);
+
+    const card = screen.getByTestId("card");
+    const classes = card.className.split(" ");
+    expect(classes).toContain("border");
+    expect(classes).toContain("border-border");
+    // A soft shadow under every panel read as a grey smear on the light theme.
+    expect(card.className).not.toContain("shadow-");
+  });
+
+  it("titles a section in sentence case at heading size, smaller in a small card", () => {
+    render(
+      <Card size="sm">
+        <CardHeader>
+          <CardTitle>Lo que retiró</CardTitle>
+        </CardHeader>
+      </Card>,
+    );
+
+    const classes = screen.getByText("Lo que retiró").className.split(" ");
+    expect(classes).toContain("text-xl");
+    expect(classes).toContain("group-data-[size=sm]/card:text-base");
+    expect(classes).not.toContain("uppercase");
+    expect(classes).not.toContain("text-xs");
+  });
+
+  it("writes its description at reading size", () => {
+    render(<CardDescription>Categorías que te había autorizado y ya no.</CardDescription>);
+
+    const classes = screen
+      .getByText("Categorías que te había autorizado y ya no.")
+      .className.split(" ");
+    expect(classes).toContain("text-sm");
+    expect(classes).not.toContain("text-xs");
   });
 });

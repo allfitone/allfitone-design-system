@@ -242,7 +242,8 @@ function AccessPanelContent({
   return (
     <div
       data-slot="access-panel-content"
-      className={cn("relative z-[1] mt-8 flex flex-col gap-4", className)}
+      // One step tighter on a phone: a 48 px action still ends above an 812 px fold.
+      className={cn("relative z-[1] mt-7 flex flex-col gap-4 sm:mt-8", className)}
       {...props}
     />
   )

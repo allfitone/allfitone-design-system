@@ -152,6 +152,49 @@
   --afo-control-shadow: var(--afo-shadow-control);
   --afo-control-shadow-hover: var(--afo-shadow-brand-glow-strong);
   --afo-surface-shadow: var(--afo-shadow-card);
+  --afo-floating-shadow: var(--afo-shadow-floating);
+  --afo-overlay-shadow: var(--afo-shadow-overlay);
+  /* What a primary action and a checked control are filled with. An image, so
+     it serves `background` and `background-image` alike. */
+  --afo-action-fill: var(--afo-gradient-accent);
+  --afo-action-on-fill: var(--afo-color-accent-on-accent);
+}
+
+/*
+ * What the light theme changes on top of its tokens.
+ *
+ * The signal cannot carry an action here: cyan on white is under 1.5:1, so a
+ * primary button was a pale shape with no edge. The action is paid in the deep
+ * ink of the same family with white text (6:1), and that one decision reaches
+ * every control through `--primary` and `--afo-action-fill`.
+ *
+ * Elevation falls back to the soft shadow. The dark theme's shadows are 60 %
+ * ink, which reads as depth on ink and as a smear on white, and a cyan glow
+ * around a white button is the same signal spent on a hover.
+ */
+[data-afo-theme="light"] {
+  --primary: var(--afo-color-brand-turquoise-ink);
+  --primary-foreground: var(--afo-color-neutral-white);
+  --sidebar-primary: var(--afo-color-brand-turquoise-ink);
+  --sidebar-primary-foreground: var(--afo-color-neutral-white);
+  --afo-action-fill: linear-gradient(var(--afo-color-brand-turquoise-ink), var(--afo-color-brand-turquoise-ink));
+  --afo-action-on-fill: var(--afo-color-neutral-white);
+  --afo-control-shadow-hover: var(--afo-shadow-sm);
+  --afo-surface-shadow: var(--afo-shadow-sm);
+  --afo-floating-shadow: var(--afo-shadow-sm);
+  --afo-overlay-shadow: var(--afo-shadow-sm);
+}
+
+/*
+ * An ink panel stays dark on either theme, so the action on it stays the
+ * signal: the light theme's ink would sink into the panel.
+ */
+[data-slot="access-panel"],
+[data-slot="setup-panel-intro"] {
+  --primary: var(--afo-color-action-primary);
+  --primary-foreground: var(--afo-color-action-on-primary);
+  --afo-action-fill: var(--afo-gradient-accent);
+  --afo-action-on-fill: var(--afo-color-accent-on-accent);
 }
 
 @layer base {
@@ -217,10 +260,21 @@
     transform: translateY(1px);
   }
 
+  /* Ghost and link have no surface to lift. Their classes already say so, but
+     this layer outranks utilities; on the light theme the resting shadow drew
+     a faint pill around what should be bare text. */
+  :where([data-slot="button"], [data-slot="icon-button"]):is([data-variant="ghost"], [data-variant="link"]):not(:disabled) {
+    box-shadow: none;
+  }
+
+  :where([data-slot="button"], [data-slot="icon-button"])[data-variant="link"]:not(:disabled):is(:hover, :active) {
+    transform: none;
+  }
+
   :where([data-slot="button"], [data-slot="icon-button"])[data-variant="default"] {
     border-color: transparent;
-    background: var(--afo-gradient-accent);
-    color: var(--afo-color-accent-on-accent);
+    background: var(--afo-action-fill);
+    color: var(--afo-action-on-fill);
   }
 
   /* Dentro de un AccentBlock el CTA invierte a ink-on-signal (.pill-ink
@@ -243,7 +297,7 @@
      barra de 3px + lavado tonal — ambos, no solo la barra. */
   [data-slot="card"][data-state="active"] {
     background-image: linear-gradient(var(--afo-color-accent-tonal), var(--afo-color-accent-tonal));
-    box-shadow: inset 3px 0 0 var(--afo-color-action-primary), var(--afo-shadow-card);
+    box-shadow: inset 3px 0 0 var(--primary);
   }
 
   :where([data-slot="input"], [data-slot="textarea"], [data-slot="select-trigger"]) {
@@ -268,7 +322,7 @@
   :where([data-slot="select-content"], [data-slot="combobox-content"], [data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-content"], [data-slot="tooltip-content"]) {
     border: 1px solid var(--afo-material-glass-border);
     background: var(--afo-material-glass-fill);
-    box-shadow: var(--afo-shadow-floating);
+    box-shadow: var(--afo-floating-shadow);
     -webkit-backdrop-filter: blur(var(--afo-material-glass-blur)) saturate(var(--afo-material-glass-saturate));
     backdrop-filter: blur(var(--afo-material-glass-blur)) saturate(var(--afo-material-glass-saturate));
   }
@@ -276,13 +330,13 @@
   [data-slot="combobox-content"] {
     border-color: var(--afo-color-border-strong);
     background: var(--popover);
-    box-shadow: var(--afo-shadow-overlay);
+    box-shadow: var(--afo-overlay-shadow);
   }
 
   [data-slot="popover-content"] {
     border-color: var(--afo-color-border-strong);
     background: var(--popover);
-    box-shadow: var(--afo-shadow-overlay);
+    box-shadow: var(--afo-overlay-shadow);
   }
 
   [data-slot="combobox-list"] {
@@ -329,7 +383,7 @@
   :where([data-slot="dialog-content"], [data-slot="alert-dialog-content"], [data-slot="sheet-content"], [data-slot="drawer-popup"]) {
     border: 1px solid var(--afo-color-border-strong);
     background: var(--popover);
-    box-shadow: var(--afo-shadow-overlay);
+    box-shadow: var(--afo-overlay-shadow);
   }
 
   [data-slot="skeleton"] {
@@ -348,7 +402,7 @@
     left: -0.5rem;
     width: 3px;
     border-radius: var(--afo-radius-pill);
-    background: var(--afo-color-action-primary);
+    background: var(--primary);
     content: "";
   }
 
@@ -363,7 +417,7 @@
   [data-slot="navigation-menu-link"][data-active],
   [data-slot="navigation-menu-trigger"][data-open],
   [data-slot="navigation-menu-trigger"][data-popup-open] {
-    box-shadow: inset 0 calc(var(--afo-space-0-5) * -1) 0 var(--afo-color-action-primary);
+    box-shadow: inset 0 calc(var(--afo-space-0-5) * -1) 0 var(--primary);
   }
 
   [data-slot="pagination-link"][data-active="true"] {
@@ -381,7 +435,7 @@
   .cn-toast {
     min-height: var(--afo-space-touch-target-web);
     border-color: var(--afo-color-border-default) !important;
-    box-shadow: var(--afo-shadow-floating) !important;
+    box-shadow: var(--afo-floating-shadow) !important;
     font-family: var(--afo-font-family-body) !important;
   }
 

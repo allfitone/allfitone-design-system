@@ -113,6 +113,7 @@ export const componentCategories = [
     description: "Compact information that stays readable under pressure.",
     icon: "business",
     components: [
+      item("data-display", "text", "Text", "A role and a size set every line of copy, so one intent cannot end up at two line heights.", "@allfitone/react/components/text", ["Eight roles", "Element through as", "Text colours only", "Both themes"]),
       item("data-display", "table", "Table", "Operational records keep native table relationships, explicit selection and a focusable overflow region.", "@allfitone/react/components/table", ["Comfortable / compact", "Selection and sorting", "Loading / empty / error", "320 px overflow"]),
       item("data-display", "data-table", "DataTable", "Composable controls add filtering, column visibility, selection actions and client or server pagination without replacing Table.", "@allfitone/react/components/data-table", ["Headless controlled state", "Filter and sort", "Column visibility", "Selection and pagination"]),
       item("data-display", "avatar", "Avatar", "Member and coach identity survives image failure, while presence remains recognizable without relying on color.", "@allfitone/react/components/avatar", ["Named / decorative", "Image fallback", "Icon plus presence label", "Group and count"]),
