@@ -9,7 +9,7 @@ import { ForwardIcon } from "../icons.js";
 import { cn } from "../lib/utils.js";
 
 const choiceCardVariants = cva(
-  "group/choice relative flex min-h-44 w-full appearance-none flex-col items-start gap-3 rounded-xl border border-border bg-card p-6 text-left text-card-foreground no-underline shadow-[var(--afo-shadow-card)] outline-none transition-[color,background-color,border-color,box-shadow,transform] duration-[var(--afo-motion-feedback-duration)] ease-[var(--afo-motion-feedback-easing)] hover:-translate-y-px hover:border-primary hover:shadow-[var(--afo-control-shadow-hover)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:translate-y-px disabled:pointer-events-none disabled:translate-y-0 disabled:opacity-45 aria-disabled:pointer-events-none aria-disabled:opacity-45",
+  "group/choice relative flex min-h-44 w-full appearance-none flex-col items-start gap-3 rounded-xl border border-border bg-card p-6 text-left text-card-foreground no-underline shadow-[var(--afo-surface-shadow)] outline-none transition-[color,background-color,border-color,box-shadow,transform] duration-[var(--afo-motion-feedback-duration)] ease-[var(--afo-motion-feedback-easing)] hover:-translate-y-px hover:border-primary hover:shadow-[var(--afo-control-shadow-hover)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:translate-y-px disabled:pointer-events-none disabled:translate-y-0 disabled:opacity-45 aria-disabled:pointer-events-none aria-disabled:opacity-45",
   {
     variants: {
       variant: {

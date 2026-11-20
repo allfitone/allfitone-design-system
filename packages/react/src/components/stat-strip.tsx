@@ -7,7 +7,7 @@ function StatStrip({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="stat-strip"
       className={cn(
-        "flex overflow-hidden rounded-[var(--afo-radius-card)] bg-card text-card-foreground shadow-[var(--afo-shadow-card)]",
+        "flex overflow-hidden rounded-[var(--afo-radius-card)] border border-border bg-card text-card-foreground",
         className
       )}
       {...props}

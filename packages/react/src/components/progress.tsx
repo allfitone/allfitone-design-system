@@ -107,7 +107,7 @@ function ProgressIndicator({
     <ProgressPrimitive.Indicator
       data-slot="progress-indicator"
       className={cn(
-        "relative h-full rounded-full bg-[image:var(--afo-gradient-accent)] transition-[width] duration-300 ease-out after:absolute after:inset-y-0 after:end-0 after:w-0.5 after:bg-[var(--afo-color-accent-on-accent)] after:opacity-70 after:content-[''] data-[indeterminate]:absolute data-[indeterminate]:w-[38%]",
+        "relative h-full rounded-full bg-[image:var(--afo-action-fill)] transition-[width] duration-300 ease-out after:absolute after:inset-y-0 after:end-0 after:w-0.5 after:bg-[var(--afo-action-on-fill)] after:opacity-70 after:content-[''] data-[indeterminate]:absolute data-[indeterminate]:w-[38%]",
         className
       )}
       {...props}

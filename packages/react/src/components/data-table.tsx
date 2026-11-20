@@ -512,7 +512,7 @@ function DataTablePagination<TData>({
       <div className="flex items-center justify-between gap-2 sm:justify-end">
         <span
           aria-live="polite"
-          className="min-w-24 text-center font-display text-sm font-semibold tracking-[var(--afo-letter-spacing-athletic)] text-muted-foreground tabular-nums"
+          className="min-w-24 text-center font-display text-sm font-semibold tracking-[var(--afo-typography-data-letter-spacing)] text-muted-foreground tabular-nums"
         >
           {copy.page} {currentPage} {copy.of} {pageCount}
         </span>

@@ -17,7 +17,7 @@ Product identity does not come from the preset. Component colors, typography, sp
 
 Ink & Signal v2 uses calm blue-gray ink surfaces so one cyan signal can identify the most important action or state. The signal is intentionally scarce: a screen may contain one primary gradient action or one `AccentBlock`, not a field of competing accents.
 
-- Primary Button is a pill filled by the canonical signal gradient.
+- Primary Button is a pill filled by the themed action: the canonical signal gradient on the dark theme, turquoise ink with white text on the light one, where cyan has no contrast against the surface.
 - `AccentBlock` owns the single featured surface for a session, class, timer, or next action.
 - Active navigation and Card states use a restrained three-pixel rail plus a tonal wash.
 - `PulseMark`, `TickRing`, condensed tabular numerals, and subtle dot texture carry the athletic signature without turning every container into decoration.
@@ -27,12 +27,13 @@ Ink & Signal v2 uses calm blue-gray ink surfaces so one cyan signal can identify
 Visual hierarchy is intentionally quieter than the brand palette. Cyan is reserved for primary action, current selection, focus, and short semantic accents. Resting controls use neutral semantic boundaries; persistent cyan borders across every surface are not part of the system.
 
 - Controls use a slightly recessed surface and become clearer on hover or focus.
-- Floating surfaces use the canonical raised shadow and a single semantic boundary.
-- Primary actions carry the signal gradient; secondary, outline, and ghost actions remain neutral.
+- Content surfaces — `Card`, `Table`, `StatStrip` — are drawn by a hairline, not a shadow. Floating surfaces keep a shadow and a single semantic boundary: the canonical raised one on the dark theme and the soft `shadow.sm` on the light theme, where the ink shadow reads as a stain.
+- Primary actions and checked controls carry the themed action; secondary, outline, and ghost actions remain neutral.
+- A component never reads `--afo-gradient-accent`, `--afo-shadow-card`, `--afo-shadow-floating`, or `--afo-shadow-overlay` directly. It reads the themed aliases the stylesheet defines: `--afo-action-fill`, `--afo-action-on-fill`, `--afo-surface-shadow`, `--afo-floating-shadow`, and `--afo-overlay-shadow`.
 - Status badges use a tinted background plus explicit text. The public status variants are `success`, `warning`, `info`, `sport`, and `destructive`.
 - Component demos must show depth, disabled behavior, invalid treatment, and long content in both themes rather than relying on isolated color swatches.
 
-Barlow Condensed belongs to brand theses, category headings, and metrics. Functional titles inside Card, Dialog, AlertDialog, Sheet, and Empty use Manrope so dense application UI preserves a clear reading hierarchy.
+Barlow Condensed belongs to brand theses, category headings, and metrics. Functional titles inside Card, Dialog, AlertDialog, Sheet, and Empty use Manrope so dense application UI preserves a clear reading hierarchy. `CardTitle` is a 20 px sentence-case title (16 px in a `size="sm"` card) and `CardDescription` is 14 px secondary text; a micro-caps label above a figure is `Text` in the `eyebrow` role, not a card title.
 
 ## Public imports
 
@@ -62,7 +63,7 @@ The package root remains metadata-only. There is no component barrel because exp
 | Entry | AccessShell, DeviceGate, SiteShell |
 | Forms | Field, Label, Input, Textarea |
 | Selection | Checkbox, RadioGroup, Switch, ToggleGroup, Select, Combobox, DatePicker, TimePicker, Calendar, Tabs |
-| Data display | Table, DataTable, Avatar, Badge, Card, AreaChart, BarChart, BarList, Skeleton, Empty |
+| Data display | Text, Table, DataTable, Avatar, Badge, Card, AreaChart, BarChart, BarList, Skeleton, Empty |
 | Signature | AccentBlock, StatStrip, TickRing, PulseMark, AnimatedBrandLockup |
 | Overlays | Dialog, AlertDialog, Sheet, Popover, Tooltip, CommandDialog |
 | Feedback | Progress, Alert, Sonner/Toast, Spinner |
@@ -76,6 +77,9 @@ The package root remains metadata-only. There is no component barrel because exp
 - `SiteShell` is the public chrome of product sites such as space.allfit.one and studio.allfit.one: `SiteHeader` and `SiteFooter` with their parts. It owns no surface; every colour is a semantic token, so the same header reads as Space under `data-afo-theme="dark"` and as Studio under `data-afo-theme="light"`. Products pass their own `ProductLockup`, section links, language routes and action. `SiteHeaderNav` hides below `60rem`, where the page itself is the menu. Links accept `render` so a framework router owns navigation. `SiteContainer` is the content column every region lines up with (`min(81rem, 100% - 2 × clamp(1.25rem, 5vw, 4.5rem))`). Set `--afo-site-surface` when the page sits on a surface other than `--background`, so the scrolled header blurs over the same colour.
 - `DeviceGate` replaces a product workspace with plain device guidance on compact phones. Compose one `DeviceGateFallback` and one `DeviceGateContent`; `DeviceGateMain` owns the accessible name, the only visible `main`, and the `h1` while compact. Compose product-owned recovery controls inside `DeviceGateActions`; it arranges actions responsively without owning clipboard, email, QR, or navigation behavior. The CSS contract blocks widths below `600px` and coarse-pointer landscape viewports below `600px` high, while preserving tablet access without user-agent detection or client hydration.
 - Links that look like buttons apply `buttonVariants` to an anchor or framework `Link`. They do not render through Base UI Button. Control variants suppress the user-agent link underline themselves, so a navigating action and a submitting action read identically; the `link` variant keeps its underline on hover, because there the underline is the affordance.
+- `Text` sets every line of copy from two choices, as on React Native: a `role` (`display`, `heading`, `body`, `label`, `eyebrow`, `control`, `data`, `poster`) that carries family, weight, line height, and tracking, and a `size` from the type scale. `as` picks the element and defaults to `p`; the typographic `role` replaces the ARIA attribute of the same name, so a line that needs an ARIA role takes a semantic element instead. `color` accepts the text colours only, and `align`, `uppercase`, and `tracking` cover the rest. The margin is cleared: spacing belongs to the layout around the text.
+- A Button label is the `control` role at the React Native sizes: 16 px by default and at `lg`, 14 px at `sm`, 12 px at `xs`. `lg` is the one primary action of a screen on a 48 px target; every other size keeps the 44 px target. `outline` and `secondary` rest on the control border, which stays visible on the dark surface.
+- A button owns its type size. `app.css` resets a button's family and size inside the `afo-base` layer, so a component's `text-*` wins; fields stay unlayered and keep the page's 16 px, because a smaller field makes iOS zoom the page on focus.
 - Every Button variant declares its own background. Without Preflight a `<button>` otherwise keeps the user agent's face, which made `ghost` and `link` near-white text on light grey in Backoffice; both are `bg-transparent` at rest and still paint on hover and when expanded.
 - Workspace navigation composes `Sidebar` and `WorkspaceShell`; product applications provide destinations and routing state rather than restyling the active signal treatment.
 - `SidebarProvider` accepts `collapseBelow`, a pixel width under which the sidebar starts collapsed. It exists for the band between the mobile breakpoint and a comfortable desktop width, where the expanded rail takes space the content needs but the offcanvas drawer would be premature. Pair it with `collapsible="icon"` so destinations stay reachable. Entering that band collapses the sidebar once and leaving it restores the previous preference; a controlled `open` is never overridden.

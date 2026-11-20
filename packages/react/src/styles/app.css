@@ -79,19 +79,31 @@ body {
     padding: 0;
     list-style: none;
   }
+
+  /*
+   * A button takes the page's family and size until a component says otherwise.
+   * It was unlayered with the fields below, and so beat every `text-*` a
+   * component declared: `Button` rendered one size at every `size`, and a link
+   * styled as a button came out smaller than the real one beside it.
+   */
+  button {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
 }
 
 /*
- * Controls take the page's family and size instead of the browser's UI font.
+ * Fields take the page's family and size instead of the browser's UI font.
  *
  * Not the `font` shorthand: it also resets `font-weight`, and this stylesheet is
  * unlayered while Tailwind's utilities sit in `layer(utilities)` — unlayered
- * wins — so `font: inherit` silently defeated the `font-extrabold` that
- * `buttonVariants` puts on every button. Real buttons rendered at the body
- * weight while a link styled as one kept 800, because the selector never
- * matched an anchor. Weight belongs to the component, not to this reset.
+ * wins — so `font: inherit` silently defeated the weight a component declared.
+ * Weight belongs to the component, not to this reset.
+ *
+ * Unlayered on purpose, unlike the button above: a field keeps the page's 16px
+ * whatever its classes say, and under 16px iOS zooms the page on focus.
  */
-button,
 input,
 select,
 textarea {

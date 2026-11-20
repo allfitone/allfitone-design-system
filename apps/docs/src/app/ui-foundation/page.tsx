@@ -35,6 +35,7 @@ import {
   StatStrip,
   StatStripItem,
 } from "@allfitone/react/components/stat-strip";
+import { Text } from "@allfitone/react/components/text";
 import { FoundationIcon, iconCatalog, type IconName } from "@allfitone/react/icons";
 import {
   color,
@@ -143,7 +144,7 @@ function ThemePreview({ theme }: { theme: keyof typeof semanticColor }) {
       aria-label={`${theme} theme preview`}
     >
       <CardHeader className="theme-preview__header">
-        <CardTitle>{theme} theme</CardTitle>
+        <Text as="div" role="eyebrow" size="xs" uppercase>{theme} theme</Text>
         <CardAction>
           <Badge variant="success" className="theme-preview__status">Live</Badge>
         </CardAction>

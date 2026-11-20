@@ -76,7 +76,7 @@ function ComboboxTrigger({
     <ComboboxPrimitive.Trigger
       data-slot="combobox-trigger"
       className={cn(
-        "inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-lg border border-transparent bg-transparent px-3 text-sm font-bold text-foreground outline-none transition-[background-color,border-color,color,box-shadow] hover:bg-muted focus-visible:border-ring disabled:cursor-not-allowed disabled:text-muted-foreground disabled:opacity-50 data-popup-open:bg-muted",
+        "inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-lg border border-transparent bg-transparent px-3 text-[length:inherit] font-bold text-foreground outline-none transition-[background-color,border-color,color,box-shadow] hover:bg-muted focus-visible:border-ring disabled:cursor-not-allowed disabled:text-muted-foreground disabled:opacity-50 data-popup-open:bg-muted",
         !hasContent && "size-11 p-0",
         className
       )}

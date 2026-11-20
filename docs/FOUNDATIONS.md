@@ -76,6 +76,8 @@ Shadows are structured arrays to remain portable. Web adapters may join layers i
 - `brandGlow` is reserved for one signature visual moment;
 - borders should usually do more work than shadows in dense OS interfaces.
 
+On the web, content surfaces follow that last rule literally: a panel is a hairline with no shadow. The stylesheet also themes elevation, because these arrays do not change with the theme and an ink shadow on a light surface reads as a stain: floating and overlay surfaces take `shadow.sm` on the light theme.
+
 ## Motion
 
 Motion communicates response, continuity, entry, or exit.

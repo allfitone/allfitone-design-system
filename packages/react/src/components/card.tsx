@@ -12,7 +12,8 @@ function Card({
       data-slot="card"
       data-size={size}
       className={cn(
-        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground shadow-[var(--afo-shadow-card)] [--card-spacing:--spacing(5)] has-[>[data-slot=card-footer]]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
+        // A hairline bounds the panel. A soft shadow under each one smeared on the light theme.
+        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl border border-border bg-card py-(--card-spacing) text-sm text-card-foreground [--card-spacing:--spacing(5)] has-[>[data-slot=card-footer]]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
         className
       )}
       {...props}
@@ -38,8 +39,9 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-title"
       className={cn(
-        // Reference .panel h4: 12px / 800 / uppercase / .08em micro-caps.
-        "text-xs leading-snug font-extrabold tracking-[var(--afo-letter-spacing-micro)] uppercase",
+        // A section title in sentence case: 20 px, or 16 px in a small card.
+        // A micro-caps label over a figure is `Text` in the eyebrow role.
+        "text-xl leading-(--afo-line-height-compact) font-extrabold group-data-[size=sm]/card:text-base",
         className
       )}
       {...props}
@@ -51,7 +53,7 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-description"
-      className={cn("text-xs text-muted-foreground", className)}
+      className={cn("text-sm text-[var(--afo-color-text-secondary)]", className)}
       {...props}
     />
   )
