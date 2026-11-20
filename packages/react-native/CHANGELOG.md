@@ -1,5 +1,50 @@
 # @allfitone/react-native
 
+## 0.13.0
+
+### Minor Changes
+
+- 99bd0c2: `ContentRow` can now only report. Without `onPress` it is not a target: it draws no chevron or inner action, and a screen reader reads it as text. It also gains `value`, the row's figure before the trailing, small by default with `valueSize` (`sm`, `md`, `lg`); a `badge` trailing that draws a `Badge`; a `none` trailing; and `iconTone="quiet"`, the secondary ink on the muted tile. Rows that open keep their look.
+
+  `Badge` gains the `tonal` variant, which tints its ground with the tone and inks the word in it, as the web status badges do. It also gains `uppercase`, which defaults to on except for `quiet`, and `dot`, a dot in the tone before the word. The `solid` and `quiet` defaults do not change.
+
+- 455ba85: Adds three components and four variants so Space can use the design system without changing how its screens look:
+
+  - `OfferRow`: a way out offered in a row, with three grounds: `deep`, `quiet` and `muted`.
+  - `StatTile`: a figure somebody picks to edit. The `stack` layout puts it under a visual; the `inline` layout puts its glyph beside it.
+  - `ProgressRing`: a share drawn as a ring in a tone.
+  - `Note outlined`: a note with an outline instead of the muted ground. Its mark is 16 at either size.
+  - `IconButton size="xs"`: the glyph alone; all of its touch target comes from slop.
+  - `Button variant="outlineDanger"`: the red label inside the subtle outline.
+  - In `ContentRow`, the tag beside the name never shrinks, so the name gives way first.
+
+  Further options, so Space keeps how more of its screens look:
+
+  - `OfferRow tone="tonal"`: the accent's tonal ground and edge with a bare mark, for something kept behind a plan.
+  - `OfferRow tone="action"`: an entry of a sheet's menu. `danger` paints the destructive entry red.
+  - `Badge variant="outline"`: only the edge and the word in the tone. `icon` sets a glyph before the word.
+  - `Chip variant="bare"`: no ground or edge until it is chosen, for a grid of many such as months.
+  - In `ContentRow`:
+    - `size="sm"` sets the name a step down and the picture at 40.
+    - `tone="outlined"` draws the row as a bordered box, with the name in body weight.
+    - `captionTone="danger"` sets the caption in red.
+    - `valueTone` and `valueFace="data"` set the value as plain data.
+    - `iconShape="round"` puts the glyph on a disc.
+    - A chevron trailing can end in the `forward` arrow.
+  - `DisclosureButton variant="select"`: a small label over the value, with a chevron down.
+  - `InlineAlert iconSize="md"`: the larger mark, for a panel that stands alone.
+  - `Note align="center"`.
+
+  The compact `IconButton` now lends six points of slop instead of four, so it reaches 48 on Android.
+
+- c663cb9: Adds `Note`, one quiet phrase with a mark: `sm` under a form and `md` beside content. It also offers the muted ground (`boxed`), an accent mark (`accent`) and the tonal tile (`tile`, `md` only). It explains rather than reports a state, so it is not an `InlineAlert`.
+- 9cd0ac0: `ContentRow` can end in a `choice` (a small `SegmentedControl`), a `button` (the quiet danger button) or a `date` (weekday and day). It also gains `previewMark`, a glyph on the preview's corner, and `nameStyle="poster"`. Adds `DatumRow`, one datum about the person with its label, answer, origin and other versions; unanswered, it reads «Sin responder» and offers «Responder».
+
+### Patch Changes
+
+- 691fa8b: Italic roles such as `poster` pad their right edge by a share of the font size. A leaning face overhangs its own advance, and React Native clipped the overhang, so the last figure of a number like «86» lost its edge.
+- 6a29b41: `IconButton` in the `plain` variant at its full size draws its glyph at 24 in the primary ink with the compact stroke. It is the way back from a screen with no header, and at 16 in the secondary ink it nearly vanished. The compact `plain` keeps its quiet 16.
+
 ## 0.12.0
 
 ### Minor Changes
