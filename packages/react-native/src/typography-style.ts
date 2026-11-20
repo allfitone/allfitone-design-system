@@ -9,6 +9,7 @@
  * - `lineHeight` is a unitless ratio in the tokens; React Native wants absolute.
  * - `letterSpacing` is an `em` ratio in the tokens; React Native wants absolute.
  * - `data` promises tabular figures and nothing was setting them.
+ * - an italic role leans past its box, and React Native clips what passes it.
  */
 
 import type { TextStyle } from "react-native";
@@ -17,6 +18,9 @@ import { getNativeFontFamily, type TypographyRoleName } from "./font-family.js";
 import { resolveNativeLetterSpacing, typography, typographyRole } from "./tokens.js";
 
 export type TextSizeName = keyof typeof typography.size;
+
+/** How far an italic face leans past its advance, as a share of the font size. */
+const ITALIC_OVERHANG = 0.12;
 
 /**
  * `tracking` opens a role's letter spacing for one use, as an `em` ratio that
@@ -58,5 +62,10 @@ export function resolveTextStyle(
     // Padding the deficit gives the first ascender room without loosening the
     // spacing between lines, so the intended rhythm survives.
     paddingTop: Math.max(0, Math.ceil(fontSize - lineHeight)),
+    // A leaning face overhangs its own advance and React Native clips the overhang,
+    // so the last figure loses its edge. The lean is padded back on the right.
+    ...("style" in definition && definition.style === "italic"
+      ? { paddingRight: Math.ceil(fontSize * ITALIC_OVERHANG) }
+      : {}),
   };
 }

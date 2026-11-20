@@ -22,6 +22,15 @@
  * confirm is a labelled pill were painted differently for no reason anybody could
  * name — `gradient.signal` is the token for primary CTAs, and a tick that commits a
  * screen is one.
+ *
+ * **`plain` at full size is a glyph alone in a corner** — the way back from a screen
+ * with no header. With no circle to give it presence, a 16 px glyph in the secondary ink
+ * nearly vanished, so it draws at 24 in the primary ink with the compact stroke. The
+ * compact `plain`, a glyph beside content, keeps the quiet 16.
+ *
+ * **`xs` is the glyph with no circle around it** — the trash can at the end of an
+ * exercise's row. A 36 circle there took the width the row's caption needed and broke
+ * it onto two lines; the glyph takes 16 and lends the rest of the target from slop.
  */
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -29,22 +38,23 @@ import { Pressable, StyleSheet, View, type PressableProps, type StyleProp, type 
 
 import { resolveAccentGradient } from "./accent-gradient.js";
 import { FoundationIcon, type IconName } from "./icons.js";
+import { iconButtonBox, type IconButtonSize } from "./icon-button-look.js";
 import { useTheme, type Theme } from "./theme.js";
 
-export type IconButtonVariant = "outline" | "solid" | "plain";
-export type IconButtonSize = "md" | "sm";
-export type IconButtonShape = "round" | "squircle";
+export type { IconButtonSize } from "./icon-button-look.js";
 
-/** Matches `Button`'s compact height, so the two sit level in a row of actions. */
-const COMPACT_SIZE = 36;
-const COMPACT_REACH = { top: 4, bottom: 4, left: 4, right: 4 };
+export type IconButtonVariant = "outline" | "solid" | "plain";
+export type IconButtonShape = "round" | "squircle";
 
 export type IconButtonProps = Omit<PressableProps, "style" | "children"> & {
   readonly icon: IconName;
   /** Announced, never drawn. An icon alone says nothing to a screen reader. */
   readonly accessibilityLabel: string;
   readonly variant?: IconButtonVariant;
-  /** `sm` matches `Button`'s compact size, for a row of actions beside content. */
+  /**
+   * `sm` matches `Button`'s compact size, for a row of actions beside content. `xs` is
+   * the glyph alone, for the end of a crowded row; only `plain` is drawn at `xs`.
+   */
   readonly size?: IconButtonSize;
   /** `squircle` for a control laid over a card, so it shares the card's corner. */
   readonly shape?: IconButtonShape;
@@ -91,6 +101,7 @@ function resolvePalette(theme: Theme, variant: IconButtonVariant, disabled: bool
         foreground: theme.color.icon.secondary,
         gradient: false,
       };
+
   }
 }
 
@@ -107,8 +118,10 @@ export function IconButton({
   const theme = useTheme();
   const inactive = disabled === true;
   const palette = resolvePalette(theme, variant, inactive);
+  const alone = variant === "plain" && scale === "md";
+  const ink = alone && !inactive ? theme.color.icon.primary : palette.foreground;
   const accent = resolveAccentGradient();
-  const size = scale === "sm" ? COMPACT_SIZE : theme.touchTarget;
+  const { box: size, reach } = iconButtonBox(scale, theme.touchTarget);
 
   return (
     <Pressable
@@ -118,7 +131,7 @@ export function IconButton({
       accessibilityState={{ disabled: inactive }}
       disabled={inactive}
       // Same bargain as `Button`'s compact size: the height goes, the reach stays.
-      {...(scale === "sm" ? { hitSlop: COMPACT_REACH } : {})}
+      {...(reach > 0 ? { hitSlop: reach } : {})}
       style={({ pressed }) => [
         styles.base,
         {
@@ -144,7 +157,13 @@ export function IconButton({
       ) : null}
 
       <View pointerEvents="none">
-        <FoundationIcon name={icon} size="sm" color={palette.foreground} decorative />
+        <FoundationIcon
+          name={icon}
+          size={alone ? "lg" : "sm"}
+          strokeScale={alone ? "compact" : "default"}
+          color={ink}
+          decorative
+        />
       </View>
     </Pressable>
   );

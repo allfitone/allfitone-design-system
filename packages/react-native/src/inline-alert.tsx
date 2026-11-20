@@ -21,6 +21,7 @@ import { useEffect, useRef } from "react";
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
 import { Circle, Path, Svg } from "react-native-svg";
 
+import { alertMarkSize, type AlertIconSize } from "./alert-look.js";
 import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
@@ -35,6 +36,8 @@ export type InlineAlertProps = {
   readonly title?: string;
   /** Replaces the default mark when the subject is not an error. */
   readonly icon?: IconName;
+  /** `md` for a panel that stands alone, such as «Tus datos nunca se cobran». Default `sm`. */
+  readonly iconSize?: AlertIconSize;
   /**
    * Cuando se pasa, el aviso se puede tocar para quitarlo y se va solo pasados unos
    * segundos. Sin esto se queda, que es lo correcto cuando explica por qué un control
@@ -59,6 +62,7 @@ export function InlineAlert({
   tone = "danger",
   title,
   icon,
+  iconSize,
   onDismiss,
   autoDismissMs = DISMISS_AFTER,
   style,
@@ -107,7 +111,13 @@ export function InlineAlert({
           <Path d="M12 16.5h.01" stroke={accent} strokeWidth={2} strokeLinecap="round" />
         </Svg>
       ) : (
-        <FoundationIcon name={icon} size="xs" color={accent} decorative style={styles.icon} />
+        <FoundationIcon
+          name={icon}
+          size={alertMarkSize(iconSize)}
+          color={accent}
+          decorative
+          style={styles.icon}
+        />
       )}
       {title === undefined ? (
         <Text role="label" size="xs" style={{ flex: 1, color: accent }}>

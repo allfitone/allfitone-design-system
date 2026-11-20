@@ -25,9 +25,11 @@
 
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
 
+import { badgeLook, type BadgeVariant } from "./badge-look.js";
+import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme } from "./theme.js";
-import { material } from "./tokens.js";
+import { material, withAlpha } from "./tokens.js";
 
 export type BadgeTone =
   | "neutral"
@@ -83,9 +85,19 @@ export type BadgeProps = {
    * `quiet` es para lo que va **encima de una fotografía**: toma el material `chip`,
    * que el sistema reserva exactamente para eso, y se lee como una frase en caja baja
    * en vez de como una etiqueta a gritos.
+   * `tonal` tiñe el fondo con el tono y escribe la palabra en ese tono: un estado que
+   * se lee sobre una fila oscura sin el brillo de un relleno sólido.
+   * `outline` dibuja solo el borde y la palabra en el tono, sobre el fondo que tenga
+   * debajo: «Récord» junto a un ejercicio, «Activo» sobre una tarjeta.
    */
-  readonly variant?: "solid" | "quiet";
+  readonly variant?: BadgeVariant;
   readonly tone?: BadgeTone;
+  /** Caps with the eyebrow's tracking. Default: on, except for `quiet`. */
+  readonly uppercase?: boolean;
+  /** A dot in the tone before the word, for a state that is live. */
+  readonly dot?: boolean;
+  /** A glyph in the tone before the word: the trophy of a record. */
+  readonly icon?: IconName;
   /** Makes it a target. The badge reports the fact; pressing opens where it is set. */
   readonly onPress?: () => void;
   readonly accessibilityLabel?: string;
@@ -96,56 +108,60 @@ export function Badge({
   label,
   tone = "neutral",
   variant = "solid",
+  uppercase,
+  dot,
+  icon,
   onPress,
   accessibilityLabel,
   style,
 }: BadgeProps) {
   const theme = useTheme();
+  const look = badgeLook({ tone, variant, uppercase, dot });
+  const toneColor = badgeToneColor(theme, tone);
 
   // Filled tones carry `onStatus` text; the palette picks that ink so the contrast
   // holds in both themes, which a hand-picked white or black does not.
-  const filled = variant === "solid" && tone !== "neutral";
-  const chip = material[theme.name].chip;
-  const quiet = variant === "quiet";
-  // El fondo del lienzo y no el del cristal. La `chip` de vidrio cuenta con el desenfoque
-  // que hay detrás, y un badge no lo tiene: al cuarenta por ciento sobre una fotografía
-  // clara la píldora desaparece y deja el rótulo flotando.
-  const background = quiet
-    ? theme.color.background.canvas
-    : filled
-      ? badgeToneColor(theme, tone)
-      : "transparent";
-  const edge = quiet ? chip.border : filled ? background : theme.color.border.default;
-  const ink = quiet
-    ? tone === "neutral"
-      ? theme.color.text.primary
-      : badgeToneColor(theme, tone)
-    : filled
-      ? theme.color.status.onStatus
-      : theme.color.text.secondary;
+  // El fondo de `quiet` es el del lienzo y no el del cristal: la `chip` de vidrio cuenta
+  // con el desenfoque que hay detrás, y un badge no lo tiene. Al cuarenta por ciento
+  // sobre una fotografía clara la píldora desaparece y deja el rótulo flotando.
+  const background = {
+    tone: toneColor,
+    tint: withAlpha(toneColor, 0.14),
+    muted: theme.color.background.surfaceMuted,
+    canvas: theme.color.background.canvas,
+    none: "transparent",
+  }[look.fill];
+  const edge = {
+    fill: background,
+    border: theme.color.border.default,
+    chip: material[theme.name].chip.border,
+    tone: toneColor,
+    none: "transparent",
+  }[look.edge];
+  const ink = {
+    onStatus: theme.color.status.onStatus,
+    tone: toneColor,
+    primary: theme.color.text.primary,
+    secondary: theme.color.text.secondary,
+  }[look.ink];
 
   const body = (
-    <View
-      style={[
-        styles.pill,
-        {
-          backgroundColor: background,
-          borderColor: edge,
-        },
-        style,
-      ]}
-    >
+    <View style={[styles.pill, { backgroundColor: background, borderColor: edge }, style]}>
+      {look.dot ? <View style={[styles.dot, { backgroundColor: ink }]} /> : null}
+      {icon === undefined ? null : (
+        <FoundationIcon name={icon} size="xs" color={ink} decorative />
+      )}
       {/* One line, always: a badge is one or two words by definition, and a wrapped
           one turns the row it labels into two rows. */}
-      {quiet ? (
-        <Text role="control" size="xs" numberOfLines={1} style={{ color: ink }}>
-          {label}
-        </Text>
-      ) : (
-        <Text role="eyebrow" size="2xs" uppercase numberOfLines={1} style={{ color: ink }}>
-          {label}
-        </Text>
-      )}
+      <Text
+        role={look.role}
+        size={look.size}
+        uppercase={look.uppercase}
+        numberOfLines={1}
+        style={{ color: ink }}
+      >
+        {label}
+      </Text>
     </View>
   );
 
@@ -167,6 +183,9 @@ export function Badge({
 
 const styles = StyleSheet.create({
   pill: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
     alignSelf: "flex-start",
     flexShrink: 1,
     paddingHorizontal: 10,
@@ -174,5 +193,6 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     borderWidth: 1,
   },
+  dot: { width: 6, height: 6, borderRadius: 3 },
   reach: { top: 10, bottom: 10, left: 8, right: 8 },
 });

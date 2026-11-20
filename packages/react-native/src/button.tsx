@@ -26,7 +26,8 @@
  *
  * `quietDanger` is the ghost of `danger`: the word in the status colour on no fill, for
  * the destructive action that only opens a confirmation — «Eliminar este registro» under
- * a form — and so must not weigh as much as the confirmation itself.
+ * a form — and so must not weigh as much as the confirmation itself. `outlineDanger`
+ * keeps the outline, for the one that leaves a whole screen — «Cerrar sesión».
  */
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -46,7 +47,9 @@ import { FoundationIcon, type IconName } from "./icons.js";
 import { Text } from "./text.js";
 import { useTheme, type Theme } from "./theme.js";
 
-export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "quietDanger";
+import { buttonLook, type ButtonVariant } from "./button-look.js";
+
+export type { ButtonVariant } from "./button-look.js";
 
 export type ButtonProps = Omit<PressableProps, "style" | "children"> & {
   readonly label: string;
@@ -85,7 +88,7 @@ function resolvePalette(theme: Theme, variant: ButtonVariant, disabled: boolean)
   if (disabled) {
     return {
       background:
-        variant === "ghost" || variant === "quietDanger"
+        variant === "ghost" || variant === "quietDanger" || variant === "outlineDanger"
           ? "transparent"
           : theme.color.action.disabled,
       border: null,
@@ -122,6 +125,15 @@ function resolvePalette(theme: Theme, variant: ButtonVariant, disabled: boolean)
       return {
         background: "transparent",
         border: null,
+        foreground: theme.color.status.danger,
+        gradient: false,
+      };
+    // The same red word, kept in the outline a secondary action wears, for the
+    // destructive action that leaves a whole screen rather than one record.
+    case "outlineDanger":
+      return {
+        background: "transparent",
+        border: theme.color.border.subtle,
         foreground: theme.color.status.danger,
         gradient: false,
       };
@@ -170,9 +182,7 @@ export function Button({
           borderColor: palette.border ?? undefined,
         },
         // Ghost sits inline with text and would look detached with elevation.
-        variant === "ghost" || variant === "quietDanger" || inactive
-          ? null
-          : resolveShadowStyle("control"),
+        buttonLook(variant).shadow && !inactive ? resolveShadowStyle("control") : null,
         // Opacity rather than a hover token: React Native has no hover, and the
         // press state has to read on both themes without a second palette.
         pressed ? styles.pressed : null,
