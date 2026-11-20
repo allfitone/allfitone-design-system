@@ -331,29 +331,34 @@ function Chart<Datum extends ChartDatum>({
         </ResponsiveContainer>
       </div>
 
-      <table data-slot="chart-table" className="sr-only">
-        <caption>{label}</caption>
-        <thead>
-          <tr>
-            <th scope="col">{indexLabel}</th>
-            {plotted.map(({ item }) => (
-              <th key={item.key} scope="col">
-                {item.label}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((datum, position) => (
-            <tr key={position}>
-              <th scope="row">{indexText(datum)}</th>
+      {/* Hidden by a block around the table, never on the table: a table
+          ignores a width under its content's, so its own box stayed as wide
+          as its longest row. Free to wrap, it also stays inside a phone. */}
+      <div className="sr-only">
+        <table data-slot="chart-table" className="whitespace-normal">
+          <caption>{label}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{indexLabel}</th>
               {plotted.map(({ item }) => (
-                <td key={item.key}>{valueText(datum, item)}</td>
+                <th key={item.key} scope="col">
+                  {item.label}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data.map((datum, position) => (
+              <tr key={position}>
+                <th scope="row">{indexText(datum)}</th>
+                {plotted.map(({ item }) => (
+                  <td key={item.key}>{valueText(datum, item)}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </figure>
   )
 }

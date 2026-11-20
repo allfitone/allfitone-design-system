@@ -768,6 +768,33 @@ test("draws charts whose every value is also text and within reach of the keyboa
   ).toEqual(["CanvasText", "GrayText"]);
 });
 
+/*
+ * The table a chart carries is hidden from sight, never from the page: it is a
+ * box like any other. A table ignores a width under its content's, so hiding
+ * the table itself left a box as wide as its longest row hanging past the edge
+ * of a phone, kept from scrolling the page only where an ancestor clipped it.
+ */
+test("keeps the table a chart carries inside a narrow screen", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await openCategory(page, "data-display", "Data display");
+  const tables = page.locator('#chart [data-slot="chart-table"]');
+  await expect(tables).not.toHaveCount(0);
+
+  const past = await tables.evaluateAll((found) => {
+    const edge = document.documentElement.clientWidth;
+    return found
+      .flatMap((table) => [table, ...table.querySelectorAll("*")])
+      .map((element) => Math.round(element.getBoundingClientRect().right) - edge)
+      .filter((over) => over > 0);
+  });
+  expect(past).toEqual([]);
+
+  // Hidden, not removed: every row is still there to be read.
+  const weeks = page.getByRole("table", { name: "Adherence by week" }).locator("tbody tr");
+  await expect(weeks).toHaveCount(8);
+  await expect(weeks.first()).toHaveText(/Week of 21 Sep\s*62% \(23 of 37 sessions\)/);
+});
+
 test("ranks named things as bars that say nothing the text does not", async ({ page }) => {
   await openCategory(page, "data-display", "Data display");
   const list = page.locator("#bar-list").getByRole("list", { name: "Clients per coach" });
